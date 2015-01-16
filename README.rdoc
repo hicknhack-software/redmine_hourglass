@@ -1,3 +1,0 @@
-= redmine_chronos
-
-Description goes here
