@@ -1,0 +1,11 @@
+# English strings go here for Rails i18n
+en:
+  chronos:
+    settings:
+      rounding:
+        fields:
+          default: Round per default on?
+          limit: Round down if below
+          minimum: Minimum time interval
+        title: Rounding Behavior
+
