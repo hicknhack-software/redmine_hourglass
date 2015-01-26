@@ -11,10 +11,10 @@ gem 'strong_parameters'
 
 group :test do
   gem 'zonebie'
-  gem "minitest"
   gem 'timecop'
   gem 'turn'
-  gem 'poltergeist'
+  gem 'faker'
+  gem 'database_cleaner'
 end
 
 group :development do
@@ -25,4 +25,6 @@ group :development do
   gem 'guard-rake'
   gem 'rb-readline'
   gem 'rubycritic', require: false
+  gem 'rspec-rails', '~> 2.99'
+  gem 'factory_girl_rails'
 end
