@@ -17,11 +17,12 @@ group :test do
   gem 'poltergeist'
 end
 
-group :development, :test do
+group :development do
   if RUBY_PLATFORM =~ /(win32|w32)/
     gem 'listen', '~> 2.7.5'
     gem 'wdm'
   end
   gem 'guard-rake'
   gem 'rb-readline'
+  gem 'rubycritic', require: false
 end

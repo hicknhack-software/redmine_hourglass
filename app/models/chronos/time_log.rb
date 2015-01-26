@@ -15,7 +15,8 @@ module Chronos
 
     def book(args = {})
       args.reverse_merge! default_booking_arguments
-      args[:time_diff] = DateTimeCalculations.time_diff args[:start], args[:stop], args[:round]
+      args[:time_diff] = DateTimeCalculations.time_diff args[:start], args[:stop]
+      args[:time_diff] = DateTimeCalculations.round_interval args[:time_diff] if args[:round]
       bookings = user.chronos_time_bookings.overlaps_with(args[:start], args[:stop], DateTimeCalculations.round_limit_in_seconds).all
 
       latest_start, earliest_stop = DateTimeCalculations.limits_from_overlapping_intervals args[:start], args[:stop], bookings, DateTimeCalculations.round_limit_in_seconds

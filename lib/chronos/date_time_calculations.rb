@@ -12,13 +12,8 @@ module Chronos::DateTimeCalculations
       Chronos.settings[:round_minimum].to_f.hours.to_i
     end
 
-    def time_diff(start, stop, round = false)
-      time_diff = (stop - start).to_i
-      if round
-        round_interval time_diff
-      else
-        time_diff
-      end
+    def time_diff(start, stop)
+      (stop - start).to_i
     end
 
     def round_interval(time_interval)
