@@ -5,6 +5,9 @@ require 'factory_girl_rails'
 
 Turn.config.format = :progress
 
+FactoryGirl.definition_file_paths = %w(plugins/redmine_chronos/spec/factories)
+FactoryGirl.find_definitions
+
 Zonebie.set_random_timezone
 
 Rails.application.load_tasks
