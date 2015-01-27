@@ -15,14 +15,13 @@ module Chronos
 
     def book(args = {})
       args.reverse_merge! default_booking_arguments
-      args[:time_diff] = DateTimeCalculations.time_diff args[:start], args[:stop]
-      args[:time_diff] = DateTimeCalculations.round_interval args[:time_diff] if args[:round]
       bookings = user.chronos_time_bookings.overlaps_with(args[:start], args[:stop], DateTimeCalculations.round_limit_in_seconds).all
-
       latest_start, earliest_stop = DateTimeCalculations.limits_from_overlapping_intervals args[:start], args[:stop], bookings, DateTimeCalculations.round_limit_in_seconds
-      args[:start], args[:stop] = DateTimeCalculations.fit_in_bounds args[:start], latest_start, args[:stop], earliest_stop, args[:time_diff]
 
-      TimeBooking.create time_bookings_arguments(args)
+      args[:stop] = args[:start] + DateTimeCalculations.round_interval(args[:start], args[:stop]) if args[:round]
+      args[:start], args[:stop] = DateTimeCalculations.fit_in_bounds args[:start], latest_start, args[:stop], earliest_stop
+
+      TimeBooking.create time_bookings_arguments args
     end
 
     private
@@ -39,7 +38,7 @@ module Chronos
     def time_entry_arguments(args)
       args
           .slice(:project_id, :issue_id, :comments, :activity_id, :user_id)
-          .merge spent_on: args[:start].to_date, hours: args[:time_diff] / 3600.0
+          .merge spent_on: args[:start].to_date, hours: DateTimeCalculations.time_diff(args[:start], args[:stop]) / 3600.0
     end
   end
 end

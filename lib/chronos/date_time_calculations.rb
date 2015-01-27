@@ -5,7 +5,7 @@ module Chronos::DateTimeCalculations
     end
 
     def round_limit_in_seconds
-      round_limit * round_minimum
+      (round_limit * round_minimum).to_i
     end
 
     def round_minimum
@@ -16,24 +16,20 @@ module Chronos::DateTimeCalculations
       (stop - start).to_i
     end
 
-    def round_interval(time_interval)
+    def round_interval(start, stop)
+      time_interval = time_diff start, stop
       if time_interval % round_minimum != 0
-        time_interval = (time_interval / round_minimum + (time_interval % round_minimum < round_minimum * round_limit ? 0 : 1)) * round_minimum
+        round_multiplier = (time_interval % round_minimum < round_limit_in_seconds ? 0 : 1)
+        time_interval = (time_interval.to_i / round_minimum + round_multiplier) * round_minimum
       end
       time_interval
     end
 
-    def fit_in_bounds(start, latest_start, stop, earliest_stop, time_interval = (stop - start).to_i)
-      raise 'doesn\'t fit' if earliest_stop - latest_start < time_interval
-      if earliest_stop < stop
-        stop = earliest_stop
-        start = stop - time_interval
-      elsif latest_start > start
-        start = latest_start
-        stop = start + time_interval
-      else
-        stop = start + time_interval
-      end
+    def fit_in_bounds(start, latest_start, stop, earliest_stop)
+      time_interval = time_diff(start, stop)
+      raise 'doesn\'t fit' if time_diff(latest_start, earliest_stop) < time_interval
+      return [earliest_stop - time_interval, earliest_stop] if earliest_stop < stop
+      return [latest_start, latest_start + time_interval] if latest_start > start
       [start, stop]
     end
 
