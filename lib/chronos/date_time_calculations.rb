@@ -25,11 +25,12 @@ module Chronos::DateTimeCalculations
       time_interval
     end
 
-    def fit_in_bounds(start, latest_start, stop, earliest_stop)
+    def fit_in_bounds(start, stop, start_limit, stop_limit)
       time_interval = time_diff(start, stop)
-      raise 'doesn\'t fit' if time_diff(latest_start, earliest_stop) < time_interval
-      return [earliest_stop - time_interval, earliest_stop] if earliest_stop < stop
-      return [latest_start, latest_start + time_interval] if latest_start > start
+      raise 'invalid intervals' if stop_limit <= start_limit || stop <= start
+      raise 'doesn\'t fit' if time_diff(start_limit, stop_limit) < time_interval
+      return [stop_limit - time_interval, stop_limit] if stop_limit < stop
+      return [start_limit, start_limit + time_interval] if start_limit > start
       [start, stop]
     end
 

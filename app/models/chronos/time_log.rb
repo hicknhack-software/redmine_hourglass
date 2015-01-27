@@ -19,7 +19,7 @@ module Chronos
       latest_start, earliest_stop = DateTimeCalculations.limits_from_overlapping_intervals args[:start], args[:stop], bookings, DateTimeCalculations.round_limit_in_seconds
 
       args[:stop] = args[:start] + DateTimeCalculations.round_interval(args[:start], args[:stop]) if args[:round]
-      args[:start], args[:stop] = DateTimeCalculations.fit_in_bounds args[:start], latest_start, args[:stop], earliest_stop
+      args[:start], args[:stop] = DateTimeCalculations.fit_in_bounds args[:start], args[:stop], latest_start, earliest_stop
 
       TimeBooking.create time_bookings_arguments args
     end
