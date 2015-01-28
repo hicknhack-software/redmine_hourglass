@@ -12,7 +12,10 @@ module Chronos::DateTimeCalculations
       super
     end
     def to_i
-      self.to_f
+      to_f
+    end
+    def eql?(other)
+      to_f.eql? other.to_f
     end
   end
 
