@@ -24,9 +24,10 @@ module Chronos::DateTimeCalculations
     def round_interval(time_interval)
       if time_interval % round_minimum != 0
         round_multiplier = (time_interval % round_minimum < round_limit_in_seconds ? 0 : 1)
-        time_interval = (time_interval.to_i / round_minimum + round_multiplier) * round_minimum
+        (time_interval.to_i / round_minimum + round_multiplier) * round_minimum
+      else
+        time_interval
       end
-      time_interval
     end
 
     def fit_in_bounds(start, stop, start_limit, stop_limit)
