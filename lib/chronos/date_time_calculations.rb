@@ -21,8 +21,7 @@ module Chronos::DateTimeCalculations
       (time2 - time1).abs.to_i
     end
 
-    def round_interval(start, stop)
-      time_interval = time_diff start, stop
+    def round_interval(time_interval)
       if time_interval % round_minimum != 0
         round_multiplier = (time_interval % round_minimum < round_limit_in_seconds ? 0 : 1)
         time_interval = (time_interval.to_i / round_minimum + round_multiplier) * round_minimum
