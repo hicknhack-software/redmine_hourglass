@@ -17,8 +17,8 @@ module Chronos::DateTimeCalculations
       Chronos.settings[:round_minimum].to_f.hours.to_i
     end
 
-    def time_diff(start, stop)
-      (stop - start).to_i
+    def time_diff(time1, time2)
+      (time2 - time1).abs.to_i
     end
 
     def round_interval(start, stop)
