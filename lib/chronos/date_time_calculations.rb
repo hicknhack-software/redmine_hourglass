@@ -1,7 +1,19 @@
 module Chronos::DateTimeCalculations
   class InvalidIntervalsException < StandardError
   end
+
   class NoFittingPossibleException < StandardError
+  end
+
+  class TimeInfinity < DateTime::Infinity
+    def <=>(anOther)
+      super anOther.to_i
+    rescue
+      super
+    end
+    def to_i
+      self.to_f
+    end
   end
 
   class << self
@@ -40,8 +52,8 @@ module Chronos::DateTimeCalculations
     end
 
     def limits_from_overlapping_intervals(start, stop, records, delta = 0)
-      latest_start = Time.at 0
-      earliest_stop = Time.now + 100.years #something in the far future as there is no properly working time infinity
+      latest_start = TimeInfinity.new -1
+      earliest_stop = TimeInfinity.new
       records.each do |record|
         latest_start = record.stop if record.stop < start + delta && record.stop > latest_start
         earliest_stop = record.start if record.start > stop - delta && record.start < earliest_stop
