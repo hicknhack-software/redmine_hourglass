@@ -1,4 +1,9 @@
 module Chronos::DateTimeCalculations
+  class InvalidIntervalsException < StandardError
+  end
+  class NoFittingPossibleException < StandardError
+  end
+
   class << self
     def round_limit
       Chronos.settings[:round_limit].to_f / 100
@@ -27,8 +32,8 @@ module Chronos::DateTimeCalculations
 
     def fit_in_bounds(start, stop, start_limit, stop_limit)
       time_interval = time_diff(start, stop)
-      raise 'invalid intervals' if stop_limit <= start_limit || stop <= start
-      raise 'doesn\'t fit' if time_diff(start_limit, stop_limit) < time_interval
+      raise InvalidIntervalsException if stop_limit <= start_limit || stop <= start
+      raise NoFittingPossibleException if time_diff(start_limit, stop_limit) < time_interval
       return [stop_limit - time_interval, stop_limit] if stop_limit < stop
       return [start_limit, start_limit + time_interval] if start_limit > start
       [start, stop]
