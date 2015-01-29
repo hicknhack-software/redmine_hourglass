@@ -54,14 +54,14 @@ module Chronos::DateTimeCalculations
       [start, stop]
     end
 
-    def limits_from_overlapping_intervals(start, stop, records, delta = 0)
-      latest_start = TimeInfinity.new -1
-      earliest_stop = TimeInfinity.new
+    def limits_from_overlapping_intervals(start, stop, records)
+      start_limit = TimeInfinity.new -1
+      stop_limit = TimeInfinity.new
       records.each do |record|
-        latest_start = record.stop if record.stop < start + delta && record.stop > latest_start
-        earliest_stop = record.start if record.start > stop - delta && record.start < earliest_stop
+        start_limit = record.stop if record.stop > start_limit && record.start < start && record.stop > start
+        stop_limit = record.start if record.start < stop_limit && record.start < stop && record.stop > stop
       end
-      [latest_start, earliest_stop]
+      [start_limit, stop_limit]
     end
   end
 end
