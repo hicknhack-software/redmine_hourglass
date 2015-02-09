@@ -162,7 +162,7 @@ describe Chronos::DateTimeCalculations do
       let (:start_limit) { start + 2.minutes }
       let (:stop_limit) { stop - 2.minutes }
 
-      it 'raises an exception' do
+      it 'raises an not fitting exception' do
         expect { interval }.to raise_error Chronos::DateTimeCalculations::NoFittingPossibleException
       end
     end
@@ -170,7 +170,7 @@ describe Chronos::DateTimeCalculations do
     context 'with invalid interval' do
       let (:stop) { start - 1.hour }
 
-      it 'raises an exception' do
+      it 'raises an invalid interval exception' do
         expect { interval }.to raise_error Chronos::DateTimeCalculations::InvalidIntervalsException
       end
     end
@@ -178,8 +178,8 @@ describe Chronos::DateTimeCalculations do
     context 'with invalid limit interval' do
       let (:stop_limit) { start_limit - 1.hour }
 
-      it 'raises an exception' do
-        expect { interval }.to raise_error Chronos::DateTimeCalculations::InvalidIntervalsException
+      it 'raises an not fitting exception' do
+        expect { interval }.to raise_error Chronos::DateTimeCalculations::NoFittingPossibleException
       end
     end
   end
@@ -201,8 +201,10 @@ describe Chronos::DateTimeCalculations do
     let (:record_7_00_7_30) { TimeRecord.new(Time.new(2015, 01, 28, 7, 00), Time.new(2015, 01, 28, 7, 30)) }
     let (:record_7_30_8_00) { TimeRecord.new(Time.new(2015, 01, 28, 7, 30), Time.new(2015, 01, 28, 8, 0)) }
     let (:record_7_30_8_15) { TimeRecord.new(Time.new(2015, 01, 28, 7, 30), Time.new(2015, 01, 28, 8, 15)) }
+    let (:record_7_30_9_00) { TimeRecord.new(Time.new(2015, 01, 28, 7, 30), Time.new(2015, 01, 28, 9, 00)) }
     let (:record_7_45_8_45) { TimeRecord.new(Time.new(2015, 01, 28, 7, 45), Time.new(2015, 01, 28, 8, 45)) }
-    let (:record_8_15_8_45) { TimeRecord.new(Time.new(2015, 01, 28, 8, 15), Time.new(2015, 01, 28, 8, 45)) }
+    let (:record_8_00_8_30) { TimeRecord.new(Time.new(2015, 01, 28, 8, 00), Time.new(2015, 01, 28, 8, 30)) }
+    let (:record_8_15_9_00) { TimeRecord.new(Time.new(2015, 01, 28, 8, 15), Time.new(2015, 01, 28, 9, 00)) }
     let (:record_8_30_9_00) { TimeRecord.new(Time.new(2015, 01, 28, 8, 30), Time.new(2015, 01, 28, 9, 0)) }
     let (:record_9_00_9_30) { TimeRecord.new(Time.new(2015, 01, 28, 9, 00), Time.new(2015, 01, 28, 9, 30)) }
     let (:infinite_limits) { [Chronos::DateTimeCalculations::TimeInfinity.new(-1), Chronos::DateTimeCalculations::TimeInfinity.new] }
@@ -241,7 +243,7 @@ describe Chronos::DateTimeCalculations do
 
     end
 
-    context 'with an overlapping record before' do
+    context 'with an overlapping record after' do
       let (:records) { [record_8_30_9_00] }
 
       it 'return correct limits' do
@@ -250,10 +252,42 @@ describe Chronos::DateTimeCalculations do
     end
 
     context 'with multiple overlapping records around' do
-      let (:records) { [record_7_30_8_00, record_7_30_8_15, record_7_45_8_45, record_8_30_9_00] }
+      let (:records) { [record_7_30_8_00, record_7_30_8_15, record_8_15_9_00, record_8_30_9_00] }
 
       it 'return correct limits' do
-        expect(limits).to eql [record_7_30_8_15.stop, record_7_45_8_45.start]
+        expect(limits).to eql [record_7_30_8_15.stop, record_8_15_9_00.start]
+      end
+    end
+
+    context 'with a record inside' do
+      let (:records) { [record_8_00_8_30] }
+
+      it 'raise an record inside exception' do
+        expect { limits }.to raise_error Chronos::DateTimeCalculations::RecordInsideIntervalException
+      end
+    end
+
+    context 'with a record above' do
+      let (:records) { [record_7_30_9_00] }
+
+      it 'return correct limits' do
+        expect(limits).to eql [record_7_30_9_00.stop, record_7_30_9_00.start]
+      end
+    end
+
+    context 'with multiple overlapping records around and a record inside' do
+      let (:records) { [record_7_30_8_00, record_7_30_8_15, record_8_00_8_30, record_8_15_9_00, record_8_30_9_00] }
+
+      it 'raise an record inside exception' do
+        expect { limits }.to raise_error Chronos::DateTimeCalculations::RecordInsideIntervalException
+      end
+    end
+
+    context 'with multiple overlapping records around and a record above' do
+      let (:records) { [record_7_30_8_00, record_7_30_8_15, record_7_30_9_00, record_8_15_9_00, record_8_30_9_00] }
+
+      it 'return correct limits' do
+        expect(limits).to eql [record_7_30_9_00.stop, record_7_30_9_00.start]
       end
     end
   end

@@ -5,15 +5,20 @@ module Chronos::DateTimeCalculations
   class NoFittingPossibleException < StandardError
   end
 
+  class RecordInsideIntervalException < StandardError
+  end
+
   class TimeInfinity < DateTime::Infinity
     def <=>(anOther)
       super anOther.to_i
     rescue
       super
     end
+
     def to_i
       to_f
     end
+
     def eql?(other)
       to_f.eql? other.to_f
     end
@@ -47,8 +52,8 @@ module Chronos::DateTimeCalculations
 
     def fit_in_bounds(start, stop, start_limit, stop_limit)
       time_interval = time_diff(start, stop)
-      raise InvalidIntervalsException if stop_limit <= start_limit || stop <= start
-      raise NoFittingPossibleException if time_diff(start_limit, stop_limit) < time_interval
+      raise InvalidIntervalsException if stop <= start
+      raise NoFittingPossibleException if stop_limit <= start_limit || time_diff(start_limit, stop_limit) < time_interval
       return [stop_limit - time_interval, stop_limit] if stop_limit < stop
       return [start_limit, start_limit + time_interval] if start_limit > start
       [start, stop]
@@ -58,6 +63,7 @@ module Chronos::DateTimeCalculations
       start_limit = TimeInfinity.new -1
       stop_limit = TimeInfinity.new
       records.each do |record|
+        raise RecordInsideIntervalException if record.stop < stop && record.start > start
         start_limit = record.stop if record.stop > start_limit && record.start < start && record.stop > start
         stop_limit = record.start if record.start < stop_limit && record.start < stop && record.stop > stop
       end
