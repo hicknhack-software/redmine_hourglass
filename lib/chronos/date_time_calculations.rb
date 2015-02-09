@@ -8,22 +8,6 @@ module Chronos::DateTimeCalculations
   class RecordInsideIntervalException < StandardError
   end
 
-  class TimeInfinity < DateTime::Infinity
-    def <=>(anOther)
-      super anOther.to_i
-    rescue
-      super
-    end
-
-    def to_i
-      to_f
-    end
-
-    def eql?(other)
-      to_f.eql? other.to_f
-    end
-  end
-
   class << self
     def round_limit
       Chronos.settings[:round_limit].to_f / 100
