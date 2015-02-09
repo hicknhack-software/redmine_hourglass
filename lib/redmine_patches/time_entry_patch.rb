@@ -1,5 +1,5 @@
 require_dependency 'time_entry'
-module Chronos::Patches
+module RedminePatches
   module TimeEntryPatch
     extend ActiveSupport::Concern
 
@@ -11,4 +11,4 @@ module Chronos::Patches
   end
 end
 
-TimeEntry.send :include, Chronos::Patches::TimeEntryPatch
+TimeEntry.send :include, RedminePatches::TimeEntryPatch

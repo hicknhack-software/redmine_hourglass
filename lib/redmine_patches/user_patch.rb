@@ -2,7 +2,7 @@ require_dependency 'user'
 require_dependency 'project'
 require_dependency 'principal'
 
-module Chronos::Patches
+module RedminePatches
   module UserPatch
     extend ActiveSupport::Concern
 
@@ -21,4 +21,4 @@ module Chronos::Patches
   end
 end
 
-User.send :include, Chronos::Patches::UserPatch
+User.send :include, RedminePatches::UserPatch

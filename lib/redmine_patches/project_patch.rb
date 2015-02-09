@@ -1,5 +1,5 @@
 require_dependency 'project'
-module Chronos::Patches
+module RedminePatches
   module ProjectPatch
     extend ActiveSupport::Concern
 
@@ -11,4 +11,4 @@ module Chronos::Patches
   end
 end
 
-Project.send :include, Chronos::Patches::ProjectPatch
+Project.send :include, RedminePatches::ProjectPatch
