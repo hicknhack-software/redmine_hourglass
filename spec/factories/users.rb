@@ -1,10 +1,10 @@
 FactoryGirl.define do
   factory :user do |f|
-    f.firstname { Faker::Name.first_name }
-    f.lastname { Faker::Name.last_name }
-    f.login { Faker::Internet.user_name }
-    f.mail { Faker::Internet.email }
-    f.status 1
-    f.language 'en'
+    firstname { Faker::Name.first_name }
+    lastname { Faker::Name.last_name }
+    login { Faker::Internet.user_name }
+    mail { Faker::Internet.email }
+    status 1
+    language 'en'
   end
 end

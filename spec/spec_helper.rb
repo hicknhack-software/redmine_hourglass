@@ -3,6 +3,9 @@ require 'rspec/rails'
 require 'rake'
 require 'factory_girl_rails'
 
+# require chronos
+require File.expand_path File.dirname(__FILE__) + '/../lib/chronos'
+
 Turn.config.format = :progress
 
 FactoryGirl.definition_file_paths = %w(plugins/redmine_chronos/spec/factories)
@@ -19,7 +22,7 @@ Rails.application.load_tasks
 # run twice. It is recommended that you do not name files matching this glob to
 # end with _spec.rb. You can configure this pattern with with the --pattern
 # option on the command line or in ~/.rspec, .rspec or `.rspec-local`.
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+Dir[File.expand_path(File.dirname(__FILE__) + '/support/**/*.rb"')].each { |f| require f }
 
 RSpec.configure do |config|
 
