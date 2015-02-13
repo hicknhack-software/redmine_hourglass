@@ -44,12 +44,12 @@ module Chronos::DateTimeCalculations
     end
 
     def limits_from_overlapping_intervals(start, stop, records)
-      start_limit = TimeInfinity.new -1
-      stop_limit = TimeInfinity.new
+      start_limit = nil
+      stop_limit = nil
       records.each do |record|
         raise RecordInsideIntervalException if record.stop < stop && record.start > start
-        start_limit = record.stop if record.stop > start_limit && record.start < start && record.stop > start
-        stop_limit = record.start if record.start < stop_limit && record.start < stop && record.stop > stop
+        start_limit = record.stop if (start_limit.nil? || record.stop > start_limit) && record.start < start && record.stop > start
+        stop_limit = record.start if (stop_limit.nil? || record.start < stop_limit) && record.start < stop && record.stop > stop
       end
       [start_limit, stop_limit]
     end

@@ -143,22 +143,21 @@ describe Chronos::DateTimeCalculations do
     let (:record_8_15_9_00) { TimeRecord.new(Time.new(2015, 01, 28, 8, 15), Time.new(2015, 01, 28, 9, 00)) }
     let (:record_8_30_9_00) { TimeRecord.new(Time.new(2015, 01, 28, 8, 30), Time.new(2015, 01, 28, 9, 0)) }
     let (:record_9_00_9_30) { TimeRecord.new(Time.new(2015, 01, 28, 9, 00), Time.new(2015, 01, 28, 9, 30)) }
-    let (:infinite_limits) { [Chronos::DateTimeCalculations::TimeInfinity.new(-1), Chronos::DateTimeCalculations::TimeInfinity.new] }
     let (:limits) { Chronos::DateTimeCalculations.limits_from_overlapping_intervals record_7_45_8_45.start, record_7_45_8_45.stop, records }
 
     context 'with no records' do
       let (:records) { [] }
 
-      it 'returns infinite limits' do
-        expect(limits).to eql infinite_limits
+      it 'returns empty limits' do
+        expect(limits).to eql [nil, nil]
       end
     end
 
     context 'with not overlapping records' do
       let (:records) { [record_7_00_7_30, record_9_00_9_30] }
 
-      it 'returns infinite limits' do
-        expect(limits).to eql infinite_limits
+      it 'returns empty limits' do
+        expect(limits).to eql [nil, nil]
       end
     end
 
@@ -174,7 +173,7 @@ describe Chronos::DateTimeCalculations do
       let (:records) { [record_7_30_8_00] }
 
       it 'return correct limits' do
-        expect(limits).to eql [record_7_30_8_00.stop, Chronos::DateTimeCalculations::TimeInfinity.new]
+        expect(limits).to eql [record_7_30_8_00.stop, nil]
       end
 
     end
@@ -183,7 +182,7 @@ describe Chronos::DateTimeCalculations do
       let (:records) { [record_8_30_9_00] }
 
       it 'return correct limits' do
-        expect(limits).to eql [Chronos::DateTimeCalculations::TimeInfinity.new(-1), record_8_30_9_00.start]
+        expect(limits).to eql [nil, record_8_30_9_00.start]
       end
     end
 
