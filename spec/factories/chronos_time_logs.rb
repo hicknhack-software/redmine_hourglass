@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :time_log, class: 'Chronos::TimeLog' do
     user
-    start { Faker::Time.backward 0, :morning }
-    stop { Faker::Time.forward 0, :afternoon }
+    start { Faker::Time.between Time.now, Time.now, :morning }
+    stop { Faker::Time.between Time.now, Time.now, :afternoon }
     factory :timelog_with_comments do
       comments { Faker::Hacker.say_something_smart }
     end
