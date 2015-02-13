@@ -35,11 +35,11 @@ module Chronos::DateTimeCalculations
     end
 
     def fit_in_bounds(start, stop, start_limit, stop_limit)
+      raise InvalidIntervalsException if start.nil? || stop.nil? || stop <= start
       time_interval = time_diff(start, stop)
-      raise InvalidIntervalsException if stop <= start
-      raise NoFittingPossibleException if stop_limit <= start_limit || time_diff(start_limit, stop_limit) < time_interval
-      return [stop_limit - time_interval, stop_limit] if stop_limit < stop
-      return [start_limit, start_limit + time_interval] if start_limit > start
+      raise NoFittingPossibleException if stop_limit && start_limit && (stop_limit <= start_limit || time_diff(start_limit, stop_limit) < time_interval)
+      return [stop_limit - time_interval, stop_limit] if stop_limit && stop_limit < stop
+      return [start_limit, start_limit + time_interval] if start_limit && start_limit > start
       [start, stop]
     end
 

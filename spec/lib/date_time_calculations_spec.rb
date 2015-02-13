@@ -118,6 +118,24 @@ describe Chronos::DateTimeCalculations do
         expect { interval }.to raise_error Chronos::DateTimeCalculations::NoFittingPossibleException
       end
     end
+    context 'with empty limit interval' do
+      let (:start_limit) { nil }
+      let (:stop_limit) { nil }
+
+      it 'returns start and  stop without changing' do
+        expect(interval).to eql [start, stop]
+      end
+    end
+    context 'with empty interval' do
+      let (:start) { nil }
+      let (:stop) { nil }
+      let (:start_limit) { nil }
+      let (:stop_limit) { nil }
+
+      it 'raises an invalid interval exception' do
+        expect { interval }.to raise_error Chronos::DateTimeCalculations::InvalidIntervalsException
+      end
+    end
   end
 
   describe 'limits_from_overlapping_intervals function' do
