@@ -12,7 +12,6 @@ gem 'strong_parameters'
 group :test do
   gem 'zonebie'
   gem 'timecop'
-  gem 'turn'
   gem 'faker'
   gem 'database_cleaner'
 end

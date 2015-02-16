@@ -10,8 +10,6 @@ require 'factory_girl_rails'
 # require chronos
 require File.expand_path File.dirname(__FILE__) + '/../lib/chronos'
 
-Turn.config.format = :progress
-
 FactoryGirl.definition_file_paths = %w(plugins/redmine_chronos/spec/factories)
 FactoryGirl.find_definitions
 
