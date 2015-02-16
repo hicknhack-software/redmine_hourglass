@@ -1,4 +1,8 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../../test/test_helper')
+if ENV['PATH_TO_REDMINE']
+  require File.expand_path(ENV['PATH_TO_REDMINE'] + '/test/test_helper')
+else
+  require File.expand_path(File.dirname(__FILE__) + '/../../../test/test_helper')
+end
 require 'rspec/rails'
 require 'rake'
 require 'factory_girl_rails'
