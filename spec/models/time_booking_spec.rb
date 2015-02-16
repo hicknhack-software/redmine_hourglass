@@ -43,7 +43,7 @@ describe Chronos::TimeBooking do
   end
 
   context 'overlaps_with' do
-    before :all do
+    before :each do
       start_time = Time.new 2015, 2, 16, 9
       5.times do
         stop_time = start_time + 30.minutes

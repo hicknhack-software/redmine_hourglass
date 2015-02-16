@@ -70,6 +70,5 @@ RSpec.configure do |config|
 
   config.after(:each) do
     DatabaseCleaner.clean
-    puts '<<<<CLEANED DATABASE>>>>'
   end
 end

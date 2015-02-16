@@ -33,7 +33,7 @@ describe Chronos::DateTimeCalculations do
     round_minimum_in_seconds = 1800
     round_limits_in_seconds = 1620
 
-    before :all do
+    before :each do
       Chronos.settings[:round_minimum] = '0.5'
       Chronos.settings[:round_limit] = '90'
     end
