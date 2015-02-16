@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :time_booking, class: 'Chronos::TimeBooking' do
     transient do
-      user nil
+      user { create :user }
     end
     start { Faker::Time.between Time.now, Time.now, :morning }
     stop { Faker::Time.between Time.now, Time.now, :afternoon }
