@@ -5,6 +5,11 @@ describe Chronos::TimeLog do
     Timecop.travel Time.new 2015, 2, 2, 15
   end
 
+  before :each do
+    Chronos.settings[:round_minimum] = '0.25'
+    Chronos.settings[:round_limit] = '50'
+  end
+
   it 'has a valid factory' do
     expect(build :time_log).to be_valid
   end

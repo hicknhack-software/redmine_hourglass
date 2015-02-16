@@ -3,6 +3,11 @@ describe Chronos::TimeBooking do
 
   before :all do
     Timecop.travel Time.new 2015, 2, 2, 15
+  end
+
+  before :each do
+    Chronos.settings[:round_minimum] = '0.25'
+    Chronos.settings[:round_limit] = '50'
     User.current = create :user
   end
 
