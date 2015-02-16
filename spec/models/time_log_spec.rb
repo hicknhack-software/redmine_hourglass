@@ -34,11 +34,11 @@ describe Chronos::TimeLog do
   end
 
   it 'is valid with no comment' do
-    expect(build :timelog_with_comments, comments: nil).to be_valid
+    expect(build :time_log_with_comments, comments: nil).to be_valid
   end
 
   it 'is invalid with a comment greater' do
-    expect(build :timelog_with_comments, comments: 'Hello!' * 43).not_to be_valid
+    expect(build :time_log_with_comments, comments: 'Hello!' * 43).not_to be_valid
   end
 
   describe 'booking' do
