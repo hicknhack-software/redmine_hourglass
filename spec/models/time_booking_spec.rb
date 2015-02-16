@@ -9,8 +9,21 @@ describe Chronos::TimeBooking do
     expect(build :time_booking).to be_valid
   end
 
+  it 'deletes the associated time_entry if destroyed' do
+    time_booking = create :time_booking
+    time_entry_id = time_booking.time_entry.id
+    time_booking.destroy
+    expect(TimeEntry.find_by_id(time_entry_id)).to be_nil
+  end
+
   it 'is invalid without a time entry' do
     expect(build :time_booking, time_entry: nil).not_to be_valid
+  end
+
+  it 'creates a valid time_entry if arguments are given and non is set' do
+    time_log = create :time_log
+    time_booking = Chronos::TimeBooking.create time_log_id: time_log.id, start: time_log.start, stop: time_log.stop, time_entry_arguments: {project_id: create(:project).id, activity_id: 9, user_id: create(:user).id, spent_on: time_log.start, hours: (time_log.stop - time_log.start)/ 1.hour.to_f}
+    expect(time_booking).to be_valid
   end
 
   it 'is invalid without a time log' do
@@ -29,4 +42,7 @@ describe Chronos::TimeBooking do
     expect(build :time_booking, start: Time.now, stop: Time.now - 10.minutes, time_log: create(:time_log), time_entry: create(:time_entry)).not_to be_valid
   end
 
+  context 'overlaps_with' do
+
+  end
 end
