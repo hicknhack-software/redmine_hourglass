@@ -43,6 +43,20 @@ describe Chronos::TimeBooking do
   end
 
   context 'overlaps_with' do
+    before :all do
+      start_time = Time.new 2015, 2, 16, 9
+      5.times do
+        stop_time = start_time + 30.minutes
+        create :time_booking, start: start_time, stop: stop_time
+        start_time = stop_time
+      end
+    end
+    it 'gives the correct records without delta' do
+      expect(Chronos::TimeBooking.overlaps_with(Time.new(2015, 2, 16, 9, 15), Time.new(2015, 2, 16, 9, 45)).count).to be 2
+    end
 
+    it 'gives the correct records with delta' do
+      expect(Chronos::TimeBooking.overlaps_with(Time.new(2015, 2, 16, 9, 15), Time.new(2015, 2, 16, 9, 45), 30.minutes).count).to be 3
+    end
   end
 end
