@@ -1,3 +1,6 @@
+#clear all arguments given to rspec to prevent them to be given to redmine minitest as well
+ARGV.clear
+
 if ENV['PATH_TO_REDMINE']
   require File.expand_path(ENV['PATH_TO_REDMINE'] + '/test/test_helper')
 else
