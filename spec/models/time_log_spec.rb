@@ -16,10 +16,10 @@ describe Chronos::TimeLog do
 
   it 'deletes the associated time_entry if destroyed' do
     time_log = create :time_log
-    time_log.book project_id: create(:project).id, activity_id: 9
-    time_booking_id = time_log.time_bookings.last.id
+    time_booking = time_log.book project_id: create(:project).id, activity_id: 9
+    expect(time_booking).to be_valid
     time_log.destroy
-    expect(Chronos::TimeBooking.find_by_id(time_booking_id)).to be_nil
+    expect(Chronos::TimeBooking.find_by_id(time_booking.id)).to be_nil
   end
 
   it 'is invalid without a user' do
