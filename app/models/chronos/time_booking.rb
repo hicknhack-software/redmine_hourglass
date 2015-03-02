@@ -24,11 +24,8 @@ module Chronos
 
     def create_time_entry
       if time_entry_arguments.present? && time_entry.nil?
-        super time_entry_arguments.except :user_id
-        time_entry.user_id = time_entry_arguments[:user_id]
-        time_entry.save
+        super time_entry_arguments
       end
     end
-
   end
 end

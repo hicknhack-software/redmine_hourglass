@@ -26,7 +26,7 @@ module Chronos
 
     private
     def default_booking_arguments
-      {start: start, stop: stop, comments: comments, time_log_id: id, user_id: user_id}
+      {start: start, stop: stop, comments: comments, time_log_id: id, user: user}
     end
 
     def time_bookings_arguments(args)
@@ -37,7 +37,7 @@ module Chronos
 
     def time_entry_arguments(args)
       args
-          .slice(:project_id, :issue_id, :comments, :activity_id, :user_id)
+          .slice(:project, :issue_id, :comments, :activity_id, :user)
           .merge spent_on: args[:start].to_date, hours: DateTimeCalculations.time_diff(args[:start], args[:stop]) / 1.hour.to_f
     end
   end

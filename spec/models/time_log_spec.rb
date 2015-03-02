@@ -57,7 +57,7 @@ describe Chronos::TimeLog do
 
     context 'with no extra arguments' do
       it 'tries creating a time booking with the correct arguments' do
-        expect(Chronos::TimeBooking).to receive(:create).with start: time_log.start, stop: time_log.stop, time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user_id: time_log.user_id, spent_on: time_log.start.to_date, hours: hours}
+        expect(Chronos::TimeBooking).to receive(:create).with start: time_log.start, stop: time_log.stop, time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user: time_log.user, spent_on: time_log.start.to_date, hours: hours}
         book!
       end
     end
@@ -67,16 +67,16 @@ describe Chronos::TimeLog do
       let (:booking_arguments) { {round: true} }
 
       it 'tries creating a time booking with the correct arguments(rounded stop)' do
-        expect(Chronos::TimeBooking).to receive(:create).with start: time_log.start, stop: time_log.stop + 2.minutes, time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user_id: time_log.user_id, spent_on: Time.new(2015, 2, 13).to_date, hours: 0.25}
+        expect(Chronos::TimeBooking).to receive(:create).with start: time_log.start, stop: time_log.stop + 2.minutes, time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user: time_log.user, spent_on: Time.new(2015, 2, 13).to_date, hours: 0.25}
         book!
       end
     end
 
     context 'with extra arguments project_id, issue_id and activity_id' do
-      let (:booking_arguments) { {project_id: 1, issue_id: 2, activity_id: 3} }
+      let (:booking_arguments) { {project: create(:project), issue_id: 2, activity_id: 3} }
 
       it 'tries creating a time booking with the correct arguments(additional args)' do
-        expect(Chronos::TimeBooking).to receive(:create).with start: time_log.start, stop: time_log.stop, time_log_id: time_log.id, time_entry_arguments: {project_id: booking_arguments[:project_id], issue_id: booking_arguments[:issue_id], comments: time_log.comments, activity_id: booking_arguments[:activity_id], user_id: time_log.user_id, spent_on: time_log.start.to_date, hours: hours}
+        expect(Chronos::TimeBooking).to receive(:create).with start: time_log.start, stop: time_log.stop, time_log_id: time_log.id, time_entry_arguments: {project: booking_arguments[:project], issue_id: booking_arguments[:issue_id], comments: time_log.comments, activity_id: booking_arguments[:activity_id], user: time_log.user, spent_on: time_log.start.to_date, hours: hours}
         book!
       end
     end
@@ -85,7 +85,7 @@ describe Chronos::TimeLog do
       let (:booking_arguments) { {start: time_log.start + 1.minutes, stop: time_log.stop - 1.minutes} }
 
       it 'tries creating a time booking with the correct arguments(adjusted start and stop)' do
-        expect(Chronos::TimeBooking).to receive(:create).with start: booking_arguments[:start], stop: booking_arguments[:stop], time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user_id: time_log.user_id, spent_on: booking_arguments[:start].to_date, hours: hours}
+        expect(Chronos::TimeBooking).to receive(:create).with start: booking_arguments[:start], stop: booking_arguments[:stop], time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user: time_log.user, spent_on: booking_arguments[:start].to_date, hours: hours}
         book!
       end
     end
@@ -94,7 +94,7 @@ describe Chronos::TimeLog do
 
       it 'tries creating a time booking with the correct arguments(moved start and stop)' do
         existing = create :time_booking, user: time_log.user, start: time_log.start - 15.minutes, stop: time_log.start + 15.minutes
-        expect(Chronos::TimeBooking).to receive(:create).with start: existing.stop, stop: time_log.stop + 15.minutes, time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user_id: time_log.user_id, spent_on: existing.stop.to_date, hours: hours}
+        expect(Chronos::TimeBooking).to receive(:create).with start: existing.stop, stop: time_log.stop + 15.minutes, time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user: time_log.user, spent_on: existing.stop.to_date, hours: hours}
         book!
       end
     end
