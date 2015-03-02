@@ -9,6 +9,8 @@ gem 'sass'
 gem 'slim'
 gem 'strong_parameters'
 
+gem 'sprockets'
+
 group :test do
   gem 'zonebie'
   gem 'timecop'
