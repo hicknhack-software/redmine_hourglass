@@ -5,11 +5,12 @@ source 'https://rubygems.org'
 # simulating assets pipeline
 gem 'coffee-script'
 gem 'sass'
+gem 'sprockets'
+gem 'uglifier'
+gem 'cssminify'
 
 gem 'slim'
 gem 'strong_parameters'
-
-gem 'sprockets'
 
 group :test do
   gem 'zonebie'

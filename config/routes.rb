@@ -3,5 +3,5 @@
 
 scope 'chronos' do
   root to: 'chronos_overview#index'
-  mount Chronos::AssetServer.instance, :at => 'assets'
+  mount Chronos::Assets.instance, :at => 'assets'
 end
