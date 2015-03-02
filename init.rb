@@ -1,9 +1,5 @@
 require File.join File.dirname(__FILE__), 'lib', 'chronos.rb'
 
-# update assets
-load File.join File.dirname(__FILE__), 'lib', 'tasks', 'setup_plugin.rake'
-Rake::Task['redmine:plugins:redmine_chronos:install'].invoke
-
 Redmine::Plugin.register :redmine_chronos do
   name 'Redmine Chronos plugin'
   description 'Control your time like the god you think you are'

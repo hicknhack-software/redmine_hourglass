@@ -3,5 +3,6 @@
 
 scope 'chronos' do
   root to: 'chronos_overview#index'
-  mount Chronos::Assets.instance, :at => 'assets'
 end
+
+mount Chronos::Assets.instance, :at => 'plugin_assets/redmine_chronos'
