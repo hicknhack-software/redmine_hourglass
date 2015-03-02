@@ -15,7 +15,6 @@ module Chronos
     validates_uniqueness_of :user_id
     validates_presence_of :user, :start
     validates_length_of :comments, maximum: 255, allow_blank: true
-    #validate no overlap user.chronos_time_logs.where(User.arel_table[:stop].gt(start))
 
     class << self
       alias_method :start, :create
@@ -34,7 +33,7 @@ module Chronos
 
     private
     def init
-      self.user_id ||= User.current.id
+      self.user ||= User.current
       self.round = Chronos.settings[:round_default] if round.nil?
       self.start ||= Time.now.change sec: 0
     end
@@ -52,7 +51,7 @@ module Chronos
     end
 
     def bookable?
-      project_id.present? && activity_id.present?
+      project.present? && activity_id.present?
     end
 
   end
