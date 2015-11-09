@@ -14,7 +14,7 @@ describe Chronos::TimeLog do
     expect(build :time_log).to be_valid
   end
 
-  it 'deletes the associated time_entry if destroyed' do
+  it 'deletes the associated time booking if destroyed' do
     time_log = create :time_log
     time_booking = time_log.book project_id: create(:project).id, activity_id: 9
     time_log.destroy

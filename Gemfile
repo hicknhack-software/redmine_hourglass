@@ -10,7 +10,6 @@ gem 'uglifier'
 gem 'cssminify'
 
 gem 'slim'
-gem 'strong_parameters'
 
 group :test do
   gem 'zonebie'
