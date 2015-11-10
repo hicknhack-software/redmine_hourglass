@@ -2,8 +2,6 @@ module Chronos
   class TimeLog < ActiveRecord::Base
     include Namespace
     include Chronos::StopValidation
-    include ActiveModel::ForbiddenAttributesProtection
-    unloadable
 
     belongs_to :user
     has_many :time_bookings, dependent: :destroy

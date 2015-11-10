@@ -2,8 +2,6 @@ module Chronos
   class TimeBooking < ActiveRecord::Base
     include Chronos::Namespace
     include Chronos::StopValidation
-    include ActiveModel::ForbiddenAttributesProtection
-    unloadable
 
     belongs_to :time_log
     belongs_to :time_entry, dependent: :delete

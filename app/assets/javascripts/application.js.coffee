@@ -1,2 +1,1 @@
 $ ->
-  alert 'test3'

@@ -1,8 +1,6 @@
 module Chronos
   class TimeTracker < ActiveRecord::Base
     include Namespace
-    include ActiveModel::ForbiddenAttributesProtection
-    unloadable
 
     belongs_to :user
     belongs_to :project
