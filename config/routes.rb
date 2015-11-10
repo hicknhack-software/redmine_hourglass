@@ -1,8 +1,17 @@
-# Plugin's routes
-# See: http://guides.rubyonrails.org/routing.html
-
-scope 'chronos' do
+# gui routes can't be namespaced
+scope :chronos do
   root to: 'chronos_overview#index'
+end
+
+namespace :chronos do
+  resources :time_tracker, except: [:new, :edit, :create] do
+    member do
+      get 'stop'
+    end
+    collection do
+      post 'start'
+    end
+  end
 end
 
 unless Rails.env.production?

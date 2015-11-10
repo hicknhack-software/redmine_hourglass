@@ -1,7 +1,5 @@
 source 'https://rubygems.org'
 
-
-
 # simulating assets pipeline
 gem 'coffee-script'
 gem 'sass'
@@ -9,6 +7,7 @@ gem 'sprockets'
 gem 'uglifier'
 gem 'cssminify'
 
+#views
 gem 'slim'
 
 group :test do
