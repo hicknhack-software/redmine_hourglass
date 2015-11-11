@@ -2,7 +2,7 @@ ActiveSupport::Dependencies.autoload_paths << File.join(File.dirname(__FILE__), 
 ActiveSupport::Dependencies.autoload_paths << File.join(File.dirname(__FILE__), 'chronos')
 
 # load redmine patches
-Dir[File.expand_path(File.dirname(__FILE__) + '/redmine_patches/*.rb')].each { |f| require f }
+Dir[File.expand_path(File.dirname(__FILE__) + '/chronos/redmine_patches/*.rb')].each { |f| require f }
 
 module Chronos
   def self.settings
