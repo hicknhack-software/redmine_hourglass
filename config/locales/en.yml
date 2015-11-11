@@ -1,5 +1,16 @@
 # English strings go here for Rails i18n
 en:
+  activerecord:
+    errors:
+      models:
+        chronos/time_tracker:
+          attributes:
+            project:
+              blank: doesn't exist
+            issue:
+              blank: doesn't exist
+            activity:
+              blank: doesn't exist
   chronos:
     settings:
       rounding:
