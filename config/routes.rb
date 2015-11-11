@@ -5,11 +5,11 @@ end
 
 namespace :chronos do
   resources :time_tracker, except: [:new, :edit, :create] do
-    member do
-      get 'stop'
-    end
     collection do
       post 'start'
+    end
+    member do
+      post 'stop'
     end
   end
 end

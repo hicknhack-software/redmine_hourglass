@@ -8,4 +8,7 @@ en:
           limit: Round down if below
           minimum: Minimum time interval
         title: Rounding Behavior
-
+    api:
+      time_tracker:
+        errors:
+          not_found: This time tracker doesn't exist
