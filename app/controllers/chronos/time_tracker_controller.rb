@@ -1,7 +1,7 @@
 module Chronos
   class TimeTrackerController < ApiBaseController
-    accept_api_auth :index, :show, :start, :update, :stop, :destroy
-    before_action :get_time_tracker, only: [:show, :update, :stop, :destroy]
+    accept_api_auth :index, :show, :start, :update, :stop
+    before_action :get_time_tracker, only: [:show, :update, :stop]
 
     def index
       respond_with_success Chronos::TimeTracker.all
@@ -34,13 +34,8 @@ module Chronos
       if @time_tracker.destroyed?
         respond_with_success time_log: time_log, time_booking: time_booking
       else
-        respond_with_error :internal_server_error, I18n.t('chronos.api.time_tracker.errors.destroy_failed')
+        respond_with_error :internal_server_error, I18n.t('chronos.api.time_tracker.errors.stop_failed')
       end
-    end
-
-    def destroy
-      @time_tracker.destroy
-      respond_with_success
     end
 
     private

@@ -4,12 +4,12 @@ scope :chronos do
 end
 
 namespace :chronos do
-  resources :time_tracker, except: [:new, :edit, :create] do
+  resources :time_tracker, except: [:new, :edit, :create, :destroy] do
     collection do
       post 'start'
     end
     member do
-      post 'stop'
+      delete 'stop'
     end
   end
 end

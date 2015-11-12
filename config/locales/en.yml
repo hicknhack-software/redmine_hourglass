@@ -22,5 +22,5 @@ en:
     api:
       time_tracker:
         errors:
-          destroy_failed: There was an error while trying to stop the tracker, please try again.
           not_found: This time tracker doesn't exist
+          stop_failed: There was an error while trying to stop the tracker, please try again.
