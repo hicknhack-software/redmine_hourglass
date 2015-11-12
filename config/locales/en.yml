@@ -23,4 +23,11 @@ en:
       time_tracker:
         errors:
           not_found: This time tracker doesn't exist
-          stop_failed: There was an error while trying to stop the tracker, please try again.
+          stop_failed: There was an error while trying to stop the tracker, please try again
+      time_log:
+        errors:
+          destroy_failed: There was an error while trying to delete the time log, please try again
+          invalid_interval: The submitted time window is invalid
+          no_fitting: The available time window is not big enough for the submitted start and stop time
+          not_found: This time log doesn't exist
+          record_inside_interval: There is already a time booking for a part of the submitted time window

@@ -12,6 +12,11 @@ namespace :chronos do
       delete 'stop'
     end
   end
+  resources :time_log, except: [:new, :edit, :create] do
+    member do
+      post 'book'
+    end
+  end
 end
 
 unless Rails.env.production?

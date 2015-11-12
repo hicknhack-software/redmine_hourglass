@@ -55,6 +55,5 @@ module Chronos
     def time_tracker_from_id
       Chronos::TimeTracker.find_by id: params[:id]
     end
-
   end
 end
