@@ -1,6 +1,3 @@
-require_dependency 'user'
-require_dependency 'project'
-require_dependency 'principal'
 module Chronos
   module RedminePatches
     module UserPatch
@@ -22,8 +19,4 @@ module Chronos
       end
     end
   end
-end
-
-ActionDispatch::Callbacks.to_prepare do
-  User.send :include, Chronos::RedminePatches::UserPatch
 end

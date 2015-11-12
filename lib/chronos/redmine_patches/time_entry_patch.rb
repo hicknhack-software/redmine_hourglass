@@ -1,4 +1,3 @@
-require_dependency 'time_entry'
 module Chronos
   module RedminePatches
     module TimeEntryPatch
@@ -11,8 +10,4 @@ module Chronos
       end
     end
   end
-end
-
-ActionDispatch::Callbacks.to_prepare do
-  TimeEntry.send :include, Chronos::RedminePatches::TimeEntryPatch
 end

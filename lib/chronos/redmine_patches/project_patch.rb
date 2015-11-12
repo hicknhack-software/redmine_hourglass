@@ -1,4 +1,3 @@
-require_dependency 'project'
 module Chronos
   module RedminePatches
     module ProjectPatch
@@ -11,8 +10,4 @@ module Chronos
       end
     end
   end
-end
-
-ActionDispatch::Callbacks.to_prepare do
-  Project.send :include, Chronos::RedminePatches::ProjectPatch
 end

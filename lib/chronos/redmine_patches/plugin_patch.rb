@@ -1,4 +1,3 @@
-require_dependency 'redmine/plugin'
 module Chronos
   module RedminePatches
     module PluginPatch
@@ -17,8 +16,4 @@ module Chronos
       end
     end
   end
-end
-
-ActionDispatch::Callbacks.to_prepare do
-  Redmine::Plugin.send :include, Chronos::RedminePatches::PluginPatch
 end
