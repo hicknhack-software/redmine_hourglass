@@ -73,10 +73,10 @@ describe Chronos::TimeLog do
     end
 
     context 'with extra arguments project_id, issue_id and activity_id' do
-      let (:booking_arguments) { {project: create(:project), issue_id: 2, activity_id: 3} }
+      let (:booking_arguments) { {project_id: create(:project).id, issue_id: 2, activity_id: 3} }
 
       it 'tries creating a time booking with the correct arguments(additional args)' do
-        expect(Chronos::TimeBooking).to receive(:create).with start: time_log.start, stop: time_log.stop, time_log_id: time_log.id, time_entry_arguments: {project: booking_arguments[:project], issue_id: booking_arguments[:issue_id], comments: time_log.comments, activity_id: booking_arguments[:activity_id], user: time_log.user, spent_on: time_log.start.to_date, hours: hours}
+        expect(Chronos::TimeBooking).to receive(:create).with start: time_log.start, stop: time_log.stop, time_log_id: time_log.id, time_entry_arguments: {project_id: booking_arguments[:project_id], issue_id: booking_arguments[:issue_id], comments: time_log.comments, activity_id: booking_arguments[:activity_id], user: time_log.user, spent_on: time_log.start.to_date, hours: hours}
         book!
       end
     end
