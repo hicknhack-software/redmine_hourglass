@@ -23,6 +23,7 @@ module Chronos
 
     def stop
       stop = Time.now.change(sec: 0) + 1.minute
+      time_log = nil
       ActiveRecord::Base.transaction do
         if start < stop
           time_log = TimeLog.create time_log_params.merge stop: stop
@@ -30,6 +31,7 @@ module Chronos
         end
         destroy
       end
+      time_log
     end
 
     private

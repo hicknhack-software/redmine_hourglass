@@ -35,7 +35,7 @@ module Chronos
 
     def time_entry_arguments(args)
       args
-          .slice(:project, :issue_id, :comments, :activity_id, :user)
+          .slice(:project_id, :issue_id, :comments, :activity_id, :user)
           .merge spent_on: args[:start].to_date, hours: DateTimeCalculations.time_diff(args[:start], args[:stop]) / 1.hour.to_f
     end
   end

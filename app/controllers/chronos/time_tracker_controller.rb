@@ -30,7 +30,12 @@ module Chronos
 
     def stop
       time_log = @time_tracker.stop
-      respond_with_success time_log
+      time_booking = time_log && time_log.time_bookings.first
+      if @time_tracker.destroyed?
+        respond_with_success time_log: time_log, time_booking: time_booking
+      else
+        respond_with_error :internal_server_error, I18n.t('chronos.api.time_tracker.errors.destroy_failed')
+      end
     end
 
     def destroy
