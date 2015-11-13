@@ -24,7 +24,7 @@ module Chronos
 
     private
     def default_booking_arguments
-      {start: start, stop: stop, comments: comments, time_log_id: id, user: user}
+      {start: start, stop: stop, comments: comments, time_log_id: id, user: user, round: Chronos.settings[:round_default]}
     end
 
     def time_bookings_arguments(args)
