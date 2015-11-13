@@ -25,5 +25,9 @@ module Chronos
         super time_entry_arguments
       end
     end
+
+    def time_difference_from_time_log
+      DateTimeCalculations.time_diff(start, stop) - DateTimeCalculations.time_diff(time_log.start, time_log.stop)
+    end
   end
 end
