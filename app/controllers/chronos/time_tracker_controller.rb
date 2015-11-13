@@ -45,7 +45,7 @@ module Chronos
 
     def get_time_tracker
       @time_tracker = params[:id] == 'current' ? current_time_tracker : time_tracker_from_id
-      respond_with_error :bad_request, I18n.t('chronos.api.time_tracker.errors.not_found') unless @time_tracker.present?
+      respond_with_error :not_found, I18n.t('chronos.api.time_tracker.errors.not_found') unless @time_tracker.present?
     end
 
     def current_time_tracker

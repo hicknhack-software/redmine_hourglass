@@ -17,6 +17,7 @@ namespace :chronos do
       post 'book'
     end
   end
+  resources :time_booking, except: [:new, :edit, :create]
 end
 
 unless Rails.env.production?

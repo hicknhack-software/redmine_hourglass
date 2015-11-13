@@ -55,7 +55,7 @@ module Chronos
 
     def get_time_log
       @time_log = time_log_from_id
-      respond_with_error :bad_request, I18n.t('chronos.api.time_log.errors.not_found') unless @time_log.present?
+      respond_with_error :not_found, I18n.t('chronos.api.time_log.errors.not_found') unless @time_log.present?
     end
 
     def time_log_from_id

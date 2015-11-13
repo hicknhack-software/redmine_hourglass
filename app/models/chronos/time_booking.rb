@@ -7,6 +7,7 @@ module Chronos
     belongs_to :time_entry, dependent: :delete
 
     after_initialize :create_time_entry
+    after_update :update_time_entry
 
     attr_accessor :time_entry_arguments
 
@@ -21,8 +22,14 @@ module Chronos
                         }
 
     def create_time_entry
-      if time_entry_arguments.present? && time_entry.nil?
+      if time_entry_arguments.present? && !time_entry
         super time_entry_arguments
+      end
+    end
+
+    def update_time_entry
+      if time_entry_arguments.present? && time_entry
+        time_entry.update time_entry_arguments
       end
     end
 

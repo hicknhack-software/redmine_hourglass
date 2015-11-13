@@ -31,3 +31,7 @@ en:
           no_fitting: The available time window is not big enough for the submitted start and stop time
           not_found: This time log doesn't exist
           record_inside_interval: There is already a time booking for a part of the submitted time window
+      time_booking:
+        errors:
+          destroy_failed: There was an error while trying to delete the time booking, please try again
+          not_found: This time booking doesn't exist
