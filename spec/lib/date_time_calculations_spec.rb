@@ -220,6 +220,14 @@ describe Chronos::DateTimeCalculations do
       end
     end
 
+    context 'with a record with the same start and stop' do
+      let (:records) { [record_7_45_8_45] }
+
+      it 'raise an record inside exception' do
+        expect { limits }.to raise_error Chronos::DateTimeCalculations::RecordInsideIntervalException
+      end
+    end
+
     context 'with a record above' do
       let (:records) { [record_7_30_9_00] }
 

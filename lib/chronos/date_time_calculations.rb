@@ -51,7 +51,7 @@ module Chronos::DateTimeCalculations
       start_limit = nil
       stop_limit = nil
       records.each do |record|
-        raise RecordInsideIntervalException if record.stop < stop && record.start > start
+        raise RecordInsideIntervalException if record.stop <= stop && record.start >= start
         start_limit = record.stop if (start_limit.nil? || record.stop > start_limit) && record.start < start && record.stop > start
         stop_limit = record.start if (stop_limit.nil? || record.start < stop_limit) && record.start < stop && record.stop > stop
       end
