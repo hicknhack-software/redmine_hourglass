@@ -1,6 +1,6 @@
 module Chronos
   class TimeLog < ActiveRecord::Base
-    include Namespace
+    include Chronos::Namespace
     include Chronos::StopValidation
 
     belongs_to :user

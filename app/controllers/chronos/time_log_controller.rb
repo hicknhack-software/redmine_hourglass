@@ -2,6 +2,7 @@ module Chronos
   class TimeLogController < ApiBaseController
     accept_api_auth :index, :show, :update, :book, :destroy
     before_action :get_time_log, only: [:show, :update, :book, :destroy]
+    before_action :sanitize_booking_time_params, only: :book
 
     def index
       respond_with_success Chronos::TimeLog.all
@@ -59,6 +60,14 @@ module Chronos
 
     def time_log_from_id
       Chronos::TimeLog.find_by id: params[:id]
+    end
+
+    def sanitize_booking_time_params
+      [:start, :stop].each do |time_param|
+        if params[:booking][time_param].present?
+          params[:booking][time_param] = Time.zone.parse params[:booking][time_param]
+        end
+      end
     end
   end
 end
