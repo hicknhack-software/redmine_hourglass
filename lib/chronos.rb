@@ -3,12 +3,6 @@ ActiveSupport::Dependencies.autoload_paths << File.join(File.dirname(__FILE__), 
 
 # load redmine patches
 ActionDispatch::Callbacks.to_prepare do
-  require_dependency 'redmine/plugin'
-  require_dependency 'user'
-  require_dependency 'project'
-  require_dependency 'principal'
-  require_dependency 'time_entry'
-
   unless Redmine::Plugin.included_modules.include? Chronos::RedminePatches::PluginPatch
     Redmine::Plugin.send :include, Chronos::RedminePatches::PluginPatch
   end
