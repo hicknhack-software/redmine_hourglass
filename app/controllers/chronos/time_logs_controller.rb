@@ -1,5 +1,5 @@
 module Chronos
-  class TimeLogController < ApiBaseController
+  class TimeLogsController < ApiBaseController
     accept_api_auth :index, :show, :update, :book, :destroy
     before_action :get_time_log, only: [:show, :update, :book, :destroy]
     before_action :sanitize_booking_time_params, only: :book

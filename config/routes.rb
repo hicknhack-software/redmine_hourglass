@@ -4,7 +4,7 @@ scope :chronos do
 end
 
 namespace :chronos do
-  resources :time_tracker, except: [:new, :edit, :create, :destroy] do
+  resources :time_trackers, except: [:new, :edit, :create, :destroy] do
     collection do
       post 'start'
     end
@@ -12,12 +12,12 @@ namespace :chronos do
       delete 'stop'
     end
   end
-  resources :time_log, except: [:new, :edit, :create] do
+  resources :time_logs, except: [:new, :edit, :create] do
     member do
       post 'book'
     end
   end
-  resources :time_booking, except: [:new, :edit, :create]
+  resources :time_bookings, except: [:new, :edit, :create]
 end
 
 unless Rails.env.production?

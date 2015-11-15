@@ -1,5 +1,5 @@
 module Chronos
-  class TimeTrackerController < ApiBaseController
+  class TimeTrackersController < ApiBaseController
     accept_api_auth :index, :show, :start, :update, :stop
     before_action :get_time_tracker, only: [:show, :update, :stop]
 

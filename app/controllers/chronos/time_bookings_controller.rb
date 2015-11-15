@@ -1,5 +1,5 @@
 module Chronos
-  class TimeBookingController < ApiBaseController
+  class TimeBookingsController < ApiBaseController
     accept_api_auth :index, :show, :update, :destroy
     before_action :get_time_booking, only: [:show, :update, :destroy]
 
