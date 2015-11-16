@@ -4,8 +4,18 @@ module Chronos
     before_action :get_time_log, only: [:show, :update, :book, :destroy]
     before_action :sanitize_booking_time_params, only: :book
 
+    rescue_from Query::StatementInvalid, :with => :query_statement_invalid
+
     def index
-      respond_with_success Chronos::TimeLog.all
+      @query = Chronos::TimeLogQuery.build_from_params params, name: '_'
+      scope = @query.results_scope
+      offset, limit = api_offset_and_limit
+      respond_with_success(
+          count: scope.count,
+          offset: offset,
+          limit: limit,
+          time_logs: scope.offset(offset).limit(limit).to_a
+      )
     end
 
     def show
