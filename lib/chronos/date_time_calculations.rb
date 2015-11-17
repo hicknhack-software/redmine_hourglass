@@ -26,7 +26,7 @@ module Chronos::DateTimeCalculations
     end
 
     def time_diff(time1, time2)
-      (time2 - time1).abs.to_i
+      (time1 - time2).abs.to_i
     end
 
     def round_interval(time_interval)

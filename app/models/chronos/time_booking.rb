@@ -1,7 +1,6 @@
 module Chronos
   class TimeBooking < ActiveRecord::Base
     include Chronos::Namespace
-    include Chronos::StopValidation
 
     belongs_to :time_log
     belongs_to :time_entry, dependent: :delete
@@ -16,6 +15,10 @@ module Chronos
     validates_associated :time_entry
 
     delegate :issue, :project, :activity, :comments, :user, to: :time_entry
+
+    scope :on_project, lambda { |project_id|
+                       joins(:time_entry).where(time_entries: {project_id: project_id})
+                     }
 
     scope :overlaps_with, lambda { |start, stop, delta = 0|
                           where(arel_table[:start].lt(stop + delta).and(arel_table[:stop].gt(start - delta)))
@@ -33,8 +36,14 @@ module Chronos
       end
     end
 
-    def time_difference_from_time_log
-      DateTimeCalculations.time_diff(start, stop) - DateTimeCalculations.time_diff(time_log.start, time_log.stop)
+    def rounding_carry_over
+      (stop - time_log.stop).to_i
+    end
+
+    private
+    def stop_is_valid
+      #this is different from the stop validation of time log
+      errors.add :stop, :invalid if stop.present? && start.present? && stop < start
     end
   end
 end

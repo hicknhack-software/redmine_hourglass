@@ -1,7 +1,6 @@
 module Chronos
   class TimeLog < ActiveRecord::Base
     include Chronos::Namespace
-    include Chronos::StopValidation
 
     belongs_to :user
     has_many :time_bookings, dependent: :destroy
@@ -11,20 +10,37 @@ module Chronos
     validates_length_of :comments, maximum: 255, allow_blank: true
     validate :stop_is_valid
 
+    scope :booked_on_project, lambda { |project_id|
+                              joins(:time_entries).where(time_entries: {project_id: project_id})
+                            }
+    scope :with_start_in_interval, lambda { |floor, ceiling|
+                        where(arel_table[:start].gt(floor).and(arel_table[:start].lt(ceiling)))
+                      }
+
     def book(args = {})
       args.reverse_merge! default_booking_arguments
-      bookings = user.chronos_time_bookings.overlaps_with(args[:start], args[:stop], DateTimeCalculations.round_limit_in_seconds).all
-      latest_start, earliest_stop = DateTimeCalculations.limits_from_overlapping_intervals args[:start], args[:stop], bookings
-
-      args[:stop] = args[:start] + DateTimeCalculations.round_interval(DateTimeCalculations.time_diff args[:start], args[:stop]) if args[:round]
-      args[:start], args[:stop] = DateTimeCalculations.fit_in_bounds args[:start], args[:stop], latest_start, earliest_stop
-
+      if args[:round]
+        previous_time_log = previous_booked_time_log args
+        next_time_log = next_booked_time_log args
+        adjustment = previous_time_log && previous_time_log.time_bookings.first.rounding_carry_over || 0 #todo:remove first or solve for multiple bookings
+        args[:start] = args[:start] + adjustment
+        amount = DateTimeCalculations.time_diff args[:start], args[:stop]
+        args[:stop] = args[:start] + DateTimeCalculations.round_interval(amount - adjustment)
+      end
       TimeBooking.create time_bookings_arguments args
     end
 
     private
+    def next_booked_time_log(args)
+      user.chronos_time_logs.booked_on_project(args[:project_id]).with_start_in_interval(args[:start], args[:start] + DateTimeCalculations.round_carry_over_due).order(:start).first
+    end
+
+    def previous_booked_time_log(args)
+      user.chronos_time_logs.booked_on_project(args[:project_id]).with_start_in_interval(args[:start] - DateTimeCalculations.round_carry_over_due, args[:start]).order(:start).last
+    end
+
     def default_booking_arguments
-      {start: start, stop: stop, comments: comments, time_log_id: id, user: user, round: Chronos.settings[:round_default]}
+      {start: start, stop: stop, comments: comments, time_log_id: id, user: user, round: Chronos.settings[:round_default] == 'true'}
     end
 
     def time_bookings_arguments(args)
@@ -37,6 +53,10 @@ module Chronos
       args
           .slice(:project_id, :issue_id, :comments, :activity_id, :user)
           .merge spent_on: args[:start].to_date, hours: DateTimeCalculations.time_diff(args[:start], args[:stop]) / 1.hour.to_f
+    end
+
+    def stop_is_valid
+      errors.add :stop, :invalid if stop.present? && start.present? && stop <= start
     end
   end
 end
