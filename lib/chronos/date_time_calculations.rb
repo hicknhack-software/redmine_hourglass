@@ -21,6 +21,10 @@ module Chronos::DateTimeCalculations
       Chronos.settings[:round_minimum].to_f.hours.to_i
     end
 
+    def round_carry_over_due
+      Chronos.settings[:round_carry_over_due].to_f.hours.to_i
+    end
+
     def time_diff(time1, time2)
       (time2 - time1).abs.to_i
     end

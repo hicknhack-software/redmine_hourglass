@@ -8,5 +8,9 @@ p
   = text_field_tag 'settings[round_limit]', @settings[:round_limit], {size: 2}
   |  (%)
 p
+  = label_tag 'settings[round_carry_over_due]', t('chronos.settings.rounding.fields.carry_over_due')
+  = text_field_tag 'settings[round_carry_over_due]', @settings[:round_carry_over_due], {size: 2}
+  = " (#{t(:field_hours)})"
+p
   = label_tag 'settings[round_default]', t('chronos.settings.rounding.fields.default')
   = check_box_tag 'settings[round_default]', true, @settings[:round_default]

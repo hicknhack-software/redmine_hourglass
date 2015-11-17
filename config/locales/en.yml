@@ -18,6 +18,7 @@ en:
           default: Round per default on?
           limit: Round down if below
           minimum: Minimum time interval
+          carry_over_due: Dismiss round carry-over after
         title: Rounding Behavior
     api:
       time_tracker:

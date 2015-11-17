@@ -11,6 +11,7 @@ Redmine::Plugin.register :redmine_chronos do
   settings default: {
       round_minimum: '0.25',
       round_limit: '50',
+      round_carry_over_due: '12',
       round_default: false
   }, :partial => 'settings/chronos'
 end
