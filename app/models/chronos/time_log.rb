@@ -21,22 +21,46 @@ module Chronos
       args.reverse_merge! default_booking_arguments
       if args[:round]
         previous_time_log = previous_booked_time_log args
-        next_time_log = next_booked_time_log args
-        adjustment = previous_time_log && previous_time_log.time_bookings.first.rounding_carry_over || 0 #todo:remove first or solve for multiple bookings
-        args[:start] = args[:start] + adjustment
-        amount = DateTimeCalculations.time_diff args[:start], args[:stop]
-        args[:stop] = args[:start] + DateTimeCalculations.round_interval(amount - adjustment)
+        args[:start], args[:stop] = calculate_bookable_time args, previous_time_log && previous_time_log.time_bookings.first
       end
-      TimeBooking.create time_bookings_arguments args
+      booking = nil
+      ActiveRecord::Base.transaction do
+        booking = TimeBooking.create time_bookings_arguments args
+        update_following_bookings args, booking if args[:round]
+      end
+      booking
     end
 
     private
+    def update_following_bookings(args, self_booking)
+      booking = self_booking
+      last_time_log = self
+      args.merge! start: start, stop: stop
+      loop do
+        next_time_log = next_booked_time_log args
+        break if !next_time_log || last_time_log == next_time_log
+        args.merge! start: next_time_log.start, stop: next_time_log.stop
+        start, stop = calculate_bookable_time args, booking
+        booking = next_time_log.time_bookings.first
+        booking.update! start: start, stop: stop, time_entry_arguments: {hours: DateTimeCalculations.time_diff(start, stop) / 1.hour.to_f}
+        last_time_log = next_time_log
+      end
+    end
+
     def next_booked_time_log(args)
       user.chronos_time_logs.booked_on_project(args[:project_id]).with_start_in_interval(args[:start], args[:start] + DateTimeCalculations.round_carry_over_due).order(:start).first
     end
 
     def previous_booked_time_log(args)
       user.chronos_time_logs.booked_on_project(args[:project_id]).with_start_in_interval(args[:start] - DateTimeCalculations.round_carry_over_due, args[:start]).order(:start).last
+    end
+
+    def calculate_bookable_time(args, booking)
+      adjustment = booking && booking.rounding_carry_over || 0 #todo:remove first or solve for multiple bookings
+      start = args[:start] + adjustment
+      amount = DateTimeCalculations.time_diff start, args[:stop]
+      stop = start + DateTimeCalculations.round_interval(amount - adjustment)
+      [start, stop]
     end
 
     def default_booking_arguments
