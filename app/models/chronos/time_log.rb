@@ -9,7 +9,7 @@ module Chronos
     validates_presence_of :user, :start, :stop
     validates_length_of :comments, maximum: 255, allow_blank: true
     validate :stop_is_valid
-    validate :does_not_overlap_with_other
+    validate :does_not_overlap_with_other, if: :user
 
     scope :booked_on_project, lambda { |project_id|
                               joins(:time_entries).where(time_entries: {project_id: project_id})
@@ -30,8 +30,8 @@ module Chronos
       end
       booking = nil
       ActiveRecord::Base.transaction do
-        booking = TimeBooking.create! time_bookings_arguments args
-        update_following_bookings args, booking if args[:round]
+        booking = TimeBooking.create time_bookings_arguments args
+        update_following_bookings args, booking if args[:round] && booking.persisted?
       end
       booking
     end
@@ -89,8 +89,8 @@ module Chronos
     end
 
     def does_not_overlap_with_other
-      overapping_time_logs = user.chronos_time_logs.overlaps_with start, stop
-      errors.add :base, :overlaps unless overapping_time_logs.empty?
+      overlapping_time_logs = user.chronos_time_logs.where.not(id: id).overlaps_with start, stop
+      errors.add :base, :overlaps unless overlapping_time_logs.empty?
     end
   end
 end
