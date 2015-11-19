@@ -89,7 +89,7 @@ module Chronos
     end
 
     def does_not_overlap_with_other
-      overlapping_time_logs = user.chronos_time_logs.where.not(id: id).overlaps_with start, stop
+      overlapping_time_logs = user.chronos_time_logs.where(TimeLog.arel_table[:id].not_eq(id)).overlaps_with start, stop
       errors.add :base, :overlaps unless overlapping_time_logs.empty?
     end
   end
