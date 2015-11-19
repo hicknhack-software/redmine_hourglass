@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-describe Chronos::TimeBooking do
+describe Chronos::TimeTracker do
 
   before :all do
     Timecop.travel Time.new 2015, 2, 2, 15
@@ -32,6 +32,12 @@ describe Chronos::TimeBooking do
     it 'will be removed' do
       time_tracker = Chronos::TimeTracker.start
       expect { time_tracker.stop }.to change { Chronos::TimeTracker.count }.from(1).to(0)
+    end
+
+    it 'will not be removed if the time_log is invalid' do
+      create :time_log, start: Time.now - 10.minutes, stop: Time.now + 10.minutes, user: User.current
+      time_tracker = Chronos::TimeTracker.start
+      expect { time_tracker.stop }.not_to change { Chronos::TimeTracker.count }.from(1).to(0)
     end
   end
 end

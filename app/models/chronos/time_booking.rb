@@ -16,14 +16,6 @@ module Chronos
 
     delegate :issue, :project, :activity, :comments, :user, to: :time_entry
 
-    scope :on_project, lambda { |project_id|
-                       joins(:time_entry).where(time_entries: {project_id: project_id})
-                     }
-
-    scope :overlaps_with, lambda { |start, stop, delta = 0|
-                          where(arel_table[:start].lt(stop + delta).and(arel_table[:stop].gt(start - delta)))
-                        }
-
     def create_time_entry
       if time_entry_arguments.present? && !time_entry
         super time_entry_arguments

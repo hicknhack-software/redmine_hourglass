@@ -29,7 +29,7 @@ module Chronos
           time_log = TimeLog.create time_log_params.merge stop: stop
           time_log.book time_booking_params if bookable?
         end
-        destroy
+        destroy if !time_log || time_log.persisted?
       end
       time_log
     end
@@ -56,6 +56,5 @@ module Chronos
     def bookable?
       project.present? && activity_id.present?
     end
-
   end
 end

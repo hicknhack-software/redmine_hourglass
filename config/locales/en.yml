@@ -11,6 +11,12 @@ en:
               blank: doesn't exist
             activity:
               blank: doesn't exist
+            user_id:
+              taken: already has a running time tracker
+        chronos/time_log:
+          attributes:
+            base:
+              overlaps: There are a overlapping time logs
   chronos:
     settings:
       rounding:
@@ -24,7 +30,6 @@ en:
       time_tracker:
         errors:
           not_found: This time tracker doesn't exist
-          stop_failed: There was an error while trying to stop the tracker, please try again
       time_log:
         errors:
           destroy_failed: There was an error while trying to delete the time log, please try again
