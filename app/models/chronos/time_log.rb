@@ -3,8 +3,8 @@ module Chronos
     include Chronos::Namespace
 
     belongs_to :user
-    has_many :time_bookings, dependent: :destroy
-    has_many :time_entries, through: :time_bookings
+    has_one :time_booking, dependent: :destroy
+    has_one :time_entry, through: :time_booking
 
     validates_presence_of :user, :start, :stop
     validates_length_of :comments, maximum: 255, allow_blank: true
@@ -12,7 +12,7 @@ module Chronos
     validate :does_not_overlap_with_other, if: [:user, :start?, :stop?]
 
     scope :booked_on_project, lambda { |project_id|
-                              joins(:time_entries).where(time_entries: {project_id: project_id})
+                              joins(:time_entry).where(time_entries: {project_id: project_id})
                             }
     scope :with_start_in_interval, lambda { |floor, ceiling|
                                    where(arel_table[:start].gt(floor).and(arel_table[:start].lt(ceiling)))
@@ -26,11 +26,11 @@ module Chronos
       args.reverse_merge! default_booking_arguments
       if args[:round]
         previous_time_log = previous_booked_time_log args
-        args[:start], args[:stop] = calculate_bookable_time args, previous_time_log && previous_time_log.time_bookings.first
+        args[:start], args[:stop] = calculate_bookable_time args, previous_time_log && previous_time_log.time_booking
       end
       booking = nil
       ActiveRecord::Base.transaction do
-        booking = TimeBooking.create time_bookings_arguments args
+        booking = TimeBooking.create time_booking_arguments args
         update_following_bookings args, booking if args[:round] && booking.persisted?
       end
       booking
@@ -46,7 +46,7 @@ module Chronos
         break if !next_time_log || last_time_log == next_time_log
         args.merge! start: next_time_log.start, stop: next_time_log.stop
         start, stop = calculate_bookable_time args, booking
-        booking = next_time_log.time_bookings.first
+        booking = next_time_log.time_booking
         booking.update start: start, stop: stop, time_entry_arguments: {hours: DateTimeCalculations.time_diff(start, stop) / 1.hour.to_f}
         raise ActiveRecord::Rollback unless booking.persisted?
         last_time_log = next_time_log
@@ -62,7 +62,7 @@ module Chronos
     end
 
     def calculate_bookable_time(args, booking)
-      adjustment = booking && booking.rounding_carry_over || 0 #todo:remove first or solve for multiple bookings
+      adjustment = booking && booking.rounding_carry_over || 0
       start = args[:start] + adjustment
       amount = DateTimeCalculations.time_diff start, args[:stop]
       stop = start + DateTimeCalculations.round_interval(amount)
@@ -73,7 +73,7 @@ module Chronos
       {start: start, stop: stop, comments: comments, time_log_id: id, user: user, round: Chronos.settings[:round_default] == 'true'}
     end
 
-    def time_bookings_arguments(args)
+    def time_booking_arguments(args)
       args
           .slice(:start, :stop, :time_log_id)
           .merge time_entry_arguments: time_entry_arguments(args)

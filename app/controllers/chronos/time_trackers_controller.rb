@@ -30,7 +30,7 @@ module Chronos
 
     def stop
       time_log = @time_tracker.stop
-      time_booking = time_log.time_bookings.first
+      time_booking = time_log.time_booking
       if time_log.persisted?
         respond_with_success time_log: time_log, time_booking: time_booking
       else
