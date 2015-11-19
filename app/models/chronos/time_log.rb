@@ -22,30 +22,30 @@ module Chronos
                           where(arel_table[:start].lt(stop).and(arel_table[:stop].gt(start)))
                         }
 
-    def book(args = {})
-      args.reverse_merge! default_booking_arguments
-      if args[:round]
-        previous_time_log = previous_booked_time_log args
-        args[:start], args[:stop] = calculate_bookable_time args, previous_time_log && previous_time_log.time_booking
+    def book(args)
+      options = default_booking_arguments.merge args
+      if options[:round]
+        previous_time_log = previous_booked_time_log options
+        options[:start], options[:stop] = calculate_bookable_time options, previous_time_log && previous_time_log.time_booking
       end
       booking = nil
       ActiveRecord::Base.transaction do
-        booking = TimeBooking.create time_booking_arguments args
-        update_following_bookings args, booking if args[:round] && booking.persisted?
+        booking = TimeBooking.create time_booking_arguments options
+        update_following_bookings options, booking if options[:round] && booking.persisted?
       end
       booking
     end
 
     private
-    def update_following_bookings(args, self_booking)
+    def update_following_bookings(options, self_booking)
       booking = self_booking
       last_time_log = self
-      args.merge! start: start, stop: stop
+      options.merge! start: start, stop: stop
       loop do
-        next_time_log = next_booked_time_log args
+        next_time_log = next_booked_time_log options
         break if !next_time_log || last_time_log == next_time_log
-        args.merge! start: next_time_log.start, stop: next_time_log.stop
-        start, stop = calculate_bookable_time args, booking
+        options.merge! start: next_time_log.start, stop: next_time_log.stop
+        start, stop = calculate_bookable_time options, booking
         booking = next_time_log.time_booking
         booking.update start: start, stop: stop, time_entry_arguments: {hours: DateTimeCalculations.time_diff(start, stop) / 1.hour.to_f}
         raise ActiveRecord::Rollback unless booking.persisted?
@@ -53,18 +53,18 @@ module Chronos
       end
     end
 
-    def next_booked_time_log(args)
-      user.chronos_time_logs.booked_on_project(args[:project_id]).with_start_in_interval(args[:start], args[:start] + DateTimeCalculations.round_carry_over_due).order(:start).first
+    def next_booked_time_log(options)
+      user.chronos_time_logs.booked_on_project(options[:project_id]).with_start_in_interval(options[:start], options[:start] + DateTimeCalculations.round_carry_over_due).order(:start).first
     end
 
-    def previous_booked_time_log(args)
-      user.chronos_time_logs.booked_on_project(args[:project_id]).with_start_in_interval(args[:start] - DateTimeCalculations.round_carry_over_due, args[:start]).order(:start).last
+    def previous_booked_time_log(options)
+      user.chronos_time_logs.booked_on_project(options[:project_id]).with_start_in_interval(options[:start] - DateTimeCalculations.round_carry_over_due, options[:start]).order(:start).last
     end
 
-    def calculate_bookable_time(args, booking)
+    def calculate_bookable_time(options, booking)
       adjustment = booking && booking.rounding_carry_over || 0
-      start = args[:start] + adjustment
-      amount = DateTimeCalculations.time_diff start, args[:stop]
+      start = options[:start] + adjustment
+      amount = DateTimeCalculations.time_diff start, options[:stop]
       stop = start + DateTimeCalculations.round_interval(amount)
       [start, stop]
     end
@@ -73,16 +73,16 @@ module Chronos
       {start: start, stop: stop, comments: comments, time_log_id: id, user: user, round: Chronos.settings[:round_default] == 'true'}
     end
 
-    def time_booking_arguments(args)
-      args
+    def time_booking_arguments(options)
+      options
           .slice(:start, :stop, :time_log_id)
-          .merge time_entry_arguments: time_entry_arguments(args)
+          .merge time_entry_arguments: time_entry_arguments(options)
     end
 
-    def time_entry_arguments(args)
-      args
+    def time_entry_arguments(options)
+      options
           .slice(:project_id, :issue_id, :comments, :activity_id, :user)
-          .merge spent_on: args[:start].to_date, hours: DateTimeCalculations.time_diff(args[:start], args[:stop]) / 1.hour.to_f
+          .merge spent_on: options[:start].to_date, hours: DateTimeCalculations.time_diff(options[:start], options[:stop]) / 1.hour.to_f
     end
 
     def stop_is_valid
