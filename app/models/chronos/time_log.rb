@@ -47,7 +47,7 @@ module Chronos
         args.merge! start: next_time_log.start, stop: next_time_log.stop
         start, stop = calculate_bookable_time args, booking
         booking = next_time_log.time_bookings.first
-        booking.update_attributes start: start, stop: stop, time_entry_arguments: {hours: DateTimeCalculations.time_diff(start, stop) / 1.hour.to_f}
+        booking.update start: start, stop: stop, time_entry_arguments: {hours: DateTimeCalculations.time_diff(start, stop) / 1.hour.to_f}
         raise ActiveRecord::Rollback unless booking.persisted?
         last_time_log = next_time_log
       end
@@ -90,7 +90,7 @@ module Chronos
     end
 
     def does_not_overlap_with_other
-      overlapping_time_logs = user.chronos_time_logs.where(TimeLog.arel_table[:id].not_eq(id)).overlaps_with start, stop
+      overlapping_time_logs = user.chronos_time_logs.where.not(id: id).overlaps_with start, stop
       errors.add :base, :overlaps unless overlapping_time_logs.empty?
     end
   end
