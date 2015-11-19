@@ -9,7 +9,7 @@ module Chronos
     validates_presence_of :user, :start, :stop
     validates_length_of :comments, maximum: 255, allow_blank: true
     validate :stop_is_valid
-    validate :does_not_overlap_with_other, if: :user
+    validate :does_not_overlap_with_other, if: [:user, :start?, :stop?]
 
     scope :booked_on_project, lambda { |project_id|
                               joins(:time_entries).where(time_entries: {project_id: project_id})
@@ -64,7 +64,7 @@ module Chronos
       adjustment = booking && booking.rounding_carry_over || 0 #todo:remove first or solve for multiple bookings
       start = args[:start] + adjustment
       amount = DateTimeCalculations.time_diff start, args[:stop]
-      stop = start + DateTimeCalculations.round_interval(amount - adjustment)
+      stop = start + DateTimeCalculations.round_interval(amount)
       [start, stop]
     end
 
