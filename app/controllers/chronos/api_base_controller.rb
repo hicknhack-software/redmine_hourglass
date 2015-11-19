@@ -1,6 +1,7 @@
 module Chronos
   class ApiBaseController < ApplicationController
     around_action :catch_halt
+    rescue_from ArgumentError, with: :missing_halt_catch
 
     private
     # use only these codes:
@@ -47,6 +48,12 @@ module Chronos
     def catch_halt
       catch :halt do
         yield
+      end
+    end
+
+    def missing_halt_catch(e)
+      unless e.message.include? ':halt'
+        raise e
       end
     end
   end
