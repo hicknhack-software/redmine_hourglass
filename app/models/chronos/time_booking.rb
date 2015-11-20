@@ -16,6 +16,11 @@ module Chronos
 
     delegate :issue, :project, :activity, :comments, :user, to: :time_entry
 
+    def rounding_carry_over
+      (stop - time_log.stop).to_i
+    end
+
+    private
     def create_time_entry
       if time_entry_arguments.present? && !time_entry
         super time_entry_arguments
@@ -28,11 +33,6 @@ module Chronos
       end
     end
 
-    def rounding_carry_over
-      (stop - time_log.stop).to_i
-    end
-
-    private
     def stop_is_valid
       #this is different from the stop validation of time log
       errors.add :stop, :invalid if stop.present? && start.present? && stop < start

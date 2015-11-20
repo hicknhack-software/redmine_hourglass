@@ -21,11 +21,7 @@ module Chronos
 
     def destroy
       @time_booking.destroy
-      if @time_booking.destroyed?
-        respond_with_success
-      else
-        respond_with_error :internal_server_error, I18n.t('chronos.api.time_booking.errors.destroy_failed')
-      end
+      respond_with_success
     end
 
     private

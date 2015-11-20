@@ -32,12 +32,13 @@ en:
           not_found: This time tracker doesn't exist
       time_log:
         errors:
-          destroy_failed: There was an error while trying to delete the time log, please try again
+          combine_failed: There are either bookings defined on the submitted time logs or the time logs start and stop doesn't match
           invalid_interval: The submitted time window is invalid
           no_fitting: The available time window is not big enough for the submitted start and stop time
           not_found: This time log doesn't exist
+          other_not_found: The time log to combine with doesn't exist
           record_inside_interval: There is already a time booking for a part of the submitted time window
+          split_failed: Submitted split_at is not within the bounds of the time log
       time_booking:
         errors:
-          destroy_failed: There was an error while trying to delete the time booking, please try again
           not_found: This time booking doesn't exist

@@ -15,6 +15,8 @@ namespace :chronos do
   resources :time_logs, except: [:new, :edit, :create] do
     member do
       post 'book'
+      post 'split'
+      post 'combine'
     end
   end
   resources :time_bookings, except: [:new, :edit, :create]

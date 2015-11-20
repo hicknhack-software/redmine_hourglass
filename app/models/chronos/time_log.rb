@@ -6,6 +6,8 @@ module Chronos
     has_one :time_booking, dependent: :destroy
     has_one :time_entry, through: :time_booking
 
+    after_initialize :init
+
     validates_presence_of :user, :start, :stop
     validates_length_of :comments, maximum: 255, allow_blank: true
     validate :stop_is_valid
@@ -22,6 +24,11 @@ module Chronos
                           where(arel_table[:start].lt(stop).and(arel_table[:stop].gt(start)))
                         }
 
+    def init
+      self.start = start.change(sec: 0) if start
+      self.stop = stop.change(sec: 0) if stop
+    end
+
     def book(args)
       options = default_booking_arguments.merge args
       if options[:round]
@@ -34,6 +41,28 @@ module Chronos
         update_following_bookings options, booking if options[:round] && booking.persisted?
       end
       booking
+    end
+
+    def split(split_at)
+      split_at = split_at.change(sec: 0)
+      return if start >= split_at || split_at >= stop
+      new_time_log = nil
+      new_time_log_stop = stop
+      ActiveRecord::Base.transaction do
+        update stop: split_at
+        new_time_log = self.class.create start: split_at, stop: new_time_log_stop, user: user, comments: comments
+      end
+      new_time_log
+    end
+
+    def combine_with(time_log)
+      return false if stop != time_log.start || time_booking.present? || time_log.time_booking.present?
+      new_stop = time_log.stop
+      ActiveRecord::Base.transaction do
+        time_log.destroy
+        update stop: new_stop
+      end
+      true
     end
 
     private
