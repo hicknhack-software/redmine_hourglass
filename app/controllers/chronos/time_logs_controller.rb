@@ -1,7 +1,7 @@
 module Chronos
   class TimeLogsController < ApiBaseController
-    accept_api_auth :index, :show, :update, :book, :destroy
-    before_action :get_time_log, only: [:show, :update, :book, :destroy]
+    accept_api_auth :index, :show, :update, :split, :combine, :book, :destroy
+    before_action :get_time_log, only: [:show, :update, :split, :combine, :book, :destroy]
     before_action :sanitize_booking_time_params, only: :book
 
     rescue_from Query::StatementInvalid, :with => :query_statement_invalid
@@ -30,6 +30,25 @@ module Chronos
       end
     end
 
+    def split
+      new_time_log = @time_log.split Time.zone.parse params[:split_at]
+      if new_time_log
+        respond_with_success time_log: @time_log, new_time_log: new_time_log
+      else
+        respond_with_error :bad_request, I18n.t('chronos.api.time_log.errors.split_failed')
+      end
+    end
+
+    def combine
+      time_log2 = Chronos::TimeLog.find_by id: params[:other]
+      respond_with_error :not_found, I18n.t('chronos.api.time_log.errors.other_not_found') unless time_log2.present?
+      if @time_log.combine_with time_log2
+        respond_with_success @time_log
+      else
+        respond_with_error :bad_request, I18n.t('chronos.api.time_log.errors.combine_failed')
+      end
+    end
+
     def book
       time_booking = @time_log.book booking_params
       if time_booking.persisted?
@@ -47,11 +66,7 @@ module Chronos
 
     def destroy
       @time_log.destroy
-      if @time_log.destroyed?
-        respond_with_success
-      else
-        respond_with_error :internal_server_error, I18n.t('chronos.api.time_log.errors.destroy_failed')
-      end
+      respond_with_success
     end
 
     private
