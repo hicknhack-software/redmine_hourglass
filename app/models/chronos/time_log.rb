@@ -99,7 +99,7 @@ module Chronos
     end
 
     def default_booking_arguments
-      {start: start, stop: stop, comments: comments, time_log_id: id, user: user, round: Chronos.settings[:round_default] == 'true'}
+      {start: start, stop: stop, comments: comments, time_log_id: id, user: user, round: Chronos.settings[:round_default] == 'true'}.with_indifferent_access
     end
 
     def time_booking_arguments(options)
