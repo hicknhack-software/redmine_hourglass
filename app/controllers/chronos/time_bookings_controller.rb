@@ -26,7 +26,7 @@ module Chronos
 
     private
     def time_booking_params
-      params.require(:time_booking).permit(:start, :stop, time_entry_arguments: [:comments, :project_id, :issue_id, :activity_id])
+      params.require(:time_booking).permit(time_entry_arguments: [:comments, :project_id, :issue_id, :activity_id])
     end
 
     def get_time_booking
