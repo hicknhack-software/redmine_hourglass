@@ -23,15 +23,14 @@ module Chronos
 
     def stop
       stop = Time.now.change(sec: 0) + 1.minute
-      time_log = nil
       ActiveRecord::Base.transaction do
         if start < stop
           time_log = TimeLog.create time_log_params.merge stop: stop
           time_log.book time_booking_params if bookable?
         end
         destroy if !time_log || time_log.persisted?
+        time_log
       end
-      time_log
     end
 
     private

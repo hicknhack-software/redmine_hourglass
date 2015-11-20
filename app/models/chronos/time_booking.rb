@@ -14,7 +14,12 @@ module Chronos
     validate :stop_is_valid
     validates_associated :time_entry
 
-    delegate :issue, :project, :activity, :comments, :user, to: :time_entry
+    delegate :issue, :issue_id,
+             :project, :project_id,
+             :activity, :activity_id,
+             :user, :user_id,
+             :comments,
+             to: :time_entry
 
     def rounding_carry_over
       (stop - time_log.stop).to_i

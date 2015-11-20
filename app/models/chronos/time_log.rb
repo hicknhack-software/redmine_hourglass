@@ -29,30 +29,46 @@ module Chronos
       self.stop = stop.change(sec: 0) if stop
     end
 
-    def book(args)
-      options = default_booking_arguments.merge args.except(:start, :stop)
+    def update(attributes)
+      round = attributes[:round] || Chronos.settings[:round_default] == 'true'
+      ActiveRecord::Base.transaction do
+        result = super attributes
+        if time_booking.present?
+          options = {start: start, stop: stop, project_id: time_booking.project_id}
+          b_start, b_stop = if round
+            previous_time_log = previous_booked_time_log options
+             calculate_bookable_time options, previous_time_log && previous_time_log.time_booking
+          else
+            [options[:start], options[:stop]]
+          end
+          time_booking.update start: b_start, stop: b_stop, time_entry_arguments: {hours: DateTimeCalculations.time_diff(b_start, b_stop) / 1.hour.to_f}
+          update_following_bookings options, time_booking if round && time_booking.persisted?
+        end
+        result
+      end
+    end
+
+    def book(attributes)
+      options = default_booking_arguments.merge attributes.except(:start, :stop)
       if options[:round]
         previous_time_log = previous_booked_time_log options
         options[:start], options[:stop] = calculate_bookable_time options, previous_time_log && previous_time_log.time_booking
       end
-      booking = nil
       ActiveRecord::Base.transaction do
         booking = TimeBooking.create time_booking_arguments options
         update_following_bookings options, booking if options[:round] && booking.persisted?
+        booking
       end
-      booking
     end
 
     def split(split_at)
       split_at = split_at.change(sec: 0)
       return if start >= split_at || split_at >= stop
-      new_time_log = nil
       new_time_log_stop = stop
       ActiveRecord::Base.transaction do
         update stop: split_at
-        new_time_log = self.class.create start: split_at, stop: new_time_log_stop, user: user, comments: comments
+        self.class.create start: split_at, stop: new_time_log_stop, user: user, comments: comments
       end
-      new_time_log
     end
 
     def combine_with(time_log)
