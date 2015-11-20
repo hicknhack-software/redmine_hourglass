@@ -97,9 +97,35 @@ describe Chronos::TimeLog do
     end
   end
 
+  describe 'updating' do
+    let (:user) { create(:user) }
+    let (:now) { Time.zone.now.change(sec: 0) }
+
+    it 'updates the time log' do
+      time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
+      expect { time_log.update start: now - 5.minutes }.to change { time_log.reload.start - now }.from(0).to(-5.minutes)
+    end
+
+    it 'updates an associated time booking' do
+      time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
+      time_booking = time_log.book project_id: create(:project).id, activity_id: create(:time_entry_activity).id
+      expect { time_log.update start: now - 5.minutes }.to change { time_booking.reload.start - now }.from(0).to(-5.minutes)
+    end
+
+    it 'recalculates time bookings after its own time booking if rounding is given' do
+      time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
+      time_log2 = create(:time_log, user: user, start: now + 10.minutes, stop: now + 20.minutes)
+      project_id = create(:project).id
+      activity_id = create(:time_entry_activity).id
+      time_log.book project_id: project_id, activity_id: activity_id, round: true
+      time_booking2 = time_log2.book project_id: project_id, activity_id: activity_id, round: true
+      expect { time_log.update start: now - 5.minutes, round: true }.to change { time_booking2.reload.stop - now }.from(15.minutes).to(25.minutes)
+    end
+  end
+
   describe 'splitting' do
-    let (:user) {create(:user)}
-    let (:now) {Time.zone.now.change(sec: 0)}
+    let (:user) { create(:user) }
+    let (:now) { Time.zone.now.change(sec: 0) }
 
     it 'creates a new valid time log' do
       time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
@@ -113,10 +139,16 @@ describe Chronos::TimeLog do
       expect([time_log2.start, time_log2.stop]).to eq [now + 5.minutes, now + 10.minutes]
     end
 
-    it 'adjusts the stop time of the original' do
+    it 'adjusts the stop time of the original time log' do
       time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
       time_log.split now + 5.minutes
       expect(time_log.stop).to eq now + 5.minutes
+    end
+
+    it 'adjusts the booking of the original time log' do
+      time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
+      time_booking = time_log.book project_id: create(:project).id, activity_id: create(:time_entry_activity).id
+      expect { time_log.split now + 5.minutes }.to change { time_booking.reload.stop - now }.from(10.minutes).to(5.minutes)
     end
 
     it 'returns nothing if the split time is not in the time log' do
@@ -126,8 +158,8 @@ describe Chronos::TimeLog do
   end
 
   describe 'combining' do
-    let (:user) {create(:user)}
-    let (:now) {Time.zone.now.change(sec: 0)}
+    let (:user) { create(:user) }
+    let (:now) { Time.zone.now.change(sec: 0) }
 
     it 'removes the time log which gets combined to the original' do
       time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)

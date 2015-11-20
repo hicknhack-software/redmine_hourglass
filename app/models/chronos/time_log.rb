@@ -30,7 +30,7 @@ module Chronos
     end
 
     def update(attributes)
-      round = attributes[:round] || Chronos.settings[:round_default] == 'true'
+      round = attributes.delete :round || Chronos.settings[:round_default] == 'true'
       ActiveRecord::Base.transaction do
         result = super attributes
         if time_booking.present?
