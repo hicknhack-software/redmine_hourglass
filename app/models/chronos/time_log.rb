@@ -30,7 +30,7 @@ module Chronos
     end
 
     def book(args)
-      options = default_booking_arguments.merge args
+      options = default_booking_arguments.merge args.except(:start, :stop)
       if options[:round]
         previous_time_log = previous_booked_time_log options
         options[:start], options[:stop] = calculate_bookable_time options, previous_time_log && previous_time_log.time_booking

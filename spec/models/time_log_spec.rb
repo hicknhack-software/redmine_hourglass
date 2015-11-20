@@ -58,9 +58,7 @@ describe Chronos::TimeLog do
     let (:book!) { time_log.book booking_arguments }
     let (:booking_arguments) { {} }
     let (:hours) do
-      start = booking_arguments[:start] || time_log.start
-      stop = booking_arguments[:stop] || time_log.stop
-      (stop - start) / 1.hour.to_f
+      (time_log.stop - time_log.start) / 1.hour.to_f
     end
 
     context 'with no extra arguments' do
@@ -92,8 +90,8 @@ describe Chronos::TimeLog do
     context 'with extra arguments start and stop' do
       let (:booking_arguments) { {start: time_log.start + 1.minutes, stop: time_log.stop - 1.minutes} }
 
-      it 'tries creating a time booking with the correct arguments(adjusted start and stop)' do
-        expect(Chronos::TimeBooking).to receive(:create).with start: booking_arguments[:start], stop: booking_arguments[:stop], time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user: time_log.user, spent_on: booking_arguments[:start].to_date, hours: hours}
+      it 'tries creating a time booking with the correct arguments(ignores submitted start and stop)' do
+        expect(Chronos::TimeBooking).to receive(:create).with start: time_log.start, stop: time_log.stop, time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user: time_log.user, spent_on: time_log.start.to_date, hours: hours}
         book!
       end
     end

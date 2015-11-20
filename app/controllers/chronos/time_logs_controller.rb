@@ -75,7 +75,7 @@ module Chronos
     end
 
     def booking_params
-      params.require(:booking).permit(:start, :stop, :comments, :project_id, :issue_id, :activity_id, :round)
+      params.require(:booking).permit(:comments, :project_id, :issue_id, :activity_id, :round)
     end
 
     def get_time_log
