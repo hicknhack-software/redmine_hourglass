@@ -30,34 +30,23 @@ module Chronos
     end
 
     def update(attributes)
-      round = attributes.delete :round || Chronos.settings[:round_default] == 'true'
+      round = attributes.delete :round
       ActiveRecord::Base.transaction do
         result = super attributes
         if time_booking.present?
-          options = {start: start, stop: stop, project_id: time_booking.project_id}
-          b_start, b_stop = if round
-            previous_time_log = previous_booked_time_log options
-             calculate_bookable_time options, previous_time_log && previous_time_log.time_booking
-          else
-            [options[:start], options[:stop]]
+          DateTimeCalculations.booking_process user, start: start, stop: stop, project_id: time_booking.project_id, round: round do |options|
+            time_booking.update start: options[:start], stop: options[:stop], time_entry_arguments: {hours: DateTimeCalculations.time_diff_in_hours(options[:start], options[:stop])}
+            time_booking
           end
-          time_booking.update start: b_start, stop: b_stop, time_entry_arguments: {hours: DateTimeCalculations.time_diff(b_start, b_stop) / 1.hour.to_f}
-          update_following_bookings options, time_booking if round && time_booking.persisted?
+          raise ActiveRecord::Rollback unless time_booking.persisted?
         end
         result
       end
     end
 
     def book(attributes)
-      options = default_booking_arguments.merge attributes.except(:start, :stop)
-      if options[:round]
-        previous_time_log = previous_booked_time_log options
-        options[:start], options[:stop] = calculate_bookable_time options, previous_time_log && previous_time_log.time_booking
-      end
-      ActiveRecord::Base.transaction do
-        booking = TimeBooking.create time_booking_arguments options
-        update_following_bookings options, booking if options[:round] && booking.persisted?
-        booking
+      DateTimeCalculations.booking_process user, default_booking_arguments.merge(attributes.except(:start, :stop)) do |options|
+        TimeBooking.create time_booking_arguments options
       end
     end
 
@@ -82,40 +71,8 @@ module Chronos
     end
 
     private
-    def update_following_bookings(options, self_booking)
-      booking = self_booking
-      last_time_log = self
-      options.merge! start: start, stop: stop
-      loop do
-        next_time_log = next_booked_time_log options
-        break if !next_time_log || last_time_log == next_time_log
-        options.merge! start: next_time_log.start, stop: next_time_log.stop
-        start, stop = calculate_bookable_time options, booking
-        booking = next_time_log.time_booking
-        booking.update start: start, stop: stop, time_entry_arguments: {hours: DateTimeCalculations.time_diff(start, stop) / 1.hour.to_f}
-        raise ActiveRecord::Rollback unless booking.persisted?
-        last_time_log = next_time_log
-      end
-    end
-
-    def next_booked_time_log(options)
-      user.chronos_time_logs.booked_on_project(options[:project_id]).with_start_in_interval(options[:start], options[:start] + DateTimeCalculations.round_carry_over_due).order(:start).first
-    end
-
-    def previous_booked_time_log(options)
-      user.chronos_time_logs.booked_on_project(options[:project_id]).with_start_in_interval(options[:start] - DateTimeCalculations.round_carry_over_due, options[:start]).order(:start).last
-    end
-
-    def calculate_bookable_time(options, booking)
-      adjustment = booking && booking.rounding_carry_over || 0
-      start = options[:start] + adjustment
-      amount = DateTimeCalculations.time_diff start, options[:stop]
-      stop = start + DateTimeCalculations.round_interval(amount)
-      [start, stop]
-    end
-
     def default_booking_arguments
-      {start: start, stop: stop, comments: comments, time_log_id: id, user: user, round: Chronos.settings[:round_default] == 'true'}.with_indifferent_access
+      {start: start, stop: stop, comments: comments, time_log_id: id, user: user}.with_indifferent_access
     end
 
     def time_booking_arguments(options)

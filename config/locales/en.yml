@@ -33,11 +33,8 @@ en:
       time_log:
         errors:
           combine_failed: There are either bookings defined on the submitted time logs or the time logs start and stop doesn't match
-          invalid_interval: The submitted time window is invalid
-          no_fitting: The available time window is not big enough for the submitted start and stop time
           not_found: This time log doesn't exist
           other_not_found: The time log to combine with doesn't exist
-          record_inside_interval: There is already a time booking for a part of the submitted time window
           split_failed: Submitted split_at is not within the bounds of the time log
       time_booking:
         errors:

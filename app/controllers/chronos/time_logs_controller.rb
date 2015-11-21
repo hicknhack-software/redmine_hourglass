@@ -56,12 +56,6 @@ module Chronos
       else
         respond_with_error :bad_request, time_booking.errors.full_messages
       end
-    rescue Chronos::DateTimeCalculations::InvalidIntervalsException
-      respond_with_error :bad_request, I18n.t('chronos.api.time_log.errors.invalid_interval')
-    rescue Chronos::DateTimeCalculations::NoFittingPossibleException
-      respond_with_error :bad_request, I18n.t('chronos.api.time_log.errors.no_fitting')
-    rescue Chronos::DateTimeCalculations::RecordInsideIntervalException
-      respond_with_error :bad_request, I18n.t('chronos.api.time_log.errors.record_inside_interval')
     end
 
     def destroy

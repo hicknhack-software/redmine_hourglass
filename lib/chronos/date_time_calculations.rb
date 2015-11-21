@@ -1,13 +1,4 @@
 module Chronos::DateTimeCalculations
-  class InvalidIntervalsException < StandardError
-  end
-
-  class NoFittingPossibleException < StandardError
-  end
-
-  class RecordInsideIntervalException < StandardError
-  end
-
   class << self
     def round_limit
       Chronos.settings[:round_limit].to_f / 100
@@ -25,8 +16,16 @@ module Chronos::DateTimeCalculations
       Chronos.settings[:round_carry_over_due].to_f.hours.to_i
     end
 
+    def round_default
+      Chronos.settings[:round_default] == 'true'
+    end
+
     def time_diff(time1, time2)
       (time1 - time2).abs.to_i
+    end
+
+    def time_diff_in_hours(time1, time2)
+      time_diff(time1, time2) / 1.hour.to_f
     end
 
     def round_interval(time_interval)
@@ -38,28 +37,48 @@ module Chronos::DateTimeCalculations
       end
     end
 
-    def fit_in_bounds(start, stop, start_limit, stop_limit)
-      if start.nil? || stop.nil? || stop <= start
-        raise InvalidIntervalsException
-      end
-      time_interval = time_diff(start, stop)
-      if stop_limit && start_limit && (stop_limit <= start_limit || time_diff(start_limit, stop_limit) < time_interval)
-        raise NoFittingPossibleException
-      end
-      return [stop_limit - time_interval, stop_limit] if stop_limit && stop_limit < stop
-      return [start_limit, start_limit + time_interval] if start_limit && start_limit > start
+    def calculate_bookable_time(start, stop, round_carry_over = 0)
+      start += round_carry_over || 0
+      stop = start + round_interval(time_diff start, stop)
       [start, stop]
     end
 
-    def limits_from_overlapping_intervals(start, stop, records)
-      start_limit = nil
-      stop_limit = nil
-      records.each do |record|
-        raise RecordInsideIntervalException if record.stop <= stop && record.start >= start
-        start_limit = record.stop if (start_limit.nil? || record.stop > start_limit) && record.start < start && record.stop > start
-        stop_limit = record.start if (stop_limit.nil? || record.start < stop_limit) && record.start < stop && record.stop > stop
+    def booking_process(user, options)
+      round = options[:round] || round_default
+      if round
+        previous_time_log = closest_booked_time_log user, options[:project_id], options[:start], after_current: false
+        options[:start], options[:stop] = calculate_bookable_time options[:start], options[:stop], previous_time_log && previous_time_log.time_booking && previous_time_log.time_booking.rounding_carry_over
       end
-      [start_limit, stop_limit]
+      ActiveRecord::Base.transaction(requires_new: true) do
+        time_booking = yield options
+        raise ActiveRecord::Rollback unless time_booking.persisted?
+        update_following_bookings user, options[:project_id], time_booking if :round
+        time_booking
+      end
+    end
+
+    def update_following_bookings(user, project_id, current_booking)
+      booking = current_booking
+      current_time_log = current_booking.time_log
+      start = current_time_log.start
+      loop do
+        next_time_log = closest_booked_time_log user, project_id, start, after_current: true
+        break if !next_time_log || current_time_log == next_time_log
+        start, stop = calculate_bookable_time next_time_log.start, next_time_log.stop, booking && booking.rounding_carry_over
+        booking = next_time_log.time_booking
+        booking.update start: start, stop: stop, time_entry_arguments: {hours: time_diff_in_hours(start, stop)}
+        raise ActiveRecord::Rollback unless booking.persisted?
+        current_time_log = next_time_log
+      end
+    end
+
+    def closest_booked_time_log(user, project_id, start, after_current: false)
+      interval = after_current ? [start, start + round_carry_over_due] : [start - round_carry_over_due, start]
+      closest_time_logs = user.chronos_time_logs
+          .booked_on_project(project_id)
+          .with_start_in_interval(*interval)
+          .order(:start)
+      after_current ? closest_time_logs.first : closest_time_logs.last
     end
   end
 end

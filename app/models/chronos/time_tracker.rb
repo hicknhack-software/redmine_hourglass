@@ -36,7 +36,7 @@ module Chronos
     private
     def init
       self.user ||= User.current
-      self.round = Chronos.settings[:round_default] if round.nil?
+      self.round = DateTimeCalculations.round_default if round.nil?
       self.start ||= Time.now.change sec: 0
     end
 
