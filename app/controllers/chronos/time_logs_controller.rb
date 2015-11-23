@@ -65,7 +65,7 @@ module Chronos
 
     private
     def time_log_params
-      params.require(:time_log).permit(:start, :stop, :comments)
+      params.require(:time_log).permit(:start, :stop, :comments, :round)
     end
 
     def booking_params
