@@ -31,7 +31,7 @@ module Chronos
 
     def get_time_booking
       @time_booking = time_booking_from_id
-      respond_with_error :not_found, I18n.t('chronos.api.time_booking.errors.not_found') unless @time_booking.present?
+      respond_with_error :not_found, I18n.t('chronos.api.time_bookings.errors.not_found') unless @time_booking.present?
     end
 
     def time_booking_from_id

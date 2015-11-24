@@ -1,7 +1,12 @@
 module Chronos
   class TimeTrackersController < ApiBaseController
     accept_api_auth :index, :show, :start, :update, :stop
+
     before_action :get_time_tracker, only: [:show, :update, :stop]
+    before_action :authorize_global, only: [:index, :show, :start, :update]
+    before_action :find_optional_project, :authorize, only: [:stop]
+    before_action :authorize_foreign, only: [:show, :update, :stop]
+    before_action :authorize_parameters, only: [:update]
 
     def index
       respond_with_success Chronos::TimeTracker.all
@@ -21,7 +26,7 @@ module Chronos
     end
 
     def update
-      if @time_tracker.update time_tracker_params
+      if @time_tracker.update update_time_tracker_params
         respond_with_success
       else
         respond_with_error :bad_request, @time_tracker.errors.full_messages
@@ -39,13 +44,14 @@ module Chronos
     end
 
     private
-    def time_tracker_params
+    def update_time_tracker_params
       params.require(:time_tracker).permit(:start, :comments, :round, :project_id, :issue_id, :activity_id)
     end
 
     def get_time_tracker
       @time_tracker = params[:id] == 'current' ? current_time_tracker : time_tracker_from_id
-      respond_with_error :not_found, I18n.t('chronos.api.time_tracker.errors.not_found') unless @time_tracker.present?
+      respond_with_error :not_found, I18n.t('chronos.api.time_trackers.errors.not_found') unless @time_tracker.present?
+      @request_resource = @time_tracker
     end
 
     def current_time_tracker
@@ -54,6 +60,29 @@ module Chronos
 
     def time_tracker_from_id
       Chronos::TimeTracker.find_by id: params[:id]
+    end
+
+    def find_optional_project
+      @project = @time_tracker.project
+    end
+
+    def parameter_permission_map
+      {
+          time_tracker: {
+              start: {
+                  permission: {
+                      action: {
+                          controller: params[:controller],
+                          action: 'change_start'
+                      },
+                      options: {
+                          global: true
+                      }
+                  },
+                  error_message: I18n.t('chronos.api.time_trackers.errors.not_allowed_to_change_start')
+              }
+          }
+      }
     end
   end
 end
