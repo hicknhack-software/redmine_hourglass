@@ -118,9 +118,13 @@ module Chronos
     end
 
     def authorize_foreign
-      unless @request_resource.user == User.current || User.current.allowed_to?({controller: params[:controller], action: 'process_foreign'}, @project, {global: @authorize_global})
+      unless @request_resource.user == User.current || allowed_to_process_foreign?
         respond_with_error :forbidden, t("chronos.api.#{params[:controller].split('/')[1]}.errors.change_others_forbidden")
       end
+    end
+
+    def allowed_to_process_foreign?
+      User.current.allowed_to?({controller: params[:controller], action: 'process_foreign'}, @project, {global: @authorize_global})
     end
   end
 end

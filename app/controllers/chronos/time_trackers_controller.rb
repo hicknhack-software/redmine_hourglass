@@ -9,7 +9,8 @@ module Chronos
     before_action :authorize_parameters, only: [:update]
 
     def index
-      respond_with_success Chronos::TimeTracker.all
+      time_trackers = allowed_to_process_foreign? ? Chronos::TimeTracker.all : User.current.chronos_time_tracker
+      respond_with_success time_trackers
     end
 
     def show
