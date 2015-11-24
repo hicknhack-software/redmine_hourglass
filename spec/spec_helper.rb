@@ -16,6 +16,7 @@ require File.expand_path File.dirname(__FILE__) + '/../lib/chronos'
 FactoryGirl.definition_file_paths = %w(plugins/redmine_chronos/spec/factories)
 FactoryGirl.find_definitions
 
+#ENV['ZONEBIE_TZ'] = 'Chatham Is.' #possibility to set a specific timezone
 Zonebie.set_random_timezone
 
 Rails.application.load_tasks
