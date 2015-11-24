@@ -55,7 +55,7 @@ module Chronos
 
     def get_time_tracker
       @time_tracker = params[:id] == 'current' ? current_time_tracker : time_tracker_from_id
-      respond_with_error :not_found, I18n.t('chronos.api.time_trackers.errors.not_found') unless @time_tracker.present?
+      respond_with_error :not_found, t('chronos.api.time_trackers.errors.not_found') unless @time_tracker.present?
       @request_resource = @time_tracker
     end
 
@@ -68,7 +68,7 @@ module Chronos
     end
 
     def find_optional_project
-      @project = @time_tracker.project
+      @project = Project.find 1 #@time_tracker.project
     end
 
     def parameter_permission_map
@@ -84,7 +84,7 @@ module Chronos
                           global: true
                       }
                   },
-                  error_message: I18n.t('chronos.api.time_trackers.errors.not_allowed_to_change_start')
+                  error_message: t('chronos.api.time_trackers.errors.not_allowed_to_change_start')
               }
           }
       }

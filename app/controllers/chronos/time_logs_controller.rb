@@ -30,22 +30,23 @@ module Chronos
       end
     end
 
+    #todo: wenn booking dran, muss update time booking erlaubt sein!!!!
     def split
       new_time_log = @time_log.split Time.zone.parse params[:split_at]
       if new_time_log
         respond_with_success time_log: @time_log, new_time_log: new_time_log
       else
-        respond_with_error :bad_request, I18n.t('chronos.api.time_logs.errors.split_failed')
+        respond_with_error :bad_request, t('chronos.api.time_logs.errors.split_failed')
       end
     end
 
     def combine
       time_log2 = Chronos::TimeLog.find_by id: params[:other]
-      respond_with_error :not_found, I18n.t('chronos.api.time_logs.errors.other_not_found') unless time_log2.present?
+      respond_with_error :not_found, t('chronos.api.time_logs.errors.other_not_found') unless time_log2.present?
       if @time_log.combine_with time_log2
         respond_with_success @time_log
       else
-        respond_with_error :bad_request, I18n.t('chronos.api.time_logs.errors.combine_failed')
+        respond_with_error :bad_request, t('chronos.api.time_logs.errors.combine_failed')
       end
     end
 
@@ -74,7 +75,7 @@ module Chronos
 
     def get_time_log
       @time_log = time_log_from_id
-      respond_with_error :not_found, I18n.t('chronos.api.time_logs.errors.not_found') unless @time_log.present?
+      respond_with_error :not_found, t('chronos.api.time_logs.errors.not_found') unless @time_log.present?
     end
 
     def time_log_from_id
