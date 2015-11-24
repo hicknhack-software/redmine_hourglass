@@ -2,10 +2,10 @@ module Chronos
   class TimeTrackersController < ApiBaseController
     accept_api_auth :index, :show, :start, :update, :stop
 
-    before_action :get_time_tracker, only: [:show, :update, :stop]
-    before_action :authorize_global, only: [:index, :show, :start, :update]
+    before_action :get_time_tracker, only: [:show, :update, :stop, :destroy]
+    before_action :authorize_global, only: [:index, :show, :start, :update, :destroy]
     before_action :find_optional_project, :authorize, only: [:stop]
-    before_action :authorize_foreign, only: [:show, :update, :stop]
+    before_action :authorize_foreign, only: [:show, :update, :stop, :destroy]
     before_action :authorize_parameters, only: [:update]
 
     def index
@@ -41,6 +41,11 @@ module Chronos
       else
         respond_with_error :bad_request, time_log.errors.full_messages
       end
+    end
+
+    def destroy
+      @time_tracker.destroy
+      respond_with_success
     end
 
     private

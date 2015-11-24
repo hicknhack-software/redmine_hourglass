@@ -4,7 +4,7 @@ scope :chronos do
 end
 
 namespace :chronos do
-  resources :time_trackers, except: [:new, :edit, :create, :destroy] do
+  resources :time_trackers, except: [:new, :edit, :create] do
     collection do
       post 'start'
     end
