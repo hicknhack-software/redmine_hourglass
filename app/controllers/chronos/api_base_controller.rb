@@ -71,6 +71,10 @@ module Chronos
       end
     end
 
+    def find_optional_project
+      @project = @request_resource.project
+    end
+
     def authorize_global(*args)
       super *args
       @authorize_global = true

@@ -67,9 +67,5 @@ module Chronos
     def time_tracker_from_id
       Chronos::TimeTracker.find_by id: params[:id]
     end
-
-    def find_optional_project
-      @project = @time_tracker.project
-    end
   end
 end

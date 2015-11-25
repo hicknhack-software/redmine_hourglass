@@ -1,12 +1,18 @@
 module Chronos
   class TimeLogsController < ApiBaseController
     accept_api_auth :index, :show, :update, :split, :combine, :book, :destroy
+
     before_action :get_time_log, only: [:show, :update, :split, :combine, :book, :destroy]
     before_action :sanitize_booking_time_params, only: :book
+    before_action :authorize_global, only: [:index, :show, :update, :split, :combine, :destroy]
+    before_action :find_optional_project, :authorize, only: [:book]
+    before_action :authorize_foreign, only: [:show, :update, :split, :combine, :book, :destroy]
+    before_action :authorize_update_time, only: [:update]
 
     rescue_from Query::StatementInvalid, :with => :query_statement_invalid
 
     def index
+      params.merge! user_id: 'me' unless allowed_to?('index_foreign')
       @query = Chronos::TimeLogQuery.build_from_params params, name: '_'
       scope = @query.results_scope
       offset, limit = api_offset_and_limit
@@ -76,6 +82,7 @@ module Chronos
     def get_time_log
       @time_log = time_log_from_id
       respond_with_error :not_found, t('chronos.api.time_logs.errors.not_found') unless @time_log.present?
+      @request_resource = @time_log
     end
 
     def time_log_from_id
