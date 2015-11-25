@@ -45,7 +45,7 @@ en:
         errors:
           change_others_forbidden: You are not allowed to execute this action for another users time tracker
           not_found: This time tracker doesn't exist
-          not_allowed_to_change_start: You are not allowed to change the start of a timer
+          update_time_forbidden: You are not allowed to change the start of a timer
       time_logs:
         errors:
           change_others_forbidden: You are not allowed to execute this action for another users time log
@@ -53,10 +53,12 @@ en:
           not_found: This time log doesn't exist
           other_not_found: The time log to combine with doesn't exist
           split_failed: Submitted split_at is not within the bounds of the time log
+          update_time_forbidden: You are not allowed to change the start or the stop of a time log
       time_bookings:
         errors:
           change_others_forbidden: You are not allowed to execute this action for another users time booking
           not_found: This time booking doesn't exist
+          update_time_forbidden: You are not allowed to change the start or the stop of a time booking
     ui:
       page_overview:
         title: Time Tracking

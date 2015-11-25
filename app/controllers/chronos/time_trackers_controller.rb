@@ -6,10 +6,10 @@ module Chronos
     before_action :authorize_global, only: [:index, :show, :start, :update, :destroy]
     before_action :find_optional_project, :authorize, only: [:stop]
     before_action :authorize_foreign, only: [:show, :update, :stop, :destroy]
-    before_action :authorize_parameters, only: [:update]
+    before_action :authorize_update_time, only: [:update]
 
     def index
-      time_trackers = allowed_to_process_foreign? ? Chronos::TimeTracker.all : User.current.chronos_time_tracker
+      time_trackers = allowed_to?('index_foreign') ? Chronos::TimeTracker.all : User.current.chronos_time_tracker
       respond_with_success time_trackers
     end
 
@@ -69,26 +69,7 @@ module Chronos
     end
 
     def find_optional_project
-      @project = Project.find 1 #@time_tracker.project
-    end
-
-    def parameter_permission_map
-      {
-          time_tracker: {
-              start: {
-                  permission: {
-                      action: {
-                          controller: params[:controller],
-                          action: 'change_start'
-                      },
-                      options: {
-                          global: true
-                      }
-                  },
-                  error_message: t('chronos.api.time_trackers.errors.not_allowed_to_change_start')
-              }
-          }
-      }
+      @project = @time_tracker.project
     end
   end
 end

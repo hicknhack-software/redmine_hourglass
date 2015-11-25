@@ -16,23 +16,31 @@ Redmine::Plugin.register :redmine_chronos do
            }, :partial => 'settings/chronos'
 
   project_module :redmine_chronos do
-    # controller actions noted as strings are fake, which means they aren't real actions in that controller but used
-    # to control allowed parameters in the other actions
+    def with_foreign(array)
+      array.map {|x| [x, "#{x}_foreign".to_sym]}.flatten
+    end
+
     permission :chronos_track_time, {
-                                      :'chronos/time_trackers' => [:start, :update, :stop, 'change_start'],
+                                      :'chronos/time_trackers' => [:start, :update, :stop],
                                       :'chronos/time_logs' => [:update, :split, :combine]
                                   },
                require: :loggedin
     permission :chronos_view_tracked_time, {
-                                             :'chronos/time_trackers' => [:index, :show, 'process_foreign'],
-                                             :'chronos/time_logs' => [:index, :show, 'process_foreign']
+                                             :'chronos/time_trackers' => with_foreign([:index, :show]),
+                                             :'chronos/time_logs' => with_foreign([:index, :show])
                                          }, require: :loggedin
     permission :chronos_view_own_tracked_time, {
                                                  :'chronos/time_trackers' => [:index, :show],
                                                  :'chronos/time_logs' => [:index, :show]
                                              }, require: :loggedin
-    permission :chronos_edit_tracked_time, {}, require: :loggedin
-    permission :chronos_edit_own_tracked_time, {}, require: :loggedin
+    permission :chronos_edit_tracked_time, {
+                                             :'chronos/time_trackers' => with_foreign([:update, :update_time, :destroy]),
+                                             :'chronos/time_logs' => with_foreign([:update, :update_time, :split, :combine, :destroy])
+                                         }, require: :loggedin
+    permission :chronos_edit_own_tracked_time, {
+                                                 :'chronos/time_trackers' => [:update, :update_time, :destroy],
+                                                 :'chronos/time_logs' => [:update, :update_time, :split, :combine, :destroy]
+                                             }, require: :loggedin
     permission :chronos_book_time, {}, require: :loggedin
     permission :chronos_book_own_time, {}, require: :loggedin
     permission :chronos_view_booked_time, {}, require: :member

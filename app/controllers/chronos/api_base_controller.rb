@@ -76,55 +76,22 @@ module Chronos
       @authorize_global = true
     end
 
-    # to use this, the controller need to implement a parameter_permission_map method like this:
-    # def parameter_permission_map
-    #   {
-    #       time_tracker: {
-    #           start: {
-    #               permission: {
-    #                   action: {
-    #                       controller: params[:controller],
-    #                       action: 'change_start'
-    #                   },
-    #                   options: {
-    #                       global: true
-    #                   }
-    #               },
-    #               error_message: I18n.t('chronos.api.time_trackers.errors.not_allowed_to_change_start')
-    #           }
-    #       }
-    #   }
-    # end
-    def authorize_parameters
-      messages = check_parameter_permissions params, parameter_permission_map
-      respond_with_error :forbidden, messages unless messages.empty?
-    end
-
-    def check_parameter_permissions(params, permission_map)
-      messages = []
-      permission_map.each do |key, args|
-        next unless params[key]
-        permission_args = args[:permission]
-        unless permission_args
-          messages += check_parameter_permissions params[key], args
-          next
-        end
-
-        unless User.current.allowed_to? *permission_args.values_at(:action, :context, :options)
-          messages.push args[:error_message] || t('chronos.api.errors.forbidden_parameters', param: key.to_s)
-        end
-      end
-      messages
-    end
-
     def authorize_foreign
-      unless @request_resource.user == User.current || allowed_to_process_foreign?
-        respond_with_error :forbidden, t("chronos.api.#{params[:controller].split('/')[1]}.errors.change_others_forbidden")
+      unless @request_resource.user == User.current || allowed_to?("#{params[:action]}_foreign")
+        respond_with_error :forbidden, t("chronos.api.#{controller_name}.errors.change_others_forbidden")
       end
     end
 
-    def allowed_to_process_foreign?
-      User.current.allowed_to?({controller: params[:controller], action: 'process_foreign'}, @project, {global: @authorize_global})
+    def authorize_update_time
+      controller_params = params[controller_name.singularize]
+      has_start_or_stop_parameter = controller_params && (controller_params.include?(:start) || controller_params.include?(:stop))
+      if has_start_or_stop_parameter && !allowed_to?('update_time')
+        respond_with_error :forbidden, t("chronos.api.#{controller_name}.errors.update_time_forbidden")
+      end
+    end
+
+    def allowed_to?(action)
+      User.current.allowed_to?({controller: params[:controller], action: action}, @project, {global: @authorize_global})
     end
   end
 end
