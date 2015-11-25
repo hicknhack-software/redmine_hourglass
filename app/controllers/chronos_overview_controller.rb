@@ -1,5 +1,4 @@
-class ChronosOverviewController < ApplicationController
-
+class ChronosOverviewController < ChronosUiBaseController
   def index
   end
 end

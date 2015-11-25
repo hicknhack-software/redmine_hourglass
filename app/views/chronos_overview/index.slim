@@ -4,3 +4,5 @@
 
 - html_title t('chronos.ui.page_overview.title')
 
+- if authorize_globally_for 'chronos/time_trackers', 'start'
+  = render partial: 'time_tracker_control'

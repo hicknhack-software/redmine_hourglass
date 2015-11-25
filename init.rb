@@ -8,6 +8,8 @@ Redmine::Plugin.register :redmine_chronos do
   author_url 'http://www.hicknhack-software.com'
   version File.read File.join 'plugins', 'redmine_chronos', '.plugin_version'
 
+  requires_redmine version_or_higher: '3.0.0'
+
   settings default: {
                round_minimum: '0.25',
                round_limit: '50',
