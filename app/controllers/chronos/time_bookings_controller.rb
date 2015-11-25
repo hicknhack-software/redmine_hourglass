@@ -1,10 +1,15 @@
 module Chronos
   class TimeBookingsController < ApiBaseController
     accept_api_auth :index, :show, :update, :destroy
+
     before_action :get_time_booking, only: [:show, :update, :destroy]
+    before_action :authorize_global, only: [:index]
+    before_action :find_optional_project, :authorize, only: [:show, :update, :destroy]
+    before_action :authorize_foreign, only: [:show, :update, :destroy]
 
     def index
-      respond_with_success Chronos::TimeBooking.all
+      time_bookings = allowed_to?('index_foreign') ? Chronos::TimeBooking.all : User.current.chronos_time_bookings
+      respond_with_success time_bookings
     end
 
     def show
@@ -32,6 +37,7 @@ module Chronos
     def get_time_booking
       @time_booking = time_booking_from_id
       respond_with_error :not_found, t('chronos.api.time_bookings.errors.not_found') unless @time_booking.present?
+      @request_resource = @time_booking
     end
 
     def time_booking_from_id

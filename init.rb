@@ -17,35 +17,70 @@ Redmine::Plugin.register :redmine_chronos do
 
   project_module :redmine_chronos do
     def with_foreign(array)
-      array.map {|x| [x, "#{x}_foreign".to_sym]}.flatten
+      array.map { |x| [x, "#{x}_foreign".to_sym] }.flatten
     end
 
-    permission :chronos_track_time, {
-                                      :'chronos/time_trackers' => [:start, :update, :stop],
-                                      :'chronos/time_logs' => [:update, :split, :combine]
-                                  },
+    permission :chronos_track_time,
+               {
+                   :'chronos/time_trackers' => [:start, :update, :stop],
+                   :'chronos/time_logs' => [:update, :split, :combine]
+               },
                require: :loggedin
-    permission :chronos_view_tracked_time, {
-                                             :'chronos/time_trackers' => with_foreign([:index, :show]),
-                                             :'chronos/time_logs' => with_foreign([:index, :show])
-                                         }, require: :loggedin
-    permission :chronos_view_own_tracked_time, {
-                                                 :'chronos/time_trackers' => [:index, :show],
-                                                 :'chronos/time_logs' => [:index, :show]
-                                             }, require: :loggedin
-    permission :chronos_edit_tracked_time, {
-                                             :'chronos/time_trackers' => with_foreign([:update, :update_time, :destroy]),
-                                             :'chronos/time_logs' => with_foreign([:update, :update_time, :split, :combine, :destroy])
-                                         }, require: :loggedin
-    permission :chronos_edit_own_tracked_time, {
-                                                 :'chronos/time_trackers' => [:update, :update_time, :destroy],
-                                                 :'chronos/time_logs' => [:update, :update_time, :split, :combine, :destroy]
-                                             }, require: :loggedin
-    permission :chronos_book_time, {}, require: :loggedin
-    permission :chronos_book_own_time, {}, require: :loggedin
-    permission :chronos_view_booked_time, {}, require: :member
-    permission :chronos_view_own_booked_time, {}, require: :loggedin
-    permission :chronos_edit_booked_time, {}, require: :loggedin
-    permission :chronos_edit_own_booked_time, {}, require: :loggedin
+
+    permission :chronos_view_tracked_time,
+               {
+                   :'chronos/time_trackers' => with_foreign([:index, :show]),
+                   :'chronos/time_logs' => with_foreign([:index, :show])
+               }, require: :loggedin
+
+    permission :chronos_view_own_tracked_time,
+               {
+                   :'chronos/time_trackers' => [:index, :show],
+                   :'chronos/time_logs' => [:index, :show]
+               }, require: :loggedin
+
+    permission :chronos_edit_tracked_time,
+               {
+                   :'chronos/time_trackers' => with_foreign([:update, :update_time, :destroy]),
+                   :'chronos/time_logs' => with_foreign([:update, :update_time, :split, :combine, :destroy])
+               }, require: :loggedin
+
+    permission :chronos_edit_own_tracked_time,
+               {
+                   :'chronos/time_trackers' => [:update, :update_time, :destroy],
+                   :'chronos/time_logs' => [:update, :update_time, :split, :combine, :destroy]
+               }, require: :loggedin
+
+    permission :chronos_book_time,
+               {
+                   :'chronos/time_logs' => with_foreign([:book]),
+                   :'chronos/time_bookings' => with_foreign([:update])
+               }, require: :loggedin
+
+    permission :chronos_book_own_time,
+               {
+                   :'chronos/time_logs' => [:book],
+                   :'chronos/time_bookings' => [:update]
+               }, require: :loggedin
+
+    permission :chronos_view_booked_time,
+               {
+                   :'chronos/time_bookings' => with_foreign([:index, :show])
+               }, require: :member
+
+    permission :chronos_view_own_booked_time,
+               {
+                   :'chronos/time_bookings' => [:index, :show]
+               }, require: :loggedin
+
+    permission :chronos_edit_booked_time,
+               {
+                   :'chronos/time_bookings' => with_foreign([:update, :update_time, :destroy])
+               }, require: :loggedin
+
+    permission :chronos_edit_own_booked_time,
+               {
+                   :'chronos/time_bookings' => [:update, :update_time, :destroy]
+               }, require: :loggedin
   end
 end
