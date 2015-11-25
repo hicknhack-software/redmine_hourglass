@@ -1,0 +1,19 @@
+.time-tracker-control {
+  margin-bottom: 30px;
+  .form-row {
+    width: 100%;
+    clear: left;
+    .form-field {
+      float: left;
+      margin-right: 5px;
+      .label {
+        float: left;
+        overflow: hidden;
+        font-size: 9px;
+      }
+      .input {
+        margin-top: 15px;
+      }
+    }
+  }
+}

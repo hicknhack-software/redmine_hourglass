@@ -1,1 +1,42 @@
-
+.time-tracker-control
+  = form_for @time_tracker, url: stop_chronos_time_tracker_path(@time_tracker), method: :delete do |f|
+    h3 = t('chronos.ui.page_overview.time_tracker_control.heading')
+    .form-row
+      .form-field
+        .label
+          = f.label :issue_id
+        .input
+          = f.text_field :issue_id, size: '15', disabled: !authorize_globally_for('chronos/time_logs', 'book')
+      .form-field
+        .label
+          = f.label :comments
+        .input
+          = f.text_field :comments, size: '30', maxlength: 255, disabled: !authorize_globally_for('chronos/time_trackers', 'update')
+      .form-field
+        .label
+          = f.label :round
+        .input
+          = f.check_box :round
+      .form-field
+        .label
+          = t('chronos.ui.page_overview.time_tracker_control.label_running_time')
+        .input.running-time
+    .form-row
+      .form-field
+        .label
+          = f.label :project_id
+        .input
+          = f.text_field :project_id, size: '15', disabled: !authorize_globally_for('chronos/time_logs', 'book')
+      .form-field
+        .label
+          = f.label :activity_id
+        .input
+          = f.text_field :activity_id, size: '15', disabled: !authorize_globally_for('chronos/time_logs', 'book')
+      .form-field
+        .label
+          = f.label :start
+        .input
+          = f.text_field :start, size: '20', disabled: !authorize_globally_for('chronos/time_logs', 'update_time')
+      .form-field
+        .input
+          = f.submit

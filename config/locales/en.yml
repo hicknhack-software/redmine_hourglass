@@ -17,6 +17,15 @@ en:
           attributes:
             base:
               overlaps: There are a overlapping time logs
+  helpers:
+    submit:
+     chronos_time_tracker:
+       create: Start
+       update: Stop
+
+################### redmine specific stuff #####################
+  field_round: Round
+  field_start: Start
   permission_chronos_book_own_time: Book own time
   permission_chronos_book_time: Book time
   permission_chronos_edit_booked_time: Edit booked Time
@@ -29,6 +38,8 @@ en:
   permission_chronos_view_own_tracked_time: View own tracked time
   permission_chronos_view_tracked_time: View tracked time
   project_module_redmine_chronos: Redmine Chronos (Time Tracker)
+################################################################
+
   chronos:
     settings:
       rounding:
@@ -62,3 +73,6 @@ en:
     ui:
       page_overview:
         title: Time Tracking
+        time_tracker_control:
+          heading: Please specify your current task
+          label_running_time: Running Time
