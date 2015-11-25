@@ -40,7 +40,7 @@ en:
         title: Rounding Behavior
     api:
       errors:
-        forbidden_parameters: Forbidden parameter '%{param}'
+        missing_parameters: Insufficient parameters submitted
       time_trackers:
         errors:
           change_others_forbidden: You are not allowed to execute this action for another users time tracker

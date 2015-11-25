@@ -1,7 +1,8 @@
 module Chronos
   class ApiBaseController < ApplicationController
     around_action :catch_halt
-    rescue_from ArgumentError, with: :missing_halt_catch
+
+    rescue_from ActionController::ParameterMissing, with: :missing_parameters
 
     private
     # use only these codes:
@@ -12,13 +13,14 @@ module Chronos
     # :forbidden (403)
     # :not_found (404)
     # :internal_server_error (500)
-    def respond_with_error(status, message)
+    def respond_with_error(status, message, args = {})
       error_message = message.is_a?(Array) ? message.to_sentence : message
       render json: {
                  message: error_message,
                  status: Rack::Utils.status_code(status)
              },
              status: status
+      throw :halt unless args[:no_halt]
     end
 
     def respond_with_success(response_obj = nil)
@@ -27,21 +29,6 @@ module Chronos
       else
         head :ok
       end
-    end
-
-    #implementation for render, head and redirect to always end the controller action
-    def render(*args)
-      super
-      throw :halt
-    end
-
-    def redirect(*args)
-      super
-      throw :halt
-    end
-
-    def head(*args)
-      super
       throw :halt
     end
 
@@ -53,7 +40,7 @@ module Chronos
 
       respond_to do |format|
         format.json {
-          respond_with_error status, message
+          respond_with_error status, message, no_halt: true
         }
       end
       super
@@ -65,10 +52,8 @@ module Chronos
       end
     end
 
-    def missing_halt_catch(e)
-      unless e.message.include? ':halt'
-        raise e
-      end
+    def missing_parameters(e)
+      respond_with_error :bad_request, t("chronos.api.errors.missing_parameters"), no_halt: true
     end
 
     def find_optional_project
