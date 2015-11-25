@@ -1,2 +1,2 @@
-#### time tracker control
-#all fields -> onchange: "updateTTControllerForm(this.form)"
+#= require time_tracker_form
+#= require timer

@@ -36,7 +36,7 @@
         .label
           = f.label :start
         .input
-          = f.text_field :start, size: '20', disabled: !authorize_globally_for('chronos/time_logs', 'update_time')
+          = f.text_field :start, size: '20', disabled: !authorize_globally_for('chronos/time_logs', 'update_time'), data: {start_in_ms: @time_tracker.start.to_i}, class: 'start'
       .form-field
         .input
           = f.submit
