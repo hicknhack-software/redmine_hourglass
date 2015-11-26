@@ -12,9 +12,9 @@ module Chronos
 
     validates_uniqueness_of :user_id
     validates_presence_of :user, :start
-    validates_presence_of :project, if: :project_id?
-    validates_presence_of :issue, if: :issue_id?
-    validates_presence_of :activity, if: :activity_id?
+    validates_presence_of :project, if: Proc.new { |tt| tt.project_id.present? }
+    validates_presence_of :issue, if: Proc.new { |tt| tt.issue_id.present? }
+    validates_presence_of :activity, if: Proc.new { |tt| tt.activity_id.present? }
     validates_length_of :comments, maximum: 255, allow_blank: true
 
     class << self
