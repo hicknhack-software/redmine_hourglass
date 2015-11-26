@@ -1,10 +1,11 @@
 updateTimeTrackerControlForm = (data) ->
-  chronos.ajax
-    url: '/chronos/time_trackers/current.json'
+  chronos.clearFlash()
+  $.ajax
+    url: chronosRoutes.chronos_time_tracker('current')
     type: 'put'
     data: data
     error: ({responseJSON}) ->
-      console.log responseJSON
+      chronos.showErrorMessage responseJSON.message
 
 $ ->
   $('.time-tracker-control').on 'change', (e) ->

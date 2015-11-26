@@ -3,6 +3,17 @@
 #= require timer
 
 @chronos = {} unless @chronos?
-@chronos.ajax = (args) ->
-  args.data += '&key=589d212f109c98a0977762fc79c466bbc9c647e0'
-  $.ajax args
+@chronos = {
+  clearFlash: ->
+    $('#content').find('.flash').remove()
+
+  showMessage: (message, type) ->
+    @clearFlash()
+    $('#content').prepend $('<div/>', class: "flash #{type}").text message
+
+  showNotice: (message) ->
+    @showMessage message, 'notice'
+
+  showErrorMessage: (message) ->
+    @showMessage message, 'error'
+}
