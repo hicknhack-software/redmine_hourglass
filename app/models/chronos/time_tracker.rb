@@ -17,6 +17,8 @@ module Chronos
     validates_presence_of :activity, if: Proc.new { |tt| tt.activity_id.present? }
     validates_length_of :comments, maximum: 255, allow_blank: true
 
+    delegate :subject, to: :issue, allow_nil: true, prefix: true
+
     class << self
       alias_method :start, :create
     end

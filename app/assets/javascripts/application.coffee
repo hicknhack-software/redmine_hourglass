@@ -17,3 +17,18 @@
   showErrorMessage: (message) ->
     @showMessage message, 'error'
 }
+$ ->
+  $('.js-issue-autocompletion').autocomplete
+    source: 'tt_completer/get_issue',
+    minLength: 0,
+    autoFocus: true,
+    response: (event, ui) ->
+      $(event.target).next().val('')
+    select: (event, ui) ->
+      event.preventDefault()
+      $(event.target).trigger('change')
+    focus: (event, ui) ->
+      event.preventDefault()
+      $(event.target)
+        .val(ui.item.label)
+        .next().val(ui.item.value)

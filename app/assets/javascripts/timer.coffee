@@ -1,7 +1,7 @@
 timeTrackerTimerInterval = null
 
 startTimeTrackerTimer = ->
-  start = new Date($('.time-tracker-control .start').data('start-in-ms') * 1000)
+  start = new Date($('.time-tracker-control .js-start').data('start-in-ms') * 1000)
   now = new Date()
   diff = Math.floor((now - start) / 1000)
 
@@ -11,7 +11,7 @@ startTimeTrackerTimer = ->
     h = numberToString Math.floor(diff / 3600)
     m = numberToString Math.floor(diff % 3600 / 60)
     s = numberToString Math.floor(diff % 3600 % 60)
-    $('.time-tracker-control .input.running-time').html h + ':' + m + ':' + s
+    $('.time-tracker-control .input.js-running-time').html h + ':' + m + ':' + s
 
   displayTime()
   window.clearInterval timeTrackerTimerInterval if timeTrackerTimerInterval?

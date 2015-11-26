@@ -9,4 +9,8 @@ updateTimeTrackerControlForm = (data) ->
 
 $ ->
   $('.time-tracker-control').on 'change', (e) ->
-    updateTimeTrackerControlForm $.param $(e.target)
+    data = {}
+    $target = $(e.target)
+    $target = $target.next() if $target.hasClass('js-linked-with-hidden')
+    data[$target.attr('name')] = $target.val()
+    updateTimeTrackerControlForm data
