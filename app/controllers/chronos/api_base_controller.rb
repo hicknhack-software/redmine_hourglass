@@ -27,7 +27,7 @@ module Chronos
       if response_obj
         render json: response_obj
       else
-        head :ok
+        head :no_content
       end
       throw :halt
     end

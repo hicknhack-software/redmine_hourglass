@@ -20,6 +20,14 @@ ActionDispatch::Callbacks.to_prepare do
   end
 end
 
+JsRoutes.setup do |config|
+  config.include = [
+      /chronos/
+  ]
+  config.compact = true
+  config.namespace = 'chronosRoutes'
+end
+
 module Chronos
   def self.settings
     Setting.plugin_redmine_chronos

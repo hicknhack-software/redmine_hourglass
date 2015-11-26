@@ -9,6 +9,7 @@ gem 'cssminify'
 
 #views
 gem 'slim'
+gem 'js-routes'
 
 group :test do
   gem 'zonebie'
