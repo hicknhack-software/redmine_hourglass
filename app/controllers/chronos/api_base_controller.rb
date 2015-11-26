@@ -79,8 +79,8 @@ module Chronos
       end
     end
 
-    def allowed_to?(action)
-      User.current.allowed_to?({controller: params[:controller], action: action}, @project, {global: @authorize_global})
+    def allowed_to?(action, controller = params[:controller])
+      User.current.allowed_to?({controller: controller, action: action}, @project, {global: @authorize_global})
     end
   end
 end

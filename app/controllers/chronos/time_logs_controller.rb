@@ -8,6 +8,7 @@ module Chronos
     before_action :find_optional_project, :authorize, only: [:book]
     before_action :authorize_foreign, only: [:show, :update, :split, :combine, :book, :destroy]
     before_action :authorize_update_time, only: [:update]
+    before_action :authorize_update_booking, only: [:split]
 
     rescue_from Query::StatementInvalid, :with => :query_statement_invalid
 
@@ -36,7 +37,6 @@ module Chronos
       end
     end
 
-    #todo: wenn booking dran, muss update time booking erlaubt sein!!!!
     def split
       new_time_log = @time_log.split Time.zone.parse params[:split_at]
       if new_time_log
@@ -94,6 +94,12 @@ module Chronos
         if params[:booking][time_param].present?
           params[:booking][time_param] = Time.zone.parse params[:booking][time_param]
         end
+      end
+    end
+
+    def authorize_update_booking
+      if @time_log.booking && !allowed_to?('update_time', 'chronos/time_bookings')
+        respond_with_error :forbidden, t('chronos.api.time_bookings.errors.update_time_forbidden')
       end
     end
   end
