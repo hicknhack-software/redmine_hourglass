@@ -20,6 +20,8 @@ namespace :chronos do
     end
   end
   resources :time_bookings, except: [:new, :edit, :create]
+
+  get 'issue_completion', to: 'issue_completion#index'
 end
 
 unless Rails.env.production?

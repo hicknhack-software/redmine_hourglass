@@ -19,8 +19,8 @@
 }
 $ ->
   $('.js-issue-autocompletion').autocomplete
-    source: 'tt_completer/get_issue',
-    minLength: 0,
+    source: chronosRoutes.chronos_issue_completion(),
+    minLength: 1,
     autoFocus: true,
     response: (event, ui) ->
       $(event.target).next().val('')

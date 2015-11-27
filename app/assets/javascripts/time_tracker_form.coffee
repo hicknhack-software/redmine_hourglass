@@ -11,6 +11,11 @@ $ ->
   $('.time-tracker-control').on 'change', (e) ->
     data = {}
     $target = $(e.target)
-    $target = $target.next() if $target.hasClass('js-linked-with-hidden')
-    data[$target.attr('name')] = $target.val()
+    $field = if $target.hasClass('js-linked-with-hidden')
+      $target_id = $target.next()
+      $target_id.val('') if $target.val() is ''
+      $target_id
+    else
+      $target
+    data[$field.attr('name')] = $field.val()
     updateTimeTrackerControlForm data
