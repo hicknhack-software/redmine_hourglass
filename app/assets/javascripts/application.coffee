@@ -16,10 +16,24 @@
 
   showErrorMessage: (message) ->
     @showMessage message, 'error'
+
+  updateActivityField: ($activityField) ->
+    $projectField = $activityField.closest('form').find('[name*=project_id]')
+    selected_activity = $activityField.find("option:selected").text()
+    $.ajax
+      url: chronosRoutes.chronos_completion_activities()
+      data:
+        project_id: $projectField.val()
+      success: (activities) ->
+        $activityField.find('option[value!=""]').remove()
+        for {id, name} in activities
+          do ->
+            $activityField.append $('<option/>', value: id).text(name)
+            $activityField.val id if selected_activity is name
 }
 $ ->
   $('.js-issue-autocompletion').autocomplete
-    source: chronosRoutes.chronos_issue_completion(),
+    source: chronosRoutes.chronos_completion_issues(),
     minLength: 1,
     autoFocus: true,
     response: (event, ui) ->

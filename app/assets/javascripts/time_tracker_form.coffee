@@ -11,6 +11,8 @@ $ ->
   $timeTrackerControl = $('.time-tracker-control')
   $issueTextField = $timeTrackerControl.find('#issue_text')
   $projectSelectField = $timeTrackerControl.find('#time_tracker_project_id')
+  $activitySelectField = $timeTrackerControl.find('#time_tracker_activity_id')
+
   $timeTrackerControl.on 'change', (e) ->
     data = {}
     $target = $(e.target)
@@ -24,3 +26,4 @@ $ ->
 
   $projectSelectField.on 'change', ->
     $issueTextField.val('').trigger('change') unless $issueTextField.val() is ''
+    chronos.updateActivityField $activitySelectField

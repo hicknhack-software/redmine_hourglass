@@ -1,6 +1,10 @@
 # gui routes can't be namespaced
-scope :chronos do
+scope :chronos, as: :chronos do
   root to: 'chronos_overview#index'
+  scope :completion, as: :completion do
+    get 'issues', to: 'chronos_completion#issues'
+    get 'activities', to: 'chronos_completion#activities'
+  end
 end
 
 namespace :chronos do
@@ -20,8 +24,6 @@ namespace :chronos do
     end
   end
   resources :time_bookings, except: [:new, :edit, :create]
-
-  get 'issue_completion', to: 'issue_completion#index'
 end
 
 unless Rails.env.production?
