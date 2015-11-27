@@ -10,7 +10,7 @@ updateTimeTrackerControlForm = (data) ->
 $ ->
   $timeTrackerControl = $('.time-tracker-control')
   $issueTextField = $timeTrackerControl.find('#issue_text')
-  $projectSelectField = $timeTrackerControl.find('#project_select')
+  $projectSelectField = $timeTrackerControl.find('#time_tracker_project_id')
   $timeTrackerControl.on 'change', (e) ->
     data = {}
     $target = $(e.target)
@@ -23,6 +23,4 @@ $ ->
     $this.next().val('') if $this.val() is ''
 
   $projectSelectField.on 'change', ->
-    $this = $(@)
-    $this.next().val $this.val()
-    $issueTextField.val('').trigger('change')
+    $issueTextField.val('').trigger('change') unless $issueTextField.val() is ''

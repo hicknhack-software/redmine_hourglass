@@ -6,7 +6,7 @@
         .label
           = f.label :issue_id, for: 'issue_text'
         .input
-          = text_field_tag nil, "##{@time_tracker.issue_id} #{@time_tracker.issue_subject}", id: 'issue_text', size: '15', disabled: !authorize_globally_for('chronos/time_logs', 'book'), class: 'js-issue-autocompletion js-linked-with-hidden'
+          = text_field_tag nil, issue_label_for(@time_tracker.issue), id: 'issue_text', size: '15', disabled: !authorize_globally_for('chronos/time_logs', 'book'), class: 'js-issue-autocompletion js-linked-with-hidden'
           = f.hidden_field :issue_id
       .form-field
         .label
@@ -25,10 +25,9 @@
     .form-row
       .form-field
         .label
-          = f.label :project_id, for: 'project_select'
+          = f.label :project_id
         .input
-          = select_tag :project_id_select, projects_for_project_select, id: 'project_select', disabled: !authorize_globally_for('chronos/time_trackers', 'update'), class: 'js-linked-with-hidden'
-          = f.hidden_field :project_id
+          = f.select :project_id, projects_for_project_select(@time_tracker.project), disabled: !authorize_globally_for('chronos/time_logs', 'book')
       .form-field
         .label
           = f.label :activity_id
