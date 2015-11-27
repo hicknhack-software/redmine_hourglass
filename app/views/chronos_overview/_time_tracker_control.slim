@@ -32,7 +32,7 @@
         .label
           = f.label :activity_id
         .input
-          = f.text_field :activity_id, size: '15', disabled: !authorize_globally_for('chronos/time_logs', 'book')
+          = f.collection_select :activity_id, activity_collection(@time_tracker.project), :id, :name, {include_blank: true}, disabled: !authorize_globally_for('chronos/time_logs', 'book')
       .form-field
         .label
           = f.label :start

@@ -76,4 +76,3 @@ en:
         time_tracker_control:
           heading: Please specify your current task
           label_running_time: Running Time
-          label_project_none: < none >

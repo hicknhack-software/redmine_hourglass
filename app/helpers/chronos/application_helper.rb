@@ -10,7 +10,11 @@ module Chronos
 
     def projects_for_project_select(selected)
       projects = User.current.projects.has_module('redmine_chronos')
-      project_tree_options_for_select projects, selected: selected, include_blank: t('chronos.ui.page_overview.time_tracker_control.label_project_none')
+      project_tree_options_for_select projects, selected: selected, include_blank: true
+    end
+
+    def activity_collection(project = nil)
+      project.present? ? project.activities : TimeEntryActivity.shared.active
     end
   end
 end
