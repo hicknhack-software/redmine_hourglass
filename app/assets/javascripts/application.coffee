@@ -1,9 +1,10 @@
 #= require jsroutes.js.erb
 #= require time_tracker_form
+#= require validators
 #= require timer
 
-@chronos = {} unless @chronos?
-@chronos = {
+@chronos ?= {}
+@chronos.Utils = {
   clearFlash: ->
     $('#content').find('.flash').remove()
 
@@ -30,6 +31,7 @@
           do ->
             $activityField.append $('<option/>', value: id).text(name)
             $activityField.val id if selected_activity is name
+        chronos.FormValidator.validateField $activityField
 }
 $ ->
   $('.js-issue-autocompletion').autocomplete

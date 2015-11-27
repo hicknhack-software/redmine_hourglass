@@ -13,6 +13,11 @@
       }
       .input {
         margin-top: 15px;
+        .invalid {
+          border: 2px solid #D00;
+          background-color: #FFE3E3;
+          color: #800;
+        }
       }
     }
   }

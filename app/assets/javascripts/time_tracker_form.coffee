@@ -1,11 +1,11 @@
 updateTimeTrackerControlForm = (data) ->
-  chronos.clearFlash()
+  chronos.Utils.clearFlash()
   $.ajax
     url: chronosRoutes.chronos_time_tracker('current')
     type: 'put'
     data: data
     error: ({responseJSON}) ->
-      chronos.showErrorMessage responseJSON.message
+      chronos.Utils.showErrorMessage responseJSON.message
 
 $ ->
   $timeTrackerControl = $('.time-tracker-control')
@@ -19,6 +19,7 @@ $ ->
     $target = $target.next() if $target.hasClass('js-linked-with-hidden')
     data[$target.attr('name')] = $target.val()
     updateTimeTrackerControlForm data
+    chronos.FormValidator.validateField $target
 
   $issueTextField.on 'change', ->
     $this = $(@)
@@ -26,4 +27,4 @@ $ ->
 
   $projectSelectField.on 'change', ->
     $issueTextField.val('').trigger('change') unless $issueTextField.val() is ''
-    chronos.updateActivityField $activitySelectField
+    chronos.Utils.updateActivityField $activitySelectField
