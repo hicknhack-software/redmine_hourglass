@@ -17,11 +17,6 @@ en:
           attributes:
             base:
               overlaps: There are a overlapping time logs
-  helpers:
-    submit:
-     chronos_time_tracker:
-       create: Start
-       update: Stop
 
 ################### redmine specific stuff #####################
   field_round: Round
@@ -74,5 +69,6 @@ en:
       page_overview:
         title: Time Tracking
         time_tracker_control:
+          button_stop: Stop
           heading: Please specify your current task
           label_running_time: Running Time
