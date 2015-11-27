@@ -8,14 +8,21 @@ updateTimeTrackerControlForm = (data) ->
       chronos.showErrorMessage responseJSON.message
 
 $ ->
-  $('.time-tracker-control').on 'change', (e) ->
+  $timeTrackerControl = $('.time-tracker-control')
+  $issueTextField = $timeTrackerControl.find('#issue_text')
+  $projectSelectField = $timeTrackerControl.find('#project_select')
+  $timeTrackerControl.on 'change', (e) ->
     data = {}
     $target = $(e.target)
-    $field = if $target.hasClass('js-linked-with-hidden')
-      $target_id = $target.next()
-      $target_id.val('') if $target.val() is ''
-      $target_id
-    else
-      $target
-    data[$field.attr('name')] = $field.val()
+    $target = $target.next() if $target.hasClass('js-linked-with-hidden')
+    data[$target.attr('name')] = $target.val()
     updateTimeTrackerControlForm data
+
+  $issueTextField.on 'change', ->
+    $this = $(@)
+    $this.next().val('') if $this.val() is ''
+
+  $projectSelectField.on 'change', ->
+    $this = $(@)
+    $this.next().val $this.val()
+    $issueTextField.val('').change()

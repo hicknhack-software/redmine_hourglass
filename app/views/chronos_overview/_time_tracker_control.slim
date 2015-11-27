@@ -25,9 +25,10 @@
     .form-row
       .form-field
         .label
-          = f.label :project_id
+          = f.label :project_id, for: 'project_select'
         .input
-          = f.text_field :project_id, size: '15', disabled: !authorize_globally_for('chronos/time_logs', 'book')
+          = select_tag :project_id_select, projects_for_project_select, id: 'project_select', disabled: !authorize_globally_for('chronos/time_trackers', 'update'), class: 'js-linked-with-hidden'
+          = f.hidden_field :project_id
       .form-field
         .label
           = f.label :activity_id
