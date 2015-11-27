@@ -6,7 +6,7 @@
         .label
           = f.label :issue_id, for: 'issue_text'
         .input
-          = text_field_tag nil, @time_tracker.issue_subject, id: 'issue_text', size: '15', disabled: !authorize_globally_for('chronos/time_logs', 'book'), class: 'js-issue-autocompletion js-linked-with-hidden'
+          = text_field_tag nil, "##{@time_tracker.issue_id} #{@time_tracker.issue_subject}", id: 'issue_text', size: '15', disabled: !authorize_globally_for('chronos/time_logs', 'book'), class: 'js-issue-autocompletion js-linked-with-hidden'
           = f.hidden_field :issue_id
       .form-field
         .label
