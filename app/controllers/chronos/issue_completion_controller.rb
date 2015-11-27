@@ -10,7 +10,7 @@ module Chronos
                        .or(issue_arel[:subject].matches("%#{params[:term]}%"))
                )
       issue_list = issues.map do |issue|
-        {label: "##{issue.id} #{issue.subject}", value: "#{issue.id}", data: "#{issue.subject}"}
+        {label: "##{issue.id} #{issue.subject}", issue_id: "#{issue.id}", project_id: issue.project.id}
       end
       respond_with_success issue_list
     end

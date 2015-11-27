@@ -27,8 +27,9 @@ $ ->
     select: (event, ui) ->
       event.preventDefault()
       $(event.target).trigger('change')
+      $('.time-tracker-control').find('#project_select').val(ui.item.project_id)
     focus: (event, ui) ->
       event.preventDefault()
       $(event.target)
         .val(ui.item.label)
-        .next().val(ui.item.value)
+        .next().val(ui.item.issue_id)

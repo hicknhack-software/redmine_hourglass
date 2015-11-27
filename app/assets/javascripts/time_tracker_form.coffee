@@ -25,4 +25,4 @@ $ ->
   $projectSelectField.on 'change', ->
     $this = $(@)
     $this.next().val $this.val()
-    $issueTextField.val('').change()
+    $issueTextField.val('').trigger('change')
