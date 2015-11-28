@@ -16,10 +16,8 @@ isFieldValid = ($field, $form) ->
 
   condition and (not isRequired or isNotEmpty($field))
 
-validateField = ($field) ->
-  $form = $field.closest('form')
+validateField = ($field, $form = $field.closest('form')) ->
   $submit = $form.find(':submit')
-
   valid = isFieldValid $field, $form
 
   $field.toggleClass('invalid', not valid)
@@ -28,7 +26,12 @@ validateField = ($field) ->
   valid
 
 validateForm = ($form) ->
-  console.log 'not implemented'
+  valid = true
+  $submit = $form.find(':submit')
+  $form.find('input, select, textarea').filter('[name]').each ->
+    valid and validateField $(@), $form
+  $submit.attr('disabled', not valid)
+  valid
 
 @chronos ?= {}
 @chronos.FormValidator = {

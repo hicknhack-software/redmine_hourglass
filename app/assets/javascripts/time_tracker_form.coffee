@@ -14,7 +14,7 @@ $ ->
   $activityField = $timeTrackerControl.find('#time_tracker_activity_id')
   $startField = $timeTrackerControl.find('#time_tracker_start')
 
-#  chronos.FormValidator.validateForm $timeTrackerControl.find('form')
+  chronos.FormValidator.validateForm $timeTrackerControl.find('form')
 
   $timeTrackerControl.on 'change', (e) ->
     data = {}
