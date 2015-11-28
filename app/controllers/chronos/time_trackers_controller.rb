@@ -18,7 +18,7 @@ module Chronos
     end
 
     def start
-      time_tracker = Chronos::TimeTracker.start
+      time_tracker = Chronos::TimeTracker.start start_time_tracker_params
       if time_tracker.persisted?
         respond_with_success time_tracker
       else
@@ -50,6 +50,12 @@ module Chronos
     end
 
     private
+    def start_time_tracker_params
+      time_tracker_params = params.require(:time_tracker).permit(:issue_id, :comments)
+      time_tracker_params.delete :comments if time_tracker_params[:issue_id].present?
+      time_tracker_params
+    end
+
     def update_time_tracker_params
       params.require(:time_tracker).permit(:start, :comments, :round, :project_id, :issue_id, :activity_id)
     end

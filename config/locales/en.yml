@@ -71,5 +71,6 @@ en:
         title: Time Tracking
         time_tracker_control:
           button_stop: Stop
+          button_start: Start
           heading: Please specify your current task
           label_running_time: Running Time

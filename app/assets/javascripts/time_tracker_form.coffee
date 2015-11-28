@@ -9,23 +9,24 @@ updateTimeTrackerControlForm = (data) ->
 
 $ ->
   $timeTrackerControl = $('.time-tracker-control')
-  $timeTrackerControlForm = $('.time-tracker-control').find('form')
-  $issueTextField = $timeTrackerControl.find('#issue_text')
-  $projectField = $timeTrackerControl.find('#time_tracker_project_id')
-  $activityField = $timeTrackerControl.find('#time_tracker_activity_id')
-  $startField = $timeTrackerControl.find('#time_tracker_start')
 
-  chronos.FormValidator.validateForm $timeTrackerControlForm
+  ############## edit form ##############
+  $timeTrackerEditForm = $timeTrackerControl.find('.edit_time_tracker')
+  $issueTextField = $timeTrackerEditForm.find('#issue_text')
+  $projectField = $timeTrackerEditForm.find('#time_tracker_project_id')
+  $activityField = $timeTrackerEditForm.find('#time_tracker_activity_id')
+  $startField = $timeTrackerEditForm.find('#time_tracker_start')
+  chronos.FormValidator.validateForm $timeTrackerEditForm
 
-  $timeTrackerControlForm
-    .on 'submit', (event) ->
-      event.preventDefault() unless chronos.FormValidator.validateForm $timeTrackerControlForm
-    .on 'ajax:success', ->
-      location.reload()
-    .on 'ajax:error', (event, {responseJSON}) ->
-      chronos.Utils.showErrorMessage responseJSON.message
+  $timeTrackerEditForm
+  .on 'submit', (event) ->
+    event.preventDefault() unless chronos.FormValidator.validateForm $timeTrackerEditForm
+  .on 'ajax:success', ->
+    location.reload()
+  .on 'ajax:error', (event, {responseJSON}) ->
+    chronos.Utils.showErrorMessage responseJSON.message
 
-  $timeTrackerControl.on 'change', (event) ->
+  $timeTrackerEditForm.on 'change', (event) ->
     data = {}
     $target = $(event.target)
     $target = $target.next() if $target.hasClass('js-linked-with-hidden')
@@ -43,3 +44,18 @@ $ ->
 
   $startField.on 'change', ->
     chronos.Timer.start()
+
+  ############## new form stuff ##############
+  $timeTrackerNewForm = $timeTrackerControl.find('.new_time_tracker')
+  $taskField = $timeTrackerNewForm.find('#task')
+
+  $timeTrackerNewForm
+  .on 'ajax:success', ->
+    location.reload()
+  .on 'ajax:error', (event, {responseJSON}) ->
+    chronos.Utils.showErrorMessage responseJSON.message
+
+  $taskField.on 'change', ->
+    $this = $(@)
+    $this.next().val('') if $this.val() is ''
+
