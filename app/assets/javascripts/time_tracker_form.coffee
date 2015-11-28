@@ -10,8 +10,11 @@ updateTimeTrackerControlForm = (data) ->
 $ ->
   $timeTrackerControl = $('.time-tracker-control')
   $issueTextField = $timeTrackerControl.find('#issue_text')
-  $projectSelectField = $timeTrackerControl.find('#time_tracker_project_id')
-  $activitySelectField = $timeTrackerControl.find('#time_tracker_activity_id')
+  $projectField = $timeTrackerControl.find('#time_tracker_project_id')
+  $activityField = $timeTrackerControl.find('#time_tracker_activity_id')
+  $startField = $timeTrackerControl.find('#time_tracker_start')
+
+#  chronos.FormValidator.validateForm $timeTrackerControl.find('form')
 
   $timeTrackerControl.on 'change', (e) ->
     data = {}
@@ -25,6 +28,9 @@ $ ->
     $this = $(@)
     $this.next().val('') if $this.val() is ''
 
-  $projectSelectField.on 'change', ->
+  $projectField.on 'change', ->
     $issueTextField.val('').trigger('change') unless $issueTextField.val() is ''
-    chronos.Utils.updateActivityField $activitySelectField
+    chronos.Utils.updateActivityField $activityField
+
+  $startField.on 'change', ->
+    chronos.Timer.start()
