@@ -49,6 +49,7 @@ en:
         missing_parameters: Insufficient parameters submitted
       time_trackers:
         errors:
+          booking_forbidden: You are not allowed to book on this project
           change_others_forbidden: You are not allowed to execute this action for another users time tracker
           not_found: This time tracker doesn't exist
           update_time_forbidden: You are not allowed to change the start of a timer

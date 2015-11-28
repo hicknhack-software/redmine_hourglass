@@ -3,8 +3,8 @@ module Chronos
     accept_api_auth :index, :show, :start, :update, :stop
 
     before_action :get_time_tracker, only: [:show, :update, :stop, :destroy]
-    before_action :authorize_global, only: [:index, :show, :start, :update, :destroy]
-    before_action :find_optional_project, :authorize, only: [:stop]
+    before_action :authorize_global, only: [:index, :show, :start, :stop, :update, :destroy]
+    before_action :find_optional_project, :authorize_book, only: [:stop]
     before_action :authorize_foreign, only: [:show, :update, :stop, :destroy]
     before_action :authorize_update_time, only: [:update]
 
@@ -36,8 +36,8 @@ module Chronos
 
     def stop
       time_log = @time_tracker.stop
-      time_booking = time_log.time_booking
-      if time_log.persisted?
+      time_booking = time_log && time_log.time_booking
+      if !time_log || time_log.persisted?
         respond_with_success time_log: time_log, time_booking: time_booking
       else
         respond_with_error :bad_request, time_log.errors.full_messages
@@ -66,6 +66,12 @@ module Chronos
 
     def time_tracker_from_id
       Chronos::TimeTracker.find_by id: params[:id]
+    end
+
+    def authorize_book
+      if @project.present? && !allowed_to?('book', 'chronos/time_logs')
+        respond_with_error :forbidden, t('chronos.api.time_trackers.errors.booking_forbidden')
+      end
     end
   end
 end

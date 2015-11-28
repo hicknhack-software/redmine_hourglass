@@ -49,12 +49,13 @@ module Chronos::DateTimeCalculations
         previous_time_log = closest_booked_time_log user, options[:project_id], options[:start], after_current: false
         options[:start], options[:stop] = calculate_bookable_time options[:start], options[:stop], previous_time_log && previous_time_log.time_booking && previous_time_log.time_booking.rounding_carry_over
       end
+      time_booking = nil
       ActiveRecord::Base.transaction(requires_new: true) do
         time_booking = yield options
         raise ActiveRecord::Rollback unless time_booking.persisted?
         update_following_bookings user, options[:project_id], time_booking if :round
-        time_booking
       end
+      time_booking
     end
 
     def update_following_bookings(user, project_id, current_booking)

@@ -1,5 +1,5 @@
 .time-tracker-control
-  = form_for @time_tracker, url: stop_chronos_time_tracker_path(@time_tracker), method: :delete, as: 'time_tracker' do |f|
+  = form_for @time_tracker, url: stop_chronos_time_tracker_path(@time_tracker), method: :delete, as: 'time_tracker', remote: true do |f|
     h3 = t('chronos.ui.page_overview.time_tracker_control.heading')
     .form-row
       .form-field
