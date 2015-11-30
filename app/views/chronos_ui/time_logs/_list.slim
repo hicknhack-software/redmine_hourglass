@@ -2,26 +2,28 @@
   p.nodata
     = t('chronos.ui.time_logs.no_time_logs')
 - else
-  .autoscroll
-    table.list.tt-list
-      thead
-        tr
-          th.checkbox.hide-when-print
-            = link_to image_tag('toggle_check.png'),{}, title: "#{l(:button_check_all)}/#{l(:button_uncheck_all)}"
-          - @query.columns.each do |column|
-            = column_header column
-          th.icon_column
-      tbody
-        - grouped_time_log_list @time_logs, @query, @time_log_count_by_group do |time_log, group_name, group_count|
-          - if group_name
-            - reset_cycle
-            tr.group.open
-              td colspan="#{@query.inline_columns.size + 2}"
-                span.expander &nbsp;
-                = group_name
-                span.count
-                = link_to_function("#{l(:button_collapse_all)}/#{l(:button_expand_all)}", 'toggleAllRowGroups(this)', class: 'toggle-all')
-          tr.entry id=time_log.id class=cycle('odd', 'even')
-            = render partial: 'chronos_ui/time_logs/list_entry', locals: {time_log: time_log}
-  p.pagination
-    = pagination_links_full @pages, @count
+  = form_tag do
+    .autoscroll
+      table.list.tt_list.js-chronos-list
+        thead
+          tr
+            th.checkbox.hide-when-print
+              = link_to image_tag('toggle_check.png'),{}, title: "#{l(:button_check_all)} / #{l(:button_uncheck_all)}"
+            - @query.columns.each do |column|
+              = column_header column
+            th.icon_column
+        tbody
+          - grouped_time_log_list @time_logs, @query, @time_log_count_by_group do |time_log, group_name, group_count|
+            - if group_name
+              - reset_cycle
+              tr.group.open
+                td colspan="#{@query.inline_columns.size + 2}"
+                  span.expander &nbsp;
+                  = group_name
+                  span.count
+                    a.toggle-all href='#'
+                      = "#{l(:button_collapse_all)} / #{l(:button_expand_all)}"
+            tr.entry.hascontextmenu id=time_log.id class=cycle('odd', 'even')
+              = render partial: 'chronos_ui/time_logs/list_entry', locals: {time_log: time_log}
+    p.pagination
+      = pagination_links_full @pages, @count

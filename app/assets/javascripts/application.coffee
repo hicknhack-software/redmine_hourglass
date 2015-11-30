@@ -1,15 +1,8 @@
 #= require jsroutes.js.erb
 #= require time_tracker_form
+#= require lists
 #= require validators
 #= require timer
-
-# toggleIssuesSelection(this); return false; on click in tabelle
-# toggleRowGroup(this); auf click on expander
-
-
-
-
-
 
 @chronos ?= {}
 @chronos.Utils = {
