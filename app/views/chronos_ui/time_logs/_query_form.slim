@@ -1,6 +1,6 @@
 - collapse_filters = @query.persisted?
 = form_tag chronos_time_logs_path, method: 'get', id: 'query_form', class: 'hide-when-print'
-  = hidden_field_tag 'set_filter', '2'
+  = hidden_field_tag 'set_filter', '1'
   fieldset#filters.collapsible class=('collapsed' if collapse_filters )
     legend = t(:label_filter_plural)
     div style=('display: none;' if collapse_filters)
@@ -19,7 +19,7 @@
             = select_tag 'group_by', options_for_select([[]] + @query.groupable_columns.collect { |c| [c.caption, c.name.to_s] },                @query.group_by)
   p.buttons
     = link_to_function t(:button_apply), '$("#query_form").submit();', class: 'icon icon-checked'
-    = link_to t(:button_clear), {set_filter: 2, project_id: @project}, class: 'icon icon-reload'
+    = link_to t(:button_clear), {set_filter: 1}, class: 'icon icon-reload'
     /- if @query.new_record? && User.current.allowed_to?(:save_queries, @project, global: true)
       = link_to_function t(:button_save), "$('#query_form').attr('action', '#{ @project ? new_project_time_log_query_path(@project) : new_time_log_query_path }'); $('#query_form').submit();", class: 'icon icon-save'
 = error_messages_for 'query'
