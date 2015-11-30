@@ -21,6 +21,7 @@ en:
 ################### redmine specific stuff #####################
   field_round: Round
   field_start: Start
+  field_stop: Stop
   permission_chronos_book_own_time: Book own time
   permission_chronos_book_time: Book time
   permission_chronos_edit_booked_time: Edit booked Time
@@ -76,5 +77,6 @@ en:
           label_running_time: Running Time
       time_logs:
         title: Time Logs
+        no_time_logs: No time logs available
       time_bookings:
         title: Time Bookings

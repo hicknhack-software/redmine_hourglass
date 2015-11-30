@@ -46,13 +46,41 @@ module Chronos
       ) unless users_values.empty?
     end
 
+    def default_columns_names
+      @default_columns_names ||= [:start, :stop, :user, :comments]
+    end
+
     def results_scope(options = {})
       order_option = [group_by_sort_order, options[:order]].flatten.reject(&:blank?)
 
       TimeLog.
+          joins(:user).
           where(statement).
           order(order_option).
           joins(joins_for_order_statement(order_option.join(',')))
+    end
+
+    def count_by_group
+      r = nil
+      if grouped?
+        begin
+          r = TimeLog.
+              joins(:user).
+              where(statement).
+              joins(joins_for_order_statement(group_by_statement)).
+              group(group_by_statement).
+              count
+        rescue ActiveRecord::RecordNotFound
+          r = {nil => TimeLog.joins(:user).where(statement).count}
+        end
+        c = group_by_column
+        if c.is_a?(QueryCustomFieldColumn)
+          r = r.keys.inject({}) {|h, k| h[c.custom_field.cast_value(k)] = r[k]; h}
+        end
+      end
+      r
+    rescue ::ActiveRecord::StatementInvalid => e
+      raise Query::StatementInvalid.new(e.message)
     end
   end
 end

@@ -4,5 +4,5 @@
 
 - html_title t('chronos.ui.time_logs.title')
 
-
-.test TEST
+- if authorize_globally_for 'chronos/time_logs', 'index'
+  = render partial: 'chronos_ui/time_logs/list'

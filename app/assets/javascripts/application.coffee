@@ -3,6 +3,14 @@
 #= require validators
 #= require timer
 
+# toggleIssuesSelection(this); return false; on click in tabelle
+# toggleRowGroup(this); auf click on expander
+
+
+
+
+
+
 @chronos ?= {}
 @chronos.Utils = {
   clearFlash: ->
