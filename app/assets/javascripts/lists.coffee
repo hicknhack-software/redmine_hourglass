@@ -10,4 +10,7 @@ $ ->
       .on 'click', 'a', (event) ->
         event.preventDefault()
         toggleAllRowGroups @
-
+  $('#query_form')
+    .on 'click', 'legend', (event) ->
+      event.preventDefault()
+      toggleFieldset @

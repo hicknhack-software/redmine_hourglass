@@ -8,7 +8,7 @@
         thead
           tr
             th.checkbox.hide-when-print
-              = link_to image_tag('toggle_check.png'),{}, title: "#{l(:button_check_all)} / #{l(:button_uncheck_all)}"
+              = link_to image_tag('toggle_check.png'),{}, title: "#{t(:button_check_all)} / #{t(:button_uncheck_all)}"
             - @query.columns.each do |column|
               = column_header column
             th.icon_column
@@ -20,9 +20,9 @@
                 td colspan="#{@query.inline_columns.size + 2}"
                   span.expander &nbsp;
                   = group_name
-                  span.count
-                    a.toggle-all href='#'
-                      = "#{l(:button_collapse_all)} / #{l(:button_expand_all)}"
+                  span.count = group_count
+                  a.toggle-all href='#'
+                    = "#{t(:button_collapse_all)} / #{t(:button_expand_all)}"
             tr.entry.hascontextmenu id=time_log.id class=cycle('odd', 'even')
               = render partial: 'chronos_ui/time_logs/list_entry', locals: {time_log: time_log}
     p.pagination
