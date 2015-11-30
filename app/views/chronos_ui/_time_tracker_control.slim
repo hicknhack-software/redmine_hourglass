@@ -1,5 +1,5 @@
 .time-tracker-control
-  h3 = t('chronos.ui.page_overview.time_tracker_control.heading')
+  h3 = t('chronos.ui.index.time_tracker_control.heading')
   - unless @time_tracker.persisted?
     = form_for @time_tracker, url: start_chronos_time_trackers_path, as: 'time_tracker', remote: true do |f|
       .form-row
@@ -7,7 +7,7 @@
           = f.text_field :comments, size: '30', maxlength: 255, id: 'task', disabled: !authorize_globally_for('chronos/time_trackers', 'update'), class: ('js-issue-autocompletion' if authorize_globally_for('chronos/time_logs', 'book'))
           = f.hidden_field :issue_id if authorize_globally_for('chronos/time_logs', 'book')
         .form-field
-          = f.submit t('chronos.ui.page_overview.time_tracker_control.button_start')
+          = f.submit t('chronos.ui.index.time_tracker_control.button_start')
   - else
     = form_for @time_tracker, url: stop_chronos_time_tracker_path(@time_tracker), method: :delete, as: 'time_tracker', remote: true do |f|
       .form-row
@@ -29,7 +29,7 @@
             = f.check_box :round
         .form-field
           .label
-            = t('chronos.ui.page_overview.time_tracker_control.label_running_time')
+            = t('chronos.ui.index.time_tracker_control.label_running_time')
           .input.js-running-time
       .form-row
         .form-field
@@ -49,4 +49,4 @@
             = f.text_field :start, size: '20', disabled: !authorize_globally_for('chronos/time_logs', 'update_time'), class: 'js-start'
         .form-field
           .input
-            = f.submit t('chronos.ui.page_overview.time_tracker_control.button_stop')
+            = f.submit t('chronos.ui.index.time_tracker_control.button_stop')
