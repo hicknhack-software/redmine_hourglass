@@ -1,6 +1,6 @@
 # gui routes can't be namespaced
 scope :chronos, as: :chronos do
-  root to: 'chronos_overview#index'
+  root to: 'chronos_ui#index'
   scope :completion, as: :completion do
     get 'issues', to: 'chronos_completion#issues'
     get 'activities', to: 'chronos_completion#activities'
