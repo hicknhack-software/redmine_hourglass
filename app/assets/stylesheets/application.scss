@@ -1,5 +1,4 @@
-.time-tracker-control {
-  margin-bottom: 30px;
+@mixin form-row {
   .form-row {
     width: 100%;
     clear: left;
@@ -13,6 +12,9 @@
       }
       .input {
         margin-top: 15px;
+        input ~ a {
+          margin-left: 10px;
+        }
         .invalid {
           border: 2px solid #D00;
           background-color: #FFE3E3;
@@ -21,6 +23,12 @@
       }
     }
   }
+}
+
+
+.time-tracker-control {
+  margin-bottom: 30px;
+  @include form-row;
 }
 
 .chronos-list {
@@ -36,6 +44,7 @@
 
     td {
       text-align: center;
+      @include form-row;
       &.comments, &.issue {
         text-align: left;
       }
@@ -47,7 +56,7 @@
       }
     }
     th {
-      &.icon_column {
+      &.actions {
         width: 1px;
       }
     }

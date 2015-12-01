@@ -3,27 +3,39 @@ $ ->
   $list
     .on 'click', '.checkbox a', (event) ->
       event.preventDefault()
-      toggleIssuesSelection @
+      $boxes = $(@).closest('table').find('input[type=checkbox]')
+      all_checked = true
+      $boxes.each -> all_checked = all_checked && $(@).prop('checked')
+      $boxes.each ->
+        $(@)
+          .prop('checked', !all_checked)
+          .parents('tr')
+            .toggleClass('context-menu-selection', !all_checked)
 
-  $list.find '.actions'
-    .on 'ajax:success', '.js-replace-entry', (event, response) ->
+  $list
+    .on 'ajax:success', '.js-show-inline-form', (event, response) ->
       $row = $(@).closest 'tr'
       $formRow = $row.clone()
       tdCount = $formRow.find('td').length - 1
       $formRow
         .removeClass 'hascontextmenu'
-        .addClass 'inline-form'
         .empty()
         .append $('<td/>', class: 'hide-when-print')
         .append $('<td/>', colspan: tdCount).append response
       $row
         .hide()
         .after $formRow
-    .on 'ajax:error', '.js-replace-entry', (event, {responseText}) ->
+    .on 'ajax:error', '.js-show-inline-form', (event, {responseText}) ->
       if responseText
         $response = $(responseText)
         message = "#{$response.filter('h2').text()} - #{$response.filter('#errorExplanation').text()}"
         chronos.Utils.showErrorMessage message
+    .on 'click', '.js-hide-inline-form', (event) ->
+      event.preventDefault()
+      $formRow = $(@).closest('tr')
+      $row = $formRow.prev()
+      $formRow.remove()
+      $row.show()
 
   $list.find '.group'
     .on 'click', '.expander', (event) ->
