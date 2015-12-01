@@ -18,17 +18,17 @@ class ChronosUiController < ApplicationController
   end
 
   def edit_time_logs
-    render 'chronos_ui/time_logs/edit'
+    render 'chronos_ui/time_logs/edit', layout: false
   end
 
   def book_time_logs
-    render 'chronos_ui/time_logs/book'
+    render 'chronos_ui/time_logs/book', layout: false
   end
 
   def time_bookings
   end
 
   def edit_time_bookings
-    render 'chronos_ui/time_bookings/edit'
+    render 'chronos_ui/time_bookings/edit', layout: false
   end
 end
