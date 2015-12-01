@@ -44,9 +44,7 @@ module Chronos
       filtered_errors = self.errors.reject { |err| err.first == :time_entry }
       self.errors.clear
       filtered_errors.each { |err| self.errors.add(*err) }
-      time_entry.errors.full_messages.each do |msg|
-        errors.add :base, msg
-      end
+      time_entry.errors.full_messages.each { |msg| errors.add :base, msg } if time_entry.present?
     end
 
     def stop_is_valid
