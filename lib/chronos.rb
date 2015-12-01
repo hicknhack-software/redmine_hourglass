@@ -1,4 +1,5 @@
 ActiveSupport::Dependencies.autoload_paths << File.join(File.dirname(__FILE__), '..', 'app', 'models', 'concerns')
+ActiveSupport::Dependencies.autoload_paths << File.join(File.dirname(__FILE__), '..', 'app', 'controllers', 'concerns')
 ActiveSupport::Dependencies.autoload_paths << File.join(File.dirname(__FILE__), 'chronos')
 
 # load redmine patches

@@ -1,18 +1,16 @@
 class ChronosQueriesController < ApplicationController
-  before_filter :find_query, except: [:new, :create]
-  before_filter :find_optional_project, only: [:new, :create]
-
-  helper :queries
   include QueriesHelper
+  include QueryConcern
+
+  before_filter :find_query, except: [:new, :create]
+  before_filter :build_query, only: [:new, :create]
+
+  helper QueriesHelper
 
   def new
-    @query = Chronos::TimeLogQuery.build_from_params params, params[:query]
-    @query.user = User.current
   end
 
   def create
-    @query = Chronos::TimeLogQuery.build_from_params params, params[:query]
-    @query.user = User.current
     @query.column_names = nil if params[:default_columns]
 
     if @query.save
@@ -41,19 +39,24 @@ class ChronosQueriesController < ApplicationController
 
   def destroy
     @query.destroy
-    redirect_to chronos_time_logs_path set_filter: 1
+    redirect_to redirect_path set_filter: 1
   end
 
   private
+  def build_query
+    @query = query_class.build_from_params params, params[:query]
+    @query.user = User.current
+  end
+
   def find_query
-    @query = Chronos::TimeLogQuery.find(params[:id])
+    @query = Query.find(params[:id])
     render_403 unless @query.editable_by? User.current
   rescue ActiveRecord::RecordNotFound
     render_404
   end
 
   def redirect_path(options = {})
-    uri = URI params[:request_referer].presence || request.referer || chronos_time_logs_path
+    uri = URI params[:request_referer].presence || request.referer || chronos_root_path
     uri.query = URI.encode_www_form(URI.decode_www_form(uri.query || '') << options.flatten)
     uri.to_s
   end

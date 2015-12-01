@@ -80,3 +80,10 @@ en:
         no_time_logs: No time logs available
       time_bookings:
         title: Time Bookings
+    queries:
+      time_logs:
+        title_new: New Time Log Query
+      time_bookings:
+        title_new: New Time Booking Query
+      report:
+        title_new: New Report Query

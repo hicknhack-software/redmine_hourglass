@@ -26,6 +26,8 @@ $ ->
         $queryForm.submit()
       .on 'click', '.js-query-save', (event) ->
         event.preventDefault()
+        $this = $(@)
         $queryForm
-          .attr('action', $(@).data('url'))
+          .attr('action', $this.data('url'))
+          .append $('<input/>', type: 'hidden', name: 'query_class').val($this.data('query-class'))
           .submit()
