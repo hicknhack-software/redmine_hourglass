@@ -9,11 +9,13 @@ $ ->
     .on 'ajax:success', '.js-replace-entry', (event, response) ->
       $row = $(@).closest 'tr'
       $formRow = $row.clone()
+      tdCount = $formRow.find('td').length - 1
       $formRow
         .removeClass 'hascontextmenu'
         .addClass 'inline-form'
         .empty()
-        .append response
+        .append $('<td/>', class: 'hide-when-print')
+        .append $('<td/>', colspan: tdCount).append response
       $row
         .hide()
         .after $formRow
