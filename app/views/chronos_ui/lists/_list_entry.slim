@@ -1,0 +1,6 @@
+td.checkbox.hide-when-print
+  = check_box_tag("ids[]", entry.id, false, id: nil)
+  = hidden_field_tag "entryClass", entry.class
+= raw @query.columns.map { |column| "<td class=\"#{column.css_classes}\">#{column_content(column, entry)}</td>" }.join
+td.actions
+  = render partial: "chronos_ui/#{action_name}/list_entry_actions", locals: {:"#{action_name.singularize}" => entry}

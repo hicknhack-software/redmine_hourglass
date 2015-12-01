@@ -1,6 +1,6 @@
-- if !@time_logs || @time_logs.empty?
+- if !@entries || @entries.empty?
   p.nodata
-    = t('chronos.ui.time_logs.no_time_logs')
+    = t("chronos.ui.#{actionname}.no_data")
 - else
   = form_tag do
     .autoscroll
@@ -13,7 +13,7 @@
               = column_header column
             th.icon_column
         tbody
-          - grouped_time_log_list @time_logs, @query, @time_log_count_by_group do |time_log, group_name, group_count|
+          - grouped_entry_list @entries, @query, @count_by_group do |entry, group_name, group_count|
             - if group_name
               - reset_cycle
               tr.group.open
@@ -23,7 +23,7 @@
                   span.count = group_count
                   a.toggle-all href='#'
                     = "#{t(:button_collapse_all)} / #{t(:button_expand_all)}"
-            tr.entry.hascontextmenu id=time_log.id class=cycle('odd', 'even')
-              = render partial: 'chronos_ui/time_logs/list_entry', locals: {time_log: time_log}
+            tr.entry.hascontextmenu id=entry.id class=cycle('odd', 'even')
+              = render partial: 'chronos_ui/lists/list_entry', locals: {entry: entry}
     p.pagination
       = pagination_links_full @pages, @count

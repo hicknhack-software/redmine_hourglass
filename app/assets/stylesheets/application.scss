@@ -39,9 +39,10 @@
       &.comments, &.issue {
         text-align: left;
       }
-      &.actions a{
+      &.actions a {
         padding: 2px 16px;
-        background: no-repeat 10px 0;
+        background-repeat: no-repeat;
+        background-position: 10px 0;
         visibility: hidden;
       }
     }

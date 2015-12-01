@@ -1,11 +1,16 @@
 # gui routes can't be namespaced
 scope :chronos, as: :chronos do
   root to: 'chronos_ui#index'
-  get 'time_logs', to: 'chronos_ui#time_logs'
-  get 'time_bookings', to: 'chronos_ui#time_bookings'
-  scope :completion, as: :completion do
-    get 'issues', to: 'chronos_completion#issues'
-    get 'activities', to: 'chronos_completion#activities'
+  scope :ui, as: :ui, controller: :chronos_ui do
+    get 'time_logs'
+    get 'time_logs/:id/edit', action: :edit_time_logs, as: :edit_time_logs
+    get 'time_logs/:id/book', action: :book_time_logs, as: :book_time_logs
+    get 'time_bookings'
+    get 'time_bookings/:id/edit', action: :edit_time_bookings, as: :edit_time_bookings
+  end
+  scope :completion, as: :completion, controller: :chronos_completion do
+    get 'issues'
+    get 'activities'
   end
 
   resources :queries, controller: :chronos_queries, except: [:show, :index]

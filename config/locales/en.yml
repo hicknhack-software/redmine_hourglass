@@ -77,9 +77,10 @@ en:
           label_running_time: Running Time
       time_logs:
         title: Time Logs
-        no_time_logs: No time logs available
+        no_data: No time logs available
       time_bookings:
         title: Time Bookings
+        no_data: No time bookings available
     queries:
       time_logs:
         title_new: New Time Log Query

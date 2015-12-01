@@ -17,20 +17,20 @@ module Chronos
       project.present? ? project.activities : TimeEntryActivity.shared.active
     end
 
-    def grouped_time_log_list(time_logs, query, time_log_count_by_group)
+    def grouped_entry_list(entries, query, count_by_group)
       previous_group, first = false, true
-      time_logs.each do |time_log|
+      entries.each do |entry|
         group_name = group_count = nil
-        if query.grouped? && ((group = query.group_by_column.value(time_log)) != previous_group || first)
+        if query.grouped? && ((group = query.group_by_column.value(entry)) != previous_group || first)
           if group.blank? && group != false
             group_name = "(#{l(:label_blank_value)})"
           else
-            group_name = column_content(query.group_by_column, time_log)
+            group_name = column_content(query.group_by_column, entry)
           end
           group_name ||= ''
-          group_count = time_log_count_by_group[group]
+          group_count = count_by_group[group]
         end
-        yield time_log, group_name, group_count
+        yield entry, group_name, group_count
         previous_group, first = group, false
       end
     end
