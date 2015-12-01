@@ -29,6 +29,10 @@ module Chronos
       self.stop = stop.change(sec: 0) if stop
     end
 
+    def new_time_booking
+      TimeBooking.new time_booking_arguments default_booking_arguments
+    end
+
     def update(attributes)
       round = attributes.delete :round
       ActiveRecord::Base.transaction do

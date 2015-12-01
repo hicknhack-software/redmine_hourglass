@@ -75,6 +75,8 @@ en:
           button_start: Start
           heading: Please specify your current task
           label_running_time: Running Time
+      lists:
+        button_book: Book
       time_logs:
         title: Time Logs
         no_data: No time logs available

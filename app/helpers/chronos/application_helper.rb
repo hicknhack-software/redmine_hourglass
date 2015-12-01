@@ -8,7 +8,7 @@ module Chronos
       "##{issue.id} #{issue.subject}" if issue
     end
 
-    def projects_for_project_select(selected)
+    def projects_for_project_select(selected = nil)
       projects = User.current.projects.has_module('redmine_chronos')
       project_tree_options_for_select projects, selected: selected, include_blank: true
     end

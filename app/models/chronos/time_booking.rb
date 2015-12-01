@@ -7,6 +7,7 @@ module Chronos
 
     after_initialize :create_time_entry
     after_update :update_time_entry
+    after_validation :add_time_entry_errors
 
     attr_accessor :time_entry_arguments
 
@@ -19,7 +20,8 @@ module Chronos
              :activity, :activity_id,
              :user, :user_id,
              :comments,
-             to: :time_entry
+             to: :time_entry,
+             allow_nil: true
 
     def rounding_carry_over
       (stop - time_log.stop).to_i
@@ -35,6 +37,15 @@ module Chronos
     def update_time_entry
       if time_entry_arguments.present? && time_entry
         time_entry.update time_entry_arguments
+      end
+    end
+
+    def add_time_entry_errors
+      filtered_errors = self.errors.reject { |err| err.first == :time_entry }
+      self.errors.clear
+      filtered_errors.each { |err| self.errors.add(*err) }
+      time_entry.errors.full_messages.each do |msg|
+        errors.add :base, msg
       end
     end
 
