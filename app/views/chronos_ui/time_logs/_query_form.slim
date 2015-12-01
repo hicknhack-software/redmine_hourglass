@@ -18,8 +18,9 @@
           td
             = select_tag 'group_by', options_for_select([[]] + @query.groupable_columns.collect { |c| [c.caption, c.name.to_s] },                @query.group_by)
   p.buttons
-    = link_to_function t(:button_apply), '$("#query_form").submit();', class: 'icon icon-checked'
+    = link_to t(:button_apply), '#', class: 'icon icon-checked js-query-apply'
     = link_to t(:button_clear), {set_filter: 1}, class: 'icon icon-reload'
-    /- if @query.new_record? && User.current.allowed_to?(:save_queries, @project, global: true)
-      = link_to_function t(:button_save), "$('#query_form').attr('action', '#{ @project ? new_project_time_log_query_path(@project) : new_time_log_query_path }'); $('#query_form').submit();", class: 'icon icon-save'
+    - if @query.new_record? && User.current.allowed_to_globally?(:save_queries)
+      = link_to t(:button_save), '#', class: 'icon icon-save js-query-save', data: {url: new_chronos_query_path}
+
 = error_messages_for 'query'

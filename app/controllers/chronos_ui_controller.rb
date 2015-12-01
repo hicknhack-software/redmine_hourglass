@@ -1,9 +1,12 @@
 class ChronosUiController < ApplicationController
   include SortHelper
 
-  helper Chronos::ApplicationHelper
   helper QueriesHelper
+  helper IssuesHelper
   helper SortHelper
+  helper Chronos::ApplicationHelper
+
+  helper_method :query_class
 
   before_action :retrieve_query, only: [:time_logs]
 
@@ -50,7 +53,7 @@ class ChronosUiController < ApplicationController
 
   def query_from_id
     query = Query.find(params[:query_id])
-    raise ::Unauthorized unless query.visible?
+    #raise ::Unauthorized unless query.visible?
     session[session_query_var_name] = {id: query.id}
     sort_clear
     query

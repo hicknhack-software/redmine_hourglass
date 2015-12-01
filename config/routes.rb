@@ -7,6 +7,8 @@ scope :chronos, as: :chronos do
     get 'issues', to: 'chronos_completion#issues'
     get 'activities', to: 'chronos_completion#activities'
   end
+
+  resources :queries, controller: :chronos_queries, except: [:show, :index]
 end
 
 namespace :chronos do

@@ -50,6 +50,14 @@ module Chronos
       @default_columns_names ||= [:start, :stop, :user, :comments]
     end
 
+    def is_private?
+      visibility == VISIBILITY_PRIVATE
+    end
+
+    def is_public?
+      !is_private?
+    end
+
     def results_scope(options = {})
       order_option = [group_by_sort_order, options[:order]].flatten.reject(&:blank?)
 

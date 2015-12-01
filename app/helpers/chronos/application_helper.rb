@@ -34,5 +34,11 @@ module Chronos
         previous_group, first = group, false
       end
     end
+
+    def sidebar_queries
+      @sidebar_queries ||= query_class
+                               .where(@project.nil? ? {project_id: nil} : {project_id: [nil, @project.id]})
+                               .order(name: :asc)
+    end
   end
 end
