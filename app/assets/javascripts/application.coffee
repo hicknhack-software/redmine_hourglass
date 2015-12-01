@@ -51,3 +51,11 @@ $ ->
       $(event.target)
         .val(ui.item.label)
         .next().val(ui.item.issue_id)
+
+  $(document)
+  .on 'submit', '.js-validate-form', (event) ->
+    event.preventDefault() unless chronos.FormValidator.validateForm $(@)
+  .on 'ajax:success', '.js-chronos-remote', ->
+    location.reload()
+  .on 'ajax:error', '.js-chronos-remote', (event, {responseJSON}) ->
+    chronos.Utils.showErrorMessage responseJSON.message

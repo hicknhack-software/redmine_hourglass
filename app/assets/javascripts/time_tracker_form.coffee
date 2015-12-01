@@ -16,15 +16,8 @@ $ ->
   $projectField = $timeTrackerEditForm.find('#time_tracker_project_id')
   $activityField = $timeTrackerEditForm.find('#time_tracker_activity_id')
   $startField = $timeTrackerEditForm.find('#time_tracker_start')
-  chronos.FormValidator.validateForm $timeTrackerEditForm
 
-  $timeTrackerEditForm
-  .on 'submit', (event) ->
-    event.preventDefault() unless chronos.FormValidator.validateForm $timeTrackerEditForm
-  .on 'ajax:success', ->
-    location.reload()
-  .on 'ajax:error', (event, {responseJSON}) ->
-    chronos.Utils.showErrorMessage responseJSON.message
+  chronos.FormValidator.validateForm $timeTrackerEditForm
 
   $timeTrackerEditForm.on 'change', (event) ->
     data = {}
@@ -48,12 +41,6 @@ $ ->
   ############## new form stuff ##############
   $timeTrackerNewForm = $timeTrackerControl.find('.new_time_tracker')
   $taskField = $timeTrackerNewForm.find('#task')
-
-  $timeTrackerNewForm
-  .on 'ajax:success', ->
-    location.reload()
-  .on 'ajax:error', (event, {responseJSON}) ->
-    chronos.Utils.showErrorMessage responseJSON.message
 
   $taskField.on 'change', ->
     $this = $(@)
