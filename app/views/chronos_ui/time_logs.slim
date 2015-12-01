@@ -10,7 +10,7 @@
 h2 = @query.persisted? ? h(@query.name) : t('chronos.ui.time_logs.title')
 - html_title @query.persisted? ? @query.name : t('chronos.ui.time_logs.title')
 
-= render partial: 'chronos_ui/time_logs/query_form'
+= render partial: 'chronos_ui/lists/query_form'
 = render partial: 'chronos_ui/time_logs/list'
 
 - content_for :sidebar do

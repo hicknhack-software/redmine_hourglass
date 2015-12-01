@@ -1,5 +1,5 @@
 - collapse_filters = @query.persisted?
-= form_tag chronos_time_logs_path, method: 'get', id: 'query_form', class: 'hide-when-print'
+= form_tag url_for, method: 'get', id: 'query_form', class: 'hide-when-print'
   = hidden_field_tag 'set_filter', '1'
   fieldset#filters.collapsible class=('collapsed' if collapse_filters )
     legend = t(:label_filter_plural)
