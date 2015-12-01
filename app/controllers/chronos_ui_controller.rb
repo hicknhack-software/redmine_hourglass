@@ -9,6 +9,8 @@ class ChronosUiController < ApplicationController
   helper Chronos::ApplicationHelper
 
   before_action :retrieve_query, :init_sort, :create_view_arguments, only: [:time_logs, :time_bookings]
+  before_action :get_time_log, only: [:edit_time_logs, :book_time_logs]
+  before_action :get_time_booking, only: [:edit_time_bookings]
 
   def index
     @time_tracker = User.current.chronos_time_tracker || Chronos::TimeTracker.new
@@ -30,5 +32,16 @@ class ChronosUiController < ApplicationController
 
   def edit_time_bookings
     render 'chronos_ui/time_bookings/edit', layout: false
+  end
+
+  private
+  def get_time_log
+    @time_log = Chronos::TimeLog.find_by id: params[:id]
+    render_404 unless @time_log.present?
+  end
+
+  def get_time_booking
+    @time_booking = Chronos::TimeBooking.find_by id: params[:id]
+    render_404 unless @time_booking.present?
   end
 end

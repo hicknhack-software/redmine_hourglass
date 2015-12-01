@@ -19,8 +19,11 @@ $ ->
       $row
         .hide()
         .after $formRow
-    .on 'ajax:error', '.js-replace-entry', (event, response) ->
-      console.log response
+    .on 'ajax:error', '.js-replace-entry', (event, {responseText}) ->
+      if responseText
+        $response = $(responseText)
+        message = "#{$response.filter('h2').text()} - #{$response.filter('#errorExplanation').text()}"
+        chronos.Utils.showErrorMessage message
 
   $list.find '.group'
     .on 'click', '.expander', (event) ->
