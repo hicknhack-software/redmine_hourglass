@@ -5,7 +5,7 @@ module Chronos
     before_action :get_time_log, only: [:show, :update, :split, :combine, :book, :destroy]
     before_action :sanitize_booking_time_params, only: :book
     before_action :authorize_global, only: [:index, :show, :update, :split, :combine, :destroy]
-    before_action :find_optional_project, :authorize, only: [:book]
+    before_action :find_optional_project, :authorize_with_project_or_global, only: [:book]
     before_action :authorize_foreign, only: [:show, :update, :split, :combine, :book, :destroy]
     before_action :authorize_update_time, only: [:update]
     before_action :authorize_update_booking, only: [:split]
@@ -57,7 +57,7 @@ module Chronos
     end
 
     def book
-      time_booking = @time_log.book booking_params
+      time_booking = @time_log.book time_booking_params
       if time_booking.persisted?
         respond_with_success time_booking
       else
@@ -75,8 +75,8 @@ module Chronos
       params.require(:time_log).permit(:start, :stop, :comments, :round)
     end
 
-    def booking_params
-      params.require(:booking).permit(:comments, :project_id, :issue_id, :activity_id, :round)
+    def time_booking_params
+      params.require(:time_booking).permit(:comments, :project_id, :issue_id, :activity_id, :round)
     end
 
     def get_time_log
@@ -89,10 +89,14 @@ module Chronos
       Chronos::TimeLog.find_by id: params[:id]
     end
 
+    def find_optional_project
+      @project = Project.visible.find_by(id: params[:time_booking].presence[:project_id])
+    end
+
     def sanitize_booking_time_params
       [:start, :stop].each do |time_param|
-        if params[:booking][time_param].present?
-          params[:booking][time_param] = Time.zone.parse params[:booking][time_param]
+        if params[:time_booking].presence[time_param].present?
+          params[:time_booking][time_param] = Time.parse params[:time_booking][time_param]
         end
       end
     end

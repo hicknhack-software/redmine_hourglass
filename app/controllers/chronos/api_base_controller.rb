@@ -60,6 +60,10 @@ module Chronos
       @project = @request_resource.project
     end
 
+    def authorize_with_project_or_global
+      @project.present? ? authorize : authorize_global
+    end
+
     def authorize_global(*args)
       super *args
       @authorize_global = true
