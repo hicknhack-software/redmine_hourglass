@@ -1,5 +1,5 @@
 $ ->
-  $('.js-chronos-list')
+  $('.chronos-list')
     .on 'click', '.checkbox a', (event) ->
       event.preventDefault()
       toggleIssuesSelection @

@@ -22,3 +22,33 @@
     }
   }
 }
+
+.chronos-list {
+  tr {
+    white-space: nowrap;
+    text-align: center;
+
+    &:hover {
+      td.actions a {
+        visibility: visible;
+      }
+    }
+
+    td {
+      text-align: center;
+      &.comments, &.issue {
+        text-align: left;
+      }
+      &.actions a{
+        padding: 2px 16px;
+        background: no-repeat 10px 0;
+        visibility: hidden;
+      }
+    }
+    th {
+      &.icon_column {
+        width: 1px;
+      }
+    }
+  }
+}
