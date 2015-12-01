@@ -42,8 +42,8 @@ module Chronos
         format.json {
           respond_with_error status, message, no_halt: true
         }
+        format.any { super args}
       end
-      super
     end
 
     def catch_halt
