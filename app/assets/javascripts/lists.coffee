@@ -12,15 +12,14 @@ toggleAllCheckBoxes = (event) ->
 showInlineForm = (event, response) ->
   $row = $(@).closest 'tr'
   $formRow = $row.clone()
+  $row.hide()
   tdCount = $formRow.find('td').length - 1
   $formRow
   .removeClass 'hascontextmenu'
   .empty()
   .append $('<td/>', class: 'hide-when-print')
   .append $('<td/>', colspan: tdCount).append response
-  $row
-  .hide()
-  .after $formRow
+  .insertAfter $row
 
 hideInlineForm = (event) ->
   event.preventDefault()

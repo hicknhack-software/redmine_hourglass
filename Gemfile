@@ -10,6 +10,7 @@ gem 'cssminify'
 #views
 gem 'slim'
 gem 'js-routes'
+gem 'momentjs-rails'
 
 group :test do
   gem 'zonebie'

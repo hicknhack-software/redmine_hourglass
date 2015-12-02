@@ -1,4 +1,5 @@
-#= require jsroutes.js.erb
+#= require js-routes
+#= require moment
 #= require utils
 #= require forms
 #= require validators

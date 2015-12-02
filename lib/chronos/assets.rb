@@ -4,7 +4,12 @@ class Chronos::Assets < Sprockets::Environment
   def initialize
     super File.join(File.dirname(__FILE__), '..', '..') do |env|
       env.append_path 'app/assets/javascripts'
+      env.append_path 'vendor/assets/javascripts'
       env.append_path 'app/assets/stylesheets'
+      env.append_path 'vendor/assets/stylesheets'
+      Rails.application.assets.paths.each do |path|
+        env.append_path path
+      end
       if Rails.env.production?
         env.js_compressor  = Uglifier.new
         env.css_compressor  = CSSminify.new
@@ -13,5 +18,6 @@ class Chronos::Assets < Sprockets::Environment
   end
 
   def compress_and_compile
+    raise NotImplementedError
   end
 end
