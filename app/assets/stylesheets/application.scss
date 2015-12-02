@@ -25,7 +25,6 @@
   }
 }
 
-
 .time-tracker-control {
   margin-bottom: 30px;
   @include form-row;
@@ -48,11 +47,14 @@
       &.comments, &.issue {
         text-align: left;
       }
-      &.actions a {
-        padding: 2px 16px;
-        background-repeat: no-repeat;
-        background-position: 10px 0;
-        visibility: hidden;
+      &.actions {
+        text-align: right;
+        a {
+          padding: 2px 16px;
+          background-repeat: no-repeat;
+          background-position: 10px 0;
+          visibility: hidden;
+        }
       }
     }
     th {
