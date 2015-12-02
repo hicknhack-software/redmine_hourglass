@@ -5,7 +5,7 @@ isNotEmpty = ($field) ->
   not isEmpty $field
 
 isFieldValid = ($field, $form) ->
-  type = $field.attr('name').replace(/time_tracker\[([a-z_]*)]/, '$1')
+  type = $field.attr('name').replace(/[a-z_]*\[([a-z_]*)]/, '$1')
   isRequired = $field.prop('required')
 
   condition = switch type
@@ -34,7 +34,6 @@ validateForm = ($form) ->
   valid
 
 @chronos ?= {}
-@chronos.FormValidator = {
+@chronos.FormValidator =
   validateField: validateField
   validateForm: validateForm
-}
