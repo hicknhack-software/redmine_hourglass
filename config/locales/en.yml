@@ -56,6 +56,7 @@ en:
           update_time_forbidden: You are not allowed to change the start of a timer
       time_logs:
         errors:
+          already_booked: This time log was already booked.
           change_others_forbidden: You are not allowed to execute this action for another users time log
           combine_failed: There are either bookings defined on the submitted time logs or the time logs start and stop doesn't match
           not_found: This time log doesn't exist

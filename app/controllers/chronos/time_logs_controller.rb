@@ -63,6 +63,8 @@ module Chronos
       else
         respond_with_error :bad_request, time_booking.errors.full_messages
       end
+    rescue Chronos::AlreadyBookedException
+      respond_with_error :bad_request, t('chronos.api.time_logs.errors.already_booked')
     end
 
     def destroy
