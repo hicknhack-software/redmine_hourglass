@@ -54,7 +54,7 @@ module Chronos
     def book(attributes)
       raise AlreadyBookedException if time_booking.present?
       DateTimeCalculations.booking_process user, default_booking_arguments.merge(attributes.except(:start, :stop)) do |options|
-        TimeBooking.create time_booking_arguments options
+        self.time_booking = TimeBooking.create time_booking_arguments options
       end
     end
 

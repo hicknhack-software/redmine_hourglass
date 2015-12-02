@@ -95,6 +95,15 @@ describe Chronos::TimeLog do
         book!
       end
     end
+
+    context 'with an existing time booking' do
+      let (:booking_arguments) { {project_id: create(:project).id, activity_id: create(:time_entry_activity).id} }
+
+      it 'throws the correct exception' do
+        time_log.book booking_arguments
+        expect { book! }.to raise_exception Chronos::AlreadyBookedException
+      end
+    end
   end
 
   describe 'updating' do
@@ -219,13 +228,13 @@ describe Chronos::TimeLog do
       it '6x 10 minutes' do
         now = Time.zone.now.change(sec: 0)
         time_logs = create_time_logs start: now, entries: [
-                                                   {length: 10.minutes},
-                                                   {length: 10.minutes},
-                                                   {length: 10.minutes},
-                                                   {length: 10.minutes},
-                                                   {length: 10.minutes},
-                                                   {length: 10.minutes}
-                                               ]
+            {length: 10.minutes},
+            {length: 10.minutes},
+            {length: 10.minutes},
+            {length: 10.minutes},
+            {length: 10.minutes},
+            {length: 10.minutes}
+        ]
         time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
         expect(time_bookings.last.stop).to eq now + 1.hour
       end
@@ -233,13 +242,13 @@ describe Chronos::TimeLog do
       it 'different time values' do
         now = Time.zone.now.change(sec: 0)
         time_logs = create_time_logs start: now, entries: [
-                                                   {length: 7.minutes},
-                                                   {length: 3.minutes},
-                                                   {length: 25.minutes},
-                                                   {length: 10.minutes},
-                                                   {length: 11.minutes},
-                                                   {length: 13.minutes}
-                                               ]
+            {length: 7.minutes},
+            {length: 3.minutes},
+            {length: 25.minutes},
+            {length: 10.minutes},
+            {length: 11.minutes},
+            {length: 13.minutes}
+        ]
         time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
         expect(time_bookings.last.stop).to eq now + 1.25.hours
       end
@@ -249,13 +258,13 @@ describe Chronos::TimeLog do
       it '- 6x 10 minutes' do
         now = Time.zone.now.change(sec: 0)
         time_logs = create_time_logs start: now, entries: [
-                                                   {length: 10.minutes},
-                                                   {length: 10.minutes},
-                                                   {length: 10.minutes, offset: 20.minutes},
-                                                   {length: 10.minutes},
-                                                   {length: 10.minutes, offset: 10.minutes},
-                                                   {length: 10.minutes}
-                                               ]
+            {length: 10.minutes},
+            {length: 10.minutes},
+            {length: 10.minutes, offset: 20.minutes},
+            {length: 10.minutes},
+            {length: 10.minutes, offset: 10.minutes},
+            {length: 10.minutes}
+        ]
         time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
         expect(time_bookings.last.stop).to eq now + 1.5.hours
       end
@@ -263,13 +272,13 @@ describe Chronos::TimeLog do
       it '- different time values' do
         now = Time.zone.now.change(sec: 0)
         time_logs = create_time_logs start: now, entries: [
-                                                   {length: 7.minutes},
-                                                   {length: 3.minutes, offset: 20.minutes},
-                                                   {length: 25.minutes},
-                                                   {length: 10.minutes},
-                                                   {length: 11.minutes, offset: 10.minutes},
-                                                   {length: 13.minutes}
-                                               ]
+            {length: 7.minutes},
+            {length: 3.minutes, offset: 20.minutes},
+            {length: 25.minutes},
+            {length: 10.minutes},
+            {length: 11.minutes, offset: 10.minutes},
+            {length: 13.minutes}
+        ]
         time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
         expect(time_bookings.last.stop).to eq now + 1.75.hours
       end
@@ -279,13 +288,13 @@ describe Chronos::TimeLog do
       it '- 6x 10 minutes' do
         now = Time.zone.now.change(sec: 0)
         time_logs = create_time_logs start: now, entries: [
-                                                   {length: 10.minutes},
-                                                   {length: 10.minutes},
-                                                   {length: 10.minutes, offset: 13.hours},
-                                                   {length: 10.minutes},
-                                                   {length: 10.minutes},
-                                                   {length: 10.minutes}
-                                               ]
+            {length: 10.minutes},
+            {length: 10.minutes},
+            {length: 10.minutes, offset: 13.hours},
+            {length: 10.minutes},
+            {length: 10.minutes},
+            {length: 10.minutes}
+        ]
         time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
         expect(time_bookings.last.stop).to eq now + 14.hours + 5.minutes
       end
@@ -293,13 +302,13 @@ describe Chronos::TimeLog do
       it '- different time values' do
         now = Time.zone.now.change(sec: 0)
         time_logs = create_time_logs start: now, entries: [
-                                                   {length: 7.minutes},
-                                                   {length: 3.minutes, offset: 15.hours},
-                                                   {length: 25.minutes},
-                                                   {length: 10.minutes},
-                                                   {length: 11.minutes, offset: 12.hours},
-                                                   {length: 13.minutes}
-                                               ]
+            {length: 7.minutes},
+            {length: 3.minutes, offset: 15.hours},
+            {length: 25.minutes},
+            {length: 10.minutes},
+            {length: 11.minutes, offset: 12.hours},
+            {length: 13.minutes}
+        ]
         time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
         expect(time_bookings.last.stop).to eq now + 28.25.hours
       end
@@ -311,12 +320,12 @@ describe Chronos::TimeLog do
         project = create(:project)
         activity = create(:time_entry_activity)
         time_logs = create_time_logs start: now, entries: [
-                                                   {length: 10.minutes},
-                                                   {length: 10.minutes},
-                                                   {length: 10.minutes, offset: 10.minutes},
-                                                   {length: 10.minutes},
-                                                   {length: 10.minutes}
-                                               ]
+            {length: 10.minutes},
+            {length: 10.minutes},
+            {length: 10.minutes, offset: 10.minutes},
+            {length: 10.minutes},
+            {length: 10.minutes}
+        ]
         time_bookings = book_all time_logs, project_id: project.id, activity_id: activity.id, round: true
         expect {
           second_time_log = time_logs[1]
@@ -330,12 +339,12 @@ describe Chronos::TimeLog do
         project = create(:project)
         activity = create(:time_entry_activity)
         time_logs = create_time_logs start: now, entries: [
-                                                   {length: 7.minutes},
-                                                   {length: 3.minutes},
-                                                   {length: 25.minutes},
-                                                   {length: 11.minutes, offset: 10.minutes},
-                                                   {length: 13.minutes}
-                                               ]
+            {length: 7.minutes},
+            {length: 3.minutes},
+            {length: 25.minutes},
+            {length: 11.minutes, offset: 10.minutes},
+            {length: 13.minutes}
+        ]
         time_bookings = book_all time_logs, project_id: project.id, activity_id: activity.id, round: true
         expect {
           second_time_log = time_logs[2]
