@@ -44,7 +44,7 @@ module Chronos::DateTimeCalculations
     end
 
     def booking_process(user, options)
-      round = options[:round] || round_default
+      round = options[:round].nil? ? round_default : options[:round]
       if round
         previous_time_log = closest_booked_time_log user, options[:project_id], options[:start], after_current: false
         options[:start], options[:stop] = calculate_bookable_time options[:start], options[:stop], previous_time_log && previous_time_log.time_booking && previous_time_log.time_booking.rounding_carry_over

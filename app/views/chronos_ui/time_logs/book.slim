@@ -12,6 +12,11 @@
         = f.text_field :stop, size: '20', disabled: !authorize_globally_for('chronos/time_logs', 'update_time'), class: 'js-stop'
     .form-field
       .label
+        = label :time_booking, :round
+      .input
+        = check_box :time_booking, :round, checked: Chronos::DateTimeCalculations.round_default
+    .form-field
+      .label
         = f.label :project_id
       .input
         = f.select :project_id, projects_for_project_select(@time_booking.project), disabled: !authorize_globally_for('chronos/time_logs', 'book')
