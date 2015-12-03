@@ -3,7 +3,6 @@ module Chronos
     accept_api_auth :index, :show, :update, :split, :combine, :book, :destroy
 
     before_action :get_time_log, only: [:show, :update, :split, :combine, :book, :destroy]
-    before_action :sanitize_booking_time_params, only: :book
     before_action :authorize_global, only: [:index, :show, :update, :split, :combine, :destroy]
     before_action :find_optional_project, :authorize_with_project_or_global, only: [:book]
     before_action :authorize_foreign, only: [:show, :update, :split, :combine, :book, :destroy]
@@ -95,16 +94,8 @@ module Chronos
       @project = Project.visible.find_by(id: params[:time_booking].presence[:project_id])
     end
 
-    def sanitize_booking_time_params
-      [:start, :stop].each do |time_param|
-        if params[:time_booking].presence[time_param].present?
-          params[:time_booking][time_param] = Time.parse params[:time_booking][time_param]
-        end
-      end
-    end
-
     def authorize_update_booking
-      if @time_log.booking && !allowed_to?('update_time', 'chronos/time_bookings')
+      if @time_log.time_booking.present? && !allowed_to?('update_time', 'chronos/time_bookings')
         respond_with_error :forbidden, t('chronos.api.time_bookings.errors.update_time_forbidden')
       end
     end

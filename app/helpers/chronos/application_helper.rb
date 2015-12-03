@@ -10,7 +10,7 @@ module Chronos
 
     def projects_for_project_select(selected = nil)
       projects = User.current.projects.has_module('redmine_chronos')
-      project_tree_options_for_select projects, selected: selected, include_blank: true
+      project_tree_options_for_select projects, selected: selected
     end
 
     def activity_collection(project = nil)

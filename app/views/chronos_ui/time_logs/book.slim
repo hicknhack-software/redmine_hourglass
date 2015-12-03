@@ -1,4 +1,4 @@
-= form_for @time_booking, url: book_chronos_time_log_path(@time_log),  as: 'time_booking', remote: true, html: {class: 'add-booking-form js-chronos-remote js-validate-form'} do |f|
+= form_for @time_booking, url: book_chronos_time_log_path(@time_log),  as: 'time_booking', remote: true, html: {class: 'add-booking-form js-chronos-remote js-validate-form js-check-splitting'} do |f|
   .form-row
     .form-field
       .label
@@ -19,12 +19,12 @@
       .label
         = f.label :project_id
       .input
-        = f.select :project_id, projects_for_project_select(@time_booking.project), disabled: !authorize_globally_for('chronos/time_logs', 'book')
+        = f.select :project_id, projects_for_project_select(@time_booking.project), {}, disabled: !authorize_globally_for('chronos/time_logs', 'book'), required: true
     .form-field
       .label
         = f.label :activity_id
       .input
-        = f.collection_select :activity_id, activity_collection(@time_booking.project), :id, :name, {include_blank: true}, disabled: !authorize_globally_for('chronos/time_logs', 'book')
+        = f.collection_select :activity_id, activity_collection(@time_booking.project), :id, :name, {}, disabled: !authorize_globally_for('chronos/time_logs', 'book'), required: true
     .form-field
       .label
         = f.label :issue_id, for: 'issue_text'
