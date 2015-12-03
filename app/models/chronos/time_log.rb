@@ -33,8 +33,8 @@ module Chronos
       self.stop = stop.change(sec: 0) if stop
     end
 
-    def new_time_booking
-      TimeBooking.new time_booking_arguments default_booking_arguments
+    def build_time_booking(args = {})
+      super time_booking_arguments default_booking_arguments.merge args
     end
 
     def update(attributes)
@@ -55,7 +55,7 @@ module Chronos
     def book(attributes)
       raise AlreadyBookedException if time_booking.present?
       DateTimeCalculations.booking_process user, default_booking_arguments.merge(attributes.except(:start, :stop)) do |options|
-        self.time_booking = TimeBooking.create time_booking_arguments options
+        create_time_booking time_booking_arguments options
       end
     end
 

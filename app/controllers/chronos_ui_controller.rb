@@ -24,7 +24,7 @@ class ChronosUiController < ApplicationController
   end
 
   def book_time_logs
-    @time_booking = @time_log.new_time_booking
+    @time_booking = @time_log.build_time_booking
     render 'chronos_ui/time_logs/book', layout: false
   end
 

@@ -63,7 +63,7 @@ describe Chronos::TimeLog do
 
     context 'with no extra arguments' do
       it 'tries creating a time booking with the correct arguments' do
-        expect(Chronos::TimeBooking).to receive(:create).with({start: time_log.start, stop: time_log.stop, time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user: time_log.user, spent_on: time_log.start.to_date, hours: hours}}.with_indifferent_access).and_return build :time_booking
+        expect(time_log).to receive(:create_time_booking).with({start: time_log.start, stop: time_log.stop, time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user: time_log.user, spent_on: time_log.start.to_date, hours: hours}}.with_indifferent_access).and_return build :time_booking
         book!
       end
     end
@@ -73,7 +73,7 @@ describe Chronos::TimeLog do
       let (:booking_arguments) { {round: true} }
 
       it 'tries creating a time booking with the correct arguments(rounded stop)' do
-        expect(Chronos::TimeBooking).to receive(:create).with({start: time_log.start, stop: time_log.stop + 2.minutes, time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user: time_log.user, spent_on: Time.new(2015, 2, 13).to_date, hours: 0.25}}.with_indifferent_access).and_return build :time_booking
+        expect(time_log).to receive(:create_time_booking).with({start: time_log.start, stop: time_log.stop + 2.minutes, time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user: time_log.user, spent_on: Time.new(2015, 2, 13).to_date, hours: 0.25}}.with_indifferent_access).and_return build :time_booking
         book!
       end
     end
@@ -82,7 +82,7 @@ describe Chronos::TimeLog do
       let (:booking_arguments) { {project_id: create(:project).id, issue_id: 2, activity_id: 3} }
 
       it 'tries creating a time booking with the correct arguments(additional args)' do
-        expect(Chronos::TimeBooking).to receive(:create).with({start: time_log.start, stop: time_log.stop, time_log_id: time_log.id, time_entry_arguments: {project_id: booking_arguments[:project_id], issue_id: booking_arguments[:issue_id], comments: time_log.comments, activity_id: booking_arguments[:activity_id], user: time_log.user, spent_on: time_log.start.to_date, hours: hours}}.with_indifferent_access).and_return build :time_booking
+        expect(time_log).to receive(:create_time_booking).with({start: time_log.start, stop: time_log.stop, time_log_id: time_log.id, time_entry_arguments: {project_id: booking_arguments[:project_id], issue_id: booking_arguments[:issue_id], comments: time_log.comments, activity_id: booking_arguments[:activity_id], user: time_log.user, spent_on: time_log.start.to_date, hours: hours}}.with_indifferent_access).and_return build :time_booking
         book!
       end
     end
@@ -91,7 +91,7 @@ describe Chronos::TimeLog do
       let (:booking_arguments) { {start: time_log.start + 1.minutes, stop: time_log.stop - 1.minutes} }
 
       it 'tries creating a time booking with the correct arguments(ignores submitted start and stop)' do
-        expect(Chronos::TimeBooking).to receive(:create).with({start: time_log.start, stop: time_log.stop, time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user: time_log.user, spent_on: time_log.start.to_date, hours: hours}}.with_indifferent_access).and_return build :time_booking
+        expect(time_log).to receive(:create_time_booking).with({start: time_log.start, stop: time_log.stop, time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user: time_log.user, spent_on: time_log.start.to_date, hours: hours}}.with_indifferent_access).and_return build :time_booking
         book!
       end
     end
