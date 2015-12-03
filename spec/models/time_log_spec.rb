@@ -73,7 +73,7 @@ describe Chronos::TimeLog do
       let (:booking_arguments) { {round: true} }
 
       it 'tries creating a time booking with the correct arguments(rounded stop)' do
-        expect(time_log).to receive(:create_time_booking).with({start: time_log.start, stop: time_log.stop + 2.minutes, time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user: time_log.user, spent_on: Time.new(2015, 2, 13).to_date, hours: 0.25}}.with_indifferent_access).and_return build :time_booking
+        expect(time_log).to receive(:create_time_booking).with({start: time_log.start, stop: time_log.stop + 2.minutes, time_log_id: time_log.id, time_entry_arguments: {comments: time_log.comments, user: time_log.user, spent_on: time_log.start.to_date, hours: 0.25}}.with_indifferent_access).and_return build :time_booking
         book!
       end
     end
@@ -108,7 +108,7 @@ describe Chronos::TimeLog do
 
   describe 'updating' do
     let (:user) { create(:user) }
-    let (:now) { Time.zone.now.change(sec: 0) }
+    let (:now) { Time.now.change(sec: 0) }
 
     it 'updates the time log' do
       time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
@@ -134,7 +134,7 @@ describe Chronos::TimeLog do
 
   describe 'splitting' do
     let (:user) { create(:user) }
-    let (:now) { Time.zone.now.change(sec: 0) }
+    let (:now) { Time.now.change(sec: 0) }
 
     it 'creates a new valid time log' do
       time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
@@ -168,7 +168,7 @@ describe Chronos::TimeLog do
 
   describe 'combining' do
     let (:user) { create(:user) }
-    let (:now) { Time.zone.now.change(sec: 0) }
+    let (:now) { Time.now.change(sec: 0) }
 
     it 'removes the time log which gets combined to the original' do
       time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
@@ -226,7 +226,7 @@ describe Chronos::TimeLog do
 
     context 'without pauses' do
       it '6x 10 minutes' do
-        now = Time.zone.now.change(sec: 0)
+        now = Time.now.change(sec: 0)
         time_logs = create_time_logs start: now, entries: [
             {length: 10.minutes},
             {length: 10.minutes},
@@ -240,7 +240,7 @@ describe Chronos::TimeLog do
       end
 
       it 'different time values' do
-        now = Time.zone.now.change(sec: 0)
+        now = Time.now.change(sec: 0)
         time_logs = create_time_logs start: now, entries: [
             {length: 7.minutes},
             {length: 3.minutes},
@@ -256,7 +256,7 @@ describe Chronos::TimeLog do
 
     context 'with pauses smaller as configured overdue' do
       it '- 6x 10 minutes' do
-        now = Time.zone.now.change(sec: 0)
+        now = Time.now.change(sec: 0)
         time_logs = create_time_logs start: now, entries: [
             {length: 10.minutes},
             {length: 10.minutes},
@@ -270,7 +270,7 @@ describe Chronos::TimeLog do
       end
 
       it '- different time values' do
-        now = Time.zone.now.change(sec: 0)
+        now = Time.now.change(sec: 0)
         time_logs = create_time_logs start: now, entries: [
             {length: 7.minutes},
             {length: 3.minutes, offset: 20.minutes},
@@ -286,7 +286,7 @@ describe Chronos::TimeLog do
 
     context 'with pauses greater as configured overdue' do
       it '- 6x 10 minutes' do
-        now = Time.zone.now.change(sec: 0)
+        now = Time.now.change(sec: 0)
         time_logs = create_time_logs start: now, entries: [
             {length: 10.minutes},
             {length: 10.minutes},
@@ -300,7 +300,7 @@ describe Chronos::TimeLog do
       end
 
       it '- different time values' do
-        now = Time.zone.now.change(sec: 0)
+        now = Time.now.change(sec: 0)
         time_logs = create_time_logs start: now, entries: [
             {length: 7.minutes},
             {length: 3.minutes, offset: 15.hours},
@@ -316,7 +316,7 @@ describe Chronos::TimeLog do
 
     context 'and updates existing bookings' do
       it '- 6x 10 minutes' do
-        now = Time.zone.now.change(sec: 0)
+        now = Time.now.change(sec: 0)
         project = create(:project)
         activity = create(:time_entry_activity)
         time_logs = create_time_logs start: now, entries: [
@@ -335,7 +335,7 @@ describe Chronos::TimeLog do
       end
 
       it '- different time values' do
-        now = Time.zone.now.change(sec: 0)
+        now = Time.now.change(sec: 0)
         project = create(:project)
         activity = create(:time_entry_activity)
         time_logs = create_time_logs start: now, entries: [

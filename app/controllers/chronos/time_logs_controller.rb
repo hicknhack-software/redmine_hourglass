@@ -38,7 +38,7 @@ module Chronos
     end
 
     def split
-      new_time_log = @time_log.split Time.zone.parse params[:split_at]
+      new_time_log = @time_log.split Time.parse params[:split_at]
       if new_time_log
         respond_with_success time_log: @time_log, new_time_log: new_time_log
       else

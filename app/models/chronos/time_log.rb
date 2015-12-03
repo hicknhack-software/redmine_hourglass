@@ -93,7 +93,7 @@ module Chronos
     def time_entry_arguments(options)
       options
           .slice(:project_id, :issue_id, :comments, :activity_id, :user)
-          .merge spent_on: options[:start].to_date, hours: DateTimeCalculations.time_diff(options[:start], options[:stop]) / 1.hour.to_f
+          .merge spent_on: User.current.time_to_date(options[:start]), hours: DateTimeCalculations.time_diff(options[:start], options[:stop]) / 1.hour.to_f
     end
 
     def stop_is_valid
