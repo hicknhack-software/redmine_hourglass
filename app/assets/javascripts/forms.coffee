@@ -47,14 +47,9 @@ issueFieldChanged = ->
   $issueTextField = $(@)
   $issueTextField.next().val('') if $issueTextField.val() is ''
 
-addStartStopLimitMoments = ->
-  $field = $(@)
-  $field.data 'mLimit', moment($field.val()) unless moment.isMoment($field.data('mLimit'))
-
 $ ->
   $(document)
   .on 'focus', '.js-issue-autocompletion:not(.ui-autocomplete-input)', initIssueAutoCompletion
-  .on 'focus', '.js-validate-limit', addStartStopLimitMoments
   .on 'change', '.js-validate-form', formFieldChanged
   .on 'change changefromissue', '[name*=project_id]', projectFieldChanged
   .on 'change', '.js-issue-autocompletion', issueFieldChanged

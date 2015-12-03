@@ -20,6 +20,7 @@ showInlineForm = (event, response) ->
   .append $('<td/>', class: 'hide-when-print')
   .append $('<td/>', colspan: tdCount).append response
   .insertAfter $row
+  $formRow.find('.js-validate-limit').each addStartStopLimitMoments
 
 hideInlineForm = (event) ->
   event.preventDefault()
@@ -33,6 +34,10 @@ processErrorPageResponse = (event, {responseText}) ->
     $response = $(responseText)
     message = "#{$response.filter('h2').text()} - #{$response.filter('#errorExplanation').text()}"
     chronos.Utils.showErrorMessage message
+
+addStartStopLimitMoments = ->
+  $field = $(@)
+  $field.data 'mLimit', moment($field.val()) unless moment.isMoment($field.data('mLimit'))
 
 $ ->
   $list = $('.chronos-list')
