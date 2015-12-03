@@ -11,6 +11,12 @@ isFieldValid = ($field, $form) ->
   condition = switch type
     when 'activity_id' then isEmpty($form.find('[name*=project_id]')) or isNotEmpty($field)
     when 'issue_id' then isEmpty($form.find('#issue_text')) or isNotEmpty($field)
+    when 'start'
+      mStart = moment($field.val(), moment.ISO_8601)
+      mStart.isValid() and not ($field.hasClass('js-validate-limit') and mStart.isBefore($field.data('mLimit')))
+    when 'stop'
+      mStop = moment($field.val(), moment.ISO_8601)
+      mStop.isValid() and not ($field.hasClass('js-validate-limit') and mStop.isAfter($field.data('mLimit')))
     else
       true
 
