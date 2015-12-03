@@ -47,6 +47,56 @@ issueFieldChanged = ->
   $issueTextField = $(@)
   $issueTextField.next().val('') if $issueTextField.val() is ''
 
+split = (timeLogId, mSplitAt) ->
+  $.ajax
+    url: chronosRoutes.split_chronos_time_log timeLogId
+    method: 'post'
+    data:
+      split_at: mSplitAt.toJSON()
+
+checkSplitting = ->
+  $form = $(@)
+  timeLogId = $form.closest('tr').attr('id')
+  $startField = $form.find('[name*=start]')
+  $stopField = $form.find('[name*=stop]')
+  mStart = moment $startField.val()
+  mStartLimit = $startField.data('mLimit')
+  mStop = moment $stopField.val()
+  mStopLimit = $stopField.data('mLimit')
+  stopJqXhr = if mStop.isBefore mStopLimit
+    split timeLogId, mStop
+  startJqXhr = if mStart.isAfter mStartLimit
+    if stopJqXhr
+      dfd = jQuery.Deferred()
+      stopJqXhr.done ->
+        split(timeLogId, mStart)
+        .done (response) ->
+          dfd.resolve response
+        .fail (xhr) ->
+          dfd.reject xhr
+      dfd
+    else
+      split timeLogId, mStart
+
+  if startJqXhr and stopJqXhr
+    startJqXhr.done ({new_time_log}) ->
+      $form
+        .attr('action', chronosRoutes.book_chronos_time_log new_time_log.id)
+        .removeClass('js-check-splitting')
+        .submit()
+  else if startJqXhr
+    startJqXhr.done ({new_time_log}) ->
+      $form
+        .attr('action', chronosRoutes.book_chronos_time_log new_time_log.id)
+        .removeClass('js-check-splitting')
+        .submit()
+  else if stopJqXhr
+    stopJqXhr.done ->
+      $form
+        .removeClass('js-check-splitting')
+        .submit()
+
+  return not (startJqXhr or stopJqXhr)
 $ ->
   $(document)
   .on 'focus', '.js-issue-autocompletion:not(.ui-autocomplete-input)', initIssueAutoCompletion
@@ -55,6 +105,7 @@ $ ->
   .on 'change', '.js-issue-autocompletion', issueFieldChanged
   .on 'submit', '.js-validate-form', (event) ->
     event.preventDefault() unless chronos.FormValidator.validateForm $(@)
+  .on 'ajax:before', '.js-check-splitting', checkSplitting
   .on 'ajax:success', '.js-chronos-remote', ->
     location.reload()
   .on 'ajax:error', '.js-chronos-remote', (event, {responseJSON}) ->
