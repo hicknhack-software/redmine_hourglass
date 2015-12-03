@@ -4,6 +4,12 @@ isEmpty = ($field) ->
 isNotEmpty = ($field) ->
   not isEmpty $field
 
+isValidTimeField = ($field, limitConditionCallback, additionalConditionCallback) ->
+  mTime = moment($field.val(), moment.ISO_8601)
+  mTime.isValid() and
+    (not $field.hasClass('js-validate-limit') or limitConditionCallback(mTime)) and
+    additionalConditionCallback(mTime)
+
 isFieldValid = ($field, $form) ->
   type = $field.attr('name').replace(/[a-z_]*\[([a-z_]*)]/, '$1')
   isRequired = $field.prop('required')
@@ -12,11 +18,17 @@ isFieldValid = ($field, $form) ->
     when 'activity_id' then isEmpty($form.find('[name*=project_id]')) or isNotEmpty($field)
     when 'issue_id' then isEmpty($form.find('#issue_text')) or isNotEmpty($field)
     when 'start'
-      mStart = moment($field.val(), moment.ISO_8601)
-      mStart.isValid() and not ($field.hasClass('js-validate-limit') and mStart.isBefore($field.data('mLimit')))
+      isValidTimeField $field,
+        (mStart) ->
+          not mStart.isBefore $field.data('mLimit')
+        (mStart) ->
+          mStart.isBefore moment($form.find('[name*=stop]').val(), moment.ISO_8601)
     when 'stop'
-      mStop = moment($field.val(), moment.ISO_8601)
-      mStop.isValid() and not ($field.hasClass('js-validate-limit') and mStop.isAfter($field.data('mLimit')))
+      isValidTimeField $field,
+        (mStop) ->
+          not mStop.isAfter $field.data('mLimit')
+        (mStop) ->
+          mStop.isAfter moment($form.find('[name*=start]').val(), moment.ISO_8601)
     else
       true
 
