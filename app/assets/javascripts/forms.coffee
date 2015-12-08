@@ -59,6 +59,22 @@ submit_without_split_checking = ($form) ->
   .removeClass('js-check-splitting')
   .submit()
 
+addSplittingSuccessfulHandler = ($form, startJqXhr, stopJqXhr) ->
+  if startJqXhr
+    startJqXhr.done ({new_time_log}) ->
+      submit_without_split_checking $form.attr('action', chronosRoutes.book_chronos_time_log new_time_log.id)
+  else if stopJqXhr
+    stopJqXhr.done ->
+      submit_without_split_checking $form
+
+addSplittingFailedHandler = (startJqXhr, stopJqXhr) ->
+  if stopJqXhr
+    stopJqXhr.fail ({responseJSON}) ->
+      chronos.Utils.showErrorMessage responseJSON.message
+  if startJqXhr
+    startJqXhr.fail ({responseJSON}) ->
+      chronos.Utils.showErrorMessage responseJSON.message
+
 checkSplitting = ->
   $form = $(@)
   timeLogId = $form.closest('tr').attr('id')
@@ -75,12 +91,8 @@ checkSplitting = ->
     else
       split timeLogId, mStart
 
-  if startJqXhr
-    startJqXhr.done ({new_time_log}) ->
-      submit_without_split_checking $form.attr('action', chronosRoutes.book_chronos_time_log new_time_log.id)
-  else if stopJqXhr
-    stopJqXhr.done ->
-      submit_without_split_checking $form
+  addSplittingSuccessfulHandler $form, startJqXhr, stopJqXhr
+  addSplittingFailedHandler startJqXhr, stopJqXhr
 
   return not (startJqXhr or stopJqXhr)
 $ ->
