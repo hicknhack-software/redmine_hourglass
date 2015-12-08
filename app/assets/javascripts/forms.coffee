@@ -54,47 +54,33 @@ split = (timeLogId, mSplitAt) ->
     data:
       split_at: mSplitAt.toJSON()
 
+submit_without_split_checking = ($form) ->
+  $form
+  .removeClass('js-check-splitting')
+  .submit()
+
 checkSplitting = ->
   $form = $(@)
   timeLogId = $form.closest('tr').attr('id')
   $startField = $form.find('[name*=start]')
   $stopField = $form.find('[name*=stop]')
   mStart = moment $startField.val()
-  mStartLimit = $startField.data('mLimit')
   mStop = moment $stopField.val()
-  mStopLimit = $stopField.data('mLimit')
-  stopJqXhr = if mStop.isBefore mStopLimit
+  stopJqXhr = if mStop.isBefore $stopField.data('mLimit')
     split timeLogId, mStop
-  startJqXhr = if mStart.isAfter mStartLimit
+  startJqXhr = if mStart.isAfter $startField.data('mLimit')
     if stopJqXhr
-      dfd = jQuery.Deferred()
-      stopJqXhr.done ->
+      stopJqXhr.then ->
         split(timeLogId, mStart)
-        .done (response) ->
-          dfd.resolve response
-        .fail (xhr) ->
-          dfd.reject xhr
-      dfd
     else
       split timeLogId, mStart
 
-  if startJqXhr and stopJqXhr
+  if startJqXhr
     startJqXhr.done ({new_time_log}) ->
-      $form
-        .attr('action', chronosRoutes.book_chronos_time_log new_time_log.id)
-        .removeClass('js-check-splitting')
-        .submit()
-  else if startJqXhr
-    startJqXhr.done ({new_time_log}) ->
-      $form
-        .attr('action', chronosRoutes.book_chronos_time_log new_time_log.id)
-        .removeClass('js-check-splitting')
-        .submit()
+      submit_without_split_checking $form.attr('action', chronosRoutes.book_chronos_time_log new_time_log.id)
   else if stopJqXhr
     stopJqXhr.done ->
-      $form
-        .removeClass('js-check-splitting')
-        .submit()
+      submit_without_split_checking $form
 
   return not (startJqXhr or stopJqXhr)
 $ ->
