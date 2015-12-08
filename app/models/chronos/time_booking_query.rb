@@ -45,7 +45,7 @@ module Chronos
       users_values << ["<< #{l(:label_me)} >>", 'me'] if User.current.logged?
       users_values += users.collect { |s| [s.name, s.id.to_s] }
       add_available_filter('user_id',
-                           :type => :list_optional, :values => users_values
+                           :type => :list, :values => users_values
       ) unless users_values.empty?
     end
 
@@ -96,6 +96,10 @@ module Chronos
       r
     rescue ::ActiveRecord::StatementInvalid => e
       raise ::Query::StatementInvalid.new(e.message)
+    end
+
+    def sql_for_user_id_field(field, operator, value)
+      "( #{User.table_name}.id #{operator == "=" ? 'IN' : 'NOT IN'} (" + value.collect { |val| "'#{self.class.connection.quote_string(val)}'" }.join(",") + ") )"
     end
   end
 end
