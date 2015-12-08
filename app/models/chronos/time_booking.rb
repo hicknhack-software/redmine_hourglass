@@ -1,7 +1,6 @@
 module Chronos
   class TimeBooking < ActiveRecord::Base
     include Namespace
-    include IsoStartStop
 
     belongs_to :time_log
     belongs_to :time_entry, dependent: :delete

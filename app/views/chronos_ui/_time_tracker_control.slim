@@ -46,7 +46,7 @@
           .label
             = f.label :start
           .input
-            = f.text_field :start, size: '20', disabled: !authorize_globally_for('chronos/time_trackers', 'update_time'), class: 'js-start'
+            = f.text_field :start, size: '20', value: @time_tracker.start.iso8601, disabled: !authorize_globally_for('chronos/time_trackers', 'update_time'), class: 'js-start'
         .form-field
           .input
             = f.submit t('chronos.ui.index.time_tracker_control.button_stop')

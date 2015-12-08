@@ -4,12 +4,12 @@
       .label
         = f.label :start
       .input
-        = f.text_field :start, size: '20', disabled: !authorize_globally_for('chronos/time_logs', 'update_time'), class: 'js-validate-limit'
+        = f.text_field :start, size: '20', value: @time_booking.start.iso8601, disabled: !authorize_globally_for('chronos/time_logs', 'book'), class: 'js-validate-limit'
     .form-field
       .label
         = f.label :stop
       .input
-        = f.text_field :stop, size: '20', disabled: !authorize_globally_for('chronos/time_logs', 'update_time'), class: 'js-validate-limit'
+        = f.text_field :stop, size: '20', value: @time_booking.stop.iso8601, disabled: !authorize_globally_for('chronos/time_logs', 'book'), class: 'js-validate-limit'
     .form-field
       .label
         = label :time_booking, :round

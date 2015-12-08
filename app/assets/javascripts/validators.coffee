@@ -22,13 +22,15 @@ isFieldValid = ($field, $form) ->
         (mStart) ->
           not mStart.isBefore $field.data('mLimit')
         (mStart) ->
-          mStart.isBefore moment($form.find('[name*=stop]').val(), moment.ISO_8601)
+          stopField = $form.find('[name*=stop]')
+          stopField.length is 0 or mStart.isBefore moment(stopField.val(), moment.ISO_8601)
     when 'stop'
       isValidTimeField $field,
         (mStop) ->
           not mStop.isAfter $field.data('mLimit')
         (mStop) ->
-          mStop.isAfter moment($form.find('[name*=start]').val(), moment.ISO_8601)
+          startField = $form.find('[name*=start]')
+          startField.length is 0 or mStop.isAfter moment(startField.val(), moment.ISO_8601)
     else
       true
 

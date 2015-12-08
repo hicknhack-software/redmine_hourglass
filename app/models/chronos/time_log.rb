@@ -4,7 +4,6 @@ module Chronos
 
   class TimeLog < ActiveRecord::Base
     include Namespace
-    include IsoStartStop
 
     belongs_to :user
     has_one :time_booking, dependent: :destroy
