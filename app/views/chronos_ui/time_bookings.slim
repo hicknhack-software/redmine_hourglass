@@ -2,6 +2,18 @@
   = javascript_include_tag 'application', plugin: 'redmine_chronos'
   = stylesheet_link_tag 'application', plugin: 'redmine_chronos'
 
-- html_title t('chronos.ui.time_bookings.title')
+.contextual
+  - if @query.persisted? && @query.editable_by?(User.current)
+    = link_to t(:button_edit), edit_chronos_query_path(@query), class: 'icon icon-edit'
+    = link_to t(:button_delete), chronos_query_path(@query), confirm: t(:text_are_you_sure), method: :delete, class: 'icon icon-del'
 
-.test TEST
+h2 = @query.persisted? ? h(@query.name) : t('chronos.ui.time_bookings.title')
+- html_title @query.persisted? ? @query.name : t('chronos.ui.time_bookings.title')
+
+= render partial: 'chronos_ui/lists/query_form'
+= render partial: 'chronos_ui/lists/list'
+
+- content_for :sidebar do
+  = render_sidebar_queries
+
+  = context_menu nil

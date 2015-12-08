@@ -1,0 +1,4 @@
+- if authorize_globally_for 'chronos/time_bookings', 'update'
+  = link_to '', chronos_ui_edit_time_bookings_path(time_booking), class: 'icon-edit js-show-inline-form', remote: true, data: {type: 'html'}
+- if authorize_globally_for 'chronos/time_bookings', 'destroy'
+  = link_to '', chronos_time_booking_path(time_booking), class: 'icon-del js-chronos-remote', remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)}

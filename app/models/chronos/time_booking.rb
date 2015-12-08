@@ -4,6 +4,10 @@ module Chronos
 
     belongs_to :time_log
     belongs_to :time_entry, dependent: :delete
+    has_one :user, through: :time_log
+    has_one :project, through: :time_entry
+    has_one :issue, through: :time_entry
+    has_one :activity, through: :time_entry
 
     after_initialize :create_time_entry
     after_update :update_time_entry
@@ -15,13 +19,11 @@ module Chronos
     validate :stop_is_valid
     validates_associated :time_entry
 
-    delegate :issue, :issue_id,
-             :project, :project_id,
-             :activity, :activity_id,
-             :user, :user_id,
-             :comments,
-             to: :time_entry,
-             allow_nil: true
+    delegate :id, to: :issue, prefix: true, allow_nil: true
+    delegate :id, to: :activity, prefix: true, allow_nil: true
+    delegate :id, to: :project, prefix: true, allow_nil: true
+    delegate :id, to: :user, prefix: true, allow_nil: true
+    delegate :comments, to: :time_entry, allow_nil: true
 
     def rounding_carry_over
       (stop - time_log.stop).to_i

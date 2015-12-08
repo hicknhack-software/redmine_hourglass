@@ -8,7 +8,7 @@ module QueryConcern
     def query_class_map
       {
           time_logs: Chronos::TimeLogQuery,
-          #time_bookings: Chronos::TimeBookingQuery,
+          time_bookings: Chronos::TimeBookingQuery
           #report: Chronos::ReportQuery
       }.with_indifferent_access
     end
