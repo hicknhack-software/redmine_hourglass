@@ -1,4 +1,4 @@
-- if authorize_globally_for('chronos/time_logs', 'book') && time_log.time_booking.nil?
+- if authorize_globally_for('chronos/time_logs', 'book') && time_log.bookable?
   = link_to '', chronos_ui_book_time_logs_path(time_log), class: 'icon-time js-show-inline-form', remote: true, data: {type: 'html'}
 - if authorize_globally_for 'chronos/time_logs', 'update'
   = link_to '', chronos_ui_edit_time_logs_path(time_log), class: 'icon-edit js-show-inline-form', remote: true, data: {type: 'html'}

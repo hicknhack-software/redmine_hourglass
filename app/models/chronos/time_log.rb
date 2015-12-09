@@ -40,7 +40,7 @@ module Chronos
       round = attributes.delete :round
       ActiveRecord::Base.transaction do
         result = super attributes
-        if time_booking.present?
+        if booked?
           DateTimeCalculations.booking_process user, start: start, stop: stop, project_id: time_booking.project_id, round: round do |options|
             time_booking.update start: options[:start], stop: options[:stop], time_entry_arguments: {hours: DateTimeCalculations.time_diff_in_hours(options[:start], options[:stop])}
             time_booking
@@ -52,7 +52,7 @@ module Chronos
     end
 
     def book(attributes)
-      raise AlreadyBookedException if time_booking.present?
+      raise AlreadyBookedException if booked?
       DateTimeCalculations.booking_process user, default_booking_arguments.merge(attributes.except(:start, :stop)) do |options|
         create_time_booking time_booking_arguments options
       end
@@ -69,7 +69,7 @@ module Chronos
     end
 
     def combine_with(time_log)
-      return false if stop != time_log.start || time_booking.present? || time_log.time_booking.present?
+      return false if stop != time_log.start || booked? || time_log.booked?
       new_stop = time_log.stop
       ActiveRecord::Base.transaction do
         time_log.destroy
@@ -80,6 +80,14 @@ module Chronos
 
     def hours
       @hours = DateTimeCalculations.time_diff_in_hours start, stop
+    end
+
+    def booked?
+      time_booking.present?
+    end
+
+    def bookable?
+      !booked?
     end
 
     def to_json(args = {})
