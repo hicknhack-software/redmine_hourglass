@@ -36,7 +36,7 @@ module Chronos
     end
 
     def sidebar_queries
-      @sidebar_queries ||= query_class.order(name: :asc)
+      @sidebar_queries ||= query_class.where(project: [nil, @project]).order(name: :asc)
     end
   end
 end

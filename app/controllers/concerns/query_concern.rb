@@ -30,6 +30,7 @@ module QueryConcern
                elsif session[session_query_var_name]
                  query_from_session
                end
+      @query.project = @project
     end
 
     def session_query_var_name
@@ -37,7 +38,7 @@ module QueryConcern
     end
 
     def query_from_id
-      query = Query.find(params[:query_id])
+      query = Query.where(project: [nil, @project]).find(params[:query_id])
       #raise ::Unauthorized unless query.visible?
       session[session_query_var_name] = {id: query.id}
       sort_clear

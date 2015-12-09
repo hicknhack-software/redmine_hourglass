@@ -8,7 +8,7 @@ module Chronos::QueryBase
     end
 
     def is_private?
-      visibility == VISIBILITY_PRIVATE
+      visibility == Query::VISIBILITY_PRIVATE
     end
 
     def is_public?
