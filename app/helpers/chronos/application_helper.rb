@@ -28,7 +28,7 @@ module Chronos
             group_name = column_content(query.group_by_column, entry)
           end
           group_name ||= ''
-          group_count = count_by_group[group]
+          group_count = count_by_group[group] || count_by_group[group.id]
         end
         yield entry, group_name, group_count
         previous_group, first = group, false
@@ -36,7 +36,7 @@ module Chronos
     end
 
     def sidebar_queries
-      @sidebar_queries ||= query_class.order(name: :asc)
+      @sidebar_queries ||= query_class.where(project: [nil, @project]).order(name: :asc)
     end
   end
 end

@@ -16,6 +16,14 @@ scope :chronos, as: :chronos do
   resources :queries, controller: :chronos_queries, except: [:show, :index]
 end
 
+resources :projects do
+  nested do
+    scope :chronos, as: :chronos do
+      resources :queries, controller: :chronos_queries, only: [:new, :create]
+    end
+  end
+end
+
 namespace :chronos do
   resources :time_trackers, except: [:new, :edit, :create] do
     collection do

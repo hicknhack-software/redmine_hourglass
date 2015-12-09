@@ -20,7 +20,7 @@
   p.buttons
     = link_to t(:button_apply), '#', class: 'icon icon-checked js-query-apply'
     = link_to t(:button_clear), {set_filter: 1}, class: 'icon icon-reload'
-    - if @query.new_record? && User.current.allowed_to_globally?(:save_queries)
-      = link_to t(:button_save), '#', class: 'icon icon-save js-query-save', data: {url: new_chronos_query_path, query_class: query_identifier}
+    - if @query.new_record? && User.current.allowed_to?(:save_queries, @project, global: true)
+      = link_to t(:button_save), '#', class: 'icon icon-save js-query-save', data: {url: @project ? new_project_chronos_query_path(@project) : new_chronos_query_path, query_class: query_identifier}
 
 = error_messages_for 'query'

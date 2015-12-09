@@ -1,5 +1,5 @@
 h2 = t("chronos.queries.#{query_identifier}.title_new")
-= form_tag chronos_queries_path do
+= form_tag @project ? project_chronos_queries_path(@project) : chronos_queries_path do
   = hidden_field_tag 'request_referer', params[:request_referer] || URI(request.referer || '').path
   = hidden_field_tag 'query_class', query_identifier
   = render partial: 'queries/form', locals: {query: @query}

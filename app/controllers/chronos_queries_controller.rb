@@ -2,16 +2,17 @@ class ChronosQueriesController < ApplicationController
   include QueriesHelper
   include QueryConcern
 
-  before_filter :find_query, except: [:new, :create]
-  before_filter :build_query, only: [:new, :create]
+  before_filter :find_query, only: [:edit, :update, :destroy]
+  before_filter :find_optional_project, :build_query, only: [:new, :create]
 
   helper QueriesHelper
 
   def new
+    @query.project = @project
   end
 
   def create
-    @query.column_names = nil if params[:default_columns]
+    update_query_from_params
 
     if @query.save
       flash[:notice] = l(:notice_successful_create)
@@ -27,7 +28,7 @@ class ChronosQueriesController < ApplicationController
   def update
     @query.attributes = params[:query]
     @query.build_from_params params
-    @query.column_names = nil if params[:default_columns]
+    update_query_from_params
 
     if @query.save
       flash[:notice] = l(:notice_successful_update)
@@ -48,9 +49,25 @@ class ChronosQueriesController < ApplicationController
     @query.user = User.current
   end
 
+  def update_query_from_params
+    @query.project = params[:query_is_for_all] ? nil : @project
+    @query.column_names = nil if params[:default_columns]
+    unless User.current.allowed_to?(:manage_public_queries, @query.project) || User.current.admin?
+      @query.visibility = Query::VISIBILITY_PRIVATE
+    end
+  end
+
   def find_query
     @query = Query.find(params[:id])
+    @project = @query.project
     render_403 unless @query.editable_by? User.current
+  rescue ActiveRecord::RecordNotFound
+    render_404
+  end
+
+  def find_optional_project
+    @project = Project.find(params[:project_id]) if params[:project_id]
+    render_403 unless User.current.allowed_to?(:save_queries, @project, global: true)
   rescue ActiveRecord::RecordNotFound
     render_404
   end
