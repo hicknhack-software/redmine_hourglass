@@ -4,8 +4,8 @@ module Chronos
     self.queried_class = TimeBooking
 
     self.available_columns = [
-        QueryColumn.new(:start, sortable: "#{TimeBooking.table_name}.start", default_order: 'desc', groupable: "#{TimeBooking.table_name}.start"),
-        QueryColumn.new(:stop, sortable: "#{TimeBooking.table_name}.stop", default_order: 'desc', groupable: "#{TimeBooking.table_name}.stop"),
+        QueryColumn.new(:start, sortable: "#{TimeBooking.table_name}.start", default_order: 'desc', groupable: "DATE(#{TimeBooking.table_name}.start)"),
+        QueryColumn.new(:stop, sortable: "#{TimeBooking.table_name}.stop", default_order: 'desc', groupable: "DATE(#{TimeBooking.table_name}.stop)"),
         QueryColumn.new(:comments),
         QueryColumn.new(:user, sortable: lambda { User.fields_for_order_statement }, groupable: "#{User.table_name}.id"),
         QueryColumn.new(:project, sortable: "#{Project.table_name}.name", groupable: "#{Project.table_name}.id"),

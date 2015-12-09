@@ -6,8 +6,8 @@ module Chronos
     self.available_columns = [
         QueryColumn.new(:comments),
         QueryColumn.new(:user, sortable: lambda { User.fields_for_order_statement }, groupable: "#{User.table_name}.id"),
-        QueryColumn.new(:start, sortable: "#{TimeLog.table_name}.start", default_order: 'desc', groupable: "#{TimeLog.table_name}.start"),
-        QueryColumn.new(:stop, sortable: "#{TimeLog.table_name}.stop", default_order: 'desc', groupable: "#{TimeLog.table_name}.stop")
+        QueryColumn.new(:start, sortable: "#{TimeLog.table_name}.start", default_order: 'desc', groupable: "DATE(#{TimeLog.table_name}.start)"),
+        QueryColumn.new(:stop, sortable: "#{TimeLog.table_name}.stop", default_order: 'desc', groupable: "DATE(#{TimeLog.table_name}.stop)")
     ]
 
     def initialize_available_filters

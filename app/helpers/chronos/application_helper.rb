@@ -21,14 +21,21 @@ module Chronos
       previous_group, first = false, true
       entries.each do |entry|
         group_name = group_count = nil
-        if query.grouped? && ((group = query.group_by_column.value(entry)) != previous_group || first)
-          if group.blank? && group != false
-            group_name = "(#{l(:label_blank_value)})"
-          else
-            group_name = column_content(query.group_by_column, entry)
+        if query.grouped?
+          column = query.group_by_column
+          group = column.value entry
+          group = group.to_date if column.groupable.include? 'DATE'
+          if group != previous_group || first
+            if group.blank? && group != false
+              group_name = "(#{l(:label_blank_value)})"
+            else
+              group_name = column_content(query.group_by_column, entry)
+              group_name = format_object(group) if column.groupable.include? 'DATE'
+            end
+            group_name ||= ''
+            group_count = count_by_group[group] ||
+                (group.respond_to?(:id) && count_by_group[group.id])
           end
-          group_name ||= ''
-          group_count = count_by_group[group] || count_by_group[group.id]
         end
         yield entry, group_name, group_count
         previous_group, first = group, false
