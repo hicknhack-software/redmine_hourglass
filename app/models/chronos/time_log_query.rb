@@ -12,32 +12,8 @@ module Chronos
 
     def initialize_available_filters
       add_available_filter 'comments', type: :text
-
-      principals = []
-      if project
-        principals += project.principals.visible.sort
-        unless project.leaf?
-          subprojects = project.descendants.visible.to_a
-          if subprojects.any?
-            add_available_filter 'subproject_id',
-                                 type: :list_subprojects,
-                                 values: subprojects.collect { |s| [s.name, s.id.to_s] }
-            principals += Principal.member_of(subprojects).visible
-          end
-        end
-      else
-        if all_projects.any?
-          principals += Principal.member_of(all_projects).visible
-        end
-      end
-      principals.uniq!
-      principals.sort!
-      users = principals.select { |p| p.is_a?(User) }
-
-      users_values = []
-      users_values << ["<< #{l(:label_me)} >>", 'me'] if User.current.logged?
-      users_values += users.collect { |s| [s.name, s.id.to_s] }
-      add_available_filter('user_id', type: :list, values: users_values) unless users_values.empty?
+      add_users_filter
+      add_sub_projects_filter if project && !project.leaf?
     end
 
     def default_columns_names
