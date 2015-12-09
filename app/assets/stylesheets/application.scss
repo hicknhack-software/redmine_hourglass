@@ -62,5 +62,10 @@
         width: 1px;
       }
     }
+    &.group {
+      td {
+        text-align: left;
+      }
+    }
   }
 }
