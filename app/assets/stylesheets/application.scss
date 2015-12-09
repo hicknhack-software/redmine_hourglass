@@ -24,47 +24,58 @@
     }
   }
 }
+.controller-chronos_ui {
+  .time-tracker-control {
+    margin-bottom: 30px;
+    @include form-row;
+  }
 
-.time-tracker-control {
-  margin-bottom: 30px;
-  @include form-row;
-}
-
-.chronos-list {
-  tr {
-    white-space: nowrap;
-    text-align: center;
-
-    &:hover {
-      td.actions a {
-        visibility: visible;
-      }
-    }
-
-    td {
+  .chronos-list {
+    tr {
+      white-space: nowrap;
       text-align: center;
-      @include form-row;
-      &.comments, &.issue {
-        text-align: left;
+
+      &:hover {
+        td.actions a {
+          visibility: visible;
+        }
       }
-      &.actions {
-        text-align: right;
-        a {
-          padding: 2px 16px;
-          background-repeat: no-repeat;
-          background-position: 10px 0;
-          visibility: hidden;
+
+      td {
+        text-align: center;
+        @include form-row;
+        &.comments, &.issue {
+          text-align: left;
+        }
+        &.actions {
+          text-align: right;
+          a {
+            padding: 2px 16px;
+            background-repeat: no-repeat;
+            background-position: 10px 0;
+            visibility: hidden;
+          }
+        }
+      }
+      th {
+        &.actions {
+          width: 1px;
+        }
+      }
+      &.group {
+        td {
+          text-align: left;
         }
       }
     }
-    th {
-      &.actions {
-        width: 1px;
-      }
-    }
-    &.group {
-      td {
-        text-align: left;
+  }
+
+  #query_form {
+    #filters-table {
+      tr.filter {
+        td.field {
+          white-space: nowrap;
+        }
       }
     }
   }

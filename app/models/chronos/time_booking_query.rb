@@ -17,6 +17,7 @@ module Chronos
       add_available_filter 'comments', type: :text
       add_users_filter
       add_activities_filter
+      add_issues_filter
       if project
         add_sub_projects_filter unless project.leaf?
       else
@@ -36,7 +37,29 @@ module Chronos
     end
 
     def sql_for_user_id_field(field, operator, value)
-      "( #{User.table_name}.id #{operator == '=' ? 'IN' : 'NOT IN'} (" + value.collect { |val| "'#{self.class.connection.quote_string(val)}'" }.join(',') + ') )'
+      sql_for_field(field, operator, value, User.table_name, 'id')
+    end
+
+    def sql_for_project_id_field(field, operator, value)
+      sql_for_field(field, operator, value, Project.table_name, 'id')
+    end
+
+    def sql_for_issue_id_field(field, operator, value)
+      sql_for_field(field, operator, value, Issue.table_name, 'id')
+    end
+
+    def sql_for_issue_subject_field(field, operator, value)
+      sql_for_field(field, operator, value, Issue.table_name, 'subject')
+    end
+
+    def sql_for_activity_id_field(field, operator, value)
+      condition_on_id = sql_for_field(field, operator, value, Enumeration.table_name, 'id')
+      condition_on_parent_id = sql_for_field(field, operator, value, Enumeration.table_name, 'parent_id')
+      if operator == '='
+        "(#{condition_on_id} OR #{condition_on_parent_id})"
+      else
+        "(#{condition_on_id} AND #{condition_on_parent_id})"
+      end
     end
   end
 end

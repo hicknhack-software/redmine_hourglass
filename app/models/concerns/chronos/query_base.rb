@@ -52,6 +52,13 @@ module Chronos::QueryBase
       add_available_filter 'subproject_id', type: :list_subprojects, values: sub_project_values if sub_project_values.any?
     end
 
+    def add_issues_filter
+      issues = Issue.visible.all
+      issue_values = issues.collect { |s| [s.subject, s.id.to_s] }
+      add_available_filter 'issue', type: :list, values: issue_values if issue_values.any?
+      add_available_filter 'issue_subject', type: :text if issues.any?
+    end
+
     def add_activities_filter
       activities = project ? project.activities : TimeEntryActivity.shared
       activities_values = activities.map { |a| [a.name, a.id.to_s] }
