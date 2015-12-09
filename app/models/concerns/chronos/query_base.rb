@@ -30,48 +30,12 @@ module Chronos::QueryBase
 
     private
     def add_users_filter
-      users = principals.select { |p| p.is_a?(User) }
-      users_values = []
-      users_values << ["<< #{l(:label_me)} >>", 'me'] if User.current.logged?
-      users_values += users.collect { |s| [s.name, s.id.to_s] }
-      add_available_filter 'user_id', type: :list, values: users_values if users_values.any?
-    end
-
-    def add_projects_filter
-      project_values = []
-      if User.current.logged? && User.current.memberships.any?
-        project_values << ["<< #{l(:label_my_projects).downcase} >>", 'mine']
-      end
-      project_values += all_projects_values
-      add_available_filter 'project_id', type: :list, values: project_values if project_values.any?
-    end
-
-    def add_sub_projects_filter
-      sub_projects = project.descendants.visible.to_a
-      sub_project_values = sub_projects.collect { |s| [s.name, s.id.to_s] }
-      add_available_filter 'subproject_id', type: :list_subprojects, values: sub_project_values if sub_project_values.any?
-    end
-
-    def add_issues_filter
-      issues = Issue.visible.all
-      issue_values = issues.collect { |s| [s.subject, s.id.to_s] }
-      add_available_filter 'issue', type: :list, values: issue_values if issue_values.any?
-      add_available_filter 'issue_subject', type: :text if issues.any?
-    end
-
-    def add_activities_filter
-      activities = project ? project.activities : TimeEntryActivity.shared
-      activities_values = activities.map { |a| [a.name, a.id.to_s] }
-      add_available_filter 'activity_id', type: :list, values: activities_values if activities_values.any?
-    end
-
-    def principals
       principals = []
       if project
         principals += project.principals.visible.sort
         unless project.leaf?
-          subprojects = project.descendants.visible.to_a
-          principals += Principal.member_of(subprojects).visible
+          sub_projects = project.descendants.visible.to_a
+          principals += Principal.member_of(sub_projects).visible
         end
       else
         if all_projects.any?
@@ -80,6 +44,49 @@ module Chronos::QueryBase
       end
       principals.uniq!
       principals.sort!
+      users = principals.select { |p| p.is_a?(User) }
+      values = []
+      values << ["<< #{l(:label_me)} >>", 'me'] if User.current.logged?
+      values += users.collect { |s| [s.name, s.id.to_s] }
+      add_available_filter 'user_id', type: :list, values: values if values.any?
+    end
+
+    def add_projects_filter
+      values = []
+      if User.current.logged? && User.current.memberships.any?
+        values << ["<< #{l(:label_my_projects).downcase} >>", 'mine']
+      end
+      values += all_projects_values
+      add_available_filter 'project_id', type: :list, values: values if values.any?
+    end
+
+    def add_sub_projects_filter
+      sub_projects = project.descendants.visible.to_a
+      values = sub_projects.collect { |s| [s.name, s.id.to_s] }
+      add_available_filter 'subproject_id', type: :list_subprojects, values: values if values.any?
+    end
+
+    def add_issues_filter
+      issues = Issue.visible.all
+      values = issues.collect { |s| [s.subject, s.id.to_s] }
+      add_available_filter 'issue', type: :list, values: values if values.any?
+      add_available_filter 'issue_subject', type: :text if issues.any?
+    end
+
+    def add_activities_filter
+      activities = project ? project.activities : TimeEntryActivity.shared
+      values = activities.map { |a| [a.name, a.id.to_s] }
+      add_available_filter 'activity_id', type: :list, values: values if values.any?
+    end
+
+    def add_fixed_versions_filter
+      versions = if project
+        project.shared_versions.to_a
+      else
+        Project.visible.includes(:versions).all.flat_map { |project| project.shared_versions.all }
+      end
+      values = versions.uniq.sort.collect { |s| ["#{s.project.name} - #{s.name}", s.id.to_s] }
+      add_available_filter 'fixed_version_id', type: :list_optional, values: values if values.any?
     end
   end
 end

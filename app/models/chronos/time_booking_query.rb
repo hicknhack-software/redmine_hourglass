@@ -10,7 +10,8 @@ module Chronos
         QueryColumn.new(:user, sortable: lambda { User.fields_for_order_statement }, groupable: "#{User.table_name}.id"),
         QueryColumn.new(:project, sortable: "#{Project.table_name}.name", groupable: "#{Project.table_name}.id"),
         QueryColumn.new(:activity, sortable: "#{TimeEntryActivity.table_name}.position", groupable: "#{TimeEntryActivity.table_name}.id"),
-        QueryColumn.new(:issue, sortable: "#{Issue.table_name}.subject", groupable: "#{Issue.table_name}.id")
+        QueryColumn.new(:issue, sortable: "#{Issue.table_name}.subject", groupable: "#{Issue.table_name}.id"),
+        QueryColumn.new(:fixed_version, sortable: lambda { Version.fields_for_order_statement }, groupable: "#{Version.table_name}.id")
     ]
 
     def initialize_available_filters
@@ -22,6 +23,7 @@ module Chronos
         add_projects_filter if all_projects.any?
       end
       add_activities_filter
+      add_fixed_versions_filter
       add_available_filter 'comments', type: :text
     end
 
@@ -50,6 +52,9 @@ module Chronos
 
     def sql_for_issue_subject_field(field, operator, value)
       sql_for_field(field, operator, value, Issue.table_name, 'subject')
+    end
+    def sql_for_fixed_version_id_field(field, operator, value)
+      sql_for_field(field, operator, value, Issue.table_name, 'fixed_version_id')
     end
 
     def sql_for_activity_id_field(field, operator, value)

@@ -8,6 +8,7 @@ module Chronos
     has_one :project, through: :time_entry
     has_one :issue, through: :time_entry
     has_one :activity, through: :time_entry
+    has_one :fixed_version, through: :issue
 
     after_initialize :create_time_entry
     after_update :update_time_entry
