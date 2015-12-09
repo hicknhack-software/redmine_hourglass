@@ -6,6 +6,7 @@ module ListConcern
     def init_sort
       sort_init @query.sort_criteria.empty? ? [%w(id desc)] : @query.sort_criteria
       sort_update @query.sortable_columns
+      @query.sort_criteria = sort_criteria.to_a
     end
 
     def create_view_arguments
