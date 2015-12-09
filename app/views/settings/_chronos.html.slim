@@ -1,16 +1,26 @@
 h3 = l 'chronos.settings.rounding.title'
+
 p
   = label_tag 'settings[round_minimum]', t('chronos.settings.rounding.fields.minimum')
   = text_field_tag 'settings[round_minimum]', @settings[:round_minimum], {size: 2}
   = " (#{t(:field_hours)})"
+
 p
   = label_tag 'settings[round_limit]', t('chronos.settings.rounding.fields.limit')
   = text_field_tag 'settings[round_limit]', @settings[:round_limit], {size: 2}
   |  (%)
+
 p
   = label_tag 'settings[round_carry_over_due]', t('chronos.settings.rounding.fields.carry_over_due')
   = text_field_tag 'settings[round_carry_over_due]', @settings[:round_carry_over_due], {size: 2}
   = " (#{t(:field_hours)})"
+
 p
   = label_tag 'settings[round_default]', t('chronos.settings.rounding.fields.default')
   = check_box_tag 'settings[round_default]', true, @settings[:round_default]
+
+- if Redmine::Plugin.all.any? {|plugin| plugin.id == :redmine_time_tracker}
+  p
+    = label_tag 'import_time_tracker_plugin', t('chronos.settings.import.time_tracker_plugin_label')
+    = link_to t('chronos.settings.import.time_tracker_plugin'), chronos_import_redmine_time_tracker_plugin_path,
+              id: 'import_time_tracker_plugin', method: :put

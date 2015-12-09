@@ -14,6 +14,10 @@ scope :chronos, as: :chronos do
   end
 
   resources :queries, controller: :chronos_queries, except: [:show, :index]
+
+  scope :import, as: :import, controller: :chronos_import do
+    put 'redmine_time_tracker_plugin'
+  end
 end
 
 resources :projects do

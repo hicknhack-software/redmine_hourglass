@@ -45,6 +45,11 @@ en:
           minimum: Minimum time interval
           carry_over_due: Dismiss round carry-over after
         title: Rounding Behavior
+      import:
+        time_tracker_plugin_label: Redmine Time Tracker plugin
+        time_tracker_plugin: Import data
+        time_tracker_plugin_success: Redmine Time Tracker was successfully imported to Redmine Chronos.
+        time_tracker_plugin_error: There was an error, Redmine Time Tracker could not be imported, you may already imported the database.
     api:
       errors:
         missing_parameters: Insufficient parameters submitted
