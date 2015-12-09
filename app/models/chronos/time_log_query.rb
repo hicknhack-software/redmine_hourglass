@@ -12,6 +12,7 @@ module Chronos
 
     def initialize_available_filters
       add_user_filter
+      add_start_filter
       add_available_filter 'comments', type: :text
     end
 

@@ -16,6 +16,7 @@ module Chronos
 
     def initialize_available_filters
       add_user_filter
+      add_start_filter
       add_issue_filter
       if project
         add_sub_project_filter unless project.leaf?
