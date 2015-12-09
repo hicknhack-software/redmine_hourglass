@@ -16,7 +16,12 @@ module Chronos
     def initialize_available_filters
       add_available_filter 'comments', type: :text
       add_users_filter
-      add_sub_projects_filter if project && !project.leaf?
+      add_activities_filter
+      if project
+        add_sub_projects_filter unless project.leaf?
+      else
+        add_projects_filter if all_projects.any?
+      end
     end
 
     def default_columns_names
@@ -31,7 +36,7 @@ module Chronos
     end
 
     def sql_for_user_id_field(field, operator, value)
-      "( #{User.table_name}.id #{operator == "=" ? 'IN' : 'NOT IN'} (" + value.collect { |val| "'#{self.class.connection.quote_string(val)}'" }.join(",") + ") )"
+      "( #{User.table_name}.id #{operator == '=' ? 'IN' : 'NOT IN'} (" + value.collect { |val| "'#{self.class.connection.quote_string(val)}'" }.join(',') + ') )'
     end
   end
 end

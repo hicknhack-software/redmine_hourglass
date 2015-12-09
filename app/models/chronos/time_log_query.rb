@@ -13,7 +13,6 @@ module Chronos
     def initialize_available_filters
       add_available_filter 'comments', type: :text
       add_users_filter
-      add_sub_projects_filter if project && !project.leaf?
     end
 
     def default_columns_names

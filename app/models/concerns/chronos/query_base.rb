@@ -37,10 +37,25 @@ module Chronos::QueryBase
       add_available_filter 'user_id', type: :list, values: users_values if users_values.any?
     end
 
+    def add_projects_filter
+      project_values = []
+      if User.current.logged? && User.current.memberships.any?
+        project_values << ["<< #{l(:label_my_projects).downcase} >>", 'mine']
+      end
+      project_values += all_projects_values
+      add_available_filter 'project_id', type: :list, values: project_values if project_values.any?
+    end
+
     def add_sub_projects_filter
       sub_projects = project.descendants.visible.to_a
       sub_project_values = sub_projects.collect { |s| [s.name, s.id.to_s] }
       add_available_filter 'subproject_id', type: :list_subprojects, values: sub_project_values if sub_project_values.any?
+    end
+
+    def add_activities_filter
+      activities = project ? project.activities : TimeEntryActivity.shared
+      activities_values = activities.map { |a| [a.name, a.id.to_s] }
+      add_available_filter 'activity_id', type: :list, values: activities_values if activities_values.any?
     end
 
     def principals
