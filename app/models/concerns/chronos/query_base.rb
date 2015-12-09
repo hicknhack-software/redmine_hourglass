@@ -29,7 +29,7 @@ module Chronos::QueryBase
     end
 
     private
-    def add_users_filter
+    def add_user_filter
       principals = []
       if project
         principals += project.principals.visible.sort
@@ -51,7 +51,7 @@ module Chronos::QueryBase
       add_available_filter 'user_id', type: :list, values: values if values.any?
     end
 
-    def add_projects_filter
+    def add_project_filter
       values = []
       if User.current.logged? && User.current.memberships.any?
         values << ["<< #{l(:label_my_projects).downcase} >>", 'mine']
@@ -60,26 +60,26 @@ module Chronos::QueryBase
       add_available_filter 'project_id', type: :list, values: values if values.any?
     end
 
-    def add_sub_projects_filter
+    def add_sub_project_filter
       sub_projects = project.descendants.visible.to_a
       values = sub_projects.collect { |s| [s.name, s.id.to_s] }
       add_available_filter 'subproject_id', type: :list_subprojects, values: values if values.any?
     end
 
-    def add_issues_filter
+    def add_issue_filter
       issues = Issue.visible.all
       values = issues.collect { |s| [s.subject, s.id.to_s] }
       add_available_filter 'issue', type: :list, values: values if values.any?
       add_available_filter 'issue_subject', type: :text if issues.any?
     end
 
-    def add_activities_filter
+    def add_activity_filter
       activities = project ? project.activities : TimeEntryActivity.shared
       values = activities.map { |a| [a.name, a.id.to_s] }
       add_available_filter 'activity_id', type: :list, values: values if values.any?
     end
 
-    def add_fixed_versions_filter
+    def add_fixed_version_filter
       versions = if project
         project.shared_versions.to_a
       else

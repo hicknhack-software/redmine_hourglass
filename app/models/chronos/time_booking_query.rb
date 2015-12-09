@@ -15,15 +15,15 @@ module Chronos
     ]
 
     def initialize_available_filters
-      add_users_filter
-      add_issues_filter
+      add_user_filter
+      add_issue_filter
       if project
-        add_sub_projects_filter unless project.leaf?
+        add_sub_project_filter unless project.leaf?
       else
-        add_projects_filter if all_projects.any?
+        add_project_filter if all_projects.any?
       end
-      add_activities_filter
-      add_fixed_versions_filter
+      add_activity_filter
+      add_fixed_version_filter
       add_available_filter 'comments', type: :text
     end
 
