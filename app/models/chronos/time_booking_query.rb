@@ -11,7 +11,7 @@ module Chronos
         QueryColumn.new(:project, sortable: "#{Project.table_name}.name", groupable: "#{Project.table_name}.id"),
         QueryColumn.new(:activity, sortable: "#{TimeEntryActivity.table_name}.position", groupable: "#{TimeEntryActivity.table_name}.id"),
         QueryColumn.new(:issue, sortable: "#{Issue.table_name}.subject", groupable: "#{Issue.table_name}.id"),
-        QueryColumn.new(:fixed_version, sortable: lambda { Version.fields_for_order_statement }, groupable: "#{Version.table_name}.id")
+        QueryColumn.new(:fixed_version, sortable: lambda { Version.fields_for_order_statement }, groupable: "#{Issue.table_name}.fixed_version_id")
     ]
 
     def initialize_available_filters
@@ -35,7 +35,7 @@ module Chronos
     def base_scope
       TimeBooking.
           joins(:user, :project, :activity).
-          eager_load(:issue).
+          eager_load(issue: :fixed_version).
           where(statement)
     end
 
