@@ -24,10 +24,14 @@ module Chronos
     delegate :id, to: :activity, prefix: true, allow_nil: true
     delegate :id, to: :project, prefix: true, allow_nil: true
     delegate :id, to: :user, prefix: true, allow_nil: true
-    delegate :comments, to: :time_entry, allow_nil: true
+    delegate :comments, :hours, to: :time_entry, allow_nil: true
 
     def rounding_carry_over
       (stop - time_log.stop).to_i
+    end
+
+    def to_json(args = {})
+      super args.deep_merge include: :time_entry
     end
 
     private

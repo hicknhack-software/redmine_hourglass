@@ -78,6 +78,14 @@ module Chronos
       true
     end
 
+    def hours
+      @hours = DateTimeCalculations.time_diff_in_hours start, stop
+    end
+
+    def to_json(args = {})
+      super args.deep_merge methods: :hours
+    end
+
     private
     def default_booking_arguments
       {start: start, stop: stop, comments: comments, time_log_id: id, user: user}.with_indifferent_access
@@ -92,7 +100,7 @@ module Chronos
     def time_entry_arguments(options)
       options
           .slice(:project_id, :issue_id, :comments, :activity_id, :user)
-          .merge spent_on: User.current.time_to_date(options[:start]), hours: DateTimeCalculations.time_diff(options[:start], options[:stop]) / 1.hour.to_f
+          .merge spent_on: User.current.time_to_date(options[:start]), hours: DateTimeCalculations.time_diff_in_hours(options[:start], options[:stop])
     end
 
     def stop_is_valid
