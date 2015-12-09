@@ -34,6 +34,7 @@ module Chronos
             end
             group_name ||= ''
             group_count = count_by_group[group] ||
+                count_by_group[group.to_s] ||
                 (group.respond_to?(:id) && count_by_group[group.id])
           end
         end
