@@ -25,6 +25,10 @@ module Chronos
           column = query.group_by_column
           group = column.value entry
           group = group.to_date if column.groupable.include? 'DATE'
+          totals_by_group = query.totalable_columns.inject({}) do |totals, column|
+            totals[column] = query.total_by_group_for(column)
+            totals
+          end
           if group != previous_group || first
             if group.blank? && group != false
               group_name = "(#{l(:label_blank_value)})"
@@ -36,9 +40,10 @@ module Chronos
             group_count = count_by_group[group] ||
                 count_by_group[group.to_s] ||
                 (group.respond_to?(:id) && count_by_group[group.id])
+            group_totals = totals_by_group.map { |column, t| total_tag(column, t[group] || t[group.to_s] || (group.respond_to?(:id) && t[group.id])) }.join(' ').html_safe
           end
         end
-        yield entry, group_name, group_count
+        yield entry, group_name, group_count, group_totals
         previous_group, first = group, false
       end
     end

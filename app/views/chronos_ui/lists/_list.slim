@@ -2,6 +2,7 @@
   p.nodata
     = t("chronos.ui.#{action_name}.no_data")
 - else
+  = render_query_totals @query
   .autoscroll
     table.list.chronos-list
       thead
@@ -12,7 +13,7 @@
             = column_header column
           th.actions
       tbody
-        - grouped_entry_list @entries, @query, @count_by_group do |entry, group_name, group_count|
+        - grouped_entry_list @entries, @query, @count_by_group do |entry, group_name, group_count, group_totals|
           - if group_name
             - reset_cycle
             tr.group.open
@@ -23,6 +24,8 @@
                   | (
                   = group_count
                   | )
+                span class='totals'
+                  = group_totals
                 a.toggle-all href='#'
                   = "#{t(:button_collapse_all)} / #{t(:button_expand_all)}"
           tr.entry.hascontextmenu id=entry.id class=cycle('odd', 'even')

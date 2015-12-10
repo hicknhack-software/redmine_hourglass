@@ -16,7 +16,10 @@
           td
             label = t(:field_group_by)
           td
-            = select_tag 'group_by', options_for_select([[]] + @query.groupable_columns.collect { |c| [c.caption, c.name.to_s] },                @query.group_by)
+            = select_tag 'group_by', options_for_select([[]] + @query.groupable_columns.collect { |c| [c.caption, c.name.to_s] }, @query.group_by)
+        tr
+          td = t(:label_total_plural)
+          td = available_totalable_columns_tags @query
   p.buttons
     = link_to t(:button_apply), '#', class: 'icon icon-checked js-query-apply'
     = link_to t(:button_clear), {set_filter: 1}, class: 'icon icon-reload'
