@@ -2,8 +2,6 @@ ActiveSupport::Dependencies.autoload_paths << File.join(File.dirname(__FILE__), 
 ActiveSupport::Dependencies.autoload_paths << File.join(File.dirname(__FILE__), '..', 'app', 'controllers', 'concerns')
 ActiveSupport::Dependencies.autoload_paths << File.join(File.dirname(__FILE__), 'chronos')
 
-require_relative 'chronos/import'
-
 # load redmine patches
 ActionDispatch::Callbacks.to_prepare do
   unless Redmine::Plugin.included_modules.include? Chronos::RedminePatches::PluginPatch

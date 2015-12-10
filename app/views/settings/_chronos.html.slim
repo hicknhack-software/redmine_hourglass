@@ -22,5 +22,4 @@ p
 - if Redmine::Plugin.all.any? {|plugin| plugin.id == :redmine_time_tracker}
   p
     = label_tag 'import_time_tracker_plugin', t('chronos.settings.import.time_tracker_plugin_label')
-    = link_to t('chronos.settings.import.time_tracker_plugin'), chronos_import_redmine_time_tracker_plugin_path,
-              id: 'import_time_tracker_plugin', method: :put
+    = link_to t('chronos.settings.import.time_tracker_plugin'), chronos_import_redmine_time_tracker_plugin_path, id: 'import_time_tracker_plugin', method: :put

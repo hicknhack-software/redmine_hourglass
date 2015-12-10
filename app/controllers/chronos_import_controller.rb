@@ -1,6 +1,6 @@
 class ChronosImportController < ApplicationController
   def redmine_time_tracker_plugin
-    ChronosImport::RedmineTimeTracker.import!
+    Chronos::RedmineTimeTrackerImport.start!
 
     flash[:notice] = I18n::t('chronos.settings.import.time_tracker_plugin_success')
   rescue => e
