@@ -27,7 +27,7 @@ describe Chronos::TimeBooking do
 
   it 'creates a valid time_entry if arguments are given and non is set' do
     time_log = create :time_log
-    time_booking = Chronos::TimeBooking.create time_log_id: time_log.id, start: time_log.start, stop: time_log.stop, time_entry_arguments: {project: create(:project), activity: create(:time_entry_activity), user: create(:user), spent_on: time_log.start, hours: (time_log.stop - time_log.start)/ 1.hour.to_f}
+    time_booking = Chronos::TimeBooking.create time_log_id: time_log.id, start: time_log.start, stop: time_log.stop, time_entry_arguments: {project: create(:project), activity: create(:time_entry_activity), user: create(:user), spent_on: time_log.start, hours: Chronos::DateTimeCalculations.time_diff_in_hours(time_log.start, time_log.stop)}
     expect(time_booking).to be_valid
   end
 

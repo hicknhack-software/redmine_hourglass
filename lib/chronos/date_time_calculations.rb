@@ -25,7 +25,11 @@ module Chronos::DateTimeCalculations
     end
 
     def time_diff_in_hours(time1, time2)
-      time_diff(time1, time2) / 1.hour.to_f
+      in_hours time_diff time1, time2
+    end
+
+    def in_hours(time_diff)
+      time_diff / 1.hour.to_f
     end
 
     def round_interval(time_interval)

@@ -58,7 +58,7 @@ describe Chronos::TimeLog do
     let (:book!) { time_log.book booking_arguments }
     let (:booking_arguments) { {} }
     let (:hours) do
-      (time_log.stop - time_log.start).to_i / 1.hour.to_f
+      Chronos::DateTimeCalculations.time_diff_in_hours(time_log.start, time_log.stop)
     end
 
     context 'with no extra arguments' do
