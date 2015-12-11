@@ -1,4 +1,4 @@
-= form_for @time_booking, url: book_chronos_time_log_path(@time_log),  as: 'time_booking', remote: true, html: {class: 'add-time-booking-form js-chronos-remote js-validate-form js-check-splitting'} do |f|
+= form_for @time_booking, url: book_chronos_time_log_path(@time_log),  as: 'time_booking', remote: true, html: {class: 'add-time-booking-form js-chronos-remote js-validate-form js-check-splitting', data: {time_log_id: @time_log.id}} do |f|
   .form-row
     .form-field
       .label

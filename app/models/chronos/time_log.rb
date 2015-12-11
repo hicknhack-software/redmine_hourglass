@@ -58,13 +58,14 @@ module Chronos
       end
     end
 
-    def split(split_at)
+    def split(split_at, insert_new_before = false)
       split_at = split_at.change(sec: 0)
       return if start >= split_at || split_at >= stop
-      new_time_log_stop = stop
+      old_time = insert_new_before ? start : stop
       ActiveRecord::Base.transaction do
-        update stop: split_at
-        self.class.create start: split_at, stop: new_time_log_stop, user: user, comments: comments
+        update insert_new_before ? {start: split_at} : {stop: split_at}
+        new_time_log_args = insert_new_before ? {start: old_time, stop: split_at} : {start: split_at, stop: old_time}
+        self.class.create new_time_log_args.merge user: user, comments: comments
       end
     end
 

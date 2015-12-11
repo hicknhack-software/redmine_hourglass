@@ -164,6 +164,19 @@ describe Chronos::TimeLog do
       time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
       expect(time_log.split now + 15.minutes).to be_nil
     end
+    context 'with insert new time log before old' do
+      it 'sets the correctly start and stop times for the new time log' do
+        time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
+        time_log2 = time_log.split now + 5.minutes, true
+        expect([time_log2.start, time_log2.stop]).to eq [now, now + 5.minutes]
+      end
+
+      it 'adjusts the stop time of the original time log' do
+        time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
+        time_log.split now + 5.minutes, true
+        expect(time_log.start).to eq now + 5.minutes
+      end
+    end
   end
 
   describe 'combining' do
