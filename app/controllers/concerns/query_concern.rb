@@ -52,7 +52,10 @@ module QueryConcern
       session[session_query_var_name] = {
           filters: query.filters,
           group_by: query.group_by,
-          column_names: query.column_names
+          column_names: query.column_names,
+          options: {
+              totalable_names: query.totalable_names
+          }
       }
       query
     end
