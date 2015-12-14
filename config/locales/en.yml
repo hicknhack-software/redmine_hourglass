@@ -85,6 +85,9 @@ en:
           label_running_time: Running Time
       lists:
         button_book: Book
+      chart:
+          hour_sign: h
+          minute_sign: min
       time_logs:
         title: Time Logs
         no_data: No time logs available

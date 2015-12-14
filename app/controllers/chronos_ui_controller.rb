@@ -50,7 +50,7 @@ class ChronosUiController < ApplicationController
   def fetch_chart_data
     @chart_data = Array.new
     @chart_ticks = Array.new
-    @highlighter_data = Array.new
+    @highlight_data = Array.new
 
     if @query.valid? && !(@entries.empty? || @entries.nil?)
       # if the user changes the date-order for the table values, we have to reorder it for the chart
@@ -63,7 +63,8 @@ class ChronosUiController < ApplicationController
           hours += tb.hours if tb.start.to_date == date
         end
         @chart_data.push(hours)
-        @highlighter_data.push([date, hours])
+        time_array = Chronos::DateTimeCalculations.format_hours hours
+        @highlight_data.push [date, "#{time_array[0]}#{t('chronos.ui.chart.hour_sign')} #{time_array[1]}#{t('chronos.ui.chart.minute_sign')}"]
 
         # to get readable labels, we have to blank out some of them if there are to many
         # only set 8 labels and set the other blank

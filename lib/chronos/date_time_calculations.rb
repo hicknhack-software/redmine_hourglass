@@ -32,6 +32,13 @@ module Chronos::DateTimeCalculations
       time_diff / 1.hour.to_f
     end
 
+    def format_hours(hours)
+      [60,60].inject([hours * 3600]) {|result, unitsize|
+        result[0,0] = result.shift.divmod unitsize
+        result
+      }
+    end
+
     def round_interval(time_interval)
       if time_interval % round_minimum != 0
         round_multiplier = (time_interval % round_minimum < round_limit_in_seconds ? 0 : 1)
