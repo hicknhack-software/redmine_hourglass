@@ -77,7 +77,7 @@ module Chronos::QueryBase
     def add_issue_filter
       issues = Issue.visible.all
       values = issues.collect { |s| [s.subject, s.id.to_s] }
-      add_available_filter 'issue', type: :list, values: values if values.any?
+      add_available_filter 'issue_id', type: :list, values: values if values.any?
       add_available_filter 'issue_subject', type: :text if issues.any?
     end
 
