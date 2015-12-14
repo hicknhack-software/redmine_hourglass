@@ -3,10 +3,6 @@
 #= require jqplot/jqplot.categoryAxisRenderer
 #= require jqplot/jqplot.highlighter
 
-renderToolTip = (str, seriesIndex, pointIndex, plot) ->
-  point = chronos.jqplotData.highlightData[pointIndex]
-  point[0] + this.tooltipSeparator + point[1]
-
 $ ->
   if chronos.jqplotData.data.length > 0
     plot = $.jqplot 'chart-container', [chronos.jqplotData.data],
@@ -31,7 +27,8 @@ $ ->
         background: "#ffffff"
         shadow: false
       highlighter:
-        tooltipContentEditor: renderToolTip
+        tooltipContentEditor: (str, seriesIndex, pointIndex, plot) ->
+          chronos.jqplotData.highlightData[pointIndex]
         show: true
         showMarker: false
 

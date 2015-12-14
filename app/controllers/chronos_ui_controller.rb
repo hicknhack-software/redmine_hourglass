@@ -64,7 +64,7 @@ class ChronosUiController < ApplicationController
         end
         @chart_data.push(hours)
         time_array = Chronos::DateTimeCalculations.format_hours hours
-        @highlight_data.push [date, "#{time_array[0]}#{t('chronos.ui.chart.hour_sign')} #{time_array[1]}#{t('chronos.ui.chart.minute_sign')}"]
+        @highlight_data.push "#{date}, #{time_array[0]}#{t('chronos.ui.chart.hour_sign')} #{time_array[1]}#{t('chronos.ui.chart.minute_sign')}"
 
         # to get readable labels, we have to blank out some of them if there are to many
         # only set 8 labels and set the other blank
