@@ -29,6 +29,7 @@ class ChronosUiController < ApplicationController
   end
 
   def time_bookings
+    fetch_chart_data
   end
 
   def edit_time_bookings
@@ -44,5 +45,35 @@ class ChronosUiController < ApplicationController
   def get_time_booking
     @time_booking = Chronos::TimeBooking.find_by id: params[:id]
     render_404 unless @time_booking.present?
+  end
+
+  def fetch_chart_data
+    @chart_data = Array.new
+    @chart_ticks = Array.new
+    @highlighter_data = Array.new
+
+    if @query.valid? && !(@entries.empty? || @entries.nil?)
+      # if the user changes the date-order for the table values, we have to reorder it for the chart
+      start_date = [@entries.last.start.to_date, @entries.first.start.to_date].min
+      stop_date = [@entries.last.start.to_date, @entries.first.start.to_date].max
+
+      (start_date..stop_date).map do |date|
+        hours = 0
+        @entries.each do |tb|
+          hours += tb.hours if tb.start.to_date == date
+        end
+        @chart_data.push(hours)
+        @highlighter_data.push([date, hours])
+
+        # to get readable labels, we have to blank out some of them if there are to many
+        # only set 8 labels and set the other blank
+        gap = ((stop_date - start_date)/8).ceil
+        if gap == 0 || (date - start_date) % gap == 0
+          @chart_ticks.push(date)
+        else
+          @chart_ticks.push('')
+        end
+      end
+    end
   end
 end

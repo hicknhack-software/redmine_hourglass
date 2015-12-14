@@ -1,0 +1,8 @@
+- print = false
+javascript:
+  var data = #{raw @chart_data.to_json};
+  var ticks = #{raw @chart_ticks.to_json};
+  var highlightData = #{raw @highlighter_data.to_json};
+  var seriesColor = [#{'#999' if print}];
+= javascript_include_tag 'jqplot', plugin: 'redmine_chronos'
+= stylesheet_link_tag 'jqplot/jquery.jqplot', plugin: 'redmine_chronos'
