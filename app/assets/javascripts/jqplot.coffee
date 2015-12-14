@@ -5,8 +5,9 @@
 
 $ ->
   if chronos.jqplotData.data.length > 0
+    $chartContainer = $('#chart-container').addClass('has-data')
     plot = $.jqplot 'chart-container', [chronos.jqplotData.data],
-      seriesColors: (['#999'] if $('#chart-container').hasClass('js-print'))
+      seriesColors: (['#999'] if $chartContainer.hasClass('js-print'))
       seriesDefaults:
         renderer: $.jqplot.BarRenderer
         rendererOptions:

@@ -63,5 +63,9 @@ module QueryConcern
     def query_from_session
       query_class.find_by(id: session[session_query_var_name][:id]) || query_class.new(session[session_query_var_name].merge name: '_')
     end
+
+    def build_chart_query
+      @chart_query = query_class.new name: '_', filters: @query.filters, group_by: :start
+    end
   end
 end

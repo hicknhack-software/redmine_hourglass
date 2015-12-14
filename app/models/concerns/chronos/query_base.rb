@@ -28,6 +28,12 @@ module Chronos::QueryBase
       end
     end
 
+    def hours_by_group
+      grouped_query do |scope|
+        total_for_hours scope
+      end
+    end
+
     def sql_for_start_date_field(field, operator, value)
       sql_for_field(field, operator, value, queried_class.table_name, 'start')
     end

@@ -51,5 +51,32 @@ module Chronos
     def sidebar_queries
       @sidebar_queries ||= query_class.where(project: [nil, @project]).order(name: :asc)
     end
+
+    def chart_data
+      data = Array.new
+      ticks = Array.new
+      tooltips = Array.new
+
+      if @chart_query.valid?
+        hours_per_date = @chart_query.hours_by_group
+        dates = hours_per_date.keys.sort
+        (dates.first..dates.last).map do |date_string|
+          hours = hours_per_date[date_string]
+          data.push hours
+          time_array = Chronos::DateTimeCalculations.format_hours hours
+          tooltips.push "#{date_string}, #{time_array[0]}#{t('chronos.ui.chart.hour_sign')} #{time_array[1]}#{t('chronos.ui.chart.minute_sign')}"
+
+          # to get readable labels, we have to blank out some of them if there are to many
+          # only set 8 labels and set the other blank
+          gap = (hours_per_date.length / 8).ceil
+          if gap == 0 || hours_per_date.length % gap == 0
+            ticks.push date_string
+          else
+            ticks.push ''
+          end
+        end
+      end
+      [data, ticks, tooltips]
+    end
   end
 end

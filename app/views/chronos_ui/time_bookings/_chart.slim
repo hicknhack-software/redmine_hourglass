@@ -1,8 +1,9 @@
+- data, ticks, tooltips = chart_data
 javascript:
   window.chronos.jqplotData = {
-    data: #{raw @chart_data.to_json},
-    ticks: #{raw @chart_ticks.to_json},
-    highlightData: #{raw @highlight_data.to_json},
+    data: #{raw data.to_json},
+    ticks: #{raw ticks.to_json},
+    highlightData: #{raw tooltips.to_json},
     hourSign: "#{t('chronos.ui.chart.hour_sign')}"
   };
 = javascript_include_tag 'jqplot', plugin: 'redmine_chronos'
