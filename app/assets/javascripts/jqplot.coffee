@@ -35,5 +35,9 @@ $ ->
         show: true
         showMarker: false
 
+  timeout = null
   $(window).resize ->
-    plot.replot resetAxes: true
+    clearTimeout timeout
+    timeout = setTimeout  ->
+      plot.replot resetAxes: true
+    , 250
