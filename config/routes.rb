@@ -7,6 +7,7 @@ scope :chronos, as: :chronos do
     get 'time_logs/:id/book', action: :book_time_logs, as: :book_time_logs
     get 'time_bookings'
     get 'time_bookings/:id/edit', action: :edit_time_bookings, as: :edit_time_bookings
+    get 'report'
   end
   scope :completion, as: :completion, controller: :chronos_completion do
     get 'issues'

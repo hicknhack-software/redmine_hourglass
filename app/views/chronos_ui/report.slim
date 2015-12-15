@@ -1,0 +1,13 @@
+doctype html
+html
+  head
+    = javascript_heads
+    = javascript_include_tag 'application', plugin: 'redmine_chronos'
+    = render partial: 'chronos_ui/lists/chart'
+  body
+    .header
+      h1 = Chronos.settings[:report_title]
+      - if Chronos.settings[:report_logo_url].present?
+        = image_tag Chronos.settings[:report_logo_url], width: Chronos.settings[:report_logo_width] || 150
+    .content
+      = render partial: 'chronos_ui/lists/list'

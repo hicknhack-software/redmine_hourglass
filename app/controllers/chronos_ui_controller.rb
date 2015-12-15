@@ -8,7 +8,9 @@ class ChronosUiController < ApplicationController
   helper SortHelper
   helper Chronos::ApplicationHelper
 
-  before_action :retrieve_query, :init_sort, :create_view_arguments, only: [:time_logs, :time_bookings]
+  before_action :use_booking_query, only: :report
+  before_action :retrieve_query, :init_sort, :create_view_arguments, only: [:time_logs, :time_bookings, :report]
+  before_action :build_chart_query, only: [:time_bookings, :report]
   before_action :get_time_log, only: [:edit_time_logs, :book_time_logs]
   before_action :get_time_booking, only: [:edit_time_bookings]
 
@@ -29,11 +31,14 @@ class ChronosUiController < ApplicationController
   end
 
   def time_bookings
-    build_chart_query
   end
 
   def edit_time_bookings
     render 'chronos_ui/time_bookings/edit', layout: false
+  end
+
+  def report
+    render layout: false
   end
 
   private
@@ -45,5 +50,9 @@ class ChronosUiController < ApplicationController
   def get_time_booking
     @time_booking = Chronos::TimeBooking.find_by id: params[:id]
     render_404 unless @time_booking.present?
+  end
+
+  def use_booking_query
+    @query_identifier = :time_bookings
   end
 end

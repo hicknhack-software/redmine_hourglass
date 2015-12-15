@@ -1,7 +1,7 @@
 - content_for :header_tags do
   = javascript_include_tag 'application', plugin: 'redmine_chronos'
   = stylesheet_link_tag 'application', plugin: 'redmine_chronos'
-  = render partial: 'chronos_ui/time_bookings/chart'
+  = render partial: 'chronos_ui/lists/chart'
 
 .contextual
   - if @query.persisted? && @query.editable_by?(User.current)
@@ -15,6 +15,8 @@ h2 = @query.persisted? ? h(@query.name) : t('chronos.ui.time_bookings.title')
 = render partial: 'chronos_ui/lists/list'
 
 - content_for :sidebar do
+  h3 = t('chronos.ui.time_bookings.heading_report')
+  = link_to t('chronos.ui.time_bookings.label_print'), chronos_ui_report_path
   = render_sidebar_queries
 
-  = context_menu nil
+= context_menu nil
