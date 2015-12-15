@@ -40,6 +40,21 @@ en:
 
   chronos:
     settings:
+      import:
+        error:
+          redmine_time_tracker: There was an error, Redmine Time Tracker data could not be imported, you may already imported the database.
+        fields:
+          redmine_time_tracker: From Redmine Time Tracker plugin
+        label_start: Start now
+        success:
+          redmine_time_tracker: Redmine Time Tracker data was successfully imported to Redmine Chronos.
+        title: Import
+      report:
+        fields:
+          logo_url: Logo URL
+          logo_width: Logo Width
+          title: Title
+        title: Report
       rounding:
         fields:
           default: Round per default on?
@@ -47,11 +62,6 @@ en:
           minimum: Minimum time interval
           carry_over_due: Dismiss round carry-over after
         title: Rounding Behavior
-      import:
-        time_tracker_plugin_label: Redmine Time Tracker plugin
-        time_tracker_plugin: Import data
-        time_tracker_plugin_success: Redmine Time Tracker was successfully imported to Redmine Chronos.
-        time_tracker_plugin_error: There was an error, Redmine Time Tracker could not be imported, you may already imported the database.
     api:
       errors:
         missing_parameters: Insufficient parameters submitted
@@ -94,6 +104,8 @@ en:
       time_bookings:
         title: Time Bookings
         no_data: No time bookings available
+        heading_report: Report
+        label_print: Print
     queries:
       time_logs:
         title_new: New Time Log Query

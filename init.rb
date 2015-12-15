@@ -11,11 +11,14 @@ Redmine::Plugin.register :redmine_chronos do
   requires_redmine version_or_higher: '3.0.0'
 
   settings default: {
-               round_minimum: '0.25',
-               round_limit: '50',
-               round_carry_over_due: '12',
-               round_default: false
-           }, :partial => 'settings/chronos'
+      report_title: 'Report',
+      report_logo_url: '',
+      report_logo_width: '150',
+      round_minimum: '0.25',
+      round_limit: '50',
+      round_carry_over_due: '12',
+      round_default: false
+  }, :partial => 'settings/chronos'
 
   project_module :redmine_chronos do
     def with_foreign(array)
