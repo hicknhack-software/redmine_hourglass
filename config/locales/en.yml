@@ -19,8 +19,10 @@ en:
               overlaps: There are a overlapping time logs
 
 ################### redmine specific stuff #####################
-  field_issue_subject: Issue Subject
+  field_combined_description: Description
+  field_combined_duration: Duration
   field_booked?: Booked?
+  field_issue_subject: Issue Subject
   field_round: Round
   field_start: Start
   field_stop: Stop

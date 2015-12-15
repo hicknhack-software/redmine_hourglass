@@ -10,4 +10,7 @@ html
       - if Chronos.settings[:report_logo_url].present?
         = image_tag Chronos.settings[:report_logo_url], width: Chronos.settings[:report_logo_width] || 150
     .content
-      = render partial: 'chronos_ui/lists/list'
+      .chart
+        .hours = render_query_totals @query
+        #chart-container.print
+      = render partial: 'chronos_ui/report/list'

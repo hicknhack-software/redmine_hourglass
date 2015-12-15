@@ -1,0 +1,22 @@
+- columns = combined_columns
+table.list.chronos-list.print
+  thead
+    tr
+      - columns.each do |column|
+        th = h column.caption
+  tbody
+    - grouped_entry_list @entries, @query, @count_by_group do |entry, group_name, group_count, group_totals|
+      - if group_name
+        - reset_cycle
+        tr.group.open
+          td colspan="#{columns.size}"
+            = group_name
+            span.count = "(#{group_count})"
+            span.totals = group_totals
+      tr.entry id=entry.id class=cycle('odd', 'even')
+        - columns.each do |column|
+          td class=column.css_classes
+            - if combined_column_map.include? column.name
+              = send "#{column.name}_content", column, entry
+            - else
+              = csv_content column, entry

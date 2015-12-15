@@ -21,12 +21,8 @@
               td colspan="#{@query.inline_columns.size + 2}"
                 span.expander &nbsp;
                 = group_name
-                span.count
-                  | (
-                  = group_count
-                  | )
-                span class='totals'
-                  = group_totals
+                span.count = "(#{group_count})"
+                span.totals = group_totals
                 a.toggle-all href='#'
                   = "#{t(:button_collapse_all)} / #{t(:button_expand_all)}"
           tr.entry.hascontextmenu id=entry.id class=cycle('odd', 'even')

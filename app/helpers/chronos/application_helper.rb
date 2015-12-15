@@ -52,6 +52,11 @@ module Chronos
       @sidebar_queries ||= query_class.where(project: [nil, @project]).order(name: :asc)
     end
 
+    def localized_hours_in_units(hours)
+      h, min = Chronos::DateTimeCalculations.hours_in_units hours
+      "#{h}#{t('chronos.ui.chart.hour_sign')} #{min}#{t('chronos.ui.chart.minute_sign')}"
+    end
+
     def chart_data
       data = Array.new
       ticks = Array.new
@@ -60,23 +65,65 @@ module Chronos
       if @chart_query.valid?
         hours_per_date = @chart_query.hours_by_group
         dates = hours_per_date.keys.sort
-        (dates.first..dates.last).map do |date_string|
-          hours = hours_per_date[date_string]
-          data.push hours
-          time_array = Chronos::DateTimeCalculations.format_hours hours
-          tooltips.push "#{date_string}, #{time_array[0]}#{t('chronos.ui.chart.hour_sign')} #{time_array[1]}#{t('chronos.ui.chart.minute_sign')}"
-
-          # to get readable labels, we have to blank out some of them if there are to many
-          # only set 8 labels and set the other blank
-          gap = (hours_per_date.length / 8).ceil
-          if gap == 0 || hours_per_date.length % gap == 0
-            ticks.push date_string
-          else
-            ticks.push ''
+        unless dates.empty?
+          (dates.first..dates.last).map do |date_string|
+            hours = hours_per_date[date_string]
+            data.push hours
+            tooltips.push "#{date_string}, #{localized_hours_in_units hours}"
+            # to get readable labels, we have to blank out some of them if there are to many
+            # only set 8 labels and set the other blank
+            gap = (hours_per_date.length / 8).ceil
+            if gap == 0 || hours_per_date.length % gap == 0
+              ticks.push date_string
+            else
+              ticks.push ''
+            end
           end
         end
       end
       [data, ticks, tooltips]
+    end
+
+    def combined_column_map
+      {
+          combined_description: [:activity, :issue, :comments, :project, :fixed_version],
+          combined_duration: [:hours, :start, :stop]
+      }
+    end
+
+    def combined_column_name(column)
+      combined_column_map.select { |key, array| array.include? column.name }.flatten.first
+    end
+
+    def combined_columns
+      columns = @query.columns.map do |column|
+        combined_name = combined_column_name column
+        combined_name ? QueryColumn.new(combined_name) : column
+      end
+      columns.uniq! { |column| column.name }
+    end
+
+    def combined_description_content(column, entry)
+      output = ActiveSupport::SafeBuffer.new
+        if entry.issue.present?
+          output.concat entry.activity
+          output.concat entry.issue
+        else
+          output.concat [entry.activity, entry.comments].compact.join(': ')
+        end
+      output.concat (content_tag :div, class: 'project' do
+        [entry.project, entry.fixed_version].compact.join(' / ')
+      end)
+      output
+    end
+
+    def combined_duration_content(column, entry)
+      output = ActiveSupport::SafeBuffer.new
+      output.concat localized_hours_in_units entry.hours
+      output.concat (content_tag :div, class: 'start-stop' do
+        [format_time(entry.start, false), format_time(entry.stop, false)].compact.join('-')
+      end)
+      output
     end
   end
 end

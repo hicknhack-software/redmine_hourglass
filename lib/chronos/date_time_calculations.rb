@@ -32,7 +32,7 @@ module Chronos::DateTimeCalculations
       time_diff / 1.hour.to_f
     end
 
-    def format_hours(hours)
+    def hours_in_units(hours)
       [60,60].inject([hours * 3600]) {|result, unitsize|
         result[0,0] = result.shift.divmod unitsize
         result
