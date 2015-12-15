@@ -17,6 +17,6 @@ table.list.chronos-list.print
         - columns.each do |column|
           td class=column.css_classes
             - if report_column_map.include? column.name
-              = send "#{column.name}_content", column, entry
+              = send "#{column.name}_content", entry
             - else
               = csv_content column, entry
