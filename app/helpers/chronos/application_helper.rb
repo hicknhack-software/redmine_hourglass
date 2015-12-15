@@ -84,26 +84,37 @@ module Chronos
       [data, ticks, tooltips]
     end
 
-    def combined_column_map
+    def report_column_map
       {
-          combined_description: [:activity, :issue, :comments, :project, :fixed_version],
-          combined_duration: [:hours, :start, :stop]
+          date: [:start, :stop],
+          description: [:activity, :issue, :comments, :project, :fixed_version],
+          duration: [:hours, :start, :stop]
       }
     end
 
-    def combined_column_name(column)
-      combined_column_map.select { |key, array| array.include? column.name }.flatten.first
+    def combined_column_names(column)
+      report_column_map.select { |key, array| array.include? column.name }.keys
     end
 
     def combined_columns
       columns = @query.columns.map do |column|
-        combined_name = combined_column_name column
-        combined_name ? QueryColumn.new(combined_name) : column
-      end
+        combined_names = combined_column_names(column)
+        if combined_names.empty?
+          column
+        else
+          combined_names.map do |name|
+            QueryColumn.new name
+          end
+        end
+      end.flatten!
       columns.uniq! { |column| column.name }
     end
 
-    def combined_description_content(column, entry)
+    def date_content(column, entry)
+      format_date entry.start
+    end
+
+    def description_content(column, entry)
       output = ActiveSupport::SafeBuffer.new
         if entry.issue.present?
           output.concat entry.activity
@@ -117,7 +128,7 @@ module Chronos
       output
     end
 
-    def combined_duration_content(column, entry)
+    def duration_content(column, entry)
       output = ActiveSupport::SafeBuffer.new
       output.concat localized_hours_in_units entry.hours
       output.concat (content_tag :div, class: 'start-stop' do

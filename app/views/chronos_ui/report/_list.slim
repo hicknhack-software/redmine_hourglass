@@ -16,7 +16,7 @@ table.list.chronos-list.print
       tr.entry id=entry.id class=cycle('odd', 'even')
         - columns.each do |column|
           td class=column.css_classes
-            - if combined_column_map.include? column.name
+            - if report_column_map.include? column.name
               = send "#{column.name}_content", column, entry
             - else
               = csv_content column, entry
