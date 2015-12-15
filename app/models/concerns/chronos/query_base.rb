@@ -7,6 +7,12 @@ module Chronos::QueryBase
       self.filters ||= {}
     end
 
+    def build_from_params(params)
+      super
+      self.totalable_names = self.default_totalable_names unless params[:t] || (params[:query] && params[:query][:totalable_names])
+      self
+    end
+
     def is_private?
       visibility == Query::VISIBILITY_PRIVATE
     end
@@ -20,6 +26,10 @@ module Chronos::QueryBase
       base_scope.
           order(order_option).
           joins(joins_for_order_statement(order_option.join(',')))
+    end
+
+    def default_totalable_names
+      @default_totalable_names ||= [:hours]
     end
 
     def count_by_group
