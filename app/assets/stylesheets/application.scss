@@ -24,6 +24,12 @@
     }
   }
 }
+
+@mixin inline-block {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .controller-chronos_ui {
   .time-tracker-control {
     margin-bottom: 30px;
@@ -89,5 +95,100 @@
   #chart-container.has-data {
     height: 400px;
     margin-bottom: 10px;
+  }
+
+  &.action-report {
+    color: #484848;
+    width: 210mm;
+    padding: 0;
+
+    * {
+      font-family: "Myriad Pro", Verdana, sans-serif;
+    }
+
+    .header {
+      h1 {
+        font-weight: bold;
+        font-size: 13pt;
+        width: 50%;
+        @include inline-block;
+      }
+      .logo {
+        width: 50%;
+        text-align: right;
+        @include inline-block;
+      }
+    }
+    .list {
+      width: 100%;
+      border-collapse: collapse;
+      * {
+        font-size: 11pt;
+      }
+      thead {
+        display: table-header-group;
+        tr {
+          background-color: #90D2E8;
+          th {
+            border-bottom-color: #666;
+          }
+        }
+      }
+      tbody {
+        display: table-row-group;
+      }
+      tr {
+        page-break-inside: avoid;
+        &.odd {
+          background-color: #f6f7f8;
+        }
+        &.even {
+          background-color: #fff;
+        }
+        td, th {
+          padding-right: 1em;
+          border-bottom: 1px solid #aaa;
+          text-align: left;
+          vertical-align: top;
+          &:first-child {
+            padding-left: 1em;
+          }
+          &:last-child {
+            padding-right: 1em;
+          }
+          .project {
+            position: relative;
+            overflow: hidden;
+            font-size: 8pt;
+          }
+        }
+      }
+    }
+
+    .chart {
+      .query-totals {
+        @include inline-block;
+        width: 15%;
+        font-weight: bold;
+        font-size: 11pt;
+      }
+      #chart-container {
+        @include inline-block;
+        height: 300px;
+        width: 85%;
+        overflow: visible;
+        .jqplot-yaxis {
+          font-size: 75%;
+          text-align: right;
+          padding-right: 10px;
+        }
+        .jqplot-xaxis {
+          font-size: 75%;
+        }
+        .jqplot-xaxis-tick {
+          white-space: nowrap;
+        }
+      }
+    }
   }
 }

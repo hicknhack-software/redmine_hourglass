@@ -3,14 +3,15 @@ html
   head
     = javascript_heads
     = javascript_include_tag 'application', plugin: 'redmine_chronos'
+    = stylesheet_link_tag 'application', plugin: 'redmine_chronos', media: :all
     = render partial: 'chronos_ui/lists/chart'
-  body
+  body.controller-chronos_ui.action-report
     .header
       h1 = Chronos.settings[:report_title]
       - if Chronos.settings[:report_logo_url].present?
-        = image_tag Chronos.settings[:report_logo_url], width: Chronos.settings[:report_logo_width] || 150
+        .logo = image_tag Chronos.settings[:report_logo_url], width: Chronos.settings[:report_logo_width] || 150
     .content
       .chart
-        .hours = render_query_totals @query
+        = render_query_totals @query
         #chart-container.print
       = render partial: 'chronos_ui/report/list'
