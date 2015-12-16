@@ -9,7 +9,7 @@ module ListConcern
   end
 
   def set_list_arguments
-    @list_arguments = {query: @query}
+    @list_arguments = {query: @query, action_name: action_name}
     if @query.valid?
       scope = @query.results_scope order: sort_clause
       count = scope.count
