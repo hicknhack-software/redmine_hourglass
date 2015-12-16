@@ -53,7 +53,7 @@ module Chronos
     end
 
     def localized_hours_in_units(hours)
-      h, min = Chronos::DateTimeCalculations.hours_in_units hours
+      h, min = Chronos::DateTimeCalculations.hours_in_units hours || 0
       "#{h}#{t('chronos.ui.chart.hour_sign')} #{min}#{t('chronos.ui.chart.minute_sign')}"
     end
 

@@ -1,31 +1,32 @@
-- if !@entries || @entries.empty?
-  p.nodata
-    = t("chronos.ui.#{action_name}.no_data")
-- else
-  = render_query_totals @query
-  #chart-container
-  .autoscroll
-    table.list.chronos-list
-      thead
-        tr
-          th.checkbox.hide-when-print
-            = link_to image_tag('toggle_check.png'),{}, title: "#{t(:button_check_all)} / #{t(:button_uncheck_all)}"
-          - @query.columns.each do |column|
-            = column_header column
-          th.actions
-      tbody
-        - grouped_entry_list @entries, @query, @count_by_group do |entry, group_name, group_count, group_totals|
-          - if group_name
-            - reset_cycle
-            tr.group.open
-              td colspan="#{@query.inline_columns.size + 2}"
-                span.expander &nbsp;
-                = group_name
-                span.count = "(#{group_count})"
-                span.totals = group_totals
-                a.toggle-all href='#'
-                  = "#{t(:button_collapse_all)} / #{t(:button_expand_all)}"
-          tr.entry.hascontextmenu id=entry.id class=cycle('odd', 'even')
-            = render partial: 'chronos_ui/lists/list_entry', locals: {entry: entry}
-  span.pagination
-    = pagination_links_full @pages, @count
+- if @query.valid?
+  - if !@entries || @entries.empty?
+    p.nodata
+      = t("chronos.ui.#{action_name}.no_data")
+  - else
+    = render_query_totals @query
+    #chart-container
+    .autoscroll
+      table.list.chronos-list
+        thead
+          tr
+            th.checkbox.hide-when-print
+              = link_to image_tag('toggle_check.png'),{}, title: "#{t(:button_check_all)} / #{t(:button_uncheck_all)}"
+            - @query.columns.each do |column|
+              = column_header column
+            th.actions
+        tbody
+          - grouped_entry_list @entries, @query, @count_by_group do |entry, group_name, group_count, group_totals|
+            - if group_name
+              - reset_cycle
+              tr.group.open
+                td colspan="#{@query.inline_columns.size + 2}"
+                  span.expander &nbsp;
+                  = group_name
+                  span.count = "(#{group_count})"
+                  span.totals = group_totals
+                  a.toggle-all href='#'
+                    = "#{t(:button_collapse_all)} / #{t(:button_expand_all)}"
+            tr.entry.hascontextmenu id=entry.id class=cycle('odd', 'even')
+              = render partial: 'chronos_ui/lists/list_entry', locals: {entry: entry}
+    span.pagination
+      = pagination_links_full @pages, @count
