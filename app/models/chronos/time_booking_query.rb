@@ -3,8 +3,8 @@ module Chronos
     include QueryBase
 
     set_available_columns(
-      start: {sortable: "#{queried_class.table_name}.start", default_order: 'desc', groupable: "DATE(#{queried_class.table_name}.start)"},
-      stop: {sortable: "#{queried_class.table_name}.stop", default_order: 'desc', groupable: "DATE(#{queried_class.table_name}.stop)"},
+      start: {sortable: "#{queried_class.table_name}.start", groupable: "DATE(#{queried_class.table_name}.start)"},
+      stop: {sortable: "#{queried_class.table_name}.stop", groupable: "DATE(#{queried_class.table_name}.stop)"},
       hours: {totalable: true},
       comments: {},
       user: {sortable: lambda { User.fields_for_order_statement }, groupable: "#{User.table_name}.id"},

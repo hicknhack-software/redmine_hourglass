@@ -5,8 +5,8 @@ module Chronos
     set_available_columns(
         comments: {},
         user: {sortable: lambda { User.fields_for_order_statement }, groupable: true},
-        start: {sortable: "#{queried_class.table_name}.start", default_order: 'desc', groupable: "DATE(#{queried_class.table_name}.start)"},
-        stop: {sortable: "#{queried_class.table_name}.stop", default_order: 'desc', groupable: "DATE(#{queried_class.table_name}.stop)"},
+        start: {sortable: "#{queried_class.table_name}.start", groupable: "DATE(#{queried_class.table_name}.start)"},
+        stop: {sortable: "#{queried_class.table_name}.stop", groupable: "DATE(#{queried_class.table_name}.stop)"},
         hours: {totalable: true},
         booked?: {}
     )
