@@ -17,16 +17,16 @@ class ChronosUiController < ApplicationController
 
     query = Chronos::TimeLogQuery.build_from_params query_params, name: '_'
     init_sort query
-    @time_log_list_arguments = set_list_arguments(query).merge action_name: 'time_logs'
+    @time_log_list_arguments = list_arguments(query).merge action_name: 'time_logs'
     query = Chronos::TimeLogQuery.build_from_params query_params, name: '_'
     init_sort query
-    @time_booking_list_arguments = set_list_arguments(query).merge action_name: 'time_bookings'
+    @time_booking_list_arguments = list_arguments(query).merge action_name: 'time_bookings'
   end
 
   def time_logs
     retrieve_query
     init_sort
-    set_list_arguments
+    @list_arguments = list_arguments
   end
 
   def edit_time_logs
@@ -42,7 +42,7 @@ class ChronosUiController < ApplicationController
   def time_bookings
     retrieve_query
     init_sort
-    set_list_arguments
+    @list_arguments = list_arguments
     build_chart_query
   end
 
@@ -54,7 +54,7 @@ class ChronosUiController < ApplicationController
     @query_identifier = :time_bookings
     retrieve_query
     init_sort
-    set_list_arguments
+    @list_arguments = list_arguments
     @list_arguments[:entries] = @list_arguments[:entries].offset(nil).limit(nil)
     build_chart_query
     render layout: false

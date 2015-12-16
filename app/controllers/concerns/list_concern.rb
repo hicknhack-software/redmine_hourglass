@@ -8,15 +8,15 @@ module ListConcern
     query.sort_criteria = sort_criteria.to_a
   end
 
-  def set_list_arguments(query = @query)
-    @list_arguments = {query: query, action_name: action_name}
+  def list_arguments(query = @query)
+    list_arguments = {query: query, action_name: action_name}
     if query.valid?
       scope = query.results_scope order: sort_clause
       count = scope.count
       count_by_group = query.count_by_group
       paginator = Paginator.new count, per_page_option, params[:page]
       entries = scope.offset(paginator.offset).limit(paginator.per_page)
-      @list_arguments.merge! count: count, count_by_group: count_by_group, paginator: paginator, entries: entries
+      list_arguments.merge! count: count, count_by_group: count_by_group, paginator: paginator, entries: entries
     end
   end
 end
