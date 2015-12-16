@@ -1,3 +1,4 @@
+- query, entries, paginator, count, count_by_group = list_arguments
 - columns = combined_columns
 table.list.chronos-list.print
   thead
@@ -5,7 +6,7 @@ table.list.chronos-list.print
       - columns.each do |column|
         th = h column.caption
   tbody
-    - grouped_entry_list @entries, @query, @count_by_group do |entry, group_name, group_count, group_totals|
+    - grouped_entry_list entries, query, count_by_group do |entry, group_name, group_count, group_totals|
       - if group_name
         - reset_cycle
         tr.group.open

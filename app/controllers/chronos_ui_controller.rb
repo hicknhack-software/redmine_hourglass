@@ -7,10 +7,9 @@ class ChronosUiController < ApplicationController
   helper IssuesHelper
   helper SortHelper
   helper Chronos::ApplicationHelper
+  helper Chronos::ListHelper
+  helper Chronos::ReportHelper
 
-  before_action :use_booking_query, only: :report
-  before_action :retrieve_query, :init_sort, :create_view_arguments, only: [:time_logs, :time_bookings, :report]
-  before_action :build_chart_query, only: [:time_bookings, :report]
   before_action :get_time_log, only: [:edit_time_logs, :book_time_logs]
   before_action :get_time_booking, only: [:edit_time_bookings]
 
@@ -19,6 +18,9 @@ class ChronosUiController < ApplicationController
   end
 
   def time_logs
+    retrieve_query
+    init_sort
+    set_list_arguments
   end
 
   def edit_time_logs
@@ -31,6 +33,10 @@ class ChronosUiController < ApplicationController
   end
 
   def time_bookings
+    retrieve_query
+    init_sort
+    set_list_arguments
+    build_chart_query
   end
 
   def edit_time_bookings
@@ -38,7 +44,12 @@ class ChronosUiController < ApplicationController
   end
 
   def report
-    @entries = @entries.offset(nil).limit(nil)
+    use_booking_query
+    retrieve_query
+    init_sort
+    set_list_arguments
+    @list_arguments[:entries] = @list_arguments[:entries].offset(nil).limit(nil)
+    build_chart_query
     render layout: false
   end
 
