@@ -74,7 +74,7 @@ module Chronos
             tooltips.push "#{date_string}, #{localized_hours_in_units hours}"
             # to get readable labels, we have to blank out some of them if there are to many
             # only set 8 labels and set the other blank
-            ticks.push (data.length - 1) % gap == 0 ? date_string : ''
+            ticks.push gap == 0 || (data.length - 1) % gap == 0 ? date_string : ''
           end
         end
       end
