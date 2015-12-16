@@ -18,5 +18,6 @@ module ListConcern
       entries = scope.offset(paginator.offset).limit(paginator.per_page)
       list_arguments.merge! count: count, count_by_group: count_by_group, paginator: paginator, entries: entries
     end
+    list_arguments
   end
 end

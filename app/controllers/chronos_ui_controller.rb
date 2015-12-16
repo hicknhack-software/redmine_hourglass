@@ -13,12 +13,16 @@ class ChronosUiController < ApplicationController
   def index
     @time_tracker = User.current.chronos_time_tracker || Chronos::TimeTracker.new
 
-    query_params = {group_by: :start, filter: {user: {operator: '=', values: [User.current.id]}, start: {operator: 'l2w'}}}
-
-    time_log_query = Chronos::TimeLogQuery.build_from_params query_params, name: '_'
+    time_log_query = Chronos::TimeLogQuery.new name: '_'
+    time_log_query.group_by = :start
+    time_log_query.add_filter 'start_date', 'w+lw', ['dummy']
+    time_log_query.add_filter 'user_id', '=', [User.current.id.to_s]
     init_sort time_log_query
     @time_log_list_arguments = list_arguments(time_log_query, per_page: 15, page_param: :logs_page).merge action_name: 'time_logs', hide_per_page_links: true
-    time_booking_query = Chronos::TimeBookingQuery.build_from_params query_params, name: '_'
+    time_booking_query = Chronos::TimeBookingQuery.new name: '_'
+    time_booking_query.group_by = :start
+    time_booking_query.add_filter 'start_date', 'w+lw', ['dummy']
+    time_booking_query.add_filter 'user_id', '=', [User.current.id.to_s]
     init_sort time_booking_query
     @time_booking_list_arguments = list_arguments(time_booking_query, per_page: 15, page_param: :bookings_page).merge action_name: 'time_bookings', hide_per_page_links: true
   end

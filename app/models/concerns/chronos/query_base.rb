@@ -67,6 +67,21 @@ module Chronos::QueryBase
     sql_for_field(field, operator, value, queried_class.table_name, 'start')
   end
 
+  def sql_for_field(field, operator, value, db_table, db_field, is_custom_filter=false)
+    sql = ''
+    case operator
+      when 'w+lw'
+        # = this and last week
+        first_day_of_week = l(:general_first_day_of_week).to_i
+        day_of_week = Date.today.cwday
+        days_ago = (day_of_week >= first_day_of_week ? day_of_week - first_day_of_week : day_of_week + 7 - first_day_of_week)
+        sql = relative_date_clause(db_table, db_field, - days_ago -7, - days_ago + 6, is_custom_filter)
+      else
+        sql = super
+    end
+    sql
+  end
+
   private
   def add_start_filter
     add_available_filter 'start_date', type: :date
