@@ -13,6 +13,11 @@ module Chronos::QueryBase
     end
   end
 
+  def initialize(attributes = nil, *args)
+    super attributes
+    self.filters ||= {}
+  end
+
   def build_from_params(params)
     super
     self.totalable_names = self.default_totalable_names unless params[:t] || (params[:query] && params[:query][:totalable_names])
