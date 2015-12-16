@@ -27,5 +27,5 @@
                   = "#{t(:button_collapse_all)} / #{t(:button_expand_all)}"
           tr.entry.hascontextmenu id=entry.id class=cycle('odd', 'even')
             = render partial: 'chronos_ui/lists/list_entry', locals: {entry: entry}
-  p.pagination
+  span.pagination
     = pagination_links_full @pages, @count
