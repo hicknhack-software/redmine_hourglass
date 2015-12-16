@@ -2,17 +2,17 @@ module Chronos
   class TimeBookingQuery < Query
     include QueryBase
 
-    self.available_columns = [
-        QueryColumn.new(:start, sortable: "#{queried_class.table_name}.start", default_order: 'desc', groupable: "DATE(#{queried_class.table_name}.start)"),
-        QueryColumn.new(:stop, sortable: "#{queried_class.table_name}.stop", default_order: 'desc', groupable: "DATE(#{queried_class.table_name}.stop)"),
-        QueryColumn.new(:hours, totalable: true),
-        QueryColumn.new(:comments),
-        QueryColumn.new(:user, sortable: lambda { User.fields_for_order_statement }, groupable: "#{User.table_name}.id"),
-        QueryColumn.new(:project, sortable: "#{Project.table_name}.name", groupable: "#{Project.table_name}.id"),
-        QueryColumn.new(:activity, sortable: "#{TimeEntryActivity.table_name}.position", groupable: "#{TimeEntryActivity.table_name}.id"),
-        QueryColumn.new(:issue, sortable: "#{Issue.table_name}.subject", groupable: "#{Issue.table_name}.id"),
-        QueryColumn.new(:fixed_version, sortable: lambda { Version.fields_for_order_statement }, groupable: "#{Issue.table_name}.fixed_version_id")
-    ]
+    set_available_columns(
+      start: {sortable: "#{queried_class.table_name}.start", default_order: 'desc', groupable: "DATE(#{queried_class.table_name}.start)"},
+      stop: {sortable: "#{queried_class.table_name}.stop", default_order: 'desc', groupable: "DATE(#{queried_class.table_name}.stop)"},
+      hours: {totalable: true},
+      comments: {},
+      user: {sortable: lambda { User.fields_for_order_statement }, groupable: "#{User.table_name}.id"},
+      project: {sortable: "#{Project.table_name}.name", groupable: "#{Project.table_name}.id"},
+      activity: {sortable: "#{TimeEntryActivity.table_name}.position", groupable: "#{TimeEntryActivity.table_name}.id"},
+      issue: {sortable: "#{Issue.table_name}.subject", groupable: "#{Issue.table_name}.id"},
+      fixed_version: {sortable: lambda { Version.fields_for_order_statement }, groupable: "#{Issue.table_name}.fixed_version_id"}
+    )
 
     def initialize_available_filters
       add_user_filter

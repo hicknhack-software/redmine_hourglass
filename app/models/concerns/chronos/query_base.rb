@@ -6,7 +6,11 @@ module Chronos::QueryBase
   end
 
   class_methods do
-
+    def set_available_columns(columns)
+      self.available_columns = columns.map do |name, options|
+        QueryColumn.new name, options
+      end
+    end
   end
 
   def build_from_params(params)
