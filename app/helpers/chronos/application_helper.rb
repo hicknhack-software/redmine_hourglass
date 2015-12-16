@@ -66,18 +66,15 @@ module Chronos
         hours_per_date = @chart_query.hours_by_group
         dates = hours_per_date.keys.sort
         unless dates.empty?
-          (dates.first..dates.last).map do |date_string|
+          date_range = (dates.first..dates.last)
+          gap = (date_range.count / 8).ceil
+          date_range.each do |date_string|
             hours = hours_per_date[date_string]
             data.push hours
             tooltips.push "#{date_string}, #{localized_hours_in_units hours}"
             # to get readable labels, we have to blank out some of them if there are to many
             # only set 8 labels and set the other blank
-            gap = (hours_per_date.length / 8).ceil
-            if gap == 0 || hours_per_date.length % gap == 0
-              ticks.push date_string
-            else
-              ticks.push ''
-            end
+            ticks.push (data.length - 1) % gap == 0 ? date_string : ''
           end
         end
       end
