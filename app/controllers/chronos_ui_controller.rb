@@ -38,6 +38,7 @@ class ChronosUiController < ApplicationController
   end
 
   def report
+    @entries = @entries.offset(nil).limit(nil)
     render layout: false
   end
 

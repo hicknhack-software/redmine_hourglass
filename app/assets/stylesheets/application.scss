@@ -97,6 +97,7 @@
     margin-bottom: 10px;
   }
 
+  //everything inside of action report are print specific styles
   &.action-report {
     color: #484848;
     width: 210mm;
@@ -160,6 +161,9 @@
             position: relative;
             overflow: hidden;
             font-size: 8pt;
+          }
+          .count {
+            margin-left: 5px;
           }
         }
       }
