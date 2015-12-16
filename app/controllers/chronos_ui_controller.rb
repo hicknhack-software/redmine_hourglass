@@ -12,6 +12,15 @@ class ChronosUiController < ApplicationController
 
   def index
     @time_tracker = User.current.chronos_time_tracker || Chronos::TimeTracker.new
+
+    query_params = {group_by: :start, filter: {user: {operator: '=', values: [User.current.id]}, start: {operator: 'l2w'}}}
+
+    query = Chronos::TimeLogQuery.build_from_params query_params, name: '_'
+    init_sort query
+    @time_log_list_arguments = set_list_arguments(query).merge action_name: 'time_logs'
+    query = Chronos::TimeLogQuery.build_from_params query_params, name: '_'
+    init_sort query
+    @time_booking_list_arguments = set_list_arguments(query).merge action_name: 'time_bookings'
   end
 
   def time_logs

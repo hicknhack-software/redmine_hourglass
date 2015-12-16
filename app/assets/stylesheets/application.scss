@@ -1,7 +1,7 @@
 @mixin form-row {
   .form-row {
     width: 100%;
-    clear: left;
+    float: left;
     .form-field {
       float: left;
       margin-right: 5px;
