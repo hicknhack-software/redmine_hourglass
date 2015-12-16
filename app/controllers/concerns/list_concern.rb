@@ -5,7 +5,7 @@ module ListConcern
   def init_sort(query = @query)
     sort_init query.sort_criteria.empty? ? [%w(id desc)] : query.sort_criteria
     sort_update query.sortable_columns
-    query.sort_criteria = sort_criteria.to_a
+    query.sort_criteria = @sort_criteria.to_a
   end
 
   def list_arguments(query = @query, options = {})
