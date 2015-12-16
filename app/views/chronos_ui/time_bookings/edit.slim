@@ -1,15 +1,15 @@
-= form_for @time_booking, as: 'time_booking', remote: true, html: {class: 'edit-time-booking-form js-chronos-remote js-validate-form js-check-splitting', data: {time_log_id: @time_booking.time_log_id} do |f|
+= form_for time_booking, as: 'time_booking', remote: true, html: {class: 'edit-time-booking-form js-chronos-remote js-validate-form js-check-splitting', data: {time_log_id: time_booking.time_log_id} do |f|
   .form-row
     .form-field
       .label
         = f.label :start
       .input
-        = f.text_field :start, size: '20', value: @time_booking.start.iso8601, disabled: !authorize_globally_for('chronos/time_bookings', 'update_time'), class: 'js-validate-limit'
+        = f.text_field :start, size: '20', value: time_booking.start.iso8601, disabled: !authorize_globally_for('chronos/time_bookings', 'update_time'), class: 'js-validate-limit'
     .form-field
       .label
         = f.label :stop
       .input
-        = f.text_field :stop, size: '20', value: @time_booking.stop.iso8601, disabled: !authorize_globally_for('chronos/time_bookings', 'update_time'), class: 'js-validate-limit'
+        = f.text_field :stop, size: '20', value: time_booking.stop.iso8601, disabled: !authorize_globally_for('chronos/time_bookings', 'update_time'), class: 'js-validate-limit'
     .form-field
       .label
         = label :time_booking, :round
@@ -19,17 +19,17 @@
       .label
         = f.label :project_id
       .input
-        = f.select :project_id, projects_for_project_select(@time_booking.project), {}, disabled: !authorize_globally_for('chronos/time_bookings', 'update'), required: true
+        = f.select :project_id, projects_for_project_select(time_booking.project), {}, disabled: !authorize_globally_for('chronos/time_bookings', 'update'), required: true
     .form-field
       .label
         = f.label :activity_id
       .input
-        = f.collection_select :activity_id, activity_collection(@time_booking.project), :id, :name, {}, disabled: !authorize_globally_for('chronos/time_bookings', 'update'), required: true
+        = f.collection_select :activity_id, activity_collection(time_booking.project), :id, :name, {}, disabled: !authorize_globally_for('chronos/time_bookings', 'update'), required: true
     .form-field
       .label
         = f.label :issue_id, for: 'issue_text'
       .input
-        = text_field_tag nil, issue_label_for(@time_booking.issue), id: 'issue_text', size: '15', disabled: !authorize_globally_for('chronos/time_bookings', 'update'), class: 'js-issue-autocompletion js-linked-with-hidden'
+        = text_field_tag nil, issue_label_for(time_booking.issue), id: 'issue_text', size: '15', disabled: !authorize_globally_for('chronos/time_bookings', 'update'), class: 'js-issue-autocompletion js-linked-with-hidden'
         = f.hidden_field :issue_id
     .form-field
       .label

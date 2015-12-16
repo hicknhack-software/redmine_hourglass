@@ -1,15 +1,15 @@
-= form_for @time_log, as: 'time_log', remote: true, html: {class: 'edit-time-log-form js-chronos-remote js-validate-form'} do |f|
+= form_for time_log, as: 'time_log', remote: true, html: {class: 'edit-time-log-form js-chronos-remote js-validate-form'} do |f|
   .form-row
     .form-field
       .label
         = f.label :start
       .input
-        = f.text_field :start, size: '20', value: @time_log.start.iso8601, disabled: !authorize_globally_for('chronos/time_logs', 'update_time')
+        = f.text_field :start, size: '20', value: time_log.start.iso8601, disabled: !authorize_globally_for('chronos/time_logs', 'update_time')
     .form-field
       .label
         = f.label :stop
       .input
-        = f.text_field :stop, size: '20', value: @time_log.stop.iso8601, disabled: !authorize_globally_for('chronos/time_logs', 'update_time')
+        = f.text_field :stop, size: '20', value: time_log.stop.iso8601, disabled: !authorize_globally_for('chronos/time_logs', 'update_time')
     .form-field
       .label
         = f.label :comments

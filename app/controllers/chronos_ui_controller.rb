@@ -10,9 +10,6 @@ class ChronosUiController < ApplicationController
   helper Chronos::ListHelper
   helper Chronos::ReportHelper
 
-  before_action :get_time_log, only: [:edit_time_logs, :book_time_logs]
-  before_action :get_time_booking, only: [:edit_time_bookings]
-
   def index
     @time_tracker = User.current.chronos_time_tracker || Chronos::TimeTracker.new
   end
@@ -24,12 +21,13 @@ class ChronosUiController < ApplicationController
   end
 
   def edit_time_logs
-    render 'chronos_ui/time_logs/edit', layout: false
+    render 'chronos_ui/time_logs/edit', locals: {time_log: get_time_log}, layout: false
   end
 
   def book_time_logs
-    @time_booking = @time_log.build_time_booking
-    render 'chronos_ui/time_logs/book', layout: false
+    time_log = get_time_log
+    time_booking = time_log.build_time_booking
+    render 'chronos_ui/time_logs/book', locals: {time_log: time_log, time_booking: time_booking}, layout: false
   end
 
   def time_bookings
@@ -40,11 +38,11 @@ class ChronosUiController < ApplicationController
   end
 
   def edit_time_bookings
-    render 'chronos_ui/time_bookings/edit', layout: false
+    render 'chronos_ui/time_bookings/edit', locals: {time_booking: get_time_booking}, layout: false
   end
 
   def report
-    use_booking_query
+    @query_identifier = :time_bookings
     retrieve_query
     init_sort
     set_list_arguments
@@ -55,16 +53,14 @@ class ChronosUiController < ApplicationController
 
   private
   def get_time_log
-    @time_log = Chronos::TimeLog.find_by id: params[:id]
-    render_404 unless @time_log.present?
+    time_log = Chronos::TimeLog.find_by id: params[:id]
+    render_404 unless time_log.present?
+    time_log
   end
 
   def get_time_booking
-    @time_booking = Chronos::TimeBooking.find_by id: params[:id]
-    render_404 unless @time_booking.present?
-  end
-
-  def use_booking_query
-    @query_identifier = :time_bookings
+    time_booking = Chronos::TimeBooking.find_by id: params[:id]
+    render_404 unless time_booking.present?
+    time_booking
   end
 end
