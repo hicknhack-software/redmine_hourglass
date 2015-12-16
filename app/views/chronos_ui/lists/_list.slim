@@ -30,4 +30,4 @@
             tr.entry.hascontextmenu id=entry.id class=cycle('odd', 'even')
               = render partial: 'chronos_ui/lists/list_entry', locals: {query: query, entry: entry, action_name: action_name}
     span.pagination
-      = pagination_links_full list_arguments[:paginator], list_arguments[:count]
+      = pagination_links_full list_arguments[:paginator], list_arguments[:count], per_page_links: !list_arguments[:hide_per_page_links]

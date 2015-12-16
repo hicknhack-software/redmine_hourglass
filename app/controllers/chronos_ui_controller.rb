@@ -17,10 +17,10 @@ class ChronosUiController < ApplicationController
 
     query = Chronos::TimeLogQuery.build_from_params query_params, name: '_'
     init_sort query
-    @time_log_list_arguments = list_arguments(query).merge action_name: 'time_logs'
+    @time_log_list_arguments = list_arguments(query, per_page: 15, page_param: :logs_page).merge action_name: 'time_logs', hide_per_page_links: true
     query = Chronos::TimeLogQuery.build_from_params query_params, name: '_'
     init_sort query
-    @time_booking_list_arguments = list_arguments(query).merge action_name: 'time_bookings'
+    @time_booking_list_arguments = list_arguments(query, per_page: 15, page_param: :bookings_page).merge action_name: 'time_bookings', hide_per_page_links: true
   end
 
   def time_logs
