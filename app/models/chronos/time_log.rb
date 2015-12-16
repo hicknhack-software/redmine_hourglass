@@ -84,7 +84,7 @@ module Chronos
     end
 
     def booked?
-      time_booking.present?
+      time_booking.present? && time_booking.persisted?
     end
 
     def bookable?

@@ -1,11 +1,10 @@
 module Chronos
   class TimeBookingQuery < Query
     include QueryBase
-    self.queried_class = TimeBooking
 
     self.available_columns = [
-        QueryColumn.new(:start, sortable: "#{TimeBooking.table_name}.start", default_order: 'desc', groupable: "DATE(#{TimeBooking.table_name}.start)"),
-        QueryColumn.new(:stop, sortable: "#{TimeBooking.table_name}.stop", default_order: 'desc', groupable: "DATE(#{TimeBooking.table_name}.stop)"),
+        QueryColumn.new(:start, sortable: "#{queried_class.table_name}.start", default_order: 'desc', groupable: "DATE(#{queried_class.table_name}.start)"),
+        QueryColumn.new(:stop, sortable: "#{queried_class.table_name}.stop", default_order: 'desc', groupable: "DATE(#{queried_class.table_name}.stop)"),
         QueryColumn.new(:hours, totalable: true),
         QueryColumn.new(:comments),
         QueryColumn.new(:user, sortable: lambda { User.fields_for_order_statement }, groupable: "#{User.table_name}.id"),
@@ -34,10 +33,7 @@ module Chronos
     end
 
     def base_scope
-      TimeBooking.
-          joins(:user, :project, :activity).
-          eager_load(issue: :fixed_version).
-          where(statement)
+      super.joins(:user, :project, :activity).eager_load(issue: :fixed_version)
     end
 
     def sql_for_user_id_field(field, operator, value)
@@ -55,6 +51,7 @@ module Chronos
     def sql_for_issue_subject_field(field, operator, value)
       sql_for_field(field, operator, value, Issue.table_name, 'subject')
     end
+
     def sql_for_fixed_version_id_field(field, operator, value)
       sql_for_field(field, operator, value, Issue.table_name, 'fixed_version_id')
     end
@@ -70,7 +67,7 @@ module Chronos
     end
 
     def total_for_hours(scope)
-      map_total(scope.sum("#{TimeEntry.table_name}.hours")) {|t| t.to_f.round(2)}
+      map_total(scope.sum("#{TimeEntry.table_name}.hours")) { |t| t.to_f.round(2) }
     end
   end
 end

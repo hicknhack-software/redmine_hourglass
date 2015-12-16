@@ -1,13 +1,12 @@
 module Chronos
   class TimeLogQuery < Query
     include QueryBase
-    self.queried_class = TimeLog
 
     self.available_columns = [
         QueryColumn.new(:comments),
         QueryColumn.new(:user, sortable: lambda { User.fields_for_order_statement }, groupable: true),
-        QueryColumn.new(:start, sortable: "#{TimeLog.table_name}.start", default_order: 'desc', groupable: "DATE(#{TimeLog.table_name}.start)"),
-        QueryColumn.new(:stop, sortable: "#{TimeLog.table_name}.stop", default_order: 'desc', groupable: "DATE(#{TimeLog.table_name}.stop)"),
+        QueryColumn.new(:start, sortable: "#{queried_class.table_name}.start", default_order: 'desc', groupable: "DATE(#{queried_class.table_name}.start)"),
+        QueryColumn.new(:stop, sortable: "#{queried_class.table_name}.stop", default_order: 'desc', groupable: "DATE(#{queried_class.table_name}.stop)"),
         QueryColumn.new(:hours, totalable: true),
         QueryColumn.new(:booked?),
     ]
@@ -23,15 +22,13 @@ module Chronos
     end
 
     def base_scope
-      TimeLog.
-          includes(:user, :time_booking).
-          where(statement)
+      super.includes(:user, :time_booking)
     end
 
     def total_for_hours(scope)
       map_total(
-          scope.sum("(strftime('%s', #{TimeLog.table_name}.stop) - strftime('%s', #{TimeLog.table_name}.start))")
-      ) {|t| Chronos::DateTimeCalculations.in_hours(t).round(2)}
+          scope.sum("(strftime('%s', #{queried_class.table_name}.stop) - strftime('%s', #{queried_class.table_name}.start))")
+      ) { |t| Chronos::DateTimeCalculations.in_hours(t).round(2) }
     end
   end
 end
