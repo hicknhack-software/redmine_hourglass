@@ -2,6 +2,7 @@ class ChronosUiController < ApplicationController
   include SortHelper
   include QueryConcern
   include ListConcern
+  include AuthorizationConcern
 
   helper QueriesHelper
   helper IssuesHelper

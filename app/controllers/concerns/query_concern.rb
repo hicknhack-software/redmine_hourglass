@@ -31,6 +31,7 @@ module QueryConcern
                query_from_session
              end
     @query.project = @project
+    @query.add_filter 'user_id', '=', ['me'] unless allowed_to?("#{query_identifier}_foreign")
   end
 
   def session_query_var_name
