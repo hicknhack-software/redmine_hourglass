@@ -36,7 +36,7 @@
           .label
             = f.label :project_id
           .input
-            = f.select :project_id, projects_for_project_select(@time_tracker.project), disabled: !authorize_globally_for('chronos/time_logs', 'book')
+            = f.select :project_id, projects_for_project_select(@time_tracker.project), {include_blank: true}, disabled: !authorize_globally_for('chronos/time_logs', 'book')
         .form-field
           .label
             = f.label :activity_id
