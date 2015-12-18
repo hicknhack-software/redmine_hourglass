@@ -4,6 +4,14 @@ module Chronos
       User.current.allowed_to_globally? controller: controller, action: action
     end
 
+    def render_main_menu(project)
+      render_menu :chronos_menu
+    end
+
+    def display_main_menu?(project)
+      Redmine::MenuManager.items(:chronos_menu).children.present?
+    end
+
     def issue_label_for(issue)
       "##{issue.id} #{issue.subject}" if issue
     end

@@ -7,6 +7,8 @@
 - if authorize_globally_for 'chronos/time_trackers', 'start'
   = render partial: 'time_tracker_control'
 
-= render partial: 'chronos_ui/lists/list', locals: {list_arguments: @time_log_list_arguments}
+- if authorize_globally_for 'chronos/time_logs', 'index'
+  = render partial: 'chronos_ui/lists/list', locals: {list_arguments: @time_log_list_arguments}
 
-= render partial: 'chronos_ui/lists/list', locals: {list_arguments: @time_booking_list_arguments}
+- if authorize_globally_for 'chronos/time_bookings', 'index'
+  = render partial: 'chronos_ui/lists/list', locals: {list_arguments: @time_booking_list_arguments}

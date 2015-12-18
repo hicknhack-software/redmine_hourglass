@@ -88,6 +88,11 @@ en:
           not_found: This time booking doesn't exist
           update_time_forbidden: You are not allowed to change the start or the stop of a time booking
     ui:
+      menu:
+        main: TimeTracker
+        overview: Overview
+        time_bookings: Time Bookings
+        time_logs: Time Logs
       index:
         title: Time Tracking
         time_tracker_control:

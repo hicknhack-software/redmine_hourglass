@@ -28,64 +28,83 @@ Redmine::Plugin.register :redmine_chronos do
     permission :chronos_track_time,
                {
                    :'chronos/time_trackers' => [:start, :update, :stop],
-                   :'chronos/time_logs' => [:update, :split, :combine]
+                   :'chronos/time_logs' => [:update, :split, :combine],
+                   :'chronos_ui' => [:index]
                },
                require: :loggedin
 
     permission :chronos_view_tracked_time,
                {
                    :'chronos/time_trackers' => with_foreign([:index, :show]),
-                   :'chronos/time_logs' => with_foreign([:index, :show])
+                   :'chronos/time_logs' => with_foreign([:index, :show]),
+                   :'chronos_ui' => [:index, :time_logs]
                }, require: :loggedin
 
     permission :chronos_view_own_tracked_time,
                {
                    :'chronos/time_trackers' => [:index, :show],
-                   :'chronos/time_logs' => [:index, :show]
+                   :'chronos/time_logs' => [:index, :show],
+                   :'chronos_ui' => [:index, :time_logs]
                }, require: :loggedin
 
     permission :chronos_edit_tracked_time,
                {
                    :'chronos/time_trackers' => with_foreign([:update, :update_time, :destroy]),
-                   :'chronos/time_logs' => with_foreign([:update, :update_time, :split, :combine, :destroy])
+                   :'chronos/time_logs' => with_foreign([:update, :update_time, :split, :combine, :destroy]),
+                   :'chronos_ui' => [:edit_time_logs]
                }, require: :loggedin
 
     permission :chronos_edit_own_tracked_time,
                {
                    :'chronos/time_trackers' => [:update, :update_time, :destroy],
-                   :'chronos/time_logs' => [:update, :update_time, :split, :combine, :destroy]
+                   :'chronos/time_logs' => [:update, :update_time, :split, :combine, :destroy],
+                   :'chronos_ui' => [:edit_time_logs]
                }, require: :loggedin
 
     permission :chronos_book_time,
                {
                    :'chronos/time_logs' => with_foreign([:book]),
-                   :'chronos/time_bookings' => with_foreign([:update])
+                   :'chronos/time_bookings' => with_foreign([:update]),
+                   :'chronos_ui' => [:book_time_logs]
                }, require: :loggedin
 
     permission :chronos_book_own_time,
                {
                    :'chronos/time_logs' => [:book],
-                   :'chronos/time_bookings' => [:update]
+                   :'chronos/time_bookings' => [:update],
+                   :'chronos_ui' => [:book_time_logs]
                }, require: :loggedin
 
     permission :chronos_view_booked_time,
                {
-                   :'chronos/time_bookings' => with_foreign([:index, :show])
+                   :'chronos/time_bookings' => with_foreign([:index, :show]),
+                   :'chronos_ui' => [:index, :report, :time_bookings]
                }, require: :member
 
     permission :chronos_view_own_booked_time,
                {
-                   :'chronos/time_bookings' => [:index, :show]
+                   :'chronos/time_bookings' => [:index, :show],
+                   :'chronos_ui' => [:index, :report, :time_bookings]
                }, require: :loggedin
 
     permission :chronos_edit_booked_time,
                {
-                   :'chronos/time_bookings' => with_foreign([:update, :update_time, :destroy])
+                   :'chronos/time_bookings' => with_foreign([:update, :update_time, :destroy]),
+                   :'chronos_ui' => [:edit_time_bookings]
                }, require: :loggedin
 
     permission :chronos_edit_own_booked_time,
                {
-                   :'chronos/time_bookings' => [:update, :update_time, :destroy]
+                   :'chronos/time_bookings' => [:update, :update_time, :destroy],
+                   :'chronos_ui' => [:edit_time_bookings]
                }, require: :loggedin
+  end
+
+  menu :top_menu, :chronos_root, :chronos_root_path, caption: :'chronos.ui.menu.main', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'index' }
+
+  Redmine::MenuManager.map :chronos_menu do |menu|
+    menu.push :chronos_overview, :chronos_root_path, caption: :'chronos.ui.menu.overview', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'index' }
+    menu.push :chronos_time_logs, :chronos_ui_time_logs_path, caption: :'chronos.ui.menu.time_logs', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'time_logs' }
+    menu.push :chronos_time_bookings, :chronos_ui_time_bookings_path, caption: :'chronos.ui.menu.time_bookings', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'time_bookings' }
   end
 end

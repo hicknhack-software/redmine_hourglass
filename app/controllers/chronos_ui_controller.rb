@@ -10,6 +10,12 @@ class ChronosUiController < ApplicationController
   helper Chronos::ListHelper
   helper Chronos::ReportHelper
 
+  menu_item :chronos_overview, only: :index
+  menu_item :chronos_time_logs, only: :time_logs
+  menu_item :chronos_time_bookings, only: :time_bookings
+
+  before_filter :authorize_global
+
   def index
     @time_tracker = User.current.chronos_time_tracker || Chronos::TimeTracker.new
 
