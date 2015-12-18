@@ -74,7 +74,8 @@ class ChronosUiController < ApplicationController
     query.add_filter 'start_date', 'w+lw', [true]
     query.add_filter 'user_id', '=', [User.current.id.to_s]
     yield query if block_given?
+    params[:sort] = params["#{query_identifier}_sort"]
     init_sort query
-    list_arguments(query, per_page: 15, page_param: "#{query_identifier}_page").merge action_name: query_identifier.to_s, hide_per_page_links: true
+    list_arguments(query, per_page: 15, page_param: "#{query_identifier}_page").merge action_name: query_identifier.to_s, hide_per_page_links: true, sort_param_name: "#{query_identifier}_sort"
   end
 end

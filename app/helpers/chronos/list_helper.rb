@@ -1,5 +1,17 @@
 module Chronos
   module ListHelper
+    def column_header(column, sort_param_name)
+      if column.sortable && sort_param_name.present?
+        params[:sort] = params.delete sort_param_name
+        result = super column
+        result.gsub! /(?<!_)sort(?==)/, sort_param_name
+        params[sort_param_name] = params.delete :sort
+        result.html_safe
+      else
+        super column
+      end
+    end
+
     def grouped_entry_list(entries, query, count_by_group)
       previous_group, first = false, true
       entries.each do |entry|

@@ -13,7 +13,7 @@
             th.checkbox.hide-when-print
               = link_to image_tag('toggle_check.png'),{}, title: "#{t(:button_check_all)} / #{t(:button_uncheck_all)}"
             - query.columns.each do |column|
-              = column_header column
+              = column_header column, list_arguments[:sort_param_name]
             th.actions
         tbody
           - grouped_entry_list entries, query, list_arguments[:count_by_group] do |entry, group_name, group_count, group_totals|
