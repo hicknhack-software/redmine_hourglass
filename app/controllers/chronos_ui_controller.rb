@@ -33,12 +33,15 @@ class ChronosUiController < ApplicationController
   end
 
   def edit_time_logs
-    render 'chronos_ui/time_logs/edit', locals: {time_log: get_time_log}, layout: false
+    time_log = get_time_log
+    authorize_foreign
+    render 'chronos_ui/time_logs/edit', locals: {time_log: time_log}, layout: false unless performed?
   end
 
   def book_time_logs
     time_log = get_time_log
-    render 'chronos_ui/time_logs/book', locals: {time_log: time_log, time_booking: time_log.build_time_booking}, layout: false
+    authorize_foreign
+    render 'chronos_ui/time_logs/book', locals: {time_log: time_log, time_booking: time_log.build_time_booking}, layout: false unless performed?
   end
 
   def time_bookings
@@ -49,7 +52,9 @@ class ChronosUiController < ApplicationController
   end
 
   def edit_time_bookings
-    render 'chronos_ui/time_bookings/edit', locals: {time_booking: get_time_booking}, layout: false
+    time_booking = get_time_booking
+    authorize_foreign
+    render 'chronos_ui/time_bookings/edit', locals: {time_booking: time_booking}, layout: false unless performed?
   end
 
   def report
@@ -66,13 +71,13 @@ class ChronosUiController < ApplicationController
   def get_time_log
     time_log = Chronos::TimeLog.find_by id: params[:id]
     render_404 unless time_log.present?
-    time_log
+    @request_resource = time_log
   end
 
   def get_time_booking
     time_booking = Chronos::TimeBooking.find_by id: params[:id]
     render_404 unless time_booking.present?
-    time_booking
+    @request_resource = time_booking
   end
 
   def index_page_list_arguments(query_identifier)
@@ -84,5 +89,11 @@ class ChronosUiController < ApplicationController
     params[:sort] = params["#{query_identifier}_sort"]
     init_sort query
     list_arguments(query, per_page: 15, page_param: "#{query_identifier}_page").merge action_name: query_identifier.to_s, hide_per_page_links: true, sort_param_name: "#{query_identifier}_sort"
+  end
+
+  def authorize_foreign
+    super do
+      render_403
+    end
   end
 end

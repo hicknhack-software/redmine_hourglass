@@ -18,9 +18,9 @@ module Chronos
     def respond_with_error(status, message, args = {})
       error_message = message.is_a?(Array) ? message.to_sentence : message
       render json: {
-                 message: error_message,
-                 status: Rack::Utils.status_code(status)
-             },
+          message: error_message,
+          status: Rack::Utils.status_code(status)
+      },
              status: status
       throw :halt unless args[:no_halt]
     end
@@ -44,7 +44,7 @@ module Chronos
         format.json {
           respond_with_error status, message, no_halt: true
         }
-        format.any { super args}
+        format.any { super args }
       end
     end
 
@@ -56,6 +56,20 @@ module Chronos
 
     def missing_parameters(e)
       respond_with_error :bad_request, t("chronos.api.errors.missing_parameters"), no_halt: true
+    end
+
+    def authorize_foreign
+      super do
+        respond_with_error :forbidden, t("chronos.api.#{controller_name}.errors.change_others_forbidden")
+      end
+    end
+
+    def authorize_update_time
+      controller_params = params[controller_name.singularize]
+      has_start_or_stop_parameter = controller_params && (controller_params.include?(:start) || controller_params.include?(:stop))
+      if has_start_or_stop_parameter && !allowed_to?('update_time')
+        respond_with_error :forbidden, t("chronos.api.#{controller_name}.errors.update_time_forbidden")
+      end
     end
   end
 end
