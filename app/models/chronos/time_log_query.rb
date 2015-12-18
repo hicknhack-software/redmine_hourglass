@@ -15,6 +15,7 @@ module Chronos
       add_user_filter
       add_start_filter
       add_available_filter 'comments', type: :text
+      add_available_filter 'booked', label: :field_booked?, type: :list, values: [[I18n.t(:general_text_Yes), true]]
     end
 
     def default_columns_names
@@ -22,7 +23,12 @@ module Chronos
     end
 
     def base_scope
-      super.includes(:user, :time_booking)
+      super.eager_load(:time_booking).includes(:user)
+    end
+
+    def sql_for_booked_field(field, operator, value)
+      operator_to_use = operator == '=' ? '*' : '!*'
+      sql_for_field(field, operator_to_use, nil, TimeBooking.table_name, 'id')
     end
 
     def total_for_hours(scope)
