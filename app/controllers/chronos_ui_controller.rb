@@ -13,19 +13,10 @@ class ChronosUiController < ApplicationController
   def index
     @time_tracker = User.current.chronos_time_tracker || Chronos::TimeTracker.new
 
-    time_log_query = Chronos::TimeLogQuery.new name: '_'
-    time_log_query.group_by = :start
-    time_log_query.add_filter 'start_date', 'w+lw', [true]
-    time_log_query.add_filter 'user_id', '=', [User.current.id.to_s]
-    time_log_query.add_filter 'booked', '!', [true]
-    init_sort time_log_query
-    @time_log_list_arguments = list_arguments(time_log_query, per_page: 15, page_param: :logs_page).merge action_name: 'time_logs', hide_per_page_links: true
-    time_booking_query = Chronos::TimeBookingQuery.new name: '_'
-    time_booking_query.group_by = :start
-    time_booking_query.add_filter 'start_date', 'w+lw', [true]
-    time_booking_query.add_filter 'user_id', '=', [User.current.id.to_s]
-    init_sort time_booking_query
-    @time_booking_list_arguments = list_arguments(time_booking_query, per_page: 15, page_param: :bookings_page).merge action_name: 'time_bookings', hide_per_page_links: true
+    @time_log_list_arguments = index_page_list_arguments :time_logs do |time_log_query|
+      time_log_query.add_filter 'booked', '!', [true]
+    end
+    @time_booking_list_arguments = index_page_list_arguments :time_bookings
   end
 
   def time_logs
@@ -40,8 +31,7 @@ class ChronosUiController < ApplicationController
 
   def book_time_logs
     time_log = get_time_log
-    time_booking = time_log.build_time_booking
-    render 'chronos_ui/time_logs/book', locals: {time_log: time_log, time_booking: time_booking}, layout: false
+    render 'chronos_ui/time_logs/book', locals: {time_log: time_log, time_booking: time_log.build_time_booking}, layout: false
   end
 
   def time_bookings
@@ -76,5 +66,15 @@ class ChronosUiController < ApplicationController
     time_booking = Chronos::TimeBooking.find_by id: params[:id]
     render_404 unless time_booking.present?
     time_booking
+  end
+
+  def index_page_list_arguments(query_identifier)
+    query = query_class_map[query_identifier].new name: '_'
+    query.group_by = :start
+    query.add_filter 'start_date', 'w+lw', [true]
+    query.add_filter 'user_id', '=', [User.current.id.to_s]
+    yield query if block_given?
+    init_sort query
+    list_arguments(query, per_page: 15, page_param: "#{query_identifier}_page").merge action_name: query_identifier.to_s, hide_per_page_links: true
   end
 end
