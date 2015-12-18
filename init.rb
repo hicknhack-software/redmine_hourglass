@@ -21,8 +21,8 @@ Redmine::Plugin.register :redmine_chronos do
   }, :partial => 'settings/chronos'
 
   project_module :redmine_chronos do
-    def with_foreign(array)
-      array.map { |x| [x, "#{x}_foreign".to_sym] }.flatten
+    def with_foreign(*permissions)
+      permissions.map { |x| [x, "#{x}_foreign".to_sym] }.flatten
     end
 
     permission :chronos_track_time,
@@ -35,9 +35,9 @@ Redmine::Plugin.register :redmine_chronos do
 
     permission :chronos_view_tracked_time,
                {
-                   :'chronos/time_trackers' => with_foreign([:index, :show]),
-                   :'chronos/time_logs' => with_foreign([:index, :show]),
-                   :'chronos_ui' => [:index, :time_logs]
+                   :'chronos/time_trackers' => with_foreign(:index, :show),
+                   :'chronos/time_logs' => with_foreign(:index, :show),
+                   :'chronos_ui' => [:index, *with_foreign(:time_logs)]
                }, require: :loggedin
 
     permission :chronos_view_own_tracked_time,
@@ -49,9 +49,9 @@ Redmine::Plugin.register :redmine_chronos do
 
     permission :chronos_edit_tracked_time,
                {
-                   :'chronos/time_trackers' => with_foreign([:update, :update_time, :destroy]),
-                   :'chronos/time_logs' => with_foreign([:update, :update_time, :split, :combine, :destroy]),
-                   :'chronos_ui' => [:edit_time_logs]
+                   :'chronos/time_trackers' => with_foreign(:update, :update_time, :destroy),
+                   :'chronos/time_logs' => with_foreign(:update, :update_time, :split, :combine, :destroy),
+                   :'chronos_ui' => with_foreign(:edit_time_logs)
                }, require: :loggedin
 
     permission :chronos_edit_own_tracked_time,
@@ -63,9 +63,9 @@ Redmine::Plugin.register :redmine_chronos do
 
     permission :chronos_book_time,
                {
-                   :'chronos/time_logs' => with_foreign([:book]),
-                   :'chronos/time_bookings' => with_foreign([:update]),
-                   :'chronos_ui' => [:book_time_logs]
+                   :'chronos/time_logs' => with_foreign(:book),
+                   :'chronos/time_bookings' => with_foreign(:update),
+                   :'chronos_ui' => with_foreign(:book_time_logs)
                }, require: :loggedin
 
     permission :chronos_book_own_time,
@@ -77,8 +77,8 @@ Redmine::Plugin.register :redmine_chronos do
 
     permission :chronos_view_booked_time,
                {
-                   :'chronos/time_bookings' => with_foreign([:index, :show]),
-                   :'chronos_ui' => [:index, :report, :time_bookings]
+                   :'chronos/time_bookings' => with_foreign(:index, :show),
+                   :'chronos_ui' => [:index, *with_foreign(:report, :time_bookings)]
                }, require: :member
 
     permission :chronos_view_own_booked_time,
@@ -89,8 +89,8 @@ Redmine::Plugin.register :redmine_chronos do
 
     permission :chronos_edit_booked_time,
                {
-                   :'chronos/time_bookings' => with_foreign([:update, :update_time, :destroy]),
-                   :'chronos_ui' => [:edit_time_bookings]
+                   :'chronos/time_bookings' => with_foreign(:update, :update_time, :destroy),
+                   :'chronos_ui' => with_foreign(:edit_time_bookings)
                }, require: :loggedin
 
     permission :chronos_edit_own_booked_time,
@@ -101,6 +101,7 @@ Redmine::Plugin.register :redmine_chronos do
   end
 
   menu :top_menu, :chronos_root, :chronos_root_path, caption: :'chronos.ui.menu.main', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'index' }
+  #menu :project_menu, :chronos_main_menu, chronos_root_path, caption: 'test'
 
   Redmine::MenuManager.map :chronos_menu do |menu|
     menu.push :chronos_overview, :chronos_root_path, caption: :'chronos.ui.menu.overview', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'index' }
