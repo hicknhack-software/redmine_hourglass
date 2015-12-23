@@ -33,7 +33,10 @@
 .controller-chronos_ui {
   .time-tracker-control {
     margin-bottom: 30px;
-    @include form-row;
+    form {
+      display: inline-block;
+      @include form-row;
+    }
   }
 
   .chronos-list {

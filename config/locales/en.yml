@@ -100,6 +100,9 @@ en:
           button_start: Start
           heading: Please specify your current task
           label_running_time: Running Time
+        headings:
+          time_logs: Your time logs (from the last 2 weeks)
+          time_bookings: Your time bookings (from the last 2 weeks)
       lists:
         button_book: Book
       chart:

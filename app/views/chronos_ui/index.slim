@@ -8,7 +8,9 @@
   = render partial: 'time_tracker_control'
 
 - if authorize_globally_for 'chronos/time_logs', 'index'
+  h3 = t('chronos.ui.index.headings.time_logs')
   = render partial: 'chronos_ui/lists/list', locals: {list_arguments: @time_log_list_arguments}
 
 - if authorize_globally_for 'chronos/time_bookings', 'index'
+  h3 = t('chronos.ui.index.headings.time_bookings')
   = render partial: 'chronos_ui/lists/list', locals: {list_arguments: @time_booking_list_arguments}
