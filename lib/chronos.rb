@@ -3,7 +3,10 @@ ActiveSupport::Dependencies.autoload_paths << File.join(File.dirname(__FILE__), 
 ActiveSupport::Dependencies.autoload_paths << File.join(File.dirname(__FILE__), 'chronos')
 
 ActionDispatch::Callbacks.to_prepare do
-  Chronos.patch_redmine!
+  [Redmine::Plugin, Project, TimeEntry, User].each do |module_to_patch|
+    patch = Chronos::RedminePatches.const_get "#{module_to_patch.name.demodulize}Patch"
+    module_to_patch.send :include, patch unless module_to_patch.included_modules.include? patch
+  end
 end
 
 JsRoutes.setup do |config|
@@ -18,17 +21,6 @@ module Chronos
   class << self
     def settings
       Setting.plugin_redmine_chronos
-    end
-
-    def modules_to_patch
-      @modules_to_patch ||= [Redmine::Plugin, Project, TimeEntry, User]
-    end
-
-    def patch_redmine!
-      modules_to_patch.each do |module_to_patch|
-        patch = Chronos::RedminePatches.const_get "#{module_to_patch.name.demodulize}Patch"
-        module_to_patch.send :include, patch unless module_to_patch.included_modules.include? patch
-      end
     end
   end
 end

@@ -4,11 +4,9 @@ module Chronos
       extend ActiveSupport::Concern
 
       included do
-        class_eval do
-          has_many :chronos_time_logs, class_name: 'Chronos::TimeLog'
-          has_many :chronos_time_bookings, :through => :chronos_time_logs, class_name: 'Chronos::TimeBooking', source: :time_bookings
-          has_one :chronos_time_tracker, class_name: 'Chronos::TimeTracker'
-        end
+        has_many :chronos_time_logs, class_name: 'Chronos::TimeLog'
+        has_many :chronos_time_bookings, :through => :chronos_time_logs, class_name: 'Chronos::TimeBooking', source: :time_bookings
+        has_one :chronos_time_tracker, class_name: 'Chronos::TimeTracker'
       end
 
       def remove_references_before_destroy
