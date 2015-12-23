@@ -18,5 +18,3 @@ h2 = @query.persisted? ? h(@query.name) : t('chronos.ui.time_bookings.title')
   h3 = t('chronos.ui.time_bookings.heading_report')
   = link_to t('chronos.ui.time_bookings.label_print'), chronos_ui_report_path
   = render_sidebar_queries
-
-= context_menu nil
