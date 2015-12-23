@@ -2,23 +2,8 @@ ActiveSupport::Dependencies.autoload_paths << File.join(File.dirname(__FILE__), 
 ActiveSupport::Dependencies.autoload_paths << File.join(File.dirname(__FILE__), '..', 'app', 'controllers', 'concerns')
 ActiveSupport::Dependencies.autoload_paths << File.join(File.dirname(__FILE__), 'chronos')
 
-# load redmine patches
 ActionDispatch::Callbacks.to_prepare do
-  unless Redmine::Plugin.included_modules.include? Chronos::RedminePatches::PluginPatch
-    Redmine::Plugin.send :include, Chronos::RedminePatches::PluginPatch
-  end
-
-  unless Project.included_modules.include? Chronos::RedminePatches::ProjectPatch
-    Project.send :include, Chronos::RedminePatches::ProjectPatch
-  end
-
-  unless TimeEntry.included_modules.include? Chronos::RedminePatches::TimeEntryPatch
-    TimeEntry.send :include, Chronos::RedminePatches::TimeEntryPatch
-  end
-
-  unless User.included_modules.include? Chronos::RedminePatches::UserPatch
-    User.send :include, Chronos::RedminePatches::UserPatch
-  end
+  Chronos.patch_redmine!
 end
 
 JsRoutes.setup do |config|
@@ -30,7 +15,20 @@ JsRoutes.setup do |config|
 end
 
 module Chronos
-  def self.settings
-    Setting.plugin_redmine_chronos
+  class << self
+    def settings
+      Setting.plugin_redmine_chronos
+    end
+
+    def modules_to_patch
+      @modules_to_patch ||= [Redmine::Plugin, Project, TimeEntry, User]
+    end
+
+    def patch_redmine!
+      modules_to_patch.each do |module_to_patch|
+        patch = Chronos::RedminePatches.const_get "#{module_to_patch.name.demodulize}Patch"
+        module_to_patch.send :include, patch unless module_to_patch.included_modules.include? patch
+      end
+    end
   end
 end
