@@ -26,10 +26,6 @@ module Chronos
       end
     end
 
-    def date_content(entry)
-      format_date entry.start
-    end
-
     def description_content(entry)
       output = ActiveSupport::SafeBuffer.new
       if entry.issue.present?

@@ -43,6 +43,18 @@ module Chronos
       end
     end
 
+    def date_content(entry)
+      format_date entry.start
+    end
+
+    def start_content(entry)
+      format_time entry.start, false
+    end
+
+    def stop_content(entry)
+      format_time entry.stop, false
+    end
+
     def chart_data
       data = Array.new
       ticks = Array.new
@@ -50,8 +62,8 @@ module Chronos
 
       if @chart_query.valid?
         hours_per_date = @chart_query.hours_by_group
-        dates = hours_per_date.keys.sort
-        unless dates.empty?
+        dates = hours_per_date && hours_per_date.keys.sort
+        if dates.present?
           date_range = (dates.first..dates.last)
           gap = (date_range.count / 8).ceil
           date_range.each do |date_string|

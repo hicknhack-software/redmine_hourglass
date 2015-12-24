@@ -5,21 +5,22 @@ module Chronos
     set_available_columns(
         comments: {},
         user: {sortable: lambda { User.fields_for_order_statement }, groupable: true},
-        start: {sortable: "#{queried_class.table_name}.start", groupable: "DATE(#{queried_class.table_name}.start)"},
-        stop: {sortable: "#{queried_class.table_name}.stop", groupable: "DATE(#{queried_class.table_name}.stop)"},
+        date: {sortable: "#{queried_class.table_name}.start", groupable: "DATE(#{queried_class.table_name}.start)"},
+        start: {},
+        stop: {},
         hours: {totalable: true},
         booked?: {}
     )
 
     def initialize_available_filters
       add_user_filter
-      add_start_filter
+      add_date_filter
       add_available_filter 'comments', type: :text
       add_available_filter 'booked', label: :field_booked?, type: :list, values: [[I18n.t(:general_text_Yes), true]]
     end
 
     def default_columns_names
-      @default_columns_names ||= [:start, :stop, :hours, :comments, :booked?]
+      @default_columns_names ||= [:date, :start, :stop, :hours, :comments, :booked?]
     end
 
     def base_scope

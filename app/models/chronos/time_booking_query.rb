@@ -3,8 +3,9 @@ module Chronos
     include QueryBase
 
     set_available_columns(
-      start: {sortable: "#{queried_class.table_name}.start", groupable: "DATE(#{queried_class.table_name}.start)"},
-      stop: {sortable: "#{queried_class.table_name}.stop", groupable: "DATE(#{queried_class.table_name}.stop)"},
+      date: {sortable: "#{queried_class.table_name}.start", groupable: "DATE(#{queried_class.table_name}.start)"},
+      start: {},
+      stop: {},
       hours: {totalable: true},
       comments: {},
       user: {sortable: lambda { User.fields_for_order_statement }, groupable: "#{User.table_name}.id"},
@@ -16,7 +17,7 @@ module Chronos
 
     def initialize_available_filters
       add_user_filter
-      add_start_filter
+      add_date_filter
       add_issue_filter
       if project
         add_sub_project_filter unless project.leaf?
@@ -29,7 +30,7 @@ module Chronos
     end
 
     def default_columns_names
-      @default_columns_names ||= [:start, :stop, :hours, :project, :issue, :activity, :comments]
+      @default_columns_names ||= [:date, :start, :stop, :hours, :project, :issue, :activity, :comments]
     end
 
     def base_scope

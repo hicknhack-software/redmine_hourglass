@@ -63,7 +63,7 @@ module Chronos::QueryBase
     end
   end
 
-  def sql_for_start_date_field(field, operator, value)
+  def sql_for_date_field(field, operator, value)
     sql_for_field(field, operator, value, queried_class.table_name, 'start')
   end
 
@@ -83,8 +83,8 @@ module Chronos::QueryBase
   end
 
   private
-  def add_start_filter
-    add_available_filter 'start_date', type: :date
+  def add_date_filter
+    add_available_filter 'date', type: :date
   end
 
   def add_user_filter

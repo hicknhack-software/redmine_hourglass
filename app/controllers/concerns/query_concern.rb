@@ -66,6 +66,6 @@ module QueryConcern
   end
 
   def build_chart_query
-    @chart_query = query_class.new name: '_', filters: @query.filters, group_by: :start
+    @chart_query = query_class.new name: '_', filters: @query.filters, group_by: :date
   end
 end

@@ -80,7 +80,7 @@ module Chronos
     end
 
     def hours
-      @hours = DateTimeCalculations.time_diff_in_hours start, stop
+      DateTimeCalculations.time_diff_in_hours start, stop
     end
 
     def booked?
