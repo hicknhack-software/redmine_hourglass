@@ -51,6 +51,7 @@ module Chronos
 
     private
     def start_time_tracker_params
+      return unless params[:time_tracker]
       time_tracker_params = params.require(:time_tracker).permit(:issue_id, :comments)
       time_tracker_params.delete :comments if time_tracker_params[:issue_id].present?
       time_tracker_params

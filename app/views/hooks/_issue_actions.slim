@@ -5,6 +5,6 @@
 - if @project.present? && @issue.present?
   - time_tracker = User.current.chronos_time_tracker
   - if time_tracker && time_tracker.issue_id == @issue.id
-    = link_to t('chronos.ui.issues.stop'), stop_chronos_time_tracker_path, class: 'icon icon-stop js-chronos-remote js-issue-action hidden', remote: true, method: 'delete'
+    = link_to t('chronos.ui.issues.stop'), stop_chronos_time_tracker_path(time_tracker), class: 'icon icon-stop js-chronos-remote js-issue-action hidden', remote: true, method: 'delete'
   - elsif authorize_for 'chronos/time_trackers', 'start'
-    = link_to t('chronos.ui.issues.start'), start_chronos_time_trackers_path, class: 'icon icon-start js-chronos-remote js-issue-action hidden', remote: true, method: 'post'
+    = link_to t('chronos.ui.issues.start'), start_chronos_time_trackers_path, class: 'icon icon-start js-chronos-remote js-issue-action hidden', remote: true, method: 'post', data: {params: {time_tracker: {issue_id: @issue.id}}}
