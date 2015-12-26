@@ -93,6 +93,9 @@ en:
         overview: Overview
         time_bookings: Time Bookings
         time_logs: Time Logs
+      issues:
+        start: Start TimeTracker
+        stop: Stop TimeTracker
       index:
         title: Time Tracking
         time_tracker_control:

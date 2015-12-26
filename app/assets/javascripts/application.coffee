@@ -6,3 +6,4 @@
 #= require lists
 #= require timer
 #= require time_tracker_form
+#= require issue_actions
