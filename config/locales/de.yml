@@ -1,0 +1,125 @@
+de:
+  activerecord:
+    errors:
+      models:
+        chronos/time_tracker:
+          attributes:
+            project:
+              blank: existiert nicht
+            issue:
+              blank: existiert nicht
+            activity:
+              blank: existiert nicht
+            user_id:
+              taken: hat bereits eine laufende Zeitmessung
+        chronos/time_log:
+          attributes:
+            base:
+              overlaps: Es existiert bereits eine sich überschneidende Zeiterfassung
+
+################### redmine specific stuff #####################
+  field_date: Datum
+  field_duration: Dauer
+  field_booked?: Gebucht?
+  field_issue_subject: Ticketthema
+  field_round: Runden
+  field_start: Beginn
+  field_stop: Ende
+  permission_chronos_book_own_time: Eigene Zeit buchen
+  permission_chronos_book_time: Zeit buchen
+  permission_chronos_edit_booked_time: Gebuchte Zeit bearbeiten
+  permission_chronos_edit_own_booked_time: Eigene gebuchte Zeit bearbeiten
+  permission_chronos_edit_own_tracked_time: Eigene erfasste Zeit bearbeiten
+  permission_chronos_edit_tracked_time: Erfasste Zeit bearbeiten
+  permission_chronos_track_time: Zeit erfassen
+  permission_chronos_view_booked_time: Gebuchte Zeit ansehen
+  permission_chronos_view_own_booked_time: Eigene gebuchte Zeit ansehen
+  permission_chronos_view_own_tracked_time: Eigene erfasste Zeit ansehen
+  permission_chronos_view_tracked_time: Erfasste Zeit ansehen
+  project_module_redmine_chronos: Redmine Chronos (Zeitmessung)
+################################################################
+
+  chronos:
+    settings:
+      import:
+        error:
+          redmine_time_tracker: Es gab einen Fehler, die Daten vom Redmine Time Tracker konnten nicht importiert werden. Haben sie diese vielleicht bereits importiert?
+        fields:
+          redmine_time_tracker: Vom Redmine Time Tracker Plugin
+        label_start: Jetzt starten
+        success:
+          redmine_time_tracker: Die Daten des Redmine Time Trackers wurden erfolgreich in Redmine Chronos importiert.
+        title: Import
+      report:
+        fields:
+          logo_url: Logo URL
+          logo_width: Logobreite
+          title: Titel
+        title: Report
+      rounding:
+        fields:
+          default: Runden standardmäßig anschalten?
+          limit: Abrunden wenn unter
+          minimum: Minimales Zeitinterval
+          carry_over_due: Rundungsübertrag verwerfen nach
+        title: Rundungsverhalten
+    api:
+      errors:
+        missing_parameters: Ungültige Parameter übermittelt
+      time_trackers:
+        errors:
+          booking_forbidden: Sie haben keine Berechtigung auf diesem Projekt zu buchen.
+          change_others_forbidden: Sie haben keine Berechtigung diese Aktion für die Zeitmessung eines anderes Nutzers durchzuführen.
+          not_found: Diese Zeitmessung existiert nicht.
+          update_time_forbidden: Sie haben keine Berechtigung den Beginn der Zeitmessung zu ändern.
+      time_logs:
+        errors:
+          already_booked: Diese Zeiterfassung wurde bereits gebucht.
+          change_others_forbidden: Sie haben keine Berechtigung diese Aktion für die Zeiterfassung eines anderes Nutzers durchzuführen.
+          combine_failed: Die zu kombinierenden Zeiterfassungen wurden entweder bereits gebucht oder ihre Beginne und Enden passen nicht zusammen.
+          not_found: Diese Zeiterfassung existiert nicht.
+          other_not_found: Die Zeiterfassung zum Kombinieren exisitiert nicht.
+          split_failed: Der übermittelte Zeitpunkt zum Aufteilen befindet sich außerhalb der Grenzen der Zeiterfassung.
+          update_time_forbidden: Sie haben keine Berechtigung den Beginn oder das Ende der Zeiterfassung zu ändern.
+      time_bookings:
+        errors:
+          change_others_forbidden: Sie haben keine Berechtigung diese Aktion für die Zeitbuchung eines anderes Nutzers durchzuführen.
+          not_found: Diese Zeitbuchung existiert nicht.
+          update_time_forbidden: Sie haben keine Berechtigung den Beginn oder das Ende der Zeitbuchung zu ändern.
+    ui:
+      menu:
+        main: Zeitmessung
+        overview: Übersicht
+        time_bookings: Zeitbuchungen
+        time_logs: Zeiterfassungen
+      issues:
+        start: Zeitmessung starten
+        stop: Zeitmessung stoppen
+      index:
+        title: Zeitmessung
+        time_tracker_control:
+          button_stop: Stop
+          button_start: Start
+          heading: Bitte geben sie ihre aktuelle Aufgabe an
+          label_running_time: Laufende Zeitmessung
+        headings:
+          time_logs: Ihre Zeiterfassungen (aus den letzten 2 Wochen)
+          time_bookings: Ihre Zeitbuchungen (aus den letzten 2 Wochen)
+      lists:
+        button_book: Buchen
+      chart:
+          hour_sign: h
+          minute_sign: min
+      time_logs:
+        title: Zeiterfassungen
+        no_data: Keine Zeiterfassungen vorhanden
+      time_bookings:
+        title: Zeitbuchungen
+        no_data: Keine Zeitbuchungen vorhanden
+        heading_report: Report
+        label_print: Drucken
+    queries:
+      time_logs:
+        title_new: Neue Zeiterfassungsabfrage
+      time_bookings:
+        title_new: Neue Zeitbuchungsabfrage
