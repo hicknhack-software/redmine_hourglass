@@ -37,10 +37,12 @@ module Chronos
     def stop
       time_log = @time_tracker.stop
       time_booking = time_log && time_log.time_booking
-      if !time_log || time_log.persisted?
+      if @time_tracker.destroyed?
         respond_with_success time_log: time_log, time_booking: time_booking
       else
-        respond_with_error :bad_request, time_log.errors.full_messages
+        error_messages = time_log.errors.full_messages
+        error_messages += time_booking.errors.full_messages if time_booking
+        respond_with_error :bad_request, error_messages
       end
     end
 
