@@ -49,7 +49,7 @@ validateForm = ($form) ->
   valid = true
   $submit = $form.find(':submit')
   $form.find('input, select, textarea').filter('[name]').each ->
-    valid and validateField $(@), $form
+    valid = valid and validateField $(@), $form
   $submit.attr('disabled', not valid)
   valid
 
