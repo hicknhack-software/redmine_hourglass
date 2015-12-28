@@ -95,6 +95,13 @@ de:
       issues:
         start: Zeitmessung starten
         stop: Zeitmessung stoppen
+        start_dialog:
+          description: Aktuell läuft noch eine Zeitmessung (%{time_tracker}). Bitte wählen sie, was damit geschehen soll.
+          title: Laufende Zeitmessung
+          options:
+            discard: Zeitmessung verwerfen
+            log: Zeitmessung stoppen
+            takeover: Zeitmessung für dieses Ticket übernehmen
       index:
         title: Zeitmessung
         time_tracker_control:

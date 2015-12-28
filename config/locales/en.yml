@@ -95,6 +95,13 @@ en:
       issues:
         start: Start TimeTracker
         stop: Stop TimeTracker
+        start_dialog:
+          description: There is still a running time tracker (%{time_tracker}). Please choose what to do with it.
+          title: Running time tracker
+          options:
+            discard: Stop timer and discard measured time
+            log: Stop timer and log time
+            takeover: Takeover time to this issue
       index:
         title: Time Tracking
         time_tracker_control:
