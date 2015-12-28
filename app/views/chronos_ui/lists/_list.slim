@@ -1,4 +1,4 @@
-- query, entries, action_name = list_arguments.values_at :query, :entries, :action_name
+- query, entries, action_name, sort_criteria = list_arguments.values_at :query, :entries, :action_name, :sort_criteria
 - if query.valid?
   - if !entries || entries.empty?
     p.nodata
@@ -12,6 +12,7 @@
           tr
             th.checkbox.hide-when-print
               = link_to image_tag('toggle_check.png'),{}, title: "#{t(:button_check_all)} / #{t(:button_uncheck_all)}"
+            - @sort_criteria = sort_criteria
             - query.columns.each do |column|
               = column_header column, list_arguments[:sort_param_name]
             th.actions
