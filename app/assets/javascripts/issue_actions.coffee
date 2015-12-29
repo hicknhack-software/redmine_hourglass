@@ -69,4 +69,4 @@ $ ->
   $issueActionList = $('#content .contextual')
   $issueActionsToAdd = $('.js-issue-action')
   $issueActionsToAdd.on 'click.show-start-dialog', showStartDialog if $issueActionsToAdd.hasClass('js-start-tracker')
-  $issueActionList.first().add($issueActionList.last()).find('a').eq(1).after $issueActionsToAdd.removeClass('hidden')
+  $issueActionList.first().add($issueActionList.last()).find(':nth-child(2)').after $issueActionsToAdd.removeClass('hidden')
