@@ -4,7 +4,7 @@ startNewTracker = ->
 timeTrackerAjax = (args) ->
   $.ajax
     url: args.url
-    type: 'post'
+    type: args.type || 'post'
     data: $.extend {_method: args.method}, args.data or {}
     success: args.success
     error: ({responseJSON}) ->
@@ -27,7 +27,7 @@ startDialogApplyHandler = ->
     when 'takeover'
       timeTrackerAjax
         url: chronosRoutes.chronos_time_tracker 'current'
-        method: 'put'
+        type: 'put'
         data: $('.js-start-tracker').data('params')
         success: ->
           location.reload()
@@ -39,27 +39,17 @@ showStartDialog = (e) ->
     if $startDialogContent.length isnt 0
       e.preventDefault()
       e.stopPropagation()
-      $('<div/>', class: 'js-start-dialog', title: $startDialogContent.data('dialog-title'))
-      .append $startDialogContent.removeClass('hidden')
-      .appendTo 'body'
-      .dialog(
-        autoOpen: true
-        resizable: false
-        draggable: false
-        modal: true
-        width: 300
-        buttons: [
-          {
-            text: $startDialogContent.data('button-ok-text')
-            click: startDialogApplyHandler
-          }
-          {
-            text: $startDialogContent.data('button-cancel-text')
-            click: ->
-              $(this).dialog 'close'
-          }
-        ]
-      )
+      chronos.Utils.showDialog 'js-start-dialog', $startDialogContent, [
+        {
+          text: $startDialogContent.data('button-ok-text')
+          click: startDialogApplyHandler
+        }
+        {
+          text: $startDialogContent.data('button-cancel-text')
+          click: ->
+            $(this).dialog 'close'
+        }
+      ]
   else
     e.preventDefault()
     e.stopPropagation()

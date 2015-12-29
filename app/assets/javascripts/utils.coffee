@@ -11,9 +11,22 @@ showNotice = (message) ->
 showErrorMessage = (message) ->
   showMessage message, 'error'
 
+showDialog = (className, $content, buttons) ->
+  $('<div/>', class: className, title: $content.data('dialog-title'))
+  .append $content.removeClass('hidden')
+  .appendTo 'body'
+  .dialog
+    autoOpen: true
+    resizable: false
+    draggable: false
+    modal: true
+    width: 300
+    buttons: buttons
+
 @chronos ?= {}
 @chronos.Utils =
   clearFlash: clearFlash
-  showNotice: showNotice
+  showDialog: showDialog
   showErrorMessage: showErrorMessage
+  showNotice: showNotice
 
