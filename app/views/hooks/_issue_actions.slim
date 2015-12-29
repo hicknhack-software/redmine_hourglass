@@ -8,16 +8,17 @@
     = link_to t('chronos.ui.issues.stop'), stop_chronos_time_tracker_path(time_tracker), class: 'icon icon-stop js-chronos-remote js-issue-action hidden', remote: true, method: 'delete'
   - elsif authorize_for 'chronos/time_trackers', 'start'
     = link_to t('chronos.ui.issues.start'), start_chronos_time_trackers_path, class: 'icon icon-start js-chronos-remote js-issue-action js-start-tracker hidden', remote: true, method: 'post', data: {params: {time_tracker: {issue_id: @issue.id}}}
-    .hidden.js-start-dialog-content data-dialog-title=t('chronos.ui.issues.start_dialog.title') data-button-ok-text=t(:button_apply) data-button-cancel-text=t(:button_cancel)
-      - description = time_tracker.issue_id && format_object(time_tracker.issue) || time_tracker.project_id && format_object(time_tracker.project) || time_tracker.comments
-      p = raw t('chronos.ui.issues.start_dialog.description', time_tracker: description)
-      p
-        = radio_button_tag 'running_time', 'log', true
-        = label_tag 'running_time_log', t('chronos.ui.issues.start_dialog.options.log')
-      - if authorize_globally_for 'chronos/time_trackers', 'delete'
+    - if time_tracker
+      .hidden.js-start-dialog-content data-dialog-title=t('chronos.ui.issues.start_dialog.title') data-button-ok-text=t(:button_apply) data-button-cancel-text=t(:button_cancel)
+        - description = time_tracker.issue_id && format_object(time_tracker.issue) || time_tracker.project_id && format_object(time_tracker.project) || time_tracker.comments
+        p = raw t('chronos.ui.issues.start_dialog.description', time_tracker: description)
         p
-          = radio_button_tag 'running_time', 'discard', false
-          = label_tag 'running_time_discard', t('chronos.ui.issues.start_dialog.options.discard')
-      p
-        = radio_button_tag 'running_time', 'takeover', false
-        = label_tag 'running_time_takeover', t('chronos.ui.issues.start_dialog.options.takeover')
+          = radio_button_tag 'running_time', 'log', true
+          = label_tag 'running_time_log', t('chronos.ui.issues.start_dialog.options.log')
+        - if User.current.allowed_to_globally? controller: 'chronos/time_trackers', action: 'delete'
+          p
+            = radio_button_tag 'running_time', 'discard', false
+            = label_tag 'running_time_discard', t('chronos.ui.issues.start_dialog.options.discard')
+        p
+          = radio_button_tag 'running_time', 'takeover', false
+          = label_tag 'running_time_takeover', t('chronos.ui.issues.start_dialog.options.takeover')
