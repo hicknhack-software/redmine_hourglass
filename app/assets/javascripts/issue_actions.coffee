@@ -10,6 +10,18 @@ timeTrackerAjax = (args) ->
     error: ({responseJSON}) ->
       chronos.Utils.showErrorMessage responseJSON.message
 
+stopDialogApplyHandler = (args) ->
+  $stopDialog = $(@)
+  $stopDialog.dialog 'close'
+  timeTrackerAjax
+    url: chronosRoutes.chronos_time_tracker 'current'
+    type: 'put'
+    data:
+      time_tracker:
+        activity_id: $stopDialog.find('[name*=activity_id]').val()
+    success: ->
+      $('.js-stop-tracker').off('click.show-stop-dialog').first().click()
+
 startDialogApplyHandler = ->
   $startDialog = $(@)
   $startDialog.dialog 'close'
@@ -55,8 +67,31 @@ showStartDialog = (e) ->
     e.stopPropagation()
     $startDialog.dialog 'open'
 
+showStopDialog = (e) ->
+  e.preventDefault()
+  $stopDialog = $('.js-stop-dialog')
+  if $stopDialog.length is 0
+    $stopDialogContent = $('.js-stop-dialog-content')
+    if $stopDialogContent.length isnt 0
+      e.preventDefault()
+      e.stopPropagation()
+      chronos.Utils.showDialog 'js-stop-dialog', $stopDialogContent, [
+        {
+          text: $stopDialogContent.data('button-ok-text')
+          click: stopDialogApplyHandler
+        }
+        {
+          text: $stopDialogContent.data('button-cancel-text')
+          click: ->
+            $(this).dialog 'close'
+        }
+      ]
+  else
+    $stopDialog.dialog 'open'
+
 $ ->
   $issueActionList = $('#content .contextual')
   $issueActionsToAdd = $('.js-issue-action')
   $issueActionsToAdd.on 'click.show-start-dialog', showStartDialog if $issueActionsToAdd.hasClass('js-start-tracker')
+  $issueActionsToAdd.on 'click.show-stop-dialog', showStopDialog if $issueActionsToAdd.hasClass('js-stop-tracker')
   $issueActionList.first().add($issueActionList.last()).find(':nth-child(2)').after $issueActionsToAdd.removeClass('hidden')

@@ -102,6 +102,9 @@ en:
             discard: Stop timer and discard measured time
             log: Stop timer and log time
             takeover: Takeover time to this issue
+        stop_dialog:
+          description: You have set a project but no activity for your time tracker. Please choose one from the list below.
+          title: No Activity set
       index:
         title: Time Tracking
         time_tracker_control:

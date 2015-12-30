@@ -102,6 +102,9 @@ de:
             discard: Zeitmessung verwerfen
             log: Zeitmessung stoppen
             takeover: Zeitmessung für dieses Ticket übernehmen
+        stop_dialog:
+          description: Sie haben für den aktiven Zeitmesser ein Projekt, aber keine Aktivität gesetzt. Bitte wählen sie eine aus der untenstehenden Liste.
+          title: Keine Aktivität gesetzt
       index:
         title: Zeitmessung
         time_tracker_control:

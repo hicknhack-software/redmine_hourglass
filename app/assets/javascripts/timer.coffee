@@ -26,5 +26,3 @@ startTimeTrackerTimer = ->
 @chronos.Timer = {
   start: startTimeTrackerTimer
 }
-$ ->
-  startTimeTrackerTimer()
