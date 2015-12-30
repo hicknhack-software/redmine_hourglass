@@ -4,14 +4,6 @@ module Chronos
       User.current.allowed_to_globally? controller: controller, action: action
     end
 
-    def render_main_menu(project)
-      render_menu :chronos_menu
-    end
-
-    def display_main_menu?(project)
-      Redmine::MenuManager.items(:chronos_menu).children.present?
-    end
-
     def issue_label_for(issue)
       "##{issue.id} #{issue.subject}" if issue
     end
@@ -23,10 +15,6 @@ module Chronos
 
     def activity_collection(project = nil)
       project.present? ? project.activities : TimeEntryActivity.shared.active
-    end
-
-    def sidebar_queries
-      @sidebar_queries ||= query_class.where(project: [nil, @project]).order(name: :asc)
     end
 
     def localized_hours_in_units(hours)

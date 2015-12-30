@@ -8,6 +8,7 @@ class ChronosUiController < ApplicationController
   helper IssuesHelper
   helper SortHelper
   helper Chronos::ApplicationHelper
+  helper Chronos::UiHelper
   helper Chronos::ListHelper
   helper Chronos::ReportHelper
 
