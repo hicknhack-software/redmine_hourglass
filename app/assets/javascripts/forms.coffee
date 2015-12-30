@@ -96,6 +96,7 @@ checkSplitting = ->
   addSplittingFailedHandler startJqXhr, stopJqXhr
 
   return not (startJqXhr or stopJqXhr)
+
 $ ->
   $(document)
   .on 'focus', '.js-issue-autocompletion:not(.ui-autocomplete-input)', initIssueAutoCompletion

@@ -11,7 +11,9 @@ formFieldChanged = (event) ->
       chronos.Utils.showErrorMessage responseJSON.message
 
 $ ->
-  $timeTrackerEditForm = $('.time-tracker-control').find('.edit-time-tracker-form')
+  $timeTrackerControl = $('.time-tracker-control')
+  chronos.Timer.start() if $timeTrackerControl.length > 0
+  $timeTrackerEditForm = $timeTrackerControl.find('.edit-time-tracker-form')
   chronos.FormValidator.validateForm $timeTrackerEditForm
 
   $timeTrackerEditForm.on 'formfieldchanged', formFieldChanged

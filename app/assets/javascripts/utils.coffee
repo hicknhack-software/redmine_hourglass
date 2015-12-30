@@ -11,7 +11,7 @@ showNotice = (message) ->
 showErrorMessage = (message) ->
   showMessage message, 'error'
 
-showDialog = (className, $content, buttons) ->
+showDialog = (className, $content, buttons = []) ->
   $('<div/>', class: className, title: $content.data('dialog-title'))
   .append $content.removeClass('hidden')
   .appendTo 'body'
