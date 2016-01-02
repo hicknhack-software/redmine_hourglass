@@ -12,13 +12,15 @@ timeTrackerAjax = (args) ->
 
 stopDialogApplyHandler = (args) ->
   $stopDialog = $(@)
+  $activityField = $stopDialog.find('[name*=activity_id]')
+  return unless chronos.FormValidator.validateField $activityField
   $stopDialog.dialog 'close'
   timeTrackerAjax
     url: chronosRoutes.chronos_time_tracker 'current'
     type: 'put'
     data:
       time_tracker:
-        activity_id: $stopDialog.find('[name*=activity_id]').val()
+        activity_id: $activityField.val()
     success: ->
       $('.js-stop-tracker').off('click.show-stop-dialog').first().click()
 
@@ -86,6 +88,8 @@ showStopDialog = (e) ->
             $(this).dialog 'close'
         }
       ]
+      $stopDialogContent.on 'change', '[name*=activity_id]', ->
+        chronos.FormValidator.validateField $(@)
   else
     $stopDialog.dialog 'open'
 

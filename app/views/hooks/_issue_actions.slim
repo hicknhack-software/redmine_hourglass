@@ -5,7 +5,7 @@
     .hidden.chronos-dialog.js-stop-dialog-content data-dialog-title=t('chronos.ui.issues.stop_dialog.title') data-button-ok-text=t(:button_apply) data-button-cancel-text=t(:button_cancel)
       p = t('chronos.ui.issues.stop_dialog.description')
       .center
-        = collection_select :time_tracker, :activity_id, activity_collection(@issue.project), :id, :name, {include_blank: true}
+        = collection_select :time_tracker, :activity_id, activity_collection(@issue.project), :id, :name, {required: true, include_blank: true}
   - elsif authorize_for 'chronos/time_trackers', 'start'
     = link_to t('chronos.ui.issues.start'), start_chronos_time_trackers_path, class: 'icon icon-start js-chronos-remote js-issue-action js-start-tracker hidden', remote: true, method: 'post', data: {params: {time_tracker: {issue_id: @issue.id}}}
     - if time_tracker
