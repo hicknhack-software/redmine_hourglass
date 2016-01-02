@@ -1,3 +1,5 @@
+//= require global
+
 @mixin form-row {
   .form-row {
     width: 100%;
@@ -28,10 +30,6 @@
 @mixin inline-block {
   display: inline-block;
   vertical-align: middle;
-}
-
-.hidden {
-  display: none;
 }
 
 .controller-chronos_ui {
@@ -201,14 +199,5 @@
         }
       }
     }
-  }
-}
-
-.chronos-dialog {
-  p {
-    margin: 5px 0;
-  }
-  .center {
-    text-align: center;
   }
 }
