@@ -30,3 +30,9 @@ showDialog = (className, $content, buttons = []) ->
   showErrorMessage: showErrorMessage
   showNotice: showNotice
 
+$ ->
+  $(document)
+  .on 'ajax:success', '.js-chronos-remote', ->
+    location.reload()
+  .on 'ajax:error', '.js-chronos-remote', (event, {responseJSON}) ->
+    chronos.Utils.showErrorMessage responseJSON.message

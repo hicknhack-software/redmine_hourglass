@@ -106,7 +106,3 @@ $ ->
   .on 'submit', '.js-validate-form', (event) ->
     event.preventDefault() unless chronos.FormValidator.validateForm $(@)
   .on 'ajax:before', '.js-check-splitting', checkSplitting
-  .on 'ajax:success', '.js-chronos-remote', ->
-    location.reload()
-  .on 'ajax:error', '.js-chronos-remote', (event, {responseJSON}) ->
-    chronos.Utils.showErrorMessage responseJSON.message

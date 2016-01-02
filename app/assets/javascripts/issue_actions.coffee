@@ -1,5 +1,5 @@
 startNewTracker = ->
-  $('.js-start-tracker').off('click.show-start-dialog').first().click()
+  $('.js-start-tracker').addClass('js-skip-dialog').first().click()
 
 timeTrackerAjax = (args) ->
   $.ajax
@@ -22,7 +22,7 @@ stopDialogApplyHandler = (args) ->
       time_tracker:
         activity_id: $activityField.val()
     success: ->
-      $('.js-stop-tracker').off('click.show-stop-dialog').first().click()
+      $('.js-stop-tracker').addClass('js-skip-dialog').first().click()
 
 startDialogApplyHandler = ->
   $startDialog = $(@)
@@ -47,6 +47,7 @@ startDialogApplyHandler = ->
           location.reload()
 
 showStartDialog = (e) ->
+  return true if $(@).hasClass('js-skip-dialog')
   $startDialog = $('.js-start-dialog')
   if $startDialog.length is 0
     $startDialogContent = $('.js-start-dialog-content')
@@ -70,7 +71,9 @@ showStartDialog = (e) ->
     $startDialog.dialog 'open'
 
 showStopDialog = (e) ->
+  return true if $(@).hasClass('js-skip-dialog')
   e.preventDefault()
+  e.stopPropagation()
   $stopDialog = $('.js-stop-dialog')
   if $stopDialog.length is 0
     $stopDialogContent = $('.js-stop-dialog-content')
@@ -96,6 +99,8 @@ showStopDialog = (e) ->
 $ ->
   $issueActionList = $('#content .contextual')
   $issueActionsToAdd = $('.js-issue-action')
-  $issueActionsToAdd.on 'click.show-start-dialog', showStartDialog if $issueActionsToAdd.hasClass('js-start-tracker')
-  $issueActionsToAdd.on 'click.show-stop-dialog', showStopDialog if $issueActionsToAdd.hasClass('js-stop-tracker')
   $issueActionList.first().add($issueActionList.last()).find(':nth-child(2)').after $issueActionsToAdd.removeClass('hidden')
+
+  $('#content')
+  .on 'click', '.js-start-tracker', showStartDialog
+  .on 'click', '.js-stop-tracker', showStopDialog
