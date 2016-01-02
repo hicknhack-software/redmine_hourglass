@@ -37,7 +37,9 @@ module Chronos
     private
     def create_time_entry
       if time_entry_arguments.present? && !time_entry
-        super time_entry_arguments
+        time_entry = super time_entry_arguments
+        time_entry.hours ||= 0 #redmine sets hours to nil, if it's 0 on initializing
+        time_entry.save
       end
     end
 
