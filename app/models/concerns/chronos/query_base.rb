@@ -2,7 +2,7 @@ module Chronos::QueryBase
   extend ActiveSupport::Concern
 
   included do
-    self.queried_class = Chronos.const_get(class_name.gsub('Query', ''))
+    self.queried_class = const_get(name.gsub('Query', ''))
   end
 
   class_methods do
