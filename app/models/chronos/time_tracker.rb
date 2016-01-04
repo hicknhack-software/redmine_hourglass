@@ -38,9 +38,12 @@ module Chronos
 
     private
     def init
-      self.user ||= User.current
+      current_user = User.current
+      now = Time.now.change sec: 0
+      previous_time_log = current_user.chronos_time_logs.find_by(stop: now + 1.minute)
+      self.user ||= current_user
       self.round = DateTimeCalculations.round_default if round.nil?
-      self.start ||= Time.now.change sec: 0
+      self.start ||= previous_time_log && previous_time_log.stop || now
     end
 
     def sync_issue_and_project

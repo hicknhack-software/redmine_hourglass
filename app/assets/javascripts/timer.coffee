@@ -10,9 +10,9 @@ startTimeTrackerTimer = ->
 
   displayTime = ->
     isNegative = diff < 0
-    h = numberToString Math.abs Math.floor(diff / 3600)
-    m = numberToString Math.abs Math.floor(diff % 3600 / 60)
-    s = numberToString Math.abs Math.floor(diff % 3600 % 60)
+    h = numberToString Math.floor Math.abs(diff / 3600)
+    m = numberToString Math.floor Math.abs(diff % 3600 / 60)
+    s = numberToString Math.floor Math.abs(diff % 3600 % 60)
     $('.time-tracker-control .input.js-running-time').html("#{if isNegative then '-' else ''} #{h}:#{m}:#{s}")
 
   displayTime()
