@@ -1,11 +1,11 @@
 module Chronos
   module ApplicationHelper
     def chronos_asset_paths(type, sources)
-      options = sources.extract_options!.merge type: type
-      if options[:plugin] == 'redmine_chronos'
+      options = sources.extract_options!
+      if options[:plugin] == 'redmine_chronos' && Rails.env.production?
         plugin = options.delete(:plugin)
         sources.map! do |source|
-          extname = compute_asset_extname source, options
+          extname = compute_asset_extname source, options.merge(type: type)
           source = "#{source}#{extname}" if extname.present?
           "/plugin_assets/#{plugin}/#{Chronos::Assets.manifest.assets[source]}"
         end
