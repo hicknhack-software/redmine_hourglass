@@ -29,7 +29,7 @@ Redmine::Plugin.register :redmine_chronos do
                {
                    :'chronos/time_trackers' => [:start, :update, :stop],
                    :'chronos/time_logs' => [:update, :split, :combine],
-                   :'chronos_ui' => [:index]
+                   :'chronos_ui' => [:index, :time_trackers]
                },
                require: :loggedin
 
@@ -37,14 +37,14 @@ Redmine::Plugin.register :redmine_chronos do
                {
                    :'chronos/time_trackers' => with_foreign(:index, :show),
                    :'chronos/time_logs' => with_foreign(:index, :show),
-                   :'chronos_ui' => [:index, *with_foreign(:time_logs)]
+                   :'chronos_ui' => [:index, *with_foreign(:time_logs, :time_trackers)]
                }, require: :loggedin
 
     permission :chronos_view_own_tracked_time,
                {
                    :'chronos/time_trackers' => [:index, :show],
                    :'chronos/time_logs' => [:index, :show],
-                   :'chronos_ui' => [:index, :time_logs]
+                   :'chronos_ui' => [:index, :time_logs, :time_trackers]
                }, require: :loggedin
 
     permission :chronos_edit_tracked_time,
@@ -112,5 +112,6 @@ Redmine::Plugin.register :redmine_chronos do
     menu.push :chronos_overview, :chronos_root_path, caption: :'chronos.ui.menu.overview', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'index' }
     menu.push :chronos_time_logs, :chronos_ui_time_logs_path, caption: :'chronos.ui.menu.time_logs', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'time_logs' }
     menu.push :chronos_time_bookings, :chronos_ui_time_bookings_path, caption: :'chronos.ui.menu.time_bookings', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'time_bookings' }
+    menu.push :chronos_time_trackers, :chronos_ui_time_trackers_path, caption: :'chronos.ui.menu.time_trackers', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'time_trackers' }
   end
 end

@@ -15,6 +15,7 @@ class ChronosUiController < ApplicationController
   menu_item :chronos_overview, only: :index
   menu_item :chronos_time_logs, only: :time_logs
   menu_item :chronos_time_bookings, only: :time_bookings
+  menu_item :chronos_time_trackers, only: :time_trackers
 
   before_filter :authorize_global
 
@@ -66,6 +67,12 @@ class ChronosUiController < ApplicationController
     @list_arguments[:entries] = @list_arguments[:entries].offset(nil).limit(nil)
     build_chart_query
     render layout: false
+  end
+
+  def time_trackers
+    retrieve_query
+    init_sort
+    @list_arguments = list_arguments
   end
 
   private

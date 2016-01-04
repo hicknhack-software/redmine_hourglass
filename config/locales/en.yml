@@ -92,6 +92,7 @@ en:
         overview: Overview
         time_bookings: Time Bookings
         time_logs: Time Logs
+        time_trackers: Running Time Trackers
       issues:
         start: Start TimeTracker
         stop: Stop TimeTracker
@@ -128,10 +129,13 @@ en:
         no_data: No time bookings available
         heading_report: Report
         label_print: Print
+      time_trackers:
+        title: Running Time Trackers
+        no_data: No running time trackers available
     queries:
       time_logs:
         title_new: New Time Log Query
       time_bookings:
         title_new: New Time Booking Query
-      report:
-        title_new: New Report Query
+      time_trackers:
+        title_new: New Time Tracker Query

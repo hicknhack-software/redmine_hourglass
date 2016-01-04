@@ -8,6 +8,8 @@ scope :chronos, as: :chronos do
     get 'time_bookings'
     get 'time_bookings/:id/edit', action: :edit_time_bookings, as: :edit_time_bookings
     get 'report'
+    get 'time_trackers'
+    get 'time_trackers/:id/edit', action: :edit_time_trackers, as: :edit_time_trackers
   end
   scope :completion, as: :completion, controller: :chronos_completion do
     get 'issues'

@@ -92,6 +92,7 @@ de:
         overview: Übersicht
         time_bookings: Zeitbuchungen
         time_logs: Zeiterfassungen
+        time_trackers: Laufende Zeitmessungen
       issues:
         start: Zeitmessung starten
         stop: Zeitmessung stoppen
@@ -128,8 +129,13 @@ de:
         no_data: Keine Zeitbuchungen vorhanden
         heading_report: Report
         label_print: Drucken
+      time_trackers:
+        title: Laufende Zeitmessungen
+        no_data: Keine laufenden Zeitmessungen vorhanden
     queries:
       time_logs:
         title_new: Neue Zeiterfassungsabfrage
       time_bookings:
         title_new: Neue Zeitbuchungsabfrage
+      time_trackers:
+              title_new: Neue Zeitmessungsabfrage
