@@ -1,5 +1,26 @@
 module Chronos
   module ApplicationHelper
+    def chronos_asset_paths(type, sources)
+      options = sources.extract_options!.merge type: type
+      if options[:plugin] == 'redmine_chronos'
+        plugin = options.delete(:plugin)
+        sources.map! do |source|
+          extname = compute_asset_extname source, options
+          source = "#{source}#{extname}" if extname.present?
+          "/plugin_assets/#{plugin}/#{Chronos::Assets.manifest.assets[source]}"
+        end
+      end
+      sources.push options
+    end
+
+    def javascript_include_tag(*sources)
+      super *chronos_asset_paths(:javascript, sources)
+    end
+
+    def stylesheet_link_tag(*sources)
+      super *chronos_asset_paths(:stylesheet, sources)
+    end
+
     def authorize_globally_for(controller, action)
       User.current.allowed_to_globally? controller: controller, action: action
     end

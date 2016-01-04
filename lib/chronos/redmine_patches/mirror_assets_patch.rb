@@ -6,10 +6,7 @@ module Chronos
 
       def mirror_assets
         super
-        if Rails.env.production?
-          manifest = Sprockets::Manifest.new Chronos::Assets.instance, File.join('public', 'plugin_assets', 'redmine_chronos')
-          manifest.compile 'application.js', 'global.js', 'application.css', 'global.css'
-        end
+        Chronos::Assets.compile if Rails.env.production?
       end
     end
   end

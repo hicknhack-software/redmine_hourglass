@@ -11,6 +11,7 @@ module Chronos
     def init
       set_autoload_paths
       add_redmine_patches
+      Chronos::Assets.precompile += %w(application.js application.css global.js global.css)
       Chronos::RedmineHooks.load!
     end
 
