@@ -1,0 +1,13 @@
+.hidden.chronos-dialog.js-start-dialog-content data-dialog-title=t('chronos.ui.issues.start_dialog.title') data-button-ok-text=t(:button_apply) data-button-cancel-text=t(:button_cancel)
+  - description = time_tracker.issue_id && format_object(time_tracker.issue) || time_tracker.project_id && format_object(time_tracker.project) || time_tracker.comments
+  p = raw t('chronos.ui.issues.start_dialog.description', time_tracker: description)
+  p
+    = radio_button_tag 'running_time', 'log', true
+    = label_tag 'running_time_log', t('chronos.ui.issues.start_dialog.options.log')
+    - if authorize_globally_for 'chronos/time_trackers', 'delete'
+    p
+      = radio_button_tag 'running_time', 'discard', false
+      = label_tag 'running_time_discard', t('chronos.ui.issues.start_dialog.options.discard')
+  p
+    = radio_button_tag 'running_time', 'takeover', false
+    = label_tag 'running_time_takeover', t('chronos.ui.issues.start_dialog.options.takeover')

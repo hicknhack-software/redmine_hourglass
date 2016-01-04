@@ -72,8 +72,6 @@ showStartDialog = (e) ->
 
 showStopDialog = (e) ->
   return true if $(@).hasClass('js-skip-dialog')
-  e.preventDefault()
-  e.stopPropagation()
   $stopDialog = $('.js-stop-dialog')
   if $stopDialog.length is 0
     $stopDialogContent = $('.js-stop-dialog-content')
@@ -94,6 +92,8 @@ showStopDialog = (e) ->
       $stopDialogContent.on 'change', '[name*=activity_id]', ->
         chronos.FormValidator.validateField $(@)
   else
+    e.preventDefault()
+    e.stopPropagation()
     $stopDialog.dialog 'open'
 
 $ ->
@@ -101,6 +101,8 @@ $ ->
   $issueActionsToAdd = $('.js-issue-action')
   $issueActionList.first().add($issueActionList.last()).find(':nth-child(2)').after $issueActionsToAdd.removeClass('hidden')
 
-  $('#content')
+  $('.chronos-quick').replaceWith $('.js-account-menu-link').removeClass('hidden')
+
+  $('#content, #top-menu')
   .on 'click', '.js-start-tracker', showStartDialog
   .on 'click', '.js-stop-tracker', showStopDialog

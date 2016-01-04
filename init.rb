@@ -100,7 +100,12 @@ Redmine::Plugin.register :redmine_chronos do
                }, require: :loggedin
   end
 
-  menu :top_menu, :chronos_root, :chronos_root_path, caption: :'chronos.ui.menu.main', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'index' }
+  def allowed_to_see_index?
+    proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'index' }
+  end
+
+  menu :top_menu, :chronos_root, :chronos_root_path, caption: :'chronos.ui.menu.main', if: allowed_to_see_index?
+  menu :account_menu, :chronos_quick, '', caption: '', if: allowed_to_see_index?, before: :my_account
   #menu :project_menu, :chronos_main_menu, chronos_root_path, caption: 'test'
 
   Redmine::MenuManager.map :chronos_menu do |menu|
