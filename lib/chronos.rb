@@ -31,10 +31,12 @@ module Chronos
 
     def add_redmine_patches
       ActionDispatch::Callbacks.to_prepare do
-        [Redmine::Plugin, Project, TimeEntry, User].each do |module_to_patch|
+        [Project, TimeEntry, User].each do |module_to_patch|
           patch = Chronos::RedminePatches.const_get "#{module_to_patch.name.demodulize}Patch"
           module_to_patch.send :include, patch unless module_to_patch.included_modules.include? patch
         end
+
+        Redmine::Plugin.find(:redmine_chronos).extend Chronos::RedminePatches::MirrorAssetsPatch
       end
     end
   end

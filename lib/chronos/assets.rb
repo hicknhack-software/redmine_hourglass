@@ -11,13 +11,9 @@ class Chronos::Assets < Sprockets::Environment
         env.append_path path
       end
       if Rails.env.production?
-        env.js_compressor  = Uglifier.new
-        env.css_compressor  = CSSminify.new
+        env.js_compressor = :uglify
+        env.css_compressor = :scss
       end
     end
-  end
-
-  def compress_and_compile
-    raise NotImplementedError
   end
 end
