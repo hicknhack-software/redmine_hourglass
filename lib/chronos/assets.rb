@@ -1,10 +1,7 @@
 class Chronos::Assets < Sprockets::Environment
   include Singleton
 
-  attr_accessor :precompile
-
   def initialize
-    self.precompile = []
     super File.join(File.dirname(__FILE__), '..', '..') do |env|
       env.append_path 'app/assets/javascripts'
       env.append_path 'vendor/assets/javascripts'
@@ -21,7 +18,11 @@ class Chronos::Assets < Sprockets::Environment
   end
 
   class << self
-    delegate :precompile, :precompile=, to: :instance
+    attr_writer :precompile
+
+    def precompile
+      @recompile ||= []
+    end
 
     def compile
       manifest.compile precompile
