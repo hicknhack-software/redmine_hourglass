@@ -38,5 +38,5 @@
         = f.text_field :comments, size: '30', maxlength: 255, disabled: !authorize_globally_for('chronos/time_bookings', 'update')
     .form-field
       .input
-        = f.submit t(:button_edit)
+        = f.submit t(:button_update)
         = link_to t(:button_cancel), '#', class: 'js-hide-inline-form'
