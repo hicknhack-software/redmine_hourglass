@@ -50,6 +50,10 @@ de:
         success:
           redmine_time_tracker: Die Daten des Redmine Time Trackers wurden erfolgreich in Redmine Chronos importiert.
         title: Import
+      misc:
+        fields:
+          global_tracker: Globalen Start/Stop-Link im Menü zeigen?
+        title: Verschiedene
       report:
         fields:
           logo_url: Logo URL

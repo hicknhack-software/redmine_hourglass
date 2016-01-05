@@ -28,6 +28,11 @@ p
   = text_field_tag 'settings[report_logo_width]', @settings[:report_logo_width], {size: 2}
   |  (Pixel)
 
+h3 = t('chronos.settings.misc.title')
+p
+  = label_tag 'settings[global_tracker]', t('chronos.settings.misc.fields.global_tracker')
+  = check_box_tag 'settings[global_tracker]', true, @settings[:global_tracker]
+
 /TODO: if more imports possible, move condition below title
 - if Redmine::Plugin.all.any? {|plugin| plugin.id == :redmine_time_tracker}
   h3 = t('chronos.settings.import.title')

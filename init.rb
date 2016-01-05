@@ -11,6 +11,7 @@ Redmine::Plugin.register :redmine_chronos do
   requires_redmine version_or_higher: '3.0.0'
 
   settings default: {
+      global_tracker: true,
       report_title: 'Report',
       report_logo_url: '',
       report_logo_width: '150',
