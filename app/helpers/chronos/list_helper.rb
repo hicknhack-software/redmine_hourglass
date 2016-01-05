@@ -64,9 +64,10 @@ module Chronos
         hours_per_date = @chart_query.hours_by_group
         dates = hours_per_date && hours_per_date.keys.sort
         if dates.present?
-          date_range = (dates.first..dates.last)
+          date_range = (Date.parse(dates.first)..Date.parse(dates.last))
           gap = (date_range.count / 8).ceil
-          date_range.each do |date_string|
+          date_range.each do |date|
+            date_string = date.to_s
             hours = hours_per_date[date_string]
             data.push hours
             tooltips.push "#{date_string}, #{localized_hours_in_units hours}"
