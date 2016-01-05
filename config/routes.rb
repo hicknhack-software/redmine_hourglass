@@ -1,7 +1,7 @@
-# gui routes can't be namespaced
+# gui controllers can't be namespaced because redmine doesn't use link_to properly with a prepended '/'
 scope :chronos, as: :chronos do
-  root to: 'chronos_ui#index'
   scope :ui, as: :ui, controller: :chronos_ui do
+    root action: :index
     get 'time_logs'
     get 'time_logs/:id/edit', action: :edit_time_logs, as: :edit_time_logs
     get 'time_logs/:id/book', action: :book_time_logs, as: :book_time_logs
@@ -33,12 +33,8 @@ end
 
 namespace :chronos do
   resources :time_trackers, except: [:new, :edit, :create] do
-    collection do
-      post 'start'
-    end
-    member do
-      delete 'stop'
-    end
+    post 'start', on: :collection
+    delete 'stop', on: :member
   end
   resources :time_logs, except: [:new, :edit, :create] do
     member do
@@ -51,6 +47,6 @@ namespace :chronos do
 end
 
 unless Rails.env.production?
-  mount Chronos::Assets.instance, :at => 'plugin_assets/redmine_chronos/stylesheets'
-  mount Chronos::Assets.instance, :at => 'plugin_assets/redmine_chronos/javascripts'
+  mount Chronos::Assets.instance, at: 'plugin_assets/redmine_chronos/stylesheets'
+  mount Chronos::Assets.instance, at: 'plugin_assets/redmine_chronos/javascripts'
 end

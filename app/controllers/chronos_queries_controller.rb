@@ -73,7 +73,7 @@ class ChronosQueriesController < ApplicationController
   end
 
   def redirect_path(options = {})
-    uri = URI params[:request_referer].presence || request.referer || chronos_root_path
+    uri = URI params[:request_referer].presence || request.referer || chronos_ui_root_path
     uri.query = URI.encode_www_form(URI.decode_www_form(uri.query || '') << options.flatten)
     uri.to_s
   end

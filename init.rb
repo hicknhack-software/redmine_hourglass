@@ -104,12 +104,12 @@ Redmine::Plugin.register :redmine_chronos do
     proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'index' }
   end
 
-  menu :top_menu, :chronos_root, :chronos_root_path, caption: :'chronos.ui.menu.main', if: allowed_to_see_index?
+  menu :top_menu, :chronos_root, :chronos_ui_root_path, caption: :'chronos.ui.menu.main', if: allowed_to_see_index?
   menu :account_menu, :chronos_quick, '', caption: '', if: allowed_to_see_index?, before: :my_account
-  #menu :project_menu, :chronos_main_menu, chronos_root_path, caption: 'test'
+  #menu :project_menu, :chronos_main_menu, chronos_ui_root_path, caption: 'test'
 
   Redmine::MenuManager.map :chronos_menu do |menu|
-    menu.push :chronos_overview, :chronos_root_path, caption: :'chronos.ui.menu.overview', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'index' }
+    menu.push :chronos_overview, :chronos_ui_root_path, caption: :'chronos.ui.menu.overview', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'index' }
     menu.push :chronos_time_logs, :chronos_ui_time_logs_path, caption: :'chronos.ui.menu.time_logs', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'time_logs' }
     menu.push :chronos_time_bookings, :chronos_ui_time_bookings_path, caption: :'chronos.ui.menu.time_bookings', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'time_bookings' }
     menu.push :chronos_time_trackers, :chronos_ui_time_trackers_path, caption: :'chronos.ui.menu.time_trackers', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'time_trackers' }
