@@ -3,7 +3,9 @@ html
   head
     title = Chronos.settings[:report_title]
     = javascript_heads
+    = javascript_include_tag 'global', plugin: 'redmine_chronos'
     = javascript_include_tag 'application', plugin: 'redmine_chronos'
+    = stylesheet_link_tag 'global', plugin: 'redmine_chronos', media: :all
     = stylesheet_link_tag 'application', plugin: 'redmine_chronos', media: :all
     = render partial: 'chronos_ui/lists/chart'
   body.controller-chronos_ui.action-report
@@ -15,4 +17,4 @@ html
       .chart
         = render_query_totals @query
         #chart-container.print
-      = render partial: 'chronos_ui/report/list'
+      = render partial: 'chronos_ui/report/list', locals: {list_arguments: @list_arguments}
