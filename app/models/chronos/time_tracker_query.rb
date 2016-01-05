@@ -7,7 +7,7 @@ module Chronos
         user: {sortable: lambda { User.fields_for_order_statement }},
         date: {sortable: "#{queried_class.table_name}.start", groupable: "DATE(#{queried_class.table_name}.start)"},
         start: {},
-        #hours: {totalable: true},
+        hours: {},
         project: {sortable: "#{Project.table_name}.name", groupable: "#{Project.table_name}.id"},
         activity: {sortable: "#{TimeEntryActivity.table_name}.position", groupable: "#{TimeEntryActivity.table_name}.id"},
         issue: {sortable: "#{Issue.table_name}.subject", groupable: "#{Issue.table_name}.id"}

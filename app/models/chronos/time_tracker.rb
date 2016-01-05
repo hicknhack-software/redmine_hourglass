@@ -37,6 +37,10 @@ module Chronos
       time_log
     end
 
+    def hours
+      DateTimeCalculations.time_diff_in_hours start, Time.now.change(sec: 0) + 1.minute
+    end
+
     private
     def init
       current_user = User.current
