@@ -19,32 +19,25 @@ module Chronos
         if query.grouped?
           column = query.group_by_column
           group = column.value entry
-          group = group.to_date if column.groupable.include? 'DATE'
           totals_by_group = query.totalable_columns.inject({}) do |totals, column|
             totals[column] = query.total_by_group_for(column)
             totals
           end
           if group != previous_group || first
-            if group.blank? && group != false
-              group_name = "(#{l(:label_blank_value)})"
-            else
-              group_name = column_content(query.group_by_column, entry)
-              group_name = format_object(group) if column.groupable.include? 'DATE'
-            end
-            group_name ||= ''
-            group_count = count_by_group[group] ||
-                count_by_group[group.to_s] ||
-                (group.respond_to?(:id) && count_by_group[group.id])
-            group_totals = totals_by_group.map { |column, t| total_tag(column, t[group] || t[group.to_s] || (group.respond_to?(:id) && t[group.id])) }.join(' ').html_safe
+            group_name = if group.blank? && group != false
+                           "(#{l(:label_blank_value)})"
+                         else
+                           column_content query.group_by_column, entry
+                         end
+            group_count = count_by_group[group] || count_by_group[group.to_s] || (group.respond_to?(:id) && count_by_group[group.id])
+            group_totals = totals_by_group.map do |column, t|
+              total_tag(column, t[group] || t[group.to_s] || (group.respond_to?(:id) && t[group.id]))
+            end.join(' ').html_safe
           end
         end
         yield entry, group_name, group_count, group_totals
         previous_group, first = group, false
       end
-    end
-
-    def date_content(entry)
-      format_date entry.start
     end
 
     def start_content(entry)

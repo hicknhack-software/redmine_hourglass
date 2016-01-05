@@ -15,7 +15,7 @@ module Chronos
     def initialize_available_filters
       add_user_filter
       add_date_filter
-      add_available_filter 'comments', type: :text
+      add_comments_filter
       add_available_filter 'booked', label: :field_booked?, type: :list, values: [[I18n.t(:general_text_Yes), true]]
     end
 

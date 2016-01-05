@@ -26,7 +26,7 @@ module Chronos
       end
       add_activity_filter
       add_fixed_version_filter
-      add_available_filter 'comments', type: :text
+      add_comments_filter
     end
 
     def default_columns_names

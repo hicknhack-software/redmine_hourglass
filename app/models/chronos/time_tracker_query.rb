@@ -23,7 +23,7 @@ module Chronos
         add_project_filter if all_projects.any?
       end
       add_activity_filter
-      add_available_filter 'comments', type: :text
+      add_comments_filter
     end
 
     def default_columns_names

@@ -87,6 +87,10 @@ module Chronos::QueryBase
     add_available_filter 'date', type: :date
   end
 
+  def add_comments_filter
+    add_available_filter 'comments', type: :text
+  end
+
   def add_user_filter
     principals = []
     if project
