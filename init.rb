@@ -30,7 +30,7 @@ Redmine::Plugin.register :redmine_chronos do
                {
                    :'chronos/time_trackers' => [:start, :update, :stop],
                    :'chronos/time_logs' => [:update, :split, :combine],
-                   :'chronos_ui' => [:index, :time_trackers, :edit_time_trackers]
+                   :'chronos_ui' => [:index, :time_trackers, :edit_time_trackers, :edit_time_logs]
                },
                require: :loggedin
 
@@ -66,14 +66,14 @@ Redmine::Plugin.register :redmine_chronos do
                {
                    :'chronos/time_logs' => with_foreign(:book),
                    :'chronos/time_bookings' => with_foreign(:update),
-                   :'chronos_ui' => with_foreign(:book_time_logs)
+                   :'chronos_ui' => with_foreign(:book_time_logs, :edit_time_bookings)
                }, require: :loggedin
 
     permission :chronos_book_own_time,
                {
                    :'chronos/time_logs' => [:book],
                    :'chronos/time_bookings' => [:update],
-                   :'chronos_ui' => [:book_time_logs]
+                   :'chronos_ui' => [:book_time_logs, :edit_time_bookings]
                }, require: :loggedin
 
     permission :chronos_view_booked_time,

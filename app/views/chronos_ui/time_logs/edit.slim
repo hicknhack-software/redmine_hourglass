@@ -1,7 +1,7 @@
 = form_for time_log, as: 'time_log', remote: true, html: {class: 'edit-time-log-form js-chronos-remote js-validate-form'} do |f|
   .form-row
-    = render partial: 'chronos_ui/forms/fields/start', locals: {form: f, entry: time_log, disabled: !authorize_globally_for('chronos/time_log', 'update_time')}
-    = render partial: 'chronos_ui/forms/fields/stop', locals: {form: f, entry: time_log, disabled: !authorize_globally_for('chronos/time_log', 'update_time')}
+    = render partial: 'chronos_ui/forms/fields/start', locals: {form: f, entry: time_log, disabled: !authorize_globally_for('chronos/time_logs', 'update_time')}
+    = render partial: 'chronos_ui/forms/fields/stop', locals: {form: f, entry: time_log, disabled: !authorize_globally_for('chronos/time_logs', 'update_time')}
     = render partial: 'chronos_ui/forms/fields/comments', locals: {form: f, disabled: !authorize_globally_for('chronos/time_logs', 'update')}
     .form-field
       .input

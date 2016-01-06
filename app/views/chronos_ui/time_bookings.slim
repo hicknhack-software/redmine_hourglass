@@ -16,5 +16,6 @@ h2 = @query.persisted? ? h(@query.name) : t('chronos.ui.time_bookings.title')
 
 - content_for :sidebar do
   h3 = t('chronos.ui.time_bookings.heading_report')
-  = link_to t('chronos.ui.time_bookings.label_print'), chronos_ui_report_path
+  - if authorize_globally_for 'chronos_ui', 'report'
+    = link_to t('chronos.ui.time_bookings.label_print'), chronos_ui_report_path
   = render_sidebar_queries
