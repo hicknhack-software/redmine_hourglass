@@ -29,7 +29,7 @@ class Chronos::Assets < Sprockets::Environment
     end
 
     def manifest
-      Sprockets::Manifest.new instance, File.join('public', 'plugin_assets', Chronos.plugin_name)
+      Sprockets::Manifest.new instance, File.join('public', 'plugin_assets', Chronos.plugin_name.to_s)
     end
   end
 end

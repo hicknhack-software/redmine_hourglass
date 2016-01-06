@@ -1,6 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'uglifier' # js minification
+#asset pipeline
+gem 'uglifier'
+gem 'coffee-script'
+gem 'sass'
 
 #views
 gem 'slim'
