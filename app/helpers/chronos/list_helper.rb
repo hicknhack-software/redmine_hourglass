@@ -17,8 +17,7 @@ module Chronos
       entries.each do |entry|
         group_name = group_count = nil
         if query.grouped?
-          column = query.group_by_column
-          group = column.value entry
+          group = query.column_value query.group_by_column, entry
           totals_by_group = query.totalable_columns.inject({}) do |totals, column|
             totals[column] = query.total_by_group_for(column)
             totals

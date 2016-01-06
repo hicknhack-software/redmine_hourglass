@@ -57,6 +57,19 @@ module Chronos::QueryBase
     end
   end
 
+  def column_value(column, entry)
+    content_method = "#{column.name}_value".to_sym
+    if respond_to? content_method
+      send content_method, entry
+    else
+      column.value entry
+    end
+  end
+
+  def date_value(entry)
+    entry.start.to_date
+  end
+
   def hours_by_group
     grouped_query do |scope|
       total_for_hours scope
