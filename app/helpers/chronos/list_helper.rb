@@ -40,6 +40,10 @@ module Chronos
       end
     end
 
+    def date_content(entry)
+      format_date entry.start
+    end
+
     def start_content(entry)
       format_time entry.start, false
     end

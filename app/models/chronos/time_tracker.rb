@@ -1,7 +1,6 @@
 module Chronos
   class TimeTracker < ActiveRecord::Base
     include Namespace
-    include StartDate
 
     belongs_to :user
     belongs_to :project

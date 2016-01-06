@@ -17,8 +17,4 @@ table.list.chronos-list.print
       tr.entry id=entry.id class=cycle('odd', 'even')
         - columns.each do |column|
           td class=column.css_classes
-            - content_method = "#{column.name}_content".to_sym
-            - if respond_to? content_method
-              = send content_method, entry
-            - else
-              = csv_content column, entry
+            = column_content column, entry, false

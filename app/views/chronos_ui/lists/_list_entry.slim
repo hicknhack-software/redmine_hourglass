@@ -2,10 +2,6 @@ td.checkbox.hide-when-print
   = check_box_tag 'ids[]', entry.id, false, id: nil
 - query.columns.each do |column|
   td class=column.css_classes
-    - content_method = "#{column.name}_content".to_sym
-    - if respond_to? content_method
-      = send content_method, entry
-    - else
-      = column_content column, entry
+    = column_content column, entry
 td.actions
   = render partial: "chronos_ui/#{action_name}/list_entry_actions", locals: {:"#{action_name.singularize}" => entry}
