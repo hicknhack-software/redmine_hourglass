@@ -21,7 +21,7 @@ class Chronos::Assets < Sprockets::Environment
     attr_writer :precompile
 
     def precompile
-      @recompile ||= []
+      @precompile ||= []
     end
 
     def compile
