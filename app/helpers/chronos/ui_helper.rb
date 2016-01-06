@@ -25,9 +25,7 @@ module Chronos
 
     def format_date(time)
       return nil unless time
-      zone = User.current.time_zone
-      local = zone ? time.in_time_zone(zone) : (time.utc? ? time.localtime : time)
-      super local.to_date
+      super in_user_time_zone(time).to_date
     end
   end
 end

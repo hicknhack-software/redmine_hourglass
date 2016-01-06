@@ -46,5 +46,14 @@ module Chronos
       h, min = Chronos::DateTimeCalculations.hours_in_units hours || 0
       "#{h}#{t('chronos.ui.chart.hour_sign')} #{min}#{t('chronos.ui.chart.minute_sign')}"
     end
+
+    def in_user_time_zone(time)
+      zone = User.current.time_zone
+      if zone
+        time.in_time_zone zone
+      else
+        time.utc? ? time.localtime : time
+      end
+    end
   end
 end
