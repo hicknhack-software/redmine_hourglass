@@ -1,18 +1,19 @@
+- can = {update: authorize_globally_for('chronos/time_trackers', 'update'), update_time: authorize_globally_for('chronos/time_trackers', 'update_time'), book: authorize_globally_for('chronos/time_logs', 'book')}
 .time-tracker-control
   h3 = t('chronos.ui.index.time_tracker_control.heading')
   - unless @time_tracker.persisted?
     = form_for @time_tracker, url: start_chronos_time_trackers_path, as: 'time_tracker', remote: true, html: {class: 'new-time-tracker-form js-chronos-remote'} do |f|
       .form-row
         .form-field
-          = f.text_field :comments, size: '30', maxlength: 255, id: 'task', disabled: !authorize_globally_for('chronos/time_trackers', 'update'), class: ('js-issue-autocompletion' if authorize_globally_for('chronos/time_logs', 'book'))
-          = f.hidden_field :issue_id if authorize_globally_for('chronos/time_logs', 'book')
+          = f.text_field :comments, size: '30', maxlength: 255, id: 'task', disabled: !can[:update], class: ('js-issue-autocompletion' if can[:book])
+          = f.hidden_field :issue_id if can[:book]
         .form-field
           = f.submit t('chronos.ui.index.time_tracker_control.button_start')
   - else
     = form_for @time_tracker, url: stop_chronos_time_tracker_path(@time_tracker), method: :delete, as: 'time_tracker', remote: true, html: {class: 'edit-time-tracker-form js-validate-form js-chronos-remote'} do |f|
       .form-row
-        = render partial: 'chronos_ui/forms/fields/issue', locals: {form: f, entry: @time_tracker, disabled: !authorize_globally_for('chronos/time_logs', 'book')}
-        = render partial: 'chronos_ui/forms/fields/comments', locals: {form: f, disabled: !authorize_globally_for('chronos/time_trackers', 'update')}
+        = render partial: 'chronos_ui/forms/fields/issue', locals: {form: f, entry: @time_tracker, disabled: !can[:book]}
+        = render partial: 'chronos_ui/forms/fields/comments', locals: {form: f, disabled: !can[:update]}
         .form-field
           .label
             = f.label :round
@@ -23,9 +24,9 @@
             = t('chronos.ui.index.time_tracker_control.label_running_time')
           .input.js-running-time
       .form-row
-        = render partial: 'chronos_ui/forms/fields/project', locals: {form: f, entry: @time_tracker, disabled: !authorize_globally_for('chronos/time_logs', 'book')}
-        = render partial: 'chronos_ui/forms/fields/activity', locals: {form: f, entry: @time_tracker, disabled: !authorize_globally_for('chronos/time_logs', 'book')}
-        = render partial: 'chronos_ui/forms/fields/start', locals: {form: f, entry: @time_tracker, disabled: !authorize_globally_for('chronos/time_trackers', 'update_time')}
+        = render partial: 'chronos_ui/forms/fields/project', locals: {form: f, entry: @time_tracker, disabled: !can[:book]}
+        = render partial: 'chronos_ui/forms/fields/activity', locals: {form: f, entry: @time_tracker, disabled: !can[:book]}
+        = render partial: 'chronos_ui/forms/fields/start', locals: {form: f, entry: @time_tracker, disabled: !can[:update_time]}
         .form-field
           .input
             = f.submit t('chronos.ui.index.time_tracker_control.button_stop')

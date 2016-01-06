@@ -1,16 +1,17 @@
-= form_for time_booking, url: book_chronos_time_log_path(time_log),  as: 'time_booking', remote: true, html: {class: 'add-time-booking-form js-chronos-remote js-validate-form js-check-splitting', data: {time_log_id: time_log.id}} do |f|
+- can = {book: authorize_globally_for('chronos/time_logs', 'book'), update: authorize_globally_for('chronos/time_logs', 'update')}
+= form_for time_booking, url: book_chronos_time_log_path(time_log), as: 'time_booking', remote: true, html: {class: 'add-time-booking-form js-chronos-remote js-validate-form js-check-splitting', data: {time_log_id: time_log.id}} do |f|
   .form-row
-    = render partial: 'chronos_ui/forms/fields/start', locals: {form: f, entry: time_booking, disabled: !authorize_globally_for('chronos/time_logs', 'book'), validate_limit: true}
-    = render partial: 'chronos_ui/forms/fields/stop', locals: {form: f, entry: time_booking, disabled: !authorize_globally_for('chronos/time_logs', 'book'), validate_limit: true}
+    = render partial: 'chronos_ui/forms/fields/start', locals: {form: f, entry: time_booking, disabled: !can[:book], validate_limit: true}
+    = render partial: 'chronos_ui/forms/fields/stop', locals: {form: f, entry: time_booking, disabled: !can[:book], validate_limit: true}
     .form-field
       .label
         = label :time_booking, :round
       .input
         = check_box :time_booking, :round, checked: Chronos::DateTimeCalculations.round_default
-    = render partial: 'chronos_ui/forms/fields/project', locals: {form: f, entry: time_booking, disabled: !authorize_globally_for('chronos/time_logs', 'book'), required: true}
-    = render partial: 'chronos_ui/forms/fields/activity', locals: {form: f, entry: time_booking, disabled: !authorize_globally_for('chronos/time_logs', 'book'), required: true}
-    = render partial: 'chronos_ui/forms/fields/issue', locals: {form: f, entry: time_booking, disabled: !authorize_globally_for('chronos/time_logs', 'book')}
-    = render partial: 'chronos_ui/forms/fields/comments', locals: {form: f, disabled: !authorize_globally_for('chronos/time_logs', 'update')}
+    = render partial: 'chronos_ui/forms/fields/project', locals: {form: f, entry: time_booking, disabled: !can[:book], required: true}
+    = render partial: 'chronos_ui/forms/fields/activity', locals: {form: f, entry: time_booking, disabled: !can[:book], required: true}
+    = render partial: 'chronos_ui/forms/fields/issue', locals: {form: f, entry: time_booking, disabled: !can[:book]}
+    = render partial: 'chronos_ui/forms/fields/comments', locals: {form: f, disabled: !can[:update]}
     .form-field
       .input
         = f.submit t('chronos.ui.lists.button_book')
