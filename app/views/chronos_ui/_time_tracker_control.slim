@@ -12,8 +12,8 @@
   - else
     = form_for @time_tracker, url: stop_chronos_time_tracker_path(@time_tracker), method: :delete, as: 'time_tracker', remote: true, html: {class: 'edit-time-tracker-form js-validate-form js-chronos-remote'} do |f|
       .form-row
-        = render partial: 'chronos_ui/forms/fields/issue', locals: {form: f, entry: @time_tracker, disabled: !can[:book]}
-        = render partial: 'chronos_ui/forms/fields/comments', locals: {form: f, disabled: !can[:update]}
+        = form_field :issue, f, @time_tracker, disabled: !can[:book]
+        = form_field :comments, f, @time_tracker, disabled: !can[:update]
         .form-field
           .label
             = f.label :round
@@ -24,9 +24,9 @@
             = t('chronos.ui.index.time_tracker_control.label_running_time')
           .input.js-running-time
       .form-row
-        = render partial: 'chronos_ui/forms/fields/project', locals: {form: f, entry: @time_tracker, disabled: !can[:book]}
-        = render partial: 'chronos_ui/forms/fields/activity', locals: {form: f, entry: @time_tracker, disabled: !can[:book]}
-        = render partial: 'chronos_ui/forms/fields/start', locals: {form: f, entry: @time_tracker, disabled: !can[:update_time]}
+        = form_field :project, f, @time_tracker, disabled: !can[:book]
+        = form_field :activity, f, @time_tracker, disabled: !can[:book]
+        = form_field :start, f, @time_tracker, disabled: !can[:update_time]
         .form-field
           .input
             = f.submit t('chronos.ui.index.time_tracker_control.button_stop')

@@ -1,9 +1,9 @@
 - can = {update: authorize_globally_for('chronos/time_logs', 'update'), update_time: authorize_globally_for('chronos/time_logs', 'update_time')}
 = form_for time_log, as: 'time_log', remote: true, html: {class: 'edit-time-log-form js-chronos-remote js-validate-form'} do |f|
   .form-row
-    = render partial: 'chronos_ui/forms/fields/start', locals: {form: f, entry: time_log, disabled: !can[:update_time]}
-    = render partial: 'chronos_ui/forms/fields/stop', locals: {form: f, entry: time_log, disabled: !can[:update_time]}
-    = render partial: 'chronos_ui/forms/fields/comments', locals: {form: f, disabled: !can[:update]}
+    = form_field :start, f, time_log, disabled: !can[:update_time]
+    = form_field :stop, f, time_log, disabled: !can[:update_time]
+    = form_field :comments, f, time_log, disabled: !can[:update]
     .form-field
       .input
         = f.submit t(:button_update)

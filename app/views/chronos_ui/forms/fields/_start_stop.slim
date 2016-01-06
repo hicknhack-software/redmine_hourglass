@@ -2,4 +2,4 @@
   .label
     = form.label field
   .input
-    = form.text_field field, size: '20', value: entry[field].iso8601, disabled: disabled, class: ('js-validate-limit' if local_assigns[:validate_limit].presence)
+    = form.text_field field, size: '20', value: entry[field].iso8601, disabled: local_assigns[:disabled], class: ('js-validate-limit' if local_assigns[:validate_limit].presence)

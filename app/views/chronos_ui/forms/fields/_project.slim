@@ -2,4 +2,4 @@
   .label
     = form.label :project_id
   .input
-    = form.select :project_id, projects_for_project_select(entry.project), {include_blank: !local_assigns[:required]}, disabled: disabled, required: local_assigns[:required]
+    = form.select :project_id, projects_for_project_select(entry.project), {include_blank: !local_assigns[:required]}, disabled: local_assigns[:disabled], required: local_assigns[:required]
