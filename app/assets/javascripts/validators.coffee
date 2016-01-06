@@ -36,21 +36,26 @@ isFieldValid = ($field, $form) ->
 
   condition and (not isRequired or isNotEmpty($field))
 
+toggle_submit = ($form, valid) ->
+  $form.find(':submit').attr('disabled', not valid)
+
+all_form_fields = ($form, filter = null) ->
+  $fields = $form.find('input, select, textarea')
+  if filter? then $fields.filter filter else $fields
+
 validateField = ($field, $form = $field.closest('form')) ->
-  $submit = $form.find(':submit')
   valid = isFieldValid $field, $form
 
   $field.toggleClass('invalid', not valid)
   $field.prev().toggleClass('invalid', not valid) if $field.attr('type') is 'hidden'
-  $submit.attr('disabled', not valid)
+  toggle_submit $form, all_form_fields($form, '.invalid').length is 0
   valid
 
 validateForm = ($form) ->
   valid = true
-  $submit = $form.find(':submit')
-  $form.find('input, select, textarea').filter('[name]').each ->
+  all_form_fields($form, '[name]').each ->
     valid = valid and validateField $(@), $form
-  $submit.attr('disabled', not valid)
+  toggle_submit $form, valid
   valid
 
 @chronos ?= {}
