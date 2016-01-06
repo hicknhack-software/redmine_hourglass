@@ -1,0 +1,6 @@
+.form-field
+  .label
+    = form.label :issue_id, for: 'issue_text'
+  .input
+    = text_field_tag nil, issue_label_for(entry.issue), id: 'issue_text', size: '15', disabled: disabled, class: 'js-issue-autocompletion js-linked-with-hidden'
+    = form.hidden_field :issue_id

@@ -1,0 +1,5 @@
+.form-field
+  .label
+    = form.label :project_id
+  .input
+    = form.select :project_id, projects_for_project_select(entry.project), {include_blank: true}, disabled: disabled

@@ -1,0 +1,5 @@
+.form-field
+  .label
+    = form.label :activity_id
+  .input
+    = form.collection_select :activity_id, activity_collection(entry.project), :id, :name, {include_blank: true}, disabled: disabled

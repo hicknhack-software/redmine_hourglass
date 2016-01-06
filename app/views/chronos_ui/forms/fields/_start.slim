@@ -1,0 +1,5 @@
+.form-field
+  .label
+    = form.label :start
+  .input
+    = form.text_field :start, size: '20', value: entry.start.iso8601, disabled: disabled, class: 'js-start'
