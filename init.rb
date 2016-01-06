@@ -1,12 +1,12 @@
 require File.join File.dirname(__FILE__), 'lib', 'chronos.rb'
 
-Redmine::Plugin.register :redmine_chronos do
+Redmine::Plugin.register Chronos.plugin_name do
   name 'Redmine Chronos plugin'
   description 'Control your time like the god you think you are'
-  url 'https://github.com/hicknhack-software/redmine_chronos'
+  url 'https://github.com/hicknhack-software/redmine_time_tracker/tree/rewrite'
   author 'HicknHack Software GmbH'
   author_url 'http://www.hicknhack-software.com'
-  version File.read File.join 'plugins', 'redmine_chronos', '.plugin_version'
+  version File.read File.join File.dirname(__FILE__), '.plugin_version'
 
   requires_redmine version_or_higher: '3.0.0'
 
@@ -19,9 +19,9 @@ Redmine::Plugin.register :redmine_chronos do
       round_limit: '50',
       round_carry_over_due: '12',
       round_default: false
-  }, :partial => 'settings/chronos'
+  }, :partial => "settings/#{Chronos.plugin_name}"
 
-  project_module :redmine_chronos do
+  project_module Chronos.plugin_name do
     def with_foreign(*permissions)
       permissions.map { |x| [x, "#{x}_foreign".to_sym] }.flatten
     end

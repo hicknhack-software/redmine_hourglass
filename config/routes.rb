@@ -47,6 +47,6 @@ namespace :chronos do
 end
 
 unless Rails.env.production?
-  mount Chronos::Assets.instance, at: 'plugin_assets/redmine_chronos/stylesheets'
-  mount Chronos::Assets.instance, at: 'plugin_assets/redmine_chronos/javascripts'
+  mount Chronos::Assets.instance, at: "plugin_assets/#{Chronos.plugin_name}/stylesheets"
+  mount Chronos::Assets.instance, at: "plugin_assets/#{Chronos.plugin_name}/javascripts"
 end

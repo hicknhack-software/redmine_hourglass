@@ -13,7 +13,7 @@ require 'factory_girl_rails'
 # require chronos
 require File.expand_path File.dirname(__FILE__) + '/../lib/chronos'
 
-FactoryGirl.definition_file_paths = %w(plugins/redmine_chronos/spec/factories)
+FactoryGirl.definition_file_paths << File.join(File.dirname(__FILE__), 'factories')
 FactoryGirl.find_definitions
 
 #ENV['ZONEBIE_TZ'] = 'Pacific/Pago_Pago' #possibility to set a specific timezone
@@ -52,7 +52,7 @@ RSpec.configure do |config|
   # order dependency and want to debug it, you can fix the order by providing
   # the seed, which is printed after each run.
   #     --seed 1234
-  config.order = "random"
+  config.order = 'random'
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)

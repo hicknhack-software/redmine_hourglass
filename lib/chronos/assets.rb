@@ -29,7 +29,7 @@ class Chronos::Assets < Sprockets::Environment
     end
 
     def manifest
-      Sprockets::Manifest.new instance, File.join('public', 'plugin_assets', 'redmine_chronos')
+      Sprockets::Manifest.new instance, File.join('public', 'plugin_assets', Chronos.plugin_name)
     end
   end
 end

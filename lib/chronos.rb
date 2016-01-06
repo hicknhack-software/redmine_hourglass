@@ -16,7 +16,11 @@ module Chronos
     end
 
     def settings
-      Setting.plugin_redmine_chronos
+      Setting["plugin_#{plugin_name}"]
+    end
+
+    def plugin_name
+      :redmine_chronos
     end
 
     private
@@ -37,7 +41,7 @@ module Chronos
           module_to_patch.send :include, patch unless module_to_patch.included_modules.include? patch
         end
 
-        Redmine::Plugin.find(:redmine_chronos).extend Chronos::RedminePatches::MirrorAssetsPatch
+        Redmine::Plugin.find(Chronos.plugin_name).extend Chronos::RedminePatches::MirrorAssetsPatch
       end
     end
   end

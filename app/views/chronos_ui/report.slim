@@ -3,10 +3,10 @@ html
   head
     title = Chronos.settings[:report_title]
     = javascript_heads
-    = javascript_include_tag 'global', plugin: 'redmine_chronos'
-    = javascript_include_tag 'application', plugin: 'redmine_chronos'
-    = stylesheet_link_tag 'global', plugin: 'redmine_chronos', media: :all
-    = stylesheet_link_tag 'application', plugin: 'redmine_chronos', media: :all
+    = javascript_include_tag 'global', plugin: Chronos.plugin_name
+    = javascript_include_tag 'application', plugin: Chronos.plugin_name
+    = stylesheet_link_tag 'global', plugin: Chronos.plugin_name, media: :all
+    = stylesheet_link_tag 'application', plugin: Chronos.plugin_name, media: :all
     = render partial: 'chronos_ui/lists/chart'
   body.controller-chronos_ui.action-report
     .header

@@ -11,8 +11,8 @@ class Chronos::RedmineHooks < Redmine::Hook::ViewListener
 
   def view_layouts_base_html_head(context = {})
     load_chronos_helper self
-    context[:hook_caller].content_for :header_tags, javascript_include_tag('global', plugin: 'redmine_chronos')
-    context[:hook_caller].content_for :header_tags, stylesheet_link_tag('global', plugin: 'redmine_chronos')
+    context[:hook_caller].content_for :header_tags, javascript_include_tag('global', plugin: Chronos.plugin_name)
+    context[:hook_caller].content_for :header_tags, stylesheet_link_tag('global', plugin: Chronos.plugin_name)
   end
 
   def view_layouts_base_content(context = {})

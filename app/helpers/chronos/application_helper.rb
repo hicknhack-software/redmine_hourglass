@@ -2,7 +2,7 @@ module Chronos
   module ApplicationHelper
     def chronos_asset_paths(type, sources)
       options = sources.extract_options!
-      if options[:plugin] == 'redmine_chronos' && Rails.env.production?
+      if options[:plugin] == Chronos.plugin_name && Rails.env.production?
         plugin = options.delete(:plugin)
         sources.map! do |source|
           extname = compute_asset_extname source, options.merge(type: type)
@@ -34,7 +34,7 @@ module Chronos
     end
 
     def projects_for_project_select(selected = nil)
-      projects = User.current.projects.has_module('redmine_chronos')
+      projects = User.current.projects.has_module Chronos.plugin_name
       project_tree_options_for_select projects, selected: selected
     end
 

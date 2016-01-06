@@ -6,5 +6,5 @@ javascript:
     highlightData: #{raw tooltips.to_json},
     hourSign: "#{t('chronos.ui.chart.hour_sign')}"
   };
-= javascript_include_tag 'jqplot', plugin: 'redmine_chronos'
-= stylesheet_link_tag 'jqplot/jquery.jqplot', plugin: 'redmine_chronos'
+= javascript_include_tag 'jqplot', plugin: Chronos.plugin_name
+= stylesheet_link_tag 'jqplot/jquery.jqplot', plugin: Chronos.plugin_name
