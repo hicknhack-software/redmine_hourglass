@@ -13,7 +13,11 @@
       .form-row
         = render partial: 'chronos_ui/forms/fields/issue', locals: {form: f, entry: @time_tracker, disabled: !authorize_globally_for('chronos/time_logs', 'book')}
         = render partial: 'chronos_ui/forms/fields/comments', locals: {form: f, disabled: !authorize_globally_for('chronos/time_trackers', 'update')}
-        = render partial: 'chronos_ui/forms/fields/round', locals: {form: f}
+        .form-field
+          .label
+            = f.label :round
+          .input
+            = f.check_box :round
         .form-field
           .label
             = t('chronos.ui.index.time_tracker_control.label_running_time')

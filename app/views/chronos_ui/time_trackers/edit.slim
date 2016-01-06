@@ -1,31 +1,10 @@
 = form_for time_tracker, as: 'time_tracker', remote: true, html: {class: 'edit-time-tracker-form js-chronos-remote js-validate-form'} do |f|
   .form-row
-    .form-field
-      .label
-        = f.label :start
-      .input
-        = f.text_field :start, size: '20', value: time_tracker.start.iso8601, disabled: !authorize_globally_for('chronos/time_trackers', 'update_time')
-    .form-field
-      .label
-        = f.label :project_id
-      .input
-        = f.select :project_id, projects_for_project_select(time_tracker.project), {}, disabled: !authorize_globally_for('chronos/time_trackers', 'update'), required: true
-    .form-field
-      .label
-        = f.label :activity_id
-      .input
-        = f.collection_select :activity_id, activity_collection(time_tracker.project), :id, :name, {}, disabled: !authorize_globally_for('chronos/time_trackers', 'update'), required: true
-    .form-field
-      .label
-        = f.label :issue_id, for: 'issue_text'
-      .input
-        = text_field_tag nil, issue_label_for(time_tracker.issue), id: 'issue_text', size: '15', disabled: !authorize_globally_for('chronos/time_trackers', 'update'), class: 'js-issue-autocompletion js-linked-with-hidden'
-        = f.hidden_field :issue_id
-    .form-field
-      .label
-        = f.label :comments
-      .input
-        = f.text_field :comments, size: '30', maxlength: 255, disabled: !authorize_globally_for('chronos/time_trackers', 'update')
+    = render partial: 'chronos_ui/forms/fields/start', locals: {form: f, entry: time_tracker, disabled: !authorize_globally_for('chronos/time_trackers', 'update_time')}
+    = render partial: 'chronos_ui/forms/fields/project', locals: {form: f, entry: time_tracker, disabled: !authorize_globally_for('chronos/time_logs', 'book')}
+    = render partial: 'chronos_ui/forms/fields/activity', locals: {form: f, entry: time_tracker, disabled: !authorize_globally_for('chronos/time_logs', 'book')}
+    = render partial: 'chronos_ui/forms/fields/issue', locals: {form: f, entry: time_tracker, disabled: !authorize_globally_for('chronos/time_logs', 'book')}
+    = render partial: 'chronos_ui/forms/fields/comments', locals: {form: f, disabled: !authorize_globally_for('chronos/time_trackers', 'update')}
     .form-field
       .input
         = f.submit t(:button_update)

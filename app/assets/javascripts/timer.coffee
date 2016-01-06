@@ -1,7 +1,7 @@
 timeTrackerTimerInterval = null
 
 startTimeTrackerTimer = ->
-  start = new Date $('.time-tracker-control .js-start').val()
+  start = new Date $('.time-tracker-control [name*=start]').val()
   now = new Date()
   diff = Math.floor((now - start) / 1000)
 

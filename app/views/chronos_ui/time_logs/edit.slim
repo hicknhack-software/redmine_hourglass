@@ -1,20 +1,8 @@
 = form_for time_log, as: 'time_log', remote: true, html: {class: 'edit-time-log-form js-chronos-remote js-validate-form'} do |f|
   .form-row
-    .form-field
-      .label
-        = f.label :start
-      .input
-        = f.text_field :start, size: '20', value: time_log.start.iso8601, disabled: !authorize_globally_for('chronos/time_logs', 'update_time')
-    .form-field
-      .label
-        = f.label :stop
-      .input
-        = f.text_field :stop, size: '20', value: time_log.stop.iso8601, disabled: !authorize_globally_for('chronos/time_logs', 'update_time')
-    .form-field
-      .label
-        = f.label :comments
-      .input
-        = f.text_field :comments, size: '30', maxlength: 255, disabled: !authorize_globally_for('chronos/time_logs', 'update')
+    = render partial: 'chronos_ui/forms/fields/start', locals: {form: f, entry: time_log, disabled: !authorize_globally_for('chronos/time_log', 'update_time')}
+    = render partial: 'chronos_ui/forms/fields/stop', locals: {form: f, entry: time_log, disabled: !authorize_globally_for('chronos/time_log', 'update_time')}
+    = render partial: 'chronos_ui/forms/fields/comments', locals: {form: f, disabled: !authorize_globally_for('chronos/time_logs', 'update')}
     .form-field
       .input
         = f.submit t(:button_update)
