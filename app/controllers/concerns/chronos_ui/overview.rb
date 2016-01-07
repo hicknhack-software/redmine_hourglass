@@ -11,6 +11,7 @@ module ChronosUi
 
       @time_log_list_arguments = index_page_list_arguments :time_logs do |time_log_query|
         time_log_query.add_filter 'booked', '!', [true]
+        time_log_query.column_names = time_log_query.default_columns_names - [:booked?]
       end
       @time_booking_list_arguments = index_page_list_arguments :time_bookings
     end
