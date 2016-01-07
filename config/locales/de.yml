@@ -20,7 +20,7 @@ de:
 ################### redmine specific stuff #####################
   field_date: Datum
   field_duration: Dauer
-  field_booked?: Gebucht?
+  field_booked?: Gebucht
   field_issue_subject: Ticketthema
   field_round: Runden
   field_start: Beginn

@@ -20,7 +20,7 @@ module Chronos
     end
 
     def default_columns_names
-      @default_columns_names ||= [:date, :start, :stop, :hours, :comments, :booked?]
+      @default_columns_names ||= [:booked?, :date, :start, :stop, :hours, :comments]
     end
 
     def base_scope

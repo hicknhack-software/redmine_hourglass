@@ -20,7 +20,7 @@ en:
 ################### redmine specific stuff #####################
   field_date: Date
   field_duration: Duration
-  field_booked?: Booked?
+  field_booked?: Booked
   field_issue_subject: Issue subject
   field_round: Round
   field_start: Start
