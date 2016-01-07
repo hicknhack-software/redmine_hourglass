@@ -58,6 +58,18 @@ module Chronos
       respond_with_error :bad_request, t("chronos.api.errors.missing_parameters"), no_halt: true
     end
 
+    def parse_round(params)
+      params[:round] = case params[:round].class.name
+                         when 'String'
+                           params[:round] == '1'
+                         when 'Fixnum', 'Integer'
+                           params[:round] == 1
+                         else
+                           params[:round]
+                       end
+      params
+    end
+
     def authorize_foreign
       super do
         respond_with_error :forbidden, t("chronos.api.#{controller_name}.errors.change_others_forbidden")

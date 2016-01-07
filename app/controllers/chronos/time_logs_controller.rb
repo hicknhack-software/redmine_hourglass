@@ -73,11 +73,11 @@ module Chronos
 
     private
     def time_log_params
-      params.require(:time_log).permit(:start, :stop, :comments, :round)
+      parse_round params.require(:time_log).permit(:start, :stop, :comments, :round)
     end
 
     def time_booking_params
-      params.require(:time_booking).permit(:comments, :project_id, :issue_id, :activity_id, :round)
+      parse_round params.require(:time_booking).permit(:comments, :project_id, :issue_id, :activity_id, :round)
     end
 
     def get_time_log
