@@ -18,7 +18,7 @@
           td
             = select_tag 'group_by', options_for_select([[]] + query.groupable_columns.collect { |c| [c.caption, c.name.to_s] }, query.group_by)
         = hidden_field_tag 't[]'
-        - if query.totalable_columns.present?
+        - if query.available_totalable_columns.any?
           tr
             td = t(:label_total_plural)
             td = available_totalable_columns_tags query
