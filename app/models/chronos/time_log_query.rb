@@ -34,8 +34,21 @@ module Chronos
 
     def total_for_hours(scope)
       map_total(
-          scope.sum("(strftime('%s', #{queried_class.table_name}.stop) - strftime('%s', #{queried_class.table_name}.start))")
+          scope.sum db_datetime_diff "#{queried_class.table_name}.start", "#{queried_class.table_name}.stop"
       ) { |t| Chronos::DateTimeCalculations.in_hours(t).round(2) }
+    end
+    private
+    def db_datetime_diff(datetime1, datetime2)
+      case ActiveRecord::Base.connection.adapter_name.downcase.to_sym
+        when :mysql2
+          "(time_to_sec(#{datetime2}) - time_to_sec(#{datetime1}))"
+        when :sqlite
+          "(strftime('%s', #{datetime2}) - strftime('%s', #{datetime1}))"
+        when :postgresql
+           "EXTRACT(EPOCH FROM (#{datetime2} - #{datetime1}))"
+        else
+          "(#{datetime2} - #{datetime1})"
+      end
     end
   end
 end
