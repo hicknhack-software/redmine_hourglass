@@ -35,6 +35,18 @@ formFieldChanged = (event) ->
   chronos.FormValidator.validateField $target
   $target.trigger 'formfieldchanged'
 
+startFieldChanged = (event) ->
+  $startField = $(event.target)
+  return if $startField.hasClass('invalid')
+  $stopField = $startField.closest('form').find('[name*=stop]')
+  chronos.FormValidator.validateField $stopField if $stopField.length > 0
+
+stopFieldChanged = (event) ->
+  $stopField = $(event.target)
+  return if $stopField.hasClass('invalid')
+  $startField = $stopField.closest('form').find('[name*=start]')
+  chronos.FormValidator.validateField $startField
+
 projectFieldChanged = (event) ->
   $projectField = $(@)
   $form = $projectField.closest('form')
@@ -104,6 +116,8 @@ $ ->
   .on 'change', '.js-validate-form', formFieldChanged
   .on 'change changefromissue', '[name*=project_id]', projectFieldChanged
   .on 'change', '.js-issue-autocompletion', issueFieldChanged
+  .on 'formfieldchanged', '[name*=start]', startFieldChanged
+  .on 'formfieldchanged', '[name*=stop]', stopFieldChanged
   .on 'submit', '.js-validate-form', (event) ->
     event.preventDefault() unless chronos.FormValidator.validateForm $(@)
   .on 'ajax:before', '.js-check-splitting', checkSplitting
