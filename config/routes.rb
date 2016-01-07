@@ -47,6 +47,7 @@ namespace :chronos do
 end
 
 unless Rails.env.production?
-  mount Chronos::Assets.instance, at: "plugin_assets/#{Chronos.plugin_name}/stylesheets"
-  mount Chronos::Assets.instance, at: "plugin_assets/#{Chronos.plugin_name}/javascripts"
+  Chronos::Assets.asset_directories.each do |asset_dir|
+    mount Chronos::Assets.instance, at: File.join(Chronos::Assets.assets_directory_path, asset_dir)
+  end
 end

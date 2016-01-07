@@ -11,7 +11,7 @@ module Chronos
     def init
       set_autoload_paths
       add_redmine_patches
-      Chronos::Assets.precompile += %w(application.js application.css global.js global.css jqplot.js jqplot/jquery.jqplot.css)
+      Chronos::Assets.precompile += %w(application.js application.css global.js global.css jqplot.js jqplot/jquery.jqplot.css time_start.png time_stop.png)
       Chronos::RedmineHooks.load!
     end
 

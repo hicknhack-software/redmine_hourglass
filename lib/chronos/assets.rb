@@ -3,16 +3,22 @@ class Chronos::Assets < Sprockets::Environment
 
   def initialize
     super File.join(File.dirname(__FILE__), '..', '..') do |env|
-      env.append_path 'app/assets/javascripts'
-      env.append_path 'vendor/assets/javascripts'
-      env.append_path 'app/assets/stylesheets'
-      env.append_path 'vendor/assets/stylesheets'
+      %w(app vendor).each do |dir|
+        self.class.asset_directories.each do |asset_dir|
+          env.append_path File.join dir, 'assets', asset_dir
+        end
+      end
       Rails.application.assets.paths.each do |path|
         env.append_path path
       end
       if Rails.env.production?
         env.js_compressor = :uglify
         env.css_compressor = :scss
+      end
+    end
+    context_class.class_eval do
+      def asset_path(path, options = {})
+        Chronos::Assets.path path, options
       end
     end
   end
@@ -29,7 +35,28 @@ class Chronos::Assets < Sprockets::Environment
     end
 
     def manifest
-      Sprockets::Manifest.new instance, File.join('public', 'plugin_assets', Chronos.plugin_name.to_s)
+      Sprockets::Manifest.new instance, File.join('public', assets_directory_path)
+    end
+
+    def asset_directories
+      STATIC_ASSET_DIRECTORIES.values + %w(javascripts stylesheets)
+    end
+
+    def assets_directory_path
+      File.join 'plugin_assets', Chronos.plugin_name.to_s
+    end
+
+    STATIC_ASSET_DIRECTORIES = {
+        audio: 'audios',
+        font: 'fonts',
+        image: 'images',
+        video: 'videos'
+    }
+
+    def path(path, options = {})
+      folder = STATIC_ASSET_DIRECTORIES[options[:type]] || ''
+      path = instance.find_asset(path).digest_path if Rails.env.production?
+      File.join assets_directory_path, folder, path
     end
   end
 end
