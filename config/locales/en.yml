@@ -21,7 +21,7 @@ en:
   field_date: Date
   field_duration: Duration
   field_booked?: Booked?
-  field_issue_subject: Issue Subject
+  field_issue_subject: Issue subject
   field_round: Round
   field_start: Start
   field_stop: Stop
@@ -57,7 +57,7 @@ en:
       report:
         fields:
           logo_url: Logo URL
-          logo_width: Logo Width
+          logo_width: Logo width
           title: Title
         title: Report
       rounding:
@@ -66,7 +66,7 @@ en:
           limit: Round down if below
           minimum: Minimum time interval
           carry_over_due: Dismiss round carry-over after
-        title: Rounding Behavior
+        title: Rounding behavior
     api:
       errors:
         missing_parameters: Insufficient parameters submitted
@@ -92,14 +92,14 @@ en:
           update_time_forbidden: You are not allowed to change the start or the stop of a time booking
     ui:
       menu:
-        main: TimeTracker
+        main: Time tracking
         overview: Overview
-        time_bookings: Time Bookings
-        time_logs: Time Logs
-        time_trackers: Running Time Trackers
+        time_bookings: Time bookings
+        time_logs: Time logs
+        time_trackers: Running trackers
       issues:
-        start: Start TimeTracker
-        stop: Stop TimeTracker
+        start: Start time tracker
+        stop: Stop time tracker
         start_dialog:
           description: There is still a running time tracker (%{time_tracker}). Please choose what to do with it.
           title: Running time tracker
@@ -109,37 +109,37 @@ en:
             takeover: Takeover time to this issue
         stop_dialog:
           description: You have set a project but no activity for your time tracker. Please choose one from the list below.
-          title: No Activity set
+          title: No activity set
       index:
-        title: Time Tracking
+        title: Time tracking
         time_tracker_control:
           button_stop: Stop
           button_start: Start
-          heading: Please specify your current task
-          label_running_time: Running Time
+          heading: Specify your task
+          label_running_time: Current time
         headings:
-          time_logs: Your time logs (from the last 2 weeks)
-          time_bookings: Your time bookings (from the last 2 weeks)
+          time_logs: Recent time logs (last 2 weeks)
+          time_bookings: Recent time bookings (last 2 weeks)
       lists:
         button_book: Book
       chart:
           hour_sign: h
           minute_sign: min
       time_logs:
-        title: Time Logs
+        title: Time logs
         no_data: No time logs available
       time_bookings:
-        title: Time Bookings
+        title: Time bookings
         no_data: No time bookings available
         heading_report: Report
         label_print: Print
       time_trackers:
-        title: Running Time Trackers
+        title: Running time trackers
         no_data: No running time trackers available
     queries:
       time_logs:
-        title_new: New Time Log Query
+        title_new: New time log query
       time_bookings:
-        title_new: New Time Booking Query
+        title_new: New time booking query
       time_trackers:
-        title_new: New Time Tracker Query
+        title_new: New time tracker query

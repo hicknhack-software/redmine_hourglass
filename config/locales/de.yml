@@ -115,11 +115,11 @@ de:
         time_tracker_control:
           button_stop: Stop
           button_start: Start
-          heading: Bitte geben sie ihre aktuelle Aufgabe an
+          heading: Geben sie ihre Aufgabe an
           label_running_time: Laufende Zeitmessung
         headings:
-          time_logs: Ihre Zeiterfassungen (aus den letzten 2 Wochen)
-          time_bookings: Ihre Zeitbuchungen (aus den letzten 2 Wochen)
+          time_logs: Letzte Zeiterfassungen (letzten 2 Wochen)
+          time_bookings: Letzte Zeitbuchungen (letzten 2 Wochen)
       lists:
         button_book: Buchen
       chart:
