@@ -105,7 +105,7 @@ module Chronos
 
     def authorize_update_booking
       if @time_log.booked? && !allowed_to?('update_time', 'chronos/time_bookings')
-        respond_with_error :forbidden, t('chronos.api.time_bookings.errors.update_time_forbidden')
+        render_403 message: t('chronos.api.time_bookings.errors.update_time_forbidden')
       end
     end
   end

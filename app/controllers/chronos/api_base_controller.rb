@@ -69,7 +69,7 @@ module Chronos
 
     def authorize_foreign
       super do
-        respond_with_error :forbidden, t("chronos.api.#{controller_name}.errors.change_others_forbidden")
+        render_403 message: t("chronos.api.#{controller_name}.errors.change_others_forbidden")
       end
     end
 
@@ -77,7 +77,7 @@ module Chronos
       controller_params = params[controller_name.singularize]
       has_start_or_stop_parameter = controller_params && (controller_params.include?(:start) || controller_params.include?(:stop))
       if has_start_or_stop_parameter && !allowed_to?('update_time')
-        respond_with_error :forbidden, t("chronos.api.#{controller_name}.errors.update_time_forbidden")
+        render_403 message: t("chronos.api.#{controller_name}.errors.update_time_forbidden")
       end
     end
   end

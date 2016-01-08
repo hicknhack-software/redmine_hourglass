@@ -79,7 +79,7 @@ module Chronos
 
     def authorize_book
       if @project.present? && !allowed_to?('book', 'chronos/time_logs')
-        respond_with_error :forbidden, t('chronos.api.time_trackers.errors.booking_forbidden')
+        render_403 message: t('chronos.api.time_trackers.errors.booking_forbidden')
       end
     end
   end
