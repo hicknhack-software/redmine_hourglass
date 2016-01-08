@@ -69,27 +69,29 @@ de:
         title: Rundungsverhalten
     api:
       errors:
+        forbidden: Sie sind nicht berechtigt diese Aktion auszuführen.
         missing_parameters: Ungültige Parameter übermittelt
+        not_found: Das angefragte Objekt existiert nicht.
       time_trackers:
         errors:
-          booking_forbidden: Sie haben keine Berechtigung auf diesem Projekt zu buchen.
-          change_others_forbidden: Sie haben keine Berechtigung diese Aktion für die Zeitmessung eines anderes Nutzers durchzuführen.
+          booking_forbidden: Sie sind nicht berechtigt auf diesem Projekt zu buchen.
+          change_others_forbidden: Sie sind nicht berechtigt diese Aktion für die Zeitmessung eines anderes Nutzers durchzuführen.
           not_found: Diese Zeitmessung existiert nicht.
-          update_time_forbidden: Sie haben keine Berechtigung den Beginn der Zeitmessung zu ändern.
+          update_time_forbidden: Sie sind nicht berechtigt den Beginn der Zeitmessung zu ändern.
       time_logs:
         errors:
           already_booked: Diese Zeiterfassung wurde bereits gebucht.
-          change_others_forbidden: Sie haben keine Berechtigung diese Aktion für die Zeiterfassung eines anderes Nutzers durchzuführen.
+          change_others_forbidden: Sie sind nicht berechtigt diese Aktion für die Zeiterfassung eines anderes Nutzers durchzuführen.
           combine_failed: Die zu kombinierenden Zeiterfassungen wurden entweder bereits gebucht oder ihre Beginne und Enden passen nicht zusammen.
           not_found: Diese Zeiterfassung existiert nicht.
           other_not_found: Die Zeiterfassung zum Kombinieren exisitiert nicht.
           split_failed: Der übermittelte Zeitpunkt zum Aufteilen befindet sich außerhalb der Grenzen der Zeiterfassung.
-          update_time_forbidden: Sie haben keine Berechtigung den Beginn oder das Ende der Zeiterfassung zu ändern.
+          update_time_forbidden: Sie sind nicht berechtigt den Beginn oder das Ende der Zeiterfassung zu ändern.
       time_bookings:
         errors:
-          change_others_forbidden: Sie haben keine Berechtigung diese Aktion für die Zeitbuchung eines anderes Nutzers durchzuführen.
+          change_others_forbidden: Sie sind nicht berechtigt diese Aktion für die Zeitbuchung eines anderes Nutzers durchzuführen.
           not_found: Diese Zeitbuchung existiert nicht.
-          update_time_forbidden: Sie haben keine Berechtigung den Beginn oder das Ende der Zeitbuchung zu ändern.
+          update_time_forbidden: Sie sind nicht berechtigt den Beginn oder das Ende der Zeitbuchung zu ändern.
     ui:
       menu:
         main: Zeitmessung

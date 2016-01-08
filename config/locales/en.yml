@@ -69,27 +69,29 @@ en:
         title: Rounding behavior
     api:
       errors:
+        forbidden: You are not authorized to execute this action
         missing_parameters: Insufficient parameters submitted
+        not_found: The requested object doesn't exist
       time_trackers:
         errors:
-          booking_forbidden: You are not allowed to book on this project
-          change_others_forbidden: You are not allowed to execute this action for another users time tracker
+          booking_forbidden: You are not authorized to book on this project
+          change_others_forbidden: You are not authorized to execute this action for another users time tracker
           not_found: This time tracker doesn't exist
-          update_time_forbidden: You are not allowed to change the start of a timer
+          update_time_forbidden: You are not authorized to change the start of a timer
       time_logs:
         errors:
           already_booked: This time log was already booked.
-          change_others_forbidden: You are not allowed to execute this action for another users time log
+          change_others_forbidden: You are not authorized to execute this action for another users time log
           combine_failed: There are either bookings defined on the submitted time logs or the time logs start and stop doesn't match
           not_found: This time log doesn't exist
           other_not_found: The time log to combine with doesn't exist
           split_failed: Submitted split_at is not within the bounds of the time log
-          update_time_forbidden: You are not allowed to change the start or the stop of a time log
+          update_time_forbidden: You are not authorized to change the start or the stop of a time log
       time_bookings:
         errors:
-          change_others_forbidden: You are not allowed to execute this action for another users time booking
+          change_others_forbidden: You are not authorized to execute this action for another users time booking
           not_found: This time booking doesn't exist
-          update_time_forbidden: You are not allowed to change the start or the stop of a time booking
+          update_time_forbidden: You are not authorized to change the start or the stop of a time booking
     ui:
       menu:
         main: Time tracking

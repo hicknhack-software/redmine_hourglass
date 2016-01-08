@@ -34,18 +34,12 @@ module Chronos
       throw :halt
     end
 
-    def render_error(args)
-      args = {:message => args} unless args.is_a?(Hash)
-      message = args[:message]
-      message = l(message) if message.is_a?(Symbol)
-      status = args[:status] || 500
+    def render_403(options = {})
+      respond_with_error :forbidden, options[:message] || t('chronos.api.errors.forbidden')
+    end
 
-      respond_to do |format|
-        format.json {
-          respond_with_error status, message, no_halt: true
-        }
-        format.any { super args }
-      end
+    def render_404(options = {})
+      respond_with_error :not_found, options[:message] || t('chronos.api.errors.not_found')
     end
 
     def catch_halt
@@ -55,7 +49,7 @@ module Chronos
     end
 
     def missing_parameters(e)
-      respond_with_error :bad_request, t("chronos.api.errors.missing_parameters"), no_halt: true
+      respond_with_error :bad_request, t('chronos.api.errors.missing_parameters'), no_halt: true
     end
 
     def parse_boolean(keys, params = self.params)
