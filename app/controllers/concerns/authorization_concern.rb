@@ -7,7 +7,7 @@ module AuthorizationConcern
   end
 
   def authorize_with_project_or_global
-    @project.present? ? authorize : authorize_global
+    @project_id.present? ? authorize : authorize_global
   end
 
   def authorize_global(*args)
