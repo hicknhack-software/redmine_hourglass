@@ -5,7 +5,7 @@ class ChronosCompletionController < Chronos::ApiBaseController
 
   def issues
     issue_arel = Issue.arel_table
-    issues = Issue.visible.where(
+    issues = Issue.visible.joins(:project).where(Project.allowed_to_one_of_condition User.current, Chronos::AccessControl.permissions_from_action(controller: 'chronos/time_logs', action: 'book')).where(
         issue_arel[:id].eq(params[:term].to_i)
             .or(issue_arel[:id].matches("%#{params[:term]}%"))
             .or(issue_arel[:subject].matches("%#{params[:term]}%"))
