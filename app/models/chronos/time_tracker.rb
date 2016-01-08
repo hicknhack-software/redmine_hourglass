@@ -1,6 +1,7 @@
 module Chronos
   class TimeTracker < ActiveRecord::Base
     include Namespace
+    include ProjectIssueSyncing
 
     belongs_to :user
     belongs_to :project
@@ -8,7 +9,6 @@ module Chronos
     belongs_to :activity, class_name: 'TimeEntryActivity', foreign_key: 'activity_id'
 
     after_initialize :init
-    before_save :sync_issue_and_project
 
     validates_uniqueness_of :user_id
     validates_presence_of :user, :start
@@ -48,10 +48,6 @@ module Chronos
       self.user ||= current_user
       self.round = DateTimeCalculations.round_default if round.nil?
       self.start ||= previous_time_log && previous_time_log.stop || now
-    end
-
-    def sync_issue_and_project
-      self.project_id = issue.project_id if issue.present?
     end
 
     def time_log_params

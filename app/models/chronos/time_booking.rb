@@ -1,6 +1,7 @@
 module Chronos
   class TimeBooking < ActiveRecord::Base
     include Namespace
+    include ProjectIssueSyncing
 
     belongs_to :time_log
     belongs_to :time_entry, dependent: :delete
