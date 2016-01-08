@@ -4,7 +4,7 @@ module Chronos
 
     before_action :get_time_log, only: [:show, :update, :split, :combine, :book, :destroy]
     before_action :authorize_global, only: [:index, :show, :update, :split, :combine, :destroy]
-    before_action :find_optional_project, :authorize_with_project_or_global, only: [:book]
+    before_action :find_project_from_params, :authorize, only: [:book]
     before_action :authorize_foreign, only: [:show, :update, :split, :combine, :book, :destroy]
     before_action :authorize_update_time, only: [:update]
     before_action :authorize_update_booking, only: [:split]
@@ -97,11 +97,6 @@ module Chronos
 
     def time_log_from_id
       Chronos::TimeLog.find_by id: params[:id]
-    end
-
-    def find_optional_project
-      @project = Project.find_by(id: params[:time_booking].presence[:project_id])
-      render_404 message: t('chronos.api.errors.booking_project_not_found') unless @project.present?
     end
 
     def authorize_update_booking

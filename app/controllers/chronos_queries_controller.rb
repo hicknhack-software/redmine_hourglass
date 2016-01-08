@@ -3,7 +3,7 @@ class ChronosQueriesController < ApplicationController
   include QueryConcern
 
   before_filter :find_query, only: [:edit, :update, :destroy]
-  before_filter :find_optional_project, :build_query, only: [:new, :create]
+  before_filter :find_project, :build_query, only: [:new, :create]
 
   helper QueriesHelper
 
@@ -65,7 +65,7 @@ class ChronosQueriesController < ApplicationController
     render_404
   end
 
-  def find_optional_project
+  def find_project
     @project = Project.find(params[:project_id]) if params[:project_id]
     render_403 unless User.current.allowed_to?(:save_queries, @project, global: true)
   rescue ActiveRecord::RecordNotFound

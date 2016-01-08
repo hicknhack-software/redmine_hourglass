@@ -69,7 +69,8 @@ en:
         title: Rounding behavior
     api:
       errors:
-        booking_project_not_found: Submitted Project doesn't exist
+        booking_issue_not_found: Submitted issue doesn't exist
+        booking_project_not_found: Submitted project doesn't exist
         forbidden: You are not authorized to execute this action
         missing_parameters: Insufficient parameters submitted
         not_found: The requested object doesn't exist

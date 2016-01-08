@@ -4,7 +4,7 @@ module Chronos
 
     before_action :get_time_booking, only: [:show, :update, :destroy]
     before_action :authorize_global, only: [:index]
-    before_action :find_optional_project, :authorize, only: [:show, :update, :destroy]
+    before_action :find_project, :authorize, only: [:show, :update, :destroy]
     before_action :authorize_foreign, only: [:show, :update, :destroy]
 
     def index
@@ -44,10 +44,9 @@ module Chronos
       Chronos::TimeBooking.find_by id: params[:id]
     end
 
-    def find_optional_project
+    def find_project
       if action_name == 'update'
-        @project = Project.find_by(id: params[:time_booking].presence[:project_id])
-        render_404 message: t('chronos.api.errors.booking_project_not_found') unless @project.present?
+        find_project_from_params
       else
         super
       end

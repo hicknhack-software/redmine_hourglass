@@ -4,7 +4,7 @@ module Chronos
 
     before_action :get_time_tracker, only: [:show, :update, :stop, :destroy]
     before_action :authorize_global, only: [:index, :show, :start, :stop, :update, :destroy]
-    before_action :find_optional_project, :authorize_book, only: [:stop]
+    before_action :find_project, :authorize_book, only: [:stop]
     before_action :authorize_foreign, only: [:show, :update, :stop, :destroy]
     before_action :authorize_update_time, only: [:update]
 

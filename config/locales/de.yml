@@ -69,6 +69,7 @@ de:
         title: Rundungsverhalten
     api:
       errors:
+        booking_issue_not_found: Übermitteltes Ticket existiert nicht
         booking_project_not_found: Übermitteltes Projekt existiert nicht
         forbidden: Sie sind nicht berechtigt diese Aktion auszuführen.
         missing_parameters: Ungültige Parameter übermittelt
