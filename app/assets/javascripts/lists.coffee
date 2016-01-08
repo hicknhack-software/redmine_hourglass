@@ -9,6 +9,17 @@ toggleAllCheckBoxes = (event) ->
     .parents('tr')
     .toggleClass('context-menu-selection', !all_checked)
 
+submitMultiForm = (event) ->
+  event.preventDefault()
+  $form = $(@).closest('form')
+  type = $form.data('type')
+  params = {}
+  $form.closest('table').find(".#{type}-form").each ->
+    $form = $(@)
+    params[$form.data('id-for-bulk-edit')] = $form.find('.form-field').find('input, select, textarea').serializeArray()
+  console.log params
+  alert 'Not yet implemented'
+
 checkForMultiForm = ($row, $formRow)->
   type = $formRow.find('form').data('type')
   $table = $row.closest('table')
@@ -59,6 +70,7 @@ $ ->
   .on 'ajax:success', '.js-show-inline-form', showInlineForm
   .on 'ajax:error', '.js-show-inline-form', processErrorPageResponse
   .on 'click', '.js-hide-inline-form', hideInlineForm
+  .on 'click', '.js-bulk-edit', submitMultiForm
 
   $list.find '.group'
   .on 'click', '.expander', (event) ->
