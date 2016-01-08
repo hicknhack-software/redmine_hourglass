@@ -39,7 +39,7 @@ module Chronos
     end
 
     def render_404(options = {})
-      respond_with_error :not_found, options[:message] || t('chronos.api.errors.not_found')
+      respond_with_error :not_found, options[:message] || t("chronos.api.#{controller_name}.errors.not_found", default: t('chronos.api.errors.not_found'))
     end
 
     def catch_halt

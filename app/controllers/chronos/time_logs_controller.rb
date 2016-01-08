@@ -47,7 +47,7 @@ module Chronos
 
     def combine
       time_log2 = Chronos::TimeLog.find_by id: params[:other]
-      respond_with_error :not_found, t('chronos.api.time_logs.errors.other_not_found') unless time_log2.present?
+      render_404 message: t('chronos.api.time_logs.errors.other_not_found') unless time_log2.present?
       if @time_log.combine_with time_log2
         respond_with_success @time_log
       else
@@ -91,7 +91,7 @@ module Chronos
 
     def get_time_log
       @time_log = time_log_from_id
-      respond_with_error :not_found, t('chronos.api.time_logs.errors.not_found') unless @time_log.present?
+      render_404 unless @time_log.present?
       @request_resource = @time_log
     end
 

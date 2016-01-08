@@ -36,7 +36,7 @@ module Chronos
 
     def get_time_booking
       @time_booking = time_booking_from_id
-      respond_with_error :not_found, t('chronos.api.time_bookings.errors.not_found') unless @time_booking.present?
+      render_404 unless @time_booking.present?
       @request_resource = @time_booking
     end
 
