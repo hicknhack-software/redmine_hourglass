@@ -3,6 +3,12 @@
   .form-row
     = form_field :start, f, time_log, disabled: !can[:update_time]
     = form_field :stop, f, time_log, disabled: !can[:update_time]
+    - if time_log.booked?
+      .form-field
+        .label
+          = label :time_log, :round, t(:field_round), title: t('chronos.ui.time_logs.round_hint')
+        .input
+          = check_box :time_log, :round, checked: Chronos::DateTimeCalculations.round_default
     = form_field :comments, f, time_log, disabled: !can[:update]
     .form-field
       .input

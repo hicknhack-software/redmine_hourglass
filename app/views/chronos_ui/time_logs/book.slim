@@ -5,7 +5,7 @@
     = form_field :stop, f, time_booking, disabled: !can[:book], validate_limit: true
     .form-field
       .label
-        = label :time_booking, :round
+        = label :time_booking, :round, t(:field_round), title: t('chronos.ui.time_logs.round_hint')
       .input
         = check_box :time_booking, :round, checked: Chronos::DateTimeCalculations.round_default
     = form_field :project, f, time_booking, disabled: !can[:book], required: true

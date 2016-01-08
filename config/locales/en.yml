@@ -128,11 +128,13 @@ en:
       time_logs:
         title: Time logs
         no_data: No time logs available
+        round_hint: Enabling this means also, that time bookings after the time booking of this time log will get recalculated
       time_bookings:
         title: Time bookings
         no_data: No time bookings available
         heading_report: Report
         label_print: Print
+        round_hint: Enabling this means also, that time bookings after this time booking will get recalculated
       time_trackers:
         title: Running time trackers
         no_data: No running time trackers available
