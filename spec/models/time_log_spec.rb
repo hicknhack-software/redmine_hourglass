@@ -138,42 +138,48 @@ describe Chronos::TimeLog do
 
     it 'creates a new valid time log' do
       time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
-      time_log2 = time_log.split now + 5.minutes
+      time_log2 = time_log.split split_at: now + 5.minutes
       expect(time_log2).to be_valid
     end
 
     it 'sets the correctly start and stop times for the new time log' do
       time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
-      time_log2 = time_log.split now + 5.minutes
+      time_log2 = time_log.split split_at: now + 5.minutes
       expect([time_log2.start, time_log2.stop]).to eq [now + 5.minutes, now + 10.minutes]
     end
 
     it 'adjusts the stop time of the original time log' do
       time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
-      time_log.split now + 5.minutes
+      time_log.split split_at: now + 5.minutes
       expect(time_log.stop).to eq now + 5.minutes
     end
 
     it 'adjusts the booking of the original time log' do
       time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
       time_booking = time_log.book project_id: create(:project).id, activity_id: create(:time_entry_activity).id
-      expect { time_log.split now + 5.minutes }.to change { time_booking.reload.stop - now }.from(10.minutes).to(5.minutes)
+      expect { time_log.split split_at: now + 5.minutes }.to change { time_booking.reload.stop - now }.from(10.minutes).to(5.minutes)
+    end
+
+    it 'adjusts the booking of the original time log with rounding if given' do
+      time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
+      time_booking = time_log.book project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
+      expect { time_log.split split_at: now + 5.minutes, round: true }.to change { time_booking.reload.stop - now }.from(15.minutes).to(0)
     end
 
     it 'returns nothing if the split time is not in the time log' do
       time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
-      expect(time_log.split now + 15.minutes).to be_nil
+      expect(time_log.split split_at: now + 15.minutes).to be_nil
     end
     context 'with insert new time log before old' do
       it 'sets the correctly start and stop times for the new time log' do
         time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
-        time_log2 = time_log.split now + 5.minutes, true
+        time_log2 = time_log.split split_at: now + 5.minutes, insert_new_before: true
         expect([time_log2.start, time_log2.stop]).to eq [now, now + 5.minutes]
       end
 
       it 'adjusts the stop time of the original time log' do
         time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
-        time_log.split now + 5.minutes, true
+        time_log.split split_at: now + 5.minutes, insert_new_before: true
         expect(time_log.start).to eq now + 5.minutes
       end
     end

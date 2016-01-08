@@ -37,7 +37,7 @@ module Chronos
     end
 
     def split
-      new_time_log = @time_log.split Time.parse(params[:split_at]), params[:insert_new_before]
+      new_time_log = @time_log.split split_params
       if new_time_log
         respond_with_success time_log: @time_log, new_time_log: new_time_log
       else
@@ -73,11 +73,20 @@ module Chronos
 
     private
     def time_log_params
-      parse_round params.require(:time_log).permit(:start, :stop, :comments, :round)
+      parse_boolean :round, params.require(:time_log).permit(:start, :stop, :comments, :round)
+    end
+
+    def split_params
+      parse_boolean [:round, :insert_new_before]
+      {
+          split_at: Time.parse(params[:split_at]),
+          insert_new_before: params[:insert_new_before],
+          round: params[:round]
+      }
     end
 
     def time_booking_params
-      parse_round params.require(:time_booking).permit(:comments, :project_id, :issue_id, :activity_id, :round)
+      parse_boolean :round, params.require(:time_booking).permit(:comments, :project_id, :issue_id, :activity_id, :round)
     end
 
     def get_time_log

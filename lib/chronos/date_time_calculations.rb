@@ -64,7 +64,7 @@ module Chronos::DateTimeCalculations
       ActiveRecord::Base.transaction(requires_new: true) do
         time_booking = yield options
         raise ActiveRecord::Rollback unless time_booking.persisted?
-        update_following_bookings user, options[:project_id], time_booking if :round
+        update_following_bookings user, options[:project_id], time_booking if round
       end
       time_booking
     end

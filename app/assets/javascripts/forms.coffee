@@ -60,13 +60,14 @@ issueFieldChanged = ->
   $issueTextField = $(@)
   $issueTextField.next().val('') if $issueTextField.val() is ''
 
-split = (timeLogId, mSplitAt, insertNewBefore) ->
+split = (timeLogId, mSplitAt, insertNewBefore, round) ->
   $.ajax
     url: chronosRoutes.split_chronos_time_log timeLogId
     method: 'post'
     data:
       split_at: mSplitAt.toJSON()
       insert_new_before: insertNewBefore
+      round: round
 
 submit_without_split_checking = ($form) ->
   $form
@@ -96,14 +97,15 @@ checkSplitting = ->
   $stopField = $form.find('[name*=stop]')
   mStart = moment $startField.val()
   mStop = moment $stopField.val()
+  round = $form.find('[name*=round]').prop('checked')
   stopJqXhr = if mStop.isBefore $stopField.data('mLimit')
-    split timeLogId, mStop
+    split timeLogId, mStop, false, round
   startJqXhr = if mStart.isAfter $startField.data('mLimit')
     if stopJqXhr
       stopJqXhr.then ->
-        split timeLogId, mStart, true
+        split timeLogId, mStart, true, round
     else
-      split timeLogId, mStart, true
+      split timeLogId, mStart, true, round
 
   addSplittingSuccessfulHandler $form, startJqXhr, stopJqXhr
   addSplittingFailedHandler startJqXhr, stopJqXhr
