@@ -9,6 +9,17 @@ toggleAllCheckBoxes = (event) ->
     .parents('tr')
     .toggleClass('context-menu-selection', !all_checked)
 
+checkForMultiForm = ($row, $formRow)->
+  type = $formRow.find('form').data('type')
+  $table = $row.closest('table')
+  $visibleForms = $table.find(".#{type}-form")
+  if $visibleForms.length > 1
+    $visibleForms.find('[name=commit]').addClass('hidden')
+    $visibleForms.find('.js-bulk-edit').addClass('hidden').last().removeClass('hidden')
+  else
+    $visibleForms.find('[name=commit]').removeClass('hidden')
+    $visibleForms.find('.js-bulk-edit').addClass('hidden')
+
 showInlineForm = (event, response) ->
   $row = $(@).closest 'tr'
   $formRow = $row.clone()
@@ -21,6 +32,7 @@ showInlineForm = (event, response) ->
   .append $('<td/>', colspan: tdCount).append response
   .insertAfter $row
   $formRow.find('.js-validate-limit').each addStartStopLimitMoments
+  checkForMultiForm $row, $formRow
 
 hideInlineForm = (event) ->
   event.preventDefault()
@@ -28,6 +40,7 @@ hideInlineForm = (event) ->
   $row = $formRow.prev()
   $formRow.remove()
   $row.show()
+  checkForMultiForm $row, $formRow
 
 processErrorPageResponse = (event, {responseText}) ->
   if responseText

@@ -1,5 +1,5 @@
 - can = {update: authorize_globally_for('chronos/time_bookings', 'update'), update_time: authorize_globally_for('chronos/time_bookings', 'update_time')}
-= form_for time_booking, as: 'time_booking', remote: true, html: {id: "edit_time_booking_#{time_booking.id}", class: 'edit-time-booking-form js-chronos-remote js-validate-form js-check-splitting', data: {time_log_id: time_booking.time_log_id}} do |f|
+= form_for time_booking, as: 'time_booking', remote: true, html: {id: "edit_time_booking_#{time_booking.id}", class: 'edit-time-booking-form js-chronos-remote js-validate-form js-check-splitting', data: {time_log_id: time_booking.time_log_id, type: 'edit-time-booking'}} do |f|
   .form-row
     = form_field :start, f, time_booking, disabled: !can[:update_time], validate_limit: true
     = form_field :stop, f, time_booking, disabled: !can[:update_time], validate_limit: true
