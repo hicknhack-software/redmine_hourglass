@@ -101,7 +101,7 @@ module Chronos
 
     def find_optional_project
       @project = Project.find_by(id: params[:time_booking].presence[:project_id])
-      render_404 message: t('chronos.api.time_logs.errors.booking_project_not_found') unless @project.present?
+      render_404 message: t('chronos.api.errors.booking_project_not_found') unless @project.present?
     end
 
     def authorize_update_booking

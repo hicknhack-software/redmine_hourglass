@@ -69,6 +69,7 @@ en:
         title: Rounding behavior
     api:
       errors:
+        booking_project_not_found: Submitted Project doesn't exist
         forbidden: You are not authorized to execute this action
         missing_parameters: Insufficient parameters submitted
         not_found: The requested object doesn't exist
@@ -81,7 +82,6 @@ en:
       time_logs:
         errors:
           already_booked: This time log was already booked
-          booking_project_not_found: Submitted Project doesn't exist
           change_others_forbidden: You are not authorized to execute this action for another users time log
           combine_failed: There are either bookings defined on the submitted time logs or the time logs start and stop doesn't match
           not_found: This time log doesn't exist

@@ -69,6 +69,7 @@ de:
         title: Rundungsverhalten
     api:
       errors:
+        booking_project_not_found: Übermitteltes Projekt existiert nicht
         forbidden: Sie sind nicht berechtigt diese Aktion auszuführen.
         missing_parameters: Ungültige Parameter übermittelt
         not_found: Das angefragte Objekt existiert nicht.
@@ -81,7 +82,6 @@ de:
       time_logs:
         errors:
           already_booked: Diese Zeiterfassung wurde bereits gebucht.
-          booking_project_not_found: Übermitteltes Projekt existiert nicht
           change_others_forbidden: Sie sind nicht berechtigt diese Aktion für die Zeiterfassung eines anderes Nutzers durchzuführen.
           combine_failed: Die zu kombinierenden Zeiterfassungen wurden entweder bereits gebucht oder ihre Beginne und Enden passen nicht zusammen.
           not_found: Diese Zeiterfassung existiert nicht.

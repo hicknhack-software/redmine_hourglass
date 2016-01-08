@@ -43,5 +43,14 @@ module Chronos
     def time_booking_from_id
       Chronos::TimeBooking.find_by id: params[:id]
     end
+
+    def find_optional_project
+      if action_name == 'update'
+        @project = Project.find_by(id: params[:time_booking].presence[:project_id])
+        render_404 message: t('chronos.api.errors.booking_project_not_found') unless @project.present?
+      else
+        super
+      end
+    end
   end
 end
