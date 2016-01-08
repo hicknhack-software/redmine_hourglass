@@ -158,7 +158,7 @@ module Chronos::QueryBase
     versions = if project
                  project.shared_versions.to_a
                else
-                 Project.visible.includes(:versions).all.flat_map { |project| project.shared_versions.all }
+                 User.current.projects.includes(:versions).all.flat_map { |project| project.shared_versions.all }
                end
     values = versions.uniq.sort.collect { |s| ["#{s.project.name} - #{s.name}", s.id.to_s] }
     add_available_filter 'fixed_version_id', type: :list_optional, values: values if values.any?

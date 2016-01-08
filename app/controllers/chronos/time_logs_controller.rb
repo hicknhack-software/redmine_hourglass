@@ -100,7 +100,7 @@ module Chronos
     end
 
     def find_optional_project
-      @project = Project.visible.find_by(id: params[:time_booking].presence[:project_id])
+      @project = User.current.projects.find_by(id: params[:time_booking].presence[:project_id])
     end
 
     def authorize_update_booking

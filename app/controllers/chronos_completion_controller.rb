@@ -20,7 +20,7 @@ class ChronosCompletionController < Chronos::ApiBaseController
   end
 
   def activities
-    activities = activity_collection Project.visible.find_by id: params[:project_id]
+    activities = activity_collection User.current.projects.find_by id: params[:project_id]
     activities_list = activities.map do |activity|
       {
           id: activity.id,
