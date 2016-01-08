@@ -1,5 +1,5 @@
 - can = {update: authorize_globally_for('chronos/time_trackers', 'update'), update_time: authorize_globally_for('chronos/time_trackers', 'update_time'), book: authorize_globally_for('chronos/time_logs', 'book')}
-= form_for time_tracker, as: 'time_tracker', remote: true, html: {class: 'edit-time-tracker-form js-chronos-remote js-validate-form'} do |f|
+= form_for time_tracker, as: 'time_tracker', remote: true, html: {id: "edit_time_tracker_#{time_tracker.id}", class: 'edit-time-tracker-form js-chronos-remote js-validate-form'} do |f|
   .form-row
     = form_field :start, f, time_tracker, disabled: !can[:update_time]
     = form_field :project, f, time_tracker, disabled: !can[:book]
@@ -9,4 +9,6 @@
     .form-field
       .input
         = f.submit t(:button_update)
+        button type='button' class="js-bulk-edit hidden"
+          = t('chronos.ui.lists.button_update_all')
         = link_to t(:button_cancel), '#', class: 'js-hide-inline-form'

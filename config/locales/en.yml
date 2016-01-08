@@ -126,6 +126,8 @@ en:
           time_bookings: Recent time bookings (last 2 weeks)
       lists:
         button_book: Book
+        button_book_all: Book all
+        button_update_all: Update all
       chart:
           hour_sign: h
           minute_sign: min
