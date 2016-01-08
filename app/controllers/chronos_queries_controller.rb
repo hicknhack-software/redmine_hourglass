@@ -66,7 +66,7 @@ class ChronosQueriesController < ApplicationController
   end
 
   def find_project
-    @project = Project.find(params[:project_id]) if params[:project_id]
+    @project = Project.visible.find(params[:project_id]) if params[:project_id]
     render_403 unless User.current.allowed_to?(:save_queries, @project, global: true)
   rescue ActiveRecord::RecordNotFound
     render_404

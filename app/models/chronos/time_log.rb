@@ -17,15 +17,15 @@ module Chronos
     validate :does_not_overlap_with_other, if: [:user, :start?, :stop?]
 
     scope :booked_on_project, lambda { |project_id|
-                              joins(:time_entry).where(time_entries: {project_id: project_id})
-                            }
+      joins(:time_entry).where(time_entries: {project_id: project_id})
+    }
     scope :with_start_in_interval, lambda { |floor, ceiling|
-                                   where(arel_table[:start].gt(floor).and(arel_table[:start].lt(ceiling)))
-                                 }
+      where(arel_table[:start].gt(floor).and(arel_table[:start].lt(ceiling)))
+    }
 
     scope :overlaps_with, lambda { |start, stop|
-                          where(arel_table[:start].lt(stop).and(arel_table[:stop].gt(start)))
-                        }
+      where(arel_table[:start].lt(stop).and(arel_table[:stop].gt(start)))
+    }
 
     def init
       self.start = start.change(sec: 0) if start
