@@ -36,6 +36,14 @@ module Chronos
       end
     end
 
+    def bulk_update
+      super :time_logs do |id, params|
+        time_log = Chronos::TimeLog.find_by id: id
+        time_log.update parse_boolean :round, params.permit(:start, :stop, :comments, :round) if time_log.present?
+        time_log
+      end
+    end
+
     def split
       new_time_log = @time_log.split split_params
       if new_time_log

@@ -48,6 +48,30 @@ module Chronos
       end
     end
 
+    def bulk_update(params_key)
+      success = []
+      errors = []
+      params[params_key].each do |id, params|
+        error_preface = "[#{t("chronos.api.#{controller_name}.errors.bulk_error_preface", id: id)}:]"
+        entry = yield id, params
+        if entry.present?
+          if entry.persisted?
+            success.push entry
+          else
+            errors.push "#{error_preface} #{entry.errors.full_messages.to_sentence}"
+          end
+        else
+          errors.push "#{error_preface} #{t("chronos.api.#{controller_name}.errors.not_found")}"
+        end
+      end
+      if success.length > 0
+        flash[:error] = errors.to_sentence if errors > 0
+        respond_with_success
+      else
+        respond_with_error :bad_request, errors
+      end
+    end
+
     def missing_parameters(e)
       respond_with_error :bad_request, t('chronos.api.errors.missing_parameters'), no_halt: true
     end

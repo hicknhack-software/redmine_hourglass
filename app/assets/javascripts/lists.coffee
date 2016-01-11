@@ -9,16 +9,35 @@ toggleAllCheckBoxes = (event) ->
     .parents('tr')
     .toggleClass('context-menu-selection', !all_checked)
 
-submitMultiForm = (event) ->
-  event.preventDefault()
-  $form = $(@).closest('form')
-  type = $form.data('type')
-  params = {}
+multiFormParameters = ($form) ->
+  entries = {}
   $form.closest('table').find(".#{type}-form").each ->
     $form = $(@)
-    params[$form.data('id-for-bulk-edit')] = $form.find('.form-field').find('input, select, textarea').serializeArray()
-  console.log params
-  alert 'Not yet implemented'
+    entry = {}
+    for param in $form.find('.form-field').find('input, select, textarea').serializeArray()
+      entry[param.name.replace /[a-z_]*\[([a-z_]*)]/, '$1'] = param.value
+    entries[$form.data('id-for-bulk-edit')] = entry
+  entries
+
+submitMultiForm = (event) ->
+  event.preventDefault()
+  $button = $(@)
+  $form = $button.closest('form')
+  type = $form.data('type')
+  entries = multiFormParameters $form
+  url = $button.data('url')
+  if url?
+    $.ajax
+      url: $button.data('url')
+      method: 'post'
+      data:
+        time_logs: entries
+      success: ->
+        location.reload()
+      error: ({responseJSON}) ->
+        chronos.Utils.showErrorMessage responseJSON.message
+  else
+    alert 'Not yet implemented'
 
 checkForMultiForm = ($row, $formRow)->
   type = $formRow.find('form').data('type')
