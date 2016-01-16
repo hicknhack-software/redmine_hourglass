@@ -54,9 +54,12 @@ class Chronos::Assets < Sprockets::Environment
     }
 
     def path(path, options = {})
-      folder = STATIC_ASSET_DIRECTORIES[options[:type]] || ''
-      path = instance.find_asset(path).digest_path if Rails.env.production?
-      File.join assets_directory_path, folder, path
+      if Rails.env.production?
+        instance.find_asset(path).digest_path
+      else
+        folder = STATIC_ASSET_DIRECTORIES[options[:type]] || ''
+        File.join '..', folder, path
+      end
     end
   end
 end
