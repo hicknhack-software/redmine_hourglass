@@ -81,7 +81,7 @@ module Chronos
       keys.each do |key|
         params[key] = case params[key].class.name
                         when 'String'
-                          params[key] == '1'
+                          params[key] == '1' || params[key] == 'true'
                         when 'Fixnum', 'Integer'
                           params[key] == 1
                         else

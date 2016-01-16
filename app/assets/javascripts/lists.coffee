@@ -23,7 +23,7 @@ submitMultiForm = (event) ->
   event.preventDefault()
   $button = $(@)
   $form = $button.closest('form')
-  type = $form.data('type')
+  type = $form.data('formType')
   entries = multiFormParameters $form
   url = $button.data('url')
   if url?
@@ -40,7 +40,7 @@ submitMultiForm = (event) ->
     alert 'Not yet implemented'
 
 checkForMultiForm = ($row, $formRow)->
-  type = $formRow.find('form').data('type')
+  type = $formRow.find('form').data('formType')
   $table = $row.closest('table')
   $visibleForms = $table.find(".#{type}-form")
   if $visibleForms.length > 1

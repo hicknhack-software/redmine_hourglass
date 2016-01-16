@@ -97,7 +97,7 @@ checkSplitting = ->
   $stopField = $form.find('[name*=stop]')
   mStart = moment $startField.val()
   mStop = moment $stopField.val()
-  round = $form.find('[name*=round]').prop('checked')
+  round = $form.find('[type=checkbox][name*=round]').prop('checked')
   stopJqXhr = if mStop.isBefore $stopField.data('mLimit')
     split timeLogId, mStop, false, round
   startJqXhr = if mStart.isAfter $startField.data('mLimit')
@@ -120,6 +120,10 @@ $ ->
   .on 'change', '.js-issue-autocompletion', issueFieldChanged
   .on 'formfieldchanged', '[name*=start]', startFieldChanged
   .on 'formfieldchanged', '[name*=stop]', stopFieldChanged
-  .on 'submit', '.js-validate-form', (event) ->
-    event.preventDefault() unless chronos.FormValidator.validateForm $(@)
+  .on 'submit ajax:before', '.js-validate-form', (event) ->
+    isFormValid = chronos.FormValidator.validateForm $(@)
+    unless isFormValid
+      event.preventDefault()
+      event.stopPropagation()
+    return isFormValid
   .on 'ajax:before', '.js-check-splitting', checkSplitting

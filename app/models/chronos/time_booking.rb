@@ -25,7 +25,7 @@ module Chronos
     delegate :id, to: :activity, prefix: true, allow_nil: true
     delegate :id, to: :project, prefix: true, allow_nil: true
     delegate :id, to: :user, prefix: true, allow_nil: true
-    delegate :comments, :hours, to: :time_entry, allow_nil: true
+    delegate :comments, :hours, :project_id=, to: :time_entry, allow_nil: true
 
     def rounding_carry_over
       (stop - time_log.stop).to_i
@@ -40,13 +40,19 @@ module Chronos
       if time_entry_arguments.present? && !time_entry
         time_entry = super time_entry_arguments
         time_entry.hours ||= 0 #redmine sets hours to nil, if it's 0 on initializing
-        time_entry.save
+        unless time_entry.save
+          add_time_entry_errors
+          raise ActiveRecord::Rollback
+        end
       end
     end
 
     def update_time_entry
       if time_entry_arguments.present? && time_entry
-        time_entry.update time_entry_arguments
+        unless time_entry.update time_entry_arguments
+          add_time_entry_errors
+          raise ActiveRecord::Rollback
+        end
       end
     end
 
