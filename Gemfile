@@ -8,7 +8,7 @@ gem 'sass'
 #views
 gem 'slim'
 gem 'js-routes'
-gem 'momentjs-rails'
+gem 'momentjs-rails', '>=2.10.7'
 
 group :test do
   gem 'zonebie'

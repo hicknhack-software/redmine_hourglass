@@ -23,14 +23,24 @@ isFieldValid = ($field, $form) ->
           not mStart.isBefore $field.data('mLimit')
         (mStart) ->
           stopField = $form.find('[name*=stop]')
-          stopField.length is 0 or mStart.isBefore moment(stopField.val(), moment.ISO_8601)
+          return true if stopField.length is 0
+          mStop = moment(stopField.val(), moment.ISO_8601)
+          if $field.hasClass('js-allow-zero-duration')
+            mStart.isSameOrBefore mStop
+          else
+            mStart.isBefore mStop
     when 'stop'
       isValidTimeField $field,
         (mStop) ->
           not mStop.isAfter $field.data('mLimit')
         (mStop) ->
           startField = $form.find('[name*=start]')
-          startField.length is 0 or mStop.isAfter moment(startField.val(), moment.ISO_8601)
+          return true if startField.length is 0
+          mStart = moment(startField.val(), moment.ISO_8601)
+          if $field.hasClass('js-allow-zero-duration')
+            mStop.isSameOrAfter mStart
+          else
+            mStop.isAfter mStart
     else
       true
 
