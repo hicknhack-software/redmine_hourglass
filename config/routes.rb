@@ -33,6 +33,7 @@ end
 
 namespace :chronos do
   resources :time_trackers, except: [:new, :edit, :create] do
+    post 'bulk_update', on: :collection
     post 'start', on: :collection
     delete 'stop', on: :member
   end
