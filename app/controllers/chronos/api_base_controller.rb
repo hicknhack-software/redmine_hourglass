@@ -65,7 +65,7 @@ module Chronos
         end
       end
       if success.length > 0
-        flash[:error] = errors.to_sentence if errors > 0
+        flash[:error] = errors.to_sentence if errors.length > 0
         respond_with_success
       else
         respond_with_error :bad_request, errors
