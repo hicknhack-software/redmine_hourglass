@@ -26,6 +26,13 @@ module Chronos
     delegate :id, to: :user, prefix: true, allow_nil: true
     delegate :comments, :hours, :project_id=, to: :time_entry, allow_nil: true
 
+    def update(args = {})
+      if args[:time_entry_attributes].present? && time_entry.present?
+        args[:time_entry_attributes].merge! id: time_entry_id
+      end
+      super args
+    end
+
     def rounding_carry_over
       (stop - time_log.stop).to_i
     end
