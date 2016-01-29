@@ -11,6 +11,7 @@ toggleAllCheckBoxes = (event) ->
 
 multiFormParameters = ($form) ->
   entries = {}
+  type = $form.data('formType')
   $form.closest('table').find(".#{type}-form").each ->
     $form = $(@)
     entry = {}
@@ -23,7 +24,6 @@ submitMultiForm = (event) ->
   event.preventDefault()
   $button = $(@)
   $form = $button.closest('form')
-  type = $form.data('formType')
   entries = multiFormParameters $form
   url = $button.data('url')
   if url?
