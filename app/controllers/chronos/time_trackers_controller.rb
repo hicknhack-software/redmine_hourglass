@@ -34,6 +34,14 @@ module Chronos
       end
     end
 
+    def bulk_update
+      super :time_trackers do |id, params|
+        time_tracker = Chronos::TimeTracker.find_by id: id
+        time_tracker.update params.permit(:start, :project_id, :activity_id, :issue_id, :comments) if time_tracker.present?
+        time_tracker
+      end
+    end
+
     def stop
       time_log = @time_tracker.stop
       time_booking = time_log && time_log.time_booking

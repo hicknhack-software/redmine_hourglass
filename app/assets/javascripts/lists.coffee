@@ -26,12 +26,13 @@ submitMultiForm = (event) ->
   $form = $button.closest('form')
   entries = multiFormParameters $form
   url = $button.data('url')
+  name = $button.data('name')
   if url?
     $.ajax
       url: $button.data('url')
       method: 'post'
       data:
-        time_logs: entries
+        "#{name}": entries
       success: ->
         location.reload()
       error: ({responseJSON}) ->

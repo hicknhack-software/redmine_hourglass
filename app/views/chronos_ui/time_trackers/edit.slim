@@ -9,6 +9,6 @@
     .form-field
       .input
         = f.submit t(:button_update)
-        button type='button' class="js-bulk-edit hidden" data-url=bulk_update_chronos_time_trackers_path
+        button type='button' class="js-bulk-edit hidden" data-url=bulk_update_chronos_time_trackers_path data-name='time_trackers'
           = t('chronos.ui.lists.button_update_all')
         = link_to t(:button_cancel), '#', class: 'js-hide-inline-form'
