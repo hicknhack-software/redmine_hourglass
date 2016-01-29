@@ -17,7 +17,7 @@ module Chronos
     end
 
     def update
-      if @time_booking.update time_entry_arguments: time_booking_params
+      if @time_booking.update time_entry_attributes: time_booking_params
         respond_with_success
       else
         respond_with_error :bad_request, @time_booking.errors.full_messages

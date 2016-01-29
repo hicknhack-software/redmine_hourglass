@@ -11,11 +11,10 @@ module Chronos
     has_one :activity, through: :time_entry
     has_one :fixed_version, through: :issue
 
-    after_initialize :create_time_entry
-    after_update :update_time_entry
-    after_validation :add_time_entry_errors
+    accepts_nested_attributes_for :time_entry
 
-    attr_accessor :time_entry_arguments
+    after_initialize :fix_nil_hours
+    after_validation :filter_time_entry_invalid_error
 
     validates_presence_of :time_log, :time_entry, :start, :stop
     validate :stop_is_valid
@@ -36,31 +35,12 @@ module Chronos
     end
 
     private
-    def create_time_entry
-      if time_entry_arguments.present? && !time_entry
-        time_entry = super time_entry_arguments
-        time_entry.hours ||= 0 #redmine sets hours to nil, if it's 0 on initializing
-        unless time_entry.save
-          add_time_entry_errors
-          raise ActiveRecord::Rollback
-        end
-      end
+    def fix_nil_hours
+      time_entry.hours ||= 0 if time_entry && time_entry.activity_id.blank? #redmine sets hours to nil, if it's 0 on initializing
     end
 
-    def update_time_entry
-      if time_entry_arguments.present? && time_entry
-        unless time_entry.update time_entry_arguments
-          add_time_entry_errors
-          raise ActiveRecord::Rollback
-        end
-      end
-    end
-
-    def add_time_entry_errors
-      filtered_errors = self.errors.reject { |err| err.first == :time_entry }
-      self.errors.clear
-      filtered_errors.each { |err| self.errors.add(*err) }
-      time_entry.errors.full_messages.each { |msg| errors.add :base, msg } if time_entry.present?
+    def filter_time_entry_invalid_error
+      self.errors.delete :time_entry
     end
 
     def stop_is_valid

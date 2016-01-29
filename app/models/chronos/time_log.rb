@@ -42,7 +42,7 @@ module Chronos
         result = super attributes
         if booked?
           DateTimeCalculations.booking_process user, start: start, stop: stop, project_id: time_booking.project_id, round: round do |options|
-            time_booking.update start: options[:start], stop: options[:stop], time_entry_arguments: {hours: DateTimeCalculations.time_diff_in_hours(options[:start], options[:stop])}
+            time_booking.update start: options[:start], stop: options[:stop], time_entry_attributes: {hours: DateTimeCalculations.time_diff_in_hours(options[:start], options[:stop])}
             time_booking
           end
           raise ActiveRecord::Rollback unless time_booking.persisted?
@@ -104,7 +104,7 @@ module Chronos
     def time_booking_arguments(options)
       options
           .slice(:start, :stop, :time_log_id)
-          .merge time_entry_arguments: time_entry_arguments(options)
+          .merge time_entry_attributes: time_entry_arguments(options)
     end
 
     def time_entry_arguments(options)

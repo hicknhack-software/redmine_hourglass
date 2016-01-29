@@ -78,7 +78,7 @@ module Chronos::DateTimeCalculations
         break if !next_time_log || current_time_log == next_time_log
         start, stop = calculate_bookable_time next_time_log.start, next_time_log.stop, booking && booking.rounding_carry_over
         booking = next_time_log.time_booking
-        booking.update start: start, stop: stop, time_entry_arguments: {hours: time_diff_in_hours(start, stop)}
+        booking.update start: start, stop: stop, time_entry_attributes: {hours: time_diff_in_hours(start, stop)}
         raise ActiveRecord::Rollback unless booking.persisted?
         current_time_log = next_time_log
       end
