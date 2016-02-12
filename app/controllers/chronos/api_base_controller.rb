@@ -55,7 +55,7 @@ module Chronos
         error_preface = "[#{t("chronos.api.#{controller_name}.errors.bulk_error_preface", id: id)}:]"
         entry = yield id, params
         if entry.present?
-          if entry.persisted?
+          if entry.errors.empty?
             success.push entry
           else
             errors.push "#{error_preface} #{entry.errors.full_messages.to_sentence}"
