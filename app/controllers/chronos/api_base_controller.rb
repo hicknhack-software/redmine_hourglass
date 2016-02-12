@@ -48,7 +48,7 @@ module Chronos
       end
     end
 
-    def bulk_update(params_key)
+    def bulk(params_key = controller_name)
       success = []
       errors = []
       params[params_key].each do |id, params|

@@ -37,7 +37,7 @@ module Chronos
     end
 
     def bulk_update
-      super :time_logs do |id, params|
+      bulk do |id, params|
         time_log = Chronos::TimeLog.find_by id: id
         time_log.update parse_boolean :round, params.permit(:start, :stop, :comments, :round) if time_log.present?
         time_log
