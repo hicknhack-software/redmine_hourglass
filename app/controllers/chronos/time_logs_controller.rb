@@ -75,7 +75,7 @@ module Chronos
     end
 
     def bulk_book
-      bulk do |id, params|
+      bulk :time_bookings do |id, params|
         time_log = Chronos::TimeLog.find_by id: id
         return unless time_log
         return t('chronos.api.time_logs.errors.already_booked') if time_log.booked?

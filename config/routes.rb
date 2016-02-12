@@ -38,7 +38,10 @@ namespace :chronos do
     delete 'stop', on: :member
   end
   resources :time_logs, except: [:new, :edit, :create] do
-    post 'bulk_update', on: :collection
+    collection do
+      post 'bulk_update'
+      post 'bulk_book'
+    end
     member do
       post 'book'
       post 'split'
