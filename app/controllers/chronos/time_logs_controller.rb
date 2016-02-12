@@ -39,7 +39,8 @@ module Chronos
     def bulk_update
       bulk do |id, params|
         time_log = Chronos::TimeLog.find_by id: id
-        time_log.update parse_boolean :round, params.permit(:start, :stop, :comments, :round) if time_log.present?
+        return unless time_log
+        time_log.update parse_boolean :round, params.permit(:start, :stop, :comments, :round)
         time_log
       end
     end
@@ -64,14 +65,22 @@ module Chronos
     end
 
     def book
+      respond_with_error :bad_request, t('chronos.api.time_logs.errors.already_booked') if @time_log.booked?
       time_booking = @time_log.book time_booking_params
       if time_booking.persisted?
         respond_with_success time_booking
       else
         respond_with_error :bad_request, time_booking.errors.full_messages
       end
-    rescue Chronos::AlreadyBookedException
-      respond_with_error :bad_request, t('chronos.api.time_logs.errors.already_booked')
+    end
+
+    def bulk_book
+      bulk do |id, params|
+        time_log = Chronos::TimeLog.find_by id: id
+        return unless time_log
+        return t('chronos.api.time_logs.errors.already_booked') if time_log.booked?
+        time_log.book parse_boolean :round, params.permit(:comments, :project_id, :issue_id, :activity_id, :round)
+      end
     end
 
     def destroy
