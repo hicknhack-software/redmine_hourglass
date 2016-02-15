@@ -47,9 +47,11 @@ checkForMultiForm = ($row, $formRow)->
   if $visibleForms.length > 1
     $visibleForms.find('[name=commit]').addClass('hidden')
     $visibleForms.find('.js-bulk-edit').addClass('hidden').last().removeClass('hidden')
+    $visibleForms.find('.js-not-in-multi').prop('disabled', true)
   else
     $visibleForms.find('[name=commit]').removeClass('hidden')
     $visibleForms.find('.js-bulk-edit').addClass('hidden')
+    $visibleForms.find('.js-not-in-multi').prop('disabled', false)
 
 showInlineForm = (event, response) ->
   $row = $(@).closest 'tr'
