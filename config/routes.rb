@@ -33,8 +33,10 @@ end
 
 namespace :chronos do
   resources :time_trackers, except: [:new, :edit, :create] do
-    post 'bulk_update', on: :collection
-    post 'start', on: :collection
+    collection do
+      post 'bulk_update'
+      post 'start'
+    end
     delete 'stop', on: :member
   end
   resources :time_logs, except: [:new, :edit, :create] do
@@ -48,7 +50,9 @@ namespace :chronos do
       post 'combine'
     end
   end
-  resources :time_bookings, except: [:new, :edit, :create]
+  resources :time_bookings, except: [:new, :edit, :create] do
+    post 'bulk_update', on: :collection
+  end
 end
 
 unless Rails.env.production?

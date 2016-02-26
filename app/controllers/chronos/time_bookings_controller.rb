@@ -24,6 +24,15 @@ module Chronos
       end
     end
 
+    def bulk_update
+      bulk do |id, params|
+        time_booking = Chronos::TimeBooking.find_by id: id
+        return unless time_booking
+        time_booking.update time_entry_attributes: params.permit(:comments, :project_id, :issue_id, :activity_id)
+        time_booking
+      end
+    end
+
     def destroy
       @time_booking.destroy
       respond_with_success
