@@ -25,6 +25,6 @@ group :development do
   gem 'guard-rake'
   gem 'rb-readline'
   gem 'rubycritic', require: false
-  gem 'rspec-rails', '~> 2.99'
+  gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
   gem 'factory_girl_rails'
 end

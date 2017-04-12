@@ -8,6 +8,7 @@ rvm:
    - 2.0.0
    - 2.1.7
    - 2.2.3
+   - 2.3.3
 
 env:
   global:
@@ -16,7 +17,9 @@ env:
 
   matrix:
   - REDMINE_VERSION=3.0.4 TRACE=--trace
-  - REDMINE_VERSION=3.1.0 TRACE=--trace
+  - REDMINE_VERSION=3.1.7 TRACE=--trace
+  - REDMINE_VERSION=3.2.6 TRACE=--trace
+  - REDMINE_VERSION=3.3.3 TRACE=--trace
 
 before_install:
 - . .travis/clone_redmine.sh
