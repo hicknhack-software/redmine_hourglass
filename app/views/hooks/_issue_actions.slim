@@ -1,9 +1,11 @@
 - time_tracker = User.current.chronos_time_tracker
 - if time_tracker && time_tracker.issue_id == @issue.id
-  = render partial: 'hooks/time_tracker/stop_link', locals: {time_tracker: time_tracker, issue: @issue}
-  - if !Chronos.settings[:global_tracker] && time_tracker.project.present? && time_tracker.activity.blank?
-    = render partial: 'hooks/time_tracker/activity_dialog_content', locals: {time_tracker: time_tracker}
+  li
+    = render partial: 'hooks/time_tracker/stop_link', locals: {time_tracker: time_tracker, issue: @issue}
+    - if !Chronos.settings[:global_tracker] && time_tracker.project.present? && time_tracker.activity.blank?
+      = render partial: 'hooks/time_tracker/activity_dialog_content', locals: {time_tracker: time_tracker}
 - elsif authorize_globally_for 'chronos/time_trackers', 'start'
-  = render partial: 'hooks/time_tracker/start_link', locals: {time_tracker: time_tracker, issue: @issue, time_tracker_data: {params: {time_tracker: {issue_id: @issue.id}}}}
-  - if time_tracker
-    = render partial: 'hooks/time_tracker/start_dialog_content', locals: {time_tracker: time_tracker, issue: nil}
+  li
+    = render partial: 'hooks/time_tracker/start_link', locals: {time_tracker: time_tracker, issue: @issue, time_tracker_data: {params: {time_tracker: {issue_id: @issue.id}}}}
+    - if time_tracker
+      = render partial: 'hooks/time_tracker/start_dialog_content', locals: {time_tracker: time_tracker, issue: nil}
