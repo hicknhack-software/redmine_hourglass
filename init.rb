@@ -106,7 +106,7 @@ Redmine::Plugin.register Chronos.plugin_name do
   end
 
   menu :top_menu, :chronos_root, :chronos_ui_root_path, caption: :'chronos.ui.menu.main', if: allowed_to_see_index?
-  menu :account_menu, :chronos_quick, '', caption: '', if: allowed_to_see_index?, before: :my_account
+  menu :account_menu, :chronos_quick, '#', caption: '', if: allowed_to_see_index?, before: :my_account
   #menu :project_menu, :chronos_main_menu, chronos_ui_root_path, caption: 'test'
 
   Redmine::MenuManager.map :chronos_menu do |menu|
