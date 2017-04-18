@@ -4,7 +4,7 @@ module Chronos
 
     before_action :get_time_log, only: [:show, :update, :split, :combine, :book, :destroy]
     before_action :authorize_global, only: [:index, :show, :update, :split, :combine, :destroy]
-    before_action :find_project_from_params, :authorize, only: [:book]
+    before_action :find_project, :authorize, only: [:book]
     before_action :authorize_foreign, only: [:show, :update, :split, :combine, :book, :destroy]
     before_action :authorize_update_time, only: [:update]
     before_action :authorize_update_booking, only: [:split]
@@ -125,6 +125,10 @@ module Chronos
       if @time_log.booked? && !allowed_to?('update_time', 'chronos/time_bookings')
         render_403 message: t('chronos.api.time_bookings.errors.update_time_forbidden')
       end
+    end
+
+    def find_project
+      find_project_from_params time_booking_params
     end
   end
 end

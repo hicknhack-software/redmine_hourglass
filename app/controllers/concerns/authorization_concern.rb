@@ -6,14 +6,13 @@ module AuthorizationConcern
     @project = @request_resource.project
   end
 
-  def find_project_from_params
-    controller_params = params[controller_name.singularize]
-    if controller_params[:issue_id].present?
-      issue = Issue.visible.find_by id: controller_params[:issue_id]
+  def find_project_from_params(resource_params)
+    if resource_params[:issue_id].present?
+      issue = Issue.visible.find_by id: resource_params[:issue_id]
       render_404 message: t('chronos.api.errors.booking_issue_not_found') unless issue.present?
       @project = issue.project
     else
-      @project = Project.visible.find_by id: controller_params[:project_id]
+      @project = Project.visible.find_by id: resource_params[:project_id]
     end
     render_404 message: t('chronos.api.errors.booking_project_not_found') unless @project.present?
   end

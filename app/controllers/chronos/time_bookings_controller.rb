@@ -61,7 +61,7 @@ module Chronos
 
     def find_project
       if action_name == 'update'
-        find_project_from_params
+        find_project_from_params time_booking_params
       else
         super
       end
