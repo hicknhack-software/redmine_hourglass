@@ -36,8 +36,8 @@ module Chronos
 
     def bulk_update
       bulk do |id, params|
-        time_tracker = Chronos::TimeTracker.find_by id: id
-        time_tracker.update params.permit(:start, :project_id, :activity_id, :issue_id, :comments) if time_tracker.present?
+        time_tracker = Chronos::TimeTracker.find_by(id: id) or return
+        time_tracker.update params.permit(:start, :project_id, :activity_id, :issue_id, :comments)
         time_tracker
       end
     end
@@ -57,6 +57,13 @@ module Chronos
     def destroy
       @time_tracker.destroy
       respond_with_success
+    end
+
+    def bulk_destroy
+      bulk do |id|
+        time_tracker = Chronos::TimeTracker.find_by(id: id) or return
+        time_tracker.destroy
+      end
     end
 
     private

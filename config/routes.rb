@@ -11,6 +11,7 @@ scope :chronos, as: :chronos do
     get 'time_trackers'
     get 'time_trackers/:id/edit', action: :edit_time_trackers, as: :edit_time_trackers
   end
+  
   scope :completion, as: :completion, controller: :chronos_completion do
     get 'issues'
     get 'activities'
@@ -35,6 +36,7 @@ namespace :chronos do
   resources :time_trackers, except: [:new, :edit, :create] do
     collection do
       post 'bulk_update'
+      delete 'bulk_destroy'
       post 'start'
     end
     delete 'stop', on: :member
@@ -42,6 +44,7 @@ namespace :chronos do
   resources :time_logs, except: [:new, :edit, :create] do
     collection do
       post 'bulk_update'
+      delete 'bulk_destroy'
       post 'bulk_book'
     end
     member do
@@ -51,7 +54,10 @@ namespace :chronos do
     end
   end
   resources :time_bookings, except: [:new, :edit, :create] do
-    post 'bulk_update', on: :collection
+    collection do
+      post 'bulk_update'
+      delete 'bulk_destroy'
+    end
   end
 end
 

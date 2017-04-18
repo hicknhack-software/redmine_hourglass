@@ -26,8 +26,7 @@ module Chronos
 
     def bulk_update
       bulk do |id, params|
-        time_booking = Chronos::TimeBooking.find_by id: id
-        return unless time_booking
+        time_booking = Chronos::TimeBooking.find_by(id: id) or return
         time_booking.update time_entry_attributes: params.permit(:comments, :project_id, :issue_id, :activity_id)
         time_booking
       end
@@ -36,6 +35,13 @@ module Chronos
     def destroy
       @time_booking.destroy
       respond_with_success
+    end
+
+    def bulk_destroy
+      bulk do |id|
+        time_booking = Chronos::TimeBooking.find_by(id: id) or return
+        time_booking.destroy
+      end
     end
 
     private
