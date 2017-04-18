@@ -10,6 +10,7 @@ module ChronosUi
       retrieve_query
       init_sort
       @list_arguments = list_arguments
+      render 'chronos_ui/query_view'
     end
 
     def edit_time_trackers

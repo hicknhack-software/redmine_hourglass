@@ -1,16 +1,14 @@
-- content_for :header_tags do
-  = javascript_include_tag 'application', plugin: Chronos.plugin_name
-  = stylesheet_link_tag 'application', plugin: Chronos.plugin_name
+= render layout: 'chronos_ui/layouts/chronos' do
 
-- html_title t('chronos.ui.index.title')
+  - html_title t('chronos.ui.index.title')
 
-- if authorize_globally_for 'chronos/time_trackers', 'start'
-  = render partial: 'time_tracker_control'
+  - if authorize_globally_for 'chronos/time_trackers', 'start'
+    = render partial: 'time_tracker_control'
 
-- if authorize_globally_for 'chronos/time_logs', 'index'
-  h3 = t('chronos.ui.index.headings.time_logs')
-  = render partial: 'chronos_ui/lists/list', locals: {list_arguments: @time_log_list_arguments}
+  - if authorize_globally_for 'chronos/time_logs', 'index'
+    h3 = t('chronos.ui.index.headings.time_logs')
+    = render partial: 'chronos_ui/lists/list', locals: {list_arguments: @time_log_list_arguments}
 
-- if authorize_globally_for 'chronos/time_bookings', 'index'
-  h3 = t('chronos.ui.index.headings.time_bookings')
-  = render partial: 'chronos_ui/lists/list', locals: {list_arguments: @time_booking_list_arguments}
+  - if authorize_globally_for 'chronos/time_bookings', 'index'
+    h3 = t('chronos.ui.index.headings.time_bookings')
+    = render partial: 'chronos_ui/lists/list', locals: {list_arguments: @time_booking_list_arguments}

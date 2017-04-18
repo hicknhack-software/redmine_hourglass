@@ -1,21 +1,9 @@
 - content_for :header_tags do
-  = javascript_include_tag 'application', plugin: Chronos.plugin_name
-  = stylesheet_link_tag 'application', plugin: Chronos.plugin_name
   = render partial: 'chronos_ui/lists/chart'
-
-.contextual
-  - if @query.persisted? && @query.editable_by?(User.current)
-    = link_to t(:button_edit), edit_chronos_query_path(@query), class: 'icon icon-edit'
-    = link_to t(:button_delete), chronos_query_path(@query), confirm: t(:text_are_you_sure), method: :delete, class: 'icon icon-del'
-
-h2 = @query.persisted? ? h(@query.name) : t('chronos.ui.time_bookings.title')
-- html_title @query.persisted? ? @query.name : t('chronos.ui.time_bookings.title')
-
-= render partial: 'chronos_ui/lists/query_form', locals: {query: @query}
-= render partial: 'chronos_ui/lists/list', locals: {list_arguments: @list_arguments}
 
 - content_for :sidebar do
   h3 = t('chronos.ui.time_bookings.heading_report')
   - if authorize_globally_for 'chronos_ui', 'report'
     = link_to t('chronos.ui.time_bookings.label_print'), chronos_ui_report_path
-  = render_sidebar_queries
+
+= render template: 'chronos_ui/query_view'

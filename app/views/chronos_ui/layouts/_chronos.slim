@@ -1,0 +1,10 @@
+- content_for :header_tags do
+  = javascript_include_tag 'application', plugin: Chronos.plugin_name
+  = stylesheet_link_tag 'application', plugin: Chronos.plugin_name
+
+- if @query && @query.persisted? && @query.editable_by?(User.current)
+  .contextual
+    = link_to t(:button_edit), edit_chronos_query_path(@query), class: 'icon icon-edit'
+    = link_to t(:button_delete), chronos_query_path(@query), confirm: t(:text_are_you_sure), method: :delete, class: 'icon icon-del'
+
+= yield

@@ -1,5 +1,6 @@
 - data, ticks, tooltips = chart_data
 javascript:
+  window.chronos = window.chronos || {};
   window.chronos.jqplotData = {
     data: #{raw data.to_json},
     ticks: #{raw ticks.to_json},

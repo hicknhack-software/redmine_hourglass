@@ -1,5 +1,9 @@
 module Chronos
   module UiHelper
+    def title_for_query_view
+      title @query.persisted? ? h(@query.name) : t("chronos.ui.#{action_name}.title")
+    end
+
     def render_main_menu(project)
       render_menu :chronos_menu
     end
