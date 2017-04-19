@@ -6,6 +6,7 @@ scope :chronos, as: :chronos do
     get 'time_logs/:id/edit', action: :edit_time_logs, as: :edit_time_logs
     get 'time_logs/edit', action: :bulk_edit_time_logs, as: :bulk_edit_time_logs
     get 'time_logs/:id/book', action: :book_time_logs, as: :book_time_logs
+    get 'time_logs/book', action: :bulk_book_time_logs, as: :bulk_book_time_logs
     get 'time_bookings'
     get 'time_bookings/:id/edit', action: :edit_time_bookings, as: :edit_time_bookings
     get 'time_bookings/edit', action: :bulk_edit_time_bookings, as: :bulk_edit_time_bookings

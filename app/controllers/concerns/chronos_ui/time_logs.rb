@@ -32,8 +32,20 @@ module ChronosUi
 
     def book_time_logs
       time_log = get_time_log
+      render_error t('chronos.api.time_logs.errors.already_booked') if time_log.booked?
       authorize_foreign
-      render 'chronos_ui/time_logs/book', locals: {time_log: time_log, time_booking: time_log.build_time_booking}, layout: false unless performed?
+      render 'chronos_ui/time_logs/book', locals: {time_logs: [time_log]}, layout: false unless performed?
+    end
+
+    def bulk_book_time_logs
+      time_logs = params[:ids].map do |id|
+        @request_resource = Chronos::TimeLog.find_by id: id
+        next unless @request_resource && !@request_resource.booked?
+        authorize_foreign { next }
+        @request_resource
+      end.compact
+      render_404 if time_logs.empty?
+      render 'chronos_ui/time_logs/book', locals: {time_logs: time_logs}, layout: false unless performed?
     end
 
     private
