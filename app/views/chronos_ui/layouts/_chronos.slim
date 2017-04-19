@@ -8,3 +8,5 @@
     = link_to t(:button_delete), chronos_query_path(@query), confirm: t(:text_are_you_sure), method: :delete, class: 'icon icon-del'
 
 = yield
+
+= context_menu chronos_ui_context_menu_path

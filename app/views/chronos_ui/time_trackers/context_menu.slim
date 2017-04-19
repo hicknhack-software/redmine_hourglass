@@ -1,0 +1,6 @@
+- ids = @records.map(&:id)
+ul
+  - if authorize_globally_for 'chronos/time_trackers', 'update'
+    li = link_to t(:button_edit), chronos_ui_bulk_edit_time_trackers_path(ids: ids), class: 'icon-edit js-show-inline-form-multi', title: t(:button_edit), remote: true, data: {type: 'html'}
+  - if authorize_globally_for 'chronos/time_trackers', 'destroy'
+    li = link_to t(:button_delete), @records.length == 1 ? chronos_time_tracker_path(@records.first) : bulk_destroy_chronos_time_trackers_path(time_trackers: ids), class: 'icon-del js-chronos-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)}

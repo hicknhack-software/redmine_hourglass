@@ -59,13 +59,18 @@ showInlineForm = (event, response) ->
   $row.hide()
   tdCount = $formRow.find('td').length - 1
   $formRow
-  .removeClass 'hascontextmenu'
+  .removeClass 'hascontextmenu context-menu-selection'
   .empty()
   .append $('<td/>', class: 'hide-when-print')
   .append $('<td/>', colspan: tdCount).append response
   .insertAfter $row
   $formRow.find('.js-validate-limit').each addStartStopLimitMoments
   checkForMultiForm $row, $formRow
+
+showInlineFormMulti = (event, response) ->
+  $(response).each ->
+    showInlineForm.call $("##{$(@).data('id-for-bulk-edit')} .js-show-inline-form").get(), event, @
+  window.contextMenuHide()
 
 hideInlineForm = (event) ->
   event.preventDefault()
@@ -93,6 +98,10 @@ $ ->
   .on 'ajax:error', '.js-show-inline-form', processErrorPageResponse
   .on 'click', '.js-hide-inline-form', hideInlineForm
   .on 'click', '.js-bulk-edit', submitMultiForm
+
+  $(document)
+  .on 'ajax:success', '.js-show-inline-form-multi', showInlineFormMulti
+  .on 'ajax:error', '.js-show-inline-form-multi', processErrorPageResponse
 
   $list.find '.group'
   .on 'click', '.expander', (event) ->

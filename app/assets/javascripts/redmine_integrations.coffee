@@ -104,5 +104,16 @@ $ ->
   $('.chronos-quick').replaceWith $('.js-account-menu-link').removeClass('hidden')
 
   $('#content, #top-menu')
-  .on 'click', '.js-start-tracker', showStartDialog
-  .on 'click', '.js-stop-tracker', showStopDialog
+    .on 'click', '.js-start-tracker', showStartDialog
+    .on 'click', '.js-stop-tracker', showStopDialog
+
+  $contextMenuTarget = null
+  $(document).on 'contextmenu', '.chronos-list', (e) ->
+    $contextMenuTarget = $(@)
+    
+  $.ajaxPrefilter (options) ->
+    return unless options.url is '/chronos/ui/context_menu'
+    options.data = $.param list_type: $contextMenuTarget.data('list-type')
+    $contextMenuTarget.find('.context-menu-selection').each ->
+      options.data += "&ids[]=#{@id}"
+

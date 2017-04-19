@@ -2,6 +2,12 @@ module ListConcern
   include Redmine::Pagination
   extend ActiveSupport::Concern
 
+  def context_menu
+    @records = Chronos.const_get(params[:list_type].classify).find params[:ids]
+    render "chronos_ui/#{params[:list_type]}/context_menu", layout: false
+  end
+
+  private
   def init_sort(query = @query)
     sort_init query.sort_criteria.empty? ? [%w(date asc)] : query.sort_criteria
     sort_update query.sortable_columns

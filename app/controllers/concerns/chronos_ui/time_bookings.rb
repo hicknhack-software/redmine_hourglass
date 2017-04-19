@@ -16,7 +16,18 @@ module ChronosUi
     def edit_time_bookings
       time_booking = get_time_booking
       authorize_foreign
-      render 'chronos_ui/time_bookings/edit', locals: {time_booking: time_booking}, layout: false unless performed?
+      render 'chronos_ui/time_bookings/edit', locals: {time_bookings: [time_booking]}, layout: false unless performed?
+    end
+
+    def bulk_edit_time_bookings
+      time_bookings = params[:ids].map do |id|
+        @request_resource = Chronos::TimeBooking.find_by id: id
+        next unless @request_resource
+        authorize_foreign { next }
+        @request_resource
+      end.compact
+      render_404 if time_bookings.empty?
+      render 'chronos_ui/time_bookings/edit', locals: {time_bookings: time_bookings}, layout: false unless performed?
     end
 
     def report

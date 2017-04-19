@@ -16,7 +16,18 @@ module ChronosUi
     def edit_time_logs
       time_log = get_time_log
       authorize_foreign
-      render 'chronos_ui/time_logs/edit', locals: {time_log: time_log}, layout: false unless performed?
+      render 'chronos_ui/time_logs/edit', locals: {time_logs: [time_log]}, layout: false unless performed?
+    end
+
+    def bulk_edit_time_logs
+      time_logs = params[:ids].map do |id|
+        @request_resource = Chronos::TimeLog.find_by id: id
+        next unless @request_resource
+        authorize_foreign { next }
+        @request_resource
+      end.compact
+      render_404 if time_logs.empty?
+      render 'chronos_ui/time_logs/edit', locals: {time_logs: time_logs}, layout: false unless performed?
     end
 
     def book_time_logs

@@ -4,12 +4,16 @@ scope :chronos, as: :chronos do
     root action: :index
     get 'time_logs'
     get 'time_logs/:id/edit', action: :edit_time_logs, as: :edit_time_logs
+    get 'time_logs/edit', action: :bulk_edit_time_logs, as: :bulk_edit_time_logs
     get 'time_logs/:id/book', action: :book_time_logs, as: :book_time_logs
     get 'time_bookings'
     get 'time_bookings/:id/edit', action: :edit_time_bookings, as: :edit_time_bookings
+    get 'time_bookings/edit', action: :bulk_edit_time_bookings, as: :bulk_edit_time_bookings
     get 'report'
     get 'time_trackers'
     get 'time_trackers/:id/edit', action: :edit_time_trackers, as: :edit_time_trackers
+    get 'time_trackers/edit', action: :bulk_edit_time_trackers, as: :bulk_edit_time_trackers
+    get 'context_menu'
   end
   
   scope :completion, as: :completion, controller: :chronos_completion do

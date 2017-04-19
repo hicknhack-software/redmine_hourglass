@@ -1,0 +1,8 @@
+- ids = @records.map(&:id)
+ul
+  /- if authorize_globally_for('chronos/time_logs', 'book') && @records.all? { |time_log| time_log.bookable? }
+  /  li = link_to t('chronos.ui.lists.button_book'), chronos_ui_book_time_logs_path(time_log), class: 'icon-time js-show-inline-form', title: t('chronos.ui.lists.button_book'), remote: true, data: {type: 'html'}
+  - if authorize_globally_for 'chronos/time_logs', 'update'
+    li = link_to t(:button_edit), chronos_ui_bulk_edit_time_logs_path(ids: ids), class: 'icon-edit js-show-inline-form-multi', title: t(:button_edit), remote: true, data: {type: 'html'}
+  - if authorize_globally_for 'chronos/time_logs', 'destroy'
+    li = link_to t(:button_delete), @records.length == 1 ? chronos_time_log_path(@records.first) : bulk_destroy_chronos_time_logs_path(time_logs: ids), class: 'icon-del js-chronos-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)}

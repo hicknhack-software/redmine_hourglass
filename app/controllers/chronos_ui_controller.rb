@@ -20,6 +20,7 @@ class ChronosUiController < ApplicationController
 
   private
   def authorize_foreign
+    return super if block_given?
     super do
       render_403
     end

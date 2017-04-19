@@ -1,5 +1,5 @@
 td.checkbox.hide-when-print
-  = check_box_tag 'ids[]', entry.id, false, id: nil
+  input type='checkbox'
 - query.columns.each do |column|
   td class=column.css_classes
     = column_content column, entry

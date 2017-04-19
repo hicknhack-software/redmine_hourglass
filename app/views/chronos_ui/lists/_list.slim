@@ -7,11 +7,11 @@
     = render_query_totals query
     #chart-container
     .autoscroll
-      table.list.chronos-list
+      table.list.chronos-list data-list-type=list_arguments[:action_name]
         thead
           tr
             th.checkbox.hide-when-print
-              = link_to image_tag('toggle_check.png'),{}, title: "#{t(:button_check_all)} / #{t(:button_uncheck_all)}"
+              = link_to image_tag('toggle_check.png'), {}, title: "#{t(:button_check_all)} / #{t(:button_uncheck_all)}"
             - @sort_criteria = sort_criteria
             - query.columns.each do |column|
               = column_header column, list_arguments[:sort_param_name]
