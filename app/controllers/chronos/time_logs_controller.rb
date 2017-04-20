@@ -38,7 +38,7 @@ module Chronos
 
     def bulk_update
       bulk do |id, params|
-        time_log = Chronos::TimeLog.find_by(id: id) or return
+        time_log = Chronos::TimeLog.find_by(id: id) or next
         time_log.update parse_boolean :round, params.permit(:start, :stop, :comments, :round)
         time_log
       end
@@ -75,8 +75,8 @@ module Chronos
 
     def bulk_book
       bulk :time_bookings do |id, params|
-        time_log = Chronos::TimeLog.find_by(id: id) or return
-        return t('chronos.api.time_logs.errors.already_booked') if time_log.booked?
+        time_log = Chronos::TimeLog.find_by(id: id) or next
+        next t('chronos.api.time_logs.errors.already_booked') if time_log.booked?
         time_log.book parse_boolean :round, params.permit(:comments, :project_id, :issue_id, :activity_id, :round)
       end
     end
@@ -88,7 +88,7 @@ module Chronos
 
     def bulk_destroy
       bulk do |id|
-        time_log = Chronos::TimeLog.find_by(id: id) or return
+        time_log = Chronos::TimeLog.find_by(id: id) or next
         time_log.destroy
       end
     end
