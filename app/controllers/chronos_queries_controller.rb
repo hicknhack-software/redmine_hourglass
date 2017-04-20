@@ -2,8 +2,8 @@ class ChronosQueriesController < ApplicationController
   include QueriesHelper
   include QueryConcern
 
-  before_filter :find_query, only: [:edit, :update, :destroy]
-  before_filter :find_project, :build_query, only: [:new, :create]
+  before_action :find_query, only: [:edit, :update, :destroy]
+  before_action :find_project, :build_query, only: [:new, :create]
 
   helper QueriesHelper
 

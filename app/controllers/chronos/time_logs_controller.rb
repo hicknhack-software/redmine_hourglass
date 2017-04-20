@@ -79,7 +79,7 @@ module Chronos
       bulk :time_bookings do |id, booking_params|
         @request_resource = Chronos::TimeLog.find_by(id: id) or next
         error_msg = find_project booking_params, mode: :inline
-        next error_msg if error_msg
+        next error_msg if error_msg.is_a? String
         next booking_forbidden_message unless book_allowed?
         next foreign_forbidden_message unless foreign_allowed_to?
         next t('chronos.api.time_logs.errors.already_booked') if @request_resource.booked?

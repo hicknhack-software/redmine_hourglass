@@ -28,7 +28,7 @@ module Chronos
       bulk do |id, booking_params|
         @request_resource = Chronos::TimeBooking.find_by(id: id) or next
         error_msg = find_project booking_params, mode: :inline
-        next error_msg if error_msg
+        next error_msg if error_msg.is_a? String
         next t('chronos.api.errors.forbidden') unless allowed_to?
         next foreign_forbidden_message unless foreign_allowed_to?
         @request_resource.update time_entry_attributes: booking_params.permit(:comments, :project_id, :issue_id, :activity_id)

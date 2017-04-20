@@ -2,6 +2,10 @@ module ListConcern
   include Redmine::Pagination
   extend ActiveSupport::Concern
 
+  included do
+    skip_before_action :authorize_global, only: :context_menu
+  end
+
   def context_menu
     @records = Chronos.const_get(params[:list_type].classify).find params[:ids]
     render "chronos_ui/#{params[:list_type]}/context_menu", layout: false

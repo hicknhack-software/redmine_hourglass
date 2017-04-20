@@ -1,13 +1,4 @@
 class ChronosUiController < ApplicationController
-  include SortHelper
-  include QueryConcern
-  include ListConcern
-  include AuthorizationConcern
-  include ChronosUi::Overview
-  include ChronosUi::TimeLogs
-  include ChronosUi::TimeBookings
-  include ChronosUi::TimeTrackers
-
   helper QueriesHelper
   helper IssuesHelper
   helper SortHelper
@@ -16,7 +7,17 @@ class ChronosUiController < ApplicationController
   helper Chronos::ListHelper
   helper Chronos::ReportHelper
 
-  before_filter :authorize_global
+  before_action :authorize_global
+
+  include AuthorizationConcern
+  include SortHelper
+  include QueryConcern
+  include ListConcern
+
+  include ChronosUi::Overview
+  include ChronosUi::TimeLogs
+  include ChronosUi::TimeBookings
+  include ChronosUi::TimeTrackers
 
   private
   def authorize_foreign
