@@ -22,7 +22,7 @@ module Chronos
       if time_tracker.persisted?
         respond_with_success time_tracker
       else
-        respond_with_error :bad_request, time_tracker.errors.full_messages
+        respond_with_error :bad_request, time_tracker.errors.full_messages, array_mode: :sentence
       end
     end
 
@@ -30,7 +30,7 @@ module Chronos
       if @time_tracker.update update_time_tracker_params
         respond_with_success
       else
-        respond_with_error :bad_request, @time_tracker.errors.full_messages
+        respond_with_error :bad_request, @time_tracker.errors.full_messages, array_mode: :sentence
       end
     end
 
@@ -52,7 +52,7 @@ module Chronos
       else
         error_messages = time_log.errors.full_messages
         error_messages += time_booking.errors.full_messages if time_booking
-        respond_with_error :bad_request, error_messages
+        respond_with_error :bad_request, error_messages, array_mode: :sentence
       end
     end
 

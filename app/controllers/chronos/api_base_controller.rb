@@ -15,14 +15,13 @@ module Chronos
     # :forbidden (403)
     # :not_found (404)
     # :internal_server_error (500)
-    def respond_with_error(status, message, args = {})
-      error_message = message.is_a?(Array) ? message.to_sentence : message
+    def respond_with_error(status, message, **options)
       render json: {
-          message: error_message,
+          message: message.is_a?(Array) && options[:array_mode] == :sentence ? message.to_sentence : message,
           status: Rack::Utils.status_code(status)
       },
              status: status
-      throw :halt unless args[:no_halt]
+      throw :halt unless options[:no_halt]
     end
 
     def respond_with_success(response_obj = nil)
@@ -67,7 +66,7 @@ module Chronos
         end
       end
       if success.length > 0
-        flash[:error] = errors.to_sentence if errors.length > 0
+        flash[:error] = errors if errors.length > 0
         respond_with_success
       else
         respond_with_error :bad_request, errors

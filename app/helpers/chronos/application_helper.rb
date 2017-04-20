@@ -13,6 +13,10 @@ module Chronos
       sources.push options
     end
 
+    def render_flash_messages
+      render partial: 'chronos_ui/shared/flash_messages'
+    end
+
     def javascript_include_tag(*sources)
       super *chronos_asset_paths(:javascript, sources)
     end

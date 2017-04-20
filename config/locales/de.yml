@@ -1,4 +1,8 @@
 de:
+  support:
+    array:
+      two_words_connector: " und "
+      last_word_connector: " und "
   activerecord:
     errors:
       models:
@@ -77,6 +81,7 @@ de:
       time_trackers:
         errors:
           booking_forbidden: Sie sind nicht berechtigt auf diesem Projekt zu buchen.
+          bulk_error_preface: Fehler für Zeitmessung mit ID %{id}
           change_others_forbidden: Sie sind nicht berechtigt diese Aktion für die Zeitmessung eines anderes Nutzers durchzuführen.
           not_found: Diese Zeitmessung existiert nicht.
           update_time_forbidden: Sie sind nicht berechtigt den Beginn der Zeitmessung zu ändern.
@@ -93,6 +98,7 @@ de:
           update_time_forbidden: Sie sind nicht berechtigt den Beginn oder das Ende der Zeiterfassung zu ändern.
       time_bookings:
         errors:
+          bulk_error_preface: Fehler für Zeitbuchung mit ID %{id}
           change_others_forbidden: Sie sind nicht berechtigt diese Aktion für die Zeitbuchung eines anderes Nutzers durchzuführen.
           not_found: Diese Zeitbuchung existiert nicht.
           update_time_forbidden: Sie sind nicht berechtigt den Beginn oder das Ende der Zeitbuchung zu ändern.

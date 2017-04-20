@@ -77,6 +77,7 @@ en:
       time_trackers:
         errors:
           booking_forbidden: You are not authorized to book on this project
+          bulk_error_preface: Errors for time tracker with id %{id}
           change_others_forbidden: You are not authorized to execute this action for another users time tracker
           not_found: This time tracker doesn't exist
           update_time_forbidden: You are not authorized to change the start of a timer
@@ -93,6 +94,7 @@ en:
           update_time_forbidden: You are not authorized to change the start or the stop of a time log
       time_bookings:
         errors:
+          bulk_error_preface: Errors for time booking with id %{id}
           change_others_forbidden: You are not authorized to execute this action for another users time booking
           not_found: This time booking doesn't exist
           update_time_forbidden: You are not authorized to change the start or the stop of a time booking

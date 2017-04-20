@@ -3,7 +3,11 @@ clearFlash = ->
 
 showMessage = (message, type) ->
   clearFlash()
-  $('#content').prepend $('<div/>', class: "flash #{type}").text message
+  if $.isArray message
+    $('#content').prepend $('<div/>', class: "flash #{type}").html $('<ul/>').html $.map message, (msg) ->
+      $('<li/>').text msg
+  else
+    $('#content').prepend $('<div/>', class: "flash #{type}").text message
 
 showNotice = (message) ->
   showMessage message, 'notice'

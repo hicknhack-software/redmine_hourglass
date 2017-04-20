@@ -32,7 +32,7 @@ module Chronos
       if @time_log.update time_log_params
         respond_with_success
       else
-        respond_with_error :bad_request, @time_log.errors.full_messages
+        respond_with_error :bad_request, @time_log.errors.full_messages, array_mode: :sentence
       end
     end
 
@@ -71,7 +71,7 @@ module Chronos
       if time_booking.persisted?
         respond_with_success time_booking
       else
-        respond_with_error :bad_request, time_booking.errors.full_messages
+        respond_with_error :bad_request, time_booking.errors.full_messages, array_mode: :sentence
       end
     end
 
