@@ -1,10 +1,10 @@
 module Chronos
   class TimeLogsController < ApiBaseController
-    accept_api_auth :index, :show, :update, :split, :combine, :book, :destroy
+    accept_api_auth :index, :show, :update, :bulk_update, :split, :combine, :book, :bulk_book, :destroy, :bulk_destroy
 
     before_action :get_time_log, only: [:show, :update, :split, :combine, :book, :destroy]
-    before_action :authorize_global, only: [:index, :show, :update, :split, :combine, :destroy]
-    before_action :find_project, :authorize, only: [:book]
+    before_action :authorize_global, only: [:index, :show, :update, :bulk_update, :split, :combine, :destroy, :bulk_destroy]
+    before_action :find_project, :authorize_book, only: [:book]
     before_action :authorize_foreign, only: [:show, :update, :split, :combine, :book, :destroy]
     before_action :authorize_update_time, only: [:update]
     before_action :authorize_update_booking, only: [:split]
@@ -38,9 +38,11 @@ module Chronos
 
     def bulk_update
       bulk do |id, params|
-        time_log = Chronos::TimeLog.find_by(id: id) or next
-        time_log.update parse_boolean :round, params.permit(:start, :stop, :comments, :round)
-        time_log
+        @request_resource = Chronos::TimeLog.find_by(id: id) or next
+        next foreign_forbidden_message unless foreign_allowed_to?
+        next update_time_forbidden_message unless update_time_allowed?
+        @request_resource.update parse_boolean :round, params.permit(:start, :stop, :comments, :round)
+        @request_resource
       end
     end
 
@@ -74,10 +76,14 @@ module Chronos
     end
 
     def bulk_book
-      bulk :time_bookings do |id, params|
-        time_log = Chronos::TimeLog.find_by(id: id) or next
-        next t('chronos.api.time_logs.errors.already_booked') if time_log.booked?
-        time_log.book parse_boolean :round, params.permit(:comments, :project_id, :issue_id, :activity_id, :round)
+      bulk :time_bookings do |id, booking_params|
+        @request_resource = Chronos::TimeLog.find_by(id: id) or next
+        error_msg = find_project booking_params, mode: :inline
+        next error_msg if error_msg
+        next booking_forbidden_message unless book_allowed?
+        next foreign_forbidden_message unless foreign_allowed_to?
+        next t('chronos.api.time_logs.errors.already_booked') if @request_resource.booked?
+        @request_resource.book parse_boolean :round, booking_params.permit(:comments, :project_id, :issue_id, :activity_id, :round)
       end
     end
 
@@ -88,8 +94,9 @@ module Chronos
 
     def bulk_destroy
       bulk do |id|
-        time_log = Chronos::TimeLog.find_by(id: id) or next
-        time_log.destroy
+        @request_resource = Chronos::TimeLog.find_by(id: id) or next
+        next foreign_forbidden_message unless foreign_allowed_to?
+        @request_resource.destroy
       end
     end
 
@@ -127,8 +134,8 @@ module Chronos
       end
     end
 
-    def find_project
-      find_project_from_params time_booking_params
+    def find_project(booking_params = time_booking_params, **opts)
+      find_project_from_params booking_params.with_indifferent_access, opts
     end
   end
 end

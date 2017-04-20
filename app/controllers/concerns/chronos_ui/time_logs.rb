@@ -22,8 +22,7 @@ module ChronosUi
     def bulk_edit_time_logs
       time_logs = params[:ids].map do |id|
         @request_resource = Chronos::TimeLog.find_by id: id
-        next unless @request_resource
-        authorize_foreign { next }
+        next unless @request_resource && foreign_allowed_to?
         @request_resource
       end.compact
       render_404 if time_logs.empty?
@@ -40,8 +39,7 @@ module ChronosUi
     def bulk_book_time_logs
       time_logs = params[:ids].map do |id|
         @request_resource = Chronos::TimeLog.find_by id: id
-        next unless @request_resource && !@request_resource.booked?
-        authorize_foreign { next }
+        next unless @request_resource && !@request_resource.booked? && foreign_allowed_to?
         @request_resource
       end.compact
       render_404 if time_logs.empty?

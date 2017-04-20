@@ -83,6 +83,7 @@ de:
       time_logs:
         errors:
           already_booked: Diese Zeiterfassung wurde bereits gebucht.
+          booking_forbidden: Sie sind nicht berechtigt auf diesem Projekt zu buchen.
           bulk_error_preface: Fehler für Zeiterfassung mit ID %{id}
           change_others_forbidden: Sie sind nicht berechtigt diese Aktion für die Zeiterfassung eines anderes Nutzers durchzuführen.
           combine_failed: Die zu kombinierenden Zeiterfassungen wurden entweder bereits gebucht oder ihre Beginne und Enden passen nicht zusammen.

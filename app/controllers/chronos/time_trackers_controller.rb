@@ -1,9 +1,9 @@
 module Chronos
   class TimeTrackersController < ApiBaseController
-    accept_api_auth :index, :show, :start, :update, :stop
+    accept_api_auth :index, :show, :start, :update, :bulk_update, :stop, :destroy, :bulk_destroy
 
     before_action :get_time_tracker, only: [:show, :update, :stop, :destroy]
-    before_action :authorize_global, only: [:index, :show, :start, :stop, :update, :destroy]
+    before_action :authorize_global, only: [:index, :show, :start, :stop, :update, :bulk_update, :destroy, :bulk_destroy]
     before_action :find_project, :authorize_book, only: [:stop]
     before_action :authorize_foreign, only: [:show, :update, :stop, :destroy]
     before_action :authorize_update_time, only: [:update]
@@ -36,9 +36,11 @@ module Chronos
 
     def bulk_update
       bulk do |id, params|
-        time_tracker = Chronos::TimeTracker.find_by(id: id) or next
-        time_tracker.update params.permit(:start, :project_id, :activity_id, :issue_id, :comments)
-        time_tracker
+        @request_resource = Chronos::TimeTracker.find_by(id: id) or next
+        next foreign_forbidden_message unless foreign_allowed_to?
+        next update_time_forbidden_message unless update_time_allowed?
+        @request_resource.update params.permit(:start, :project_id, :activity_id, :issue_id, :comments)
+        @request_resource
       end
     end
 
@@ -61,8 +63,9 @@ module Chronos
 
     def bulk_destroy
       bulk do |id|
-        time_tracker = Chronos::TimeTracker.find_by(id: id) or next
-        time_tracker.destroy
+        @request_resource = Chronos::TimeTracker.find_by(id: id) or next
+        next foreign_forbidden_message unless foreign_allowed_to?
+        @request_resource.destroy
       end
     end
 
@@ -93,9 +96,7 @@ module Chronos
     end
 
     def authorize_book
-      if @project.present? && !allowed_to?('book', 'chronos/time_logs')
-        render_403 message: t('chronos.api.time_trackers.errors.booking_forbidden')
-      end
+      super if @project.present?
     end
   end
 end

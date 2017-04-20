@@ -1,6 +1,6 @@
 module Chronos
   class TimeBookingsController < ApiBaseController
-    accept_api_auth :index, :show, :update, :destroy
+    accept_api_auth :index, :show, :update, :bulk_update, :destroy, :bulk_destroy
 
     before_action :get_time_booking, only: [:show, :update, :destroy]
     before_action :authorize_global, only: [:index]
@@ -25,10 +25,14 @@ module Chronos
     end
 
     def bulk_update
-      bulk do |id, params|
-        time_booking = Chronos::TimeBooking.find_by(id: id) or next
-        time_booking.update time_entry_attributes: params.permit(:comments, :project_id, :issue_id, :activity_id)
-        time_booking
+      bulk do |id, booking_params|
+        @request_resource = Chronos::TimeBooking.find_by(id: id) or next
+        error_msg = find_project booking_params, mode: :inline
+        next error_msg if error_msg
+        next t('chronos.api.errors.forbidden') unless allowed_to?
+        next foreign_forbidden_message unless foreign_allowed_to?
+        @request_resource.update time_entry_attributes: booking_params.permit(:comments, :project_id, :issue_id, :activity_id)
+        @request_resource
       end
     end
 
@@ -39,8 +43,11 @@ module Chronos
 
     def bulk_destroy
       bulk do |id|
-        time_booking = Chronos::TimeBooking.find_by(id: id) or next
-        time_booking.destroy
+        @request_resource = Chronos::TimeBooking.find_by(id: id) or next
+        find_project
+        next t('chronos.api.errors.forbidden') unless allowed_to?
+        next foreign_forbidden_message unless foreign_allowed_to?
+        @request_resource.destroy
       end
     end
 
@@ -59,11 +66,11 @@ module Chronos
       Chronos::TimeBooking.find_by id: params[:id]
     end
 
-    def find_project
+    def find_project(booking_params = time_booking_params, **opts)
       if action_name == 'update'
-        find_project_from_params time_booking_params
+        find_project_from_params time_booking_params.with_indifferent_access, opts
       else
-        super
+        super()
       end
     end
   end

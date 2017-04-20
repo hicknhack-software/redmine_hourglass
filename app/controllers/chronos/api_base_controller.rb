@@ -94,17 +94,36 @@ module Chronos
     end
 
     def authorize_foreign
-      super do
-        render_403 message: t("chronos.api.#{controller_name}.errors.change_others_forbidden")
-      end
+      super { render_403 message: foreign_forbidden_message }
     end
 
-    def authorize_update_time
-      controller_params = params[controller_name.singularize]
+    def foreign_forbidden_message
+      t("chronos.api.#{controller_name}.errors.change_others_forbidden")
+    end
+
+    def authorize_update_time(controller_params = params[controller_name.singularize])
+      render_403 message: update_time_forbidden_message unless update_time_allowed? controller_params
+    end
+
+    def update_time_allowed?(controller_params = params[controller_name.singularize])
       has_start_or_stop_parameter = controller_params && (controller_params.include?(:start) || controller_params.include?(:stop))
-      if has_start_or_stop_parameter && !allowed_to?('update_time')
-        render_403 message: t("chronos.api.#{controller_name}.errors.update_time_forbidden")
-      end
+      !has_start_or_stop_parameter || allowed_to?('update_time')
+    end
+
+    def update_time_forbidden_message
+      t("chronos.api.#{controller_name}.errors.update_time_forbidden")
+    end
+
+    def authorize_book
+      render_403 message: booking_forbidden_message unless book_allowed?
+    end
+
+    def book_allowed?
+      allowed_to? 'book', 'chronos/time_logs'
+    end
+
+    def booking_forbidden_message
+      t("chronos.api.#{controller_name}.errors.booking_forbidden")
     end
   end
 end

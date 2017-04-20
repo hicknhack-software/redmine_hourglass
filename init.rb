@@ -26,11 +26,15 @@ Redmine::Plugin.register Chronos.plugin_name do
       permissions.map { |x| [x, "#{x}_foreign".to_sym] }.flatten
     end
 
+    def with_bulk(*permissions)
+      permissions.map { |x| [x, "bulk_#{x}".to_sym] }.flatten
+    end
+
     permission :chronos_track_time,
                {
-                   :'chronos/time_trackers' => [:start, :update, :stop],
-                   :'chronos/time_logs' => [:update, :split, :combine],
-                   :'chronos_ui' => [:index, :time_trackers, :edit_time_trackers, :edit_time_logs]
+                   :'chronos/time_trackers' => [:start, *with_bulk(:update), :stop],
+                   :'chronos/time_logs' => [*with_bulk(:update), :split, :combine],
+                   :'chronos_ui' => [:index, :time_trackers, *with_bulk(:edit_time_trackers, :edit_time_logs)]
                },
                require: :loggedin
 
@@ -50,30 +54,30 @@ Redmine::Plugin.register Chronos.plugin_name do
 
     permission :chronos_edit_tracked_time,
                {
-                   :'chronos/time_trackers' => with_foreign(:update, :update_time, :destroy),
-                   :'chronos/time_logs' => with_foreign(:update, :update_time, :split, :combine, :destroy),
-                   :'chronos_ui' => with_foreign(:edit_time_logs, :edit_time_trackers)
+                   :'chronos/time_trackers' => with_foreign(*with_bulk(:update, :destroy), :update_time),
+                   :'chronos/time_logs' => with_foreign(*with_bulk(:update, :destroy), :update_time, :split, :combine),
+                   :'chronos_ui' => with_foreign(*with_bulk(:edit_time_logs, :edit_time_trackers))
                }, require: :loggedin
 
     permission :chronos_edit_own_tracked_time,
                {
-                   :'chronos/time_trackers' => [:update, :update_time, :destroy],
-                   :'chronos/time_logs' => [:update, :update_time, :split, :combine, :destroy],
-                   :'chronos_ui' => [:edit_time_logs, :edit_time_trackers]
+                   :'chronos/time_trackers' => [*with_bulk(:update, :destroy), :update_time],
+                   :'chronos/time_logs' => [*with_bulk(:update, :destroy), :update_time, :split, :combine],
+                   :'chronos_ui' => with_bulk(:edit_time_logs, :edit_time_trackers)
                }, require: :loggedin
 
     permission :chronos_book_time,
                {
-                   :'chronos/time_logs' => with_foreign(:book),
-                   :'chronos/time_bookings' => with_foreign(:update),
-                   :'chronos_ui' => with_foreign(:book_time_logs, :edit_time_bookings)
+                   :'chronos/time_logs' => with_foreign(*with_bulk(:book)),
+                   :'chronos/time_bookings' => with_foreign(*with_bulk(:update)),
+                   :'chronos_ui' => with_foreign(*with_bulk(:book_time_logs, :edit_time_bookings))
                }, require: :loggedin
 
     permission :chronos_book_own_time,
                {
-                   :'chronos/time_logs' => [:book],
-                   :'chronos/time_bookings' => [:update],
-                   :'chronos_ui' => [:book_time_logs, :edit_time_bookings]
+                   :'chronos/time_logs' => with_bulk(:book),
+                   :'chronos/time_bookings' => with_bulk(:update),
+                   :'chronos_ui' => with_bulk(:book_time_logs, :edit_time_bookings)
                }, require: :loggedin
 
     permission :chronos_view_booked_time,
@@ -90,14 +94,14 @@ Redmine::Plugin.register Chronos.plugin_name do
 
     permission :chronos_edit_booked_time,
                {
-                   :'chronos/time_bookings' => with_foreign(:update, :update_time, :destroy),
-                   :'chronos_ui' => with_foreign(:edit_time_bookings)
+                   :'chronos/time_bookings' => with_foreign(*with_bulk(:update, :destroy), :update_time),
+                   :'chronos_ui' => with_foreign(*with_bulk(:edit_time_bookings))
                }, require: :loggedin
 
     permission :chronos_edit_own_booked_time,
                {
-                   :'chronos/time_bookings' => [:update, :update_time, :destroy],
-                   :'chronos_ui' => [:edit_time_bookings]
+                   :'chronos/time_bookings' => [*with_bulk(:update, :destroy), :update_time],
+                   :'chronos_ui' => with_bulk(:edit_time_bookings)
                }, require: :loggedin
   end
 

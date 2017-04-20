@@ -22,8 +22,7 @@ module ChronosUi
     def bulk_edit_time_trackers
       time_trackers = params[:ids].map do |id|
         @request_resource = Chronos::TimeTracker.find_by id: id
-        next unless @request_resource
-        authorize_foreign { next }
+        next unless @request_resource && foreign_allowed_to?
         @request_resource
       end.compact
       render_404 if time_trackers.empty?
