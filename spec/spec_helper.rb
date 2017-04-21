@@ -13,6 +13,14 @@ require 'factory_girl_rails'
 # require chronos
 require File.expand_path File.dirname(__FILE__) + '/../lib/chronos'
 
+module Chronos
+  class << self
+    def set(key, value)
+      settings(merged: false)[key] = value
+    end
+  end
+end
+
 FactoryGirl.definition_file_paths << File.join(File.dirname(__FILE__), 'factories')
 FactoryGirl.find_definitions
 

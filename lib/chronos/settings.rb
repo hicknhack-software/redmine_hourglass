@@ -2,7 +2,7 @@ module Chronos
   module Settings
     class << self
       def settings(project: nil, merged: true)
-        settings = Setting["plugin_#{Chronos.plugin_name}"].deep_symbolize_keys
+        settings = Setting["plugin_#{Chronos.plugin_name}"]
         if project
           project_id = project.is_a?(Project) ? project.id : project
           project_settings = settings[:projects] && settings[:projects]["#{project_id}".to_sym] || {}
