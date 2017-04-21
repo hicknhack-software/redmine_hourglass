@@ -1,0 +1,25 @@
+= form_tag settings_chronos_project_path(id: @project.id) do
+  - global_settings = Chronos.settings
+  - settings = Chronos.settings project: @project, merged: false
+
+  fieldset.box.tabular
+    legend = t('chronos.project_settings.override_hint')
+    h3 = t('chronos.settings.rounding.title')
+    p
+      = render partial: 'projects/label_with_global_value_tag', locals: {name: 'settings[round_minimum]', label_text: t('chronos.settings.rounding.fields.minimum'), global_value: global_settings[:round_minimum]}
+      = text_field_tag 'settings[round_minimum]', settings[:round_minimum], {size: 2}
+      = " (#{t(:field_hours)})"
+    p
+      = render partial: 'projects/label_with_global_value_tag', locals: {name: 'settings[round_limit]', label_text: t('chronos.settings.rounding.fields.limit'), global_value: global_settings[:round_limit]}
+      = text_field_tag 'settings[round_limit]', settings[:round_limit], {size: 2}
+      |  (%)
+    p
+      = render partial: 'projects/label_with_global_value_tag', locals: {name: 'settings[round_carry_over_due]', label_text: t('chronos.settings.rounding.fields.carry_over_due'), global_value: global_settings[:round_carry_over_due]}
+      = text_field_tag 'settings[round_carry_over_due]', settings[:round_carry_over_due], {size: 2}
+      = " (#{t(:field_hours)})"
+
+    p
+      = render partial: 'projects/label_with_global_value_tag', locals: {name: 'settings[round_default]', label_text: t('chronos.settings.rounding.fields.default'), global_value: global_settings[:round_default] ? t(:general_text_yes) : t(:general_text_no)}
+      = select_tag 'settings[round_default]', options_for_select([[t('chronos.project_settings.use_global'), ''], [t(:general_text_Yes), 'true'], [t(:general_text_no), 'false']], settings[:round_default])
+
+  = submit_tag l(:button_save)

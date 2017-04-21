@@ -16,7 +16,7 @@ scope :chronos, as: :chronos do
     get 'time_trackers/edit', action: :bulk_edit_time_trackers, as: :bulk_edit_time_trackers
     get 'context_menu'
   end
-  
+
   scope :completion, as: :completion, controller: :chronos_completion do
     get 'issues'
     get 'activities'
@@ -29,7 +29,12 @@ scope :chronos, as: :chronos do
   end
 end
 
-resources :projects do
+resources :projects, only: [] do
+  member do
+    scope :chronos, as: :chronos do
+      post 'settings', controller: :chronos_projects
+    end
+  end
   nested do
     scope :chronos, as: :chronos do
       resources :queries, controller: :chronos_queries, only: [:new, :create]

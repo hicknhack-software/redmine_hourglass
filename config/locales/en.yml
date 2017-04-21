@@ -40,6 +40,11 @@ en:
 ################################################################
 
   chronos:
+    project_settings:
+    global_value: "(Global Value: #{value})"
+      override_hint: Leave empty to use global settings
+      title: Chronos Plugin Settings
+      use_global: Use global
     settings:
       import:
         error:

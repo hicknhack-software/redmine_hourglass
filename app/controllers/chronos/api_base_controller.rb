@@ -1,6 +1,7 @@
 module Chronos
   class ApiBaseController < ApplicationController
     include ::AuthorizationConcern
+    include BooleanParsing
 
     around_action :catch_halt
 
@@ -75,21 +76,6 @@ module Chronos
 
     def missing_parameters(e)
       respond_with_error :bad_request, t('chronos.api.errors.missing_parameters'), no_halt: true
-    end
-
-    def parse_boolean(keys, params = self.params)
-      keys = [keys] if keys.is_a? Symbol
-      keys.each do |key|
-        params[key] = case params[key].class.name
-                        when 'String'
-                          params[key] == '1' || params[key] == 'true'
-                        when 'Fixnum', 'Integer'
-                          params[key] == 1
-                        else
-                          params[key]
-                      end
-      end
-      params
     end
 
     def authorize_foreign

@@ -14,6 +14,7 @@ p
 
 p
   = label_tag 'settings[round_default]', t('chronos.settings.rounding.fields.default')
+  = hidden_field_tag 'settings[round_default]', false
   = check_box_tag 'settings[round_default]', true, @settings[:round_default]
 
 h3 = t('chronos.settings.report.title')
@@ -31,6 +32,7 @@ p
 h3 = t('chronos.settings.misc.title')
 p
   = label_tag 'settings[global_tracker]', t('chronos.settings.misc.fields.global_tracker')
+  = hidden_field_tag 'settings[global_tracker]', false
   = check_box_tag 'settings[global_tracker]', true, @settings[:global_tracker]
 
 /TODO: if more imports possible, move condition below title

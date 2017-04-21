@@ -8,6 +8,8 @@ end
 
 module Chronos
   class << self
+    delegate :settings, :save_settings, to: Chronos::Settings
+
     def init
       set_autoload_paths
       add_redmine_patches
@@ -15,12 +17,13 @@ module Chronos
       Chronos::RedmineHooks.load!
     end
 
-    def settings
-      Setting["plugin_#{plugin_name}"]
-    end
-
     def plugin_name
       :redmine_chronos
+    end
+
+    def add_patch(module_to_patch, method: :include)
+      patch = Chronos::RedminePatches.const_get "#{module_to_patch.name.demodulize}Patch"
+      module_to_patch.send method, patch unless module_to_patch.ancestors.include? patch
     end
 
     private
@@ -36,10 +39,8 @@ module Chronos
 
     def add_redmine_patches
       ActionDispatch::Callbacks.to_prepare do
-        [Project, TimeEntry, User].each do |module_to_patch|
-          patch = Chronos::RedminePatches.const_get "#{module_to_patch.name.demodulize}Patch"
-          module_to_patch.send :include, patch unless module_to_patch.included_modules.include? patch
-        end
+        [Project, TimeEntry, User].each {|module_to_patch| Chronos.add_patch module_to_patch}
+        [ProjectsHelper, SettingsController].each {|module_to_patch| Chronos.add_patch module_to_patch, method: :prepend}
 
         Redmine::Plugin.find(Chronos.plugin_name).extend Chronos::RedminePatches::MirrorAssetsPatch
       end
