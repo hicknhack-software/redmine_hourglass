@@ -16,10 +16,6 @@ module Chronos::DateTimeCalculations
       Chronos::Settings[:round_carry_over_due].to_f.hours.to_i
     end
 
-    def round_default
-      Chronos::Settings[:round_default]
-    end
-
     def time_diff(time1, time2)
       (time1 - time2).abs.to_i
     end
@@ -55,7 +51,7 @@ module Chronos::DateTimeCalculations
     end
 
     def booking_process(user, options)
-      round = options[:round].nil? ? round_default : options[:round]
+      round = options[:round].nil? ? Chronos::Settings[:round_default, project: options[:project_id]] : options[:round]
       if round
         previous_time_log = closest_booked_time_log user, options[:project_id], options[:start], after_current: false
         options[:start], options[:stop] = calculate_bookable_time options[:start], options[:stop], previous_time_log && previous_time_log.time_booking && previous_time_log.time_booking.rounding_carry_over

@@ -9,7 +9,7 @@
           .label
             = label :time_log, :round, t(:field_round), title: t('chronos.ui.time_logs.round_hint')
           .input
-            = check_box :time_log, :round, checked: Chronos::DateTimeCalculations.round_default
+            = check_box :time_log, :round, checked: Chronos::Settings[:round_default, project: time_log.time_booking.project]
       = form_field :comments, f, time_log, disabled: !can[:update]
       .form-field
         .input

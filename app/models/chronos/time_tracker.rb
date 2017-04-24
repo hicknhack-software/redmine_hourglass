@@ -9,6 +9,10 @@ module Chronos
     belongs_to :activity, class_name: 'TimeEntryActivity', foreign_key: 'activity_id'
 
     after_initialize :init
+    before_update if: :project_id_changed? do
+      self.round = Chronos::Settings[:round_default, project: project] if project
+      true
+    end
 
     validates_uniqueness_of :user_id
     validates_presence_of :user, :start
@@ -46,7 +50,8 @@ module Chronos
       now = Time.now.change sec: 0
       previous_time_log = current_user.chronos_time_logs.find_by(stop: now + 1.minute)
       self.user ||= current_user
-      self.round = DateTimeCalculations.round_default if round.nil?
+      project_id = project_id || issue && issue.project_id
+      self.round = Chronos::Settings[:round_default, project: project_id] if round.nil?
       self.start ||= previous_time_log && previous_time_log.stop || now
     end
 

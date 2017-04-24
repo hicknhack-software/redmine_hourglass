@@ -52,6 +52,10 @@ projectFieldChanged = (event) ->
   $form = $projectField.closest('form')
   $issueTextField = $form.find('.js-issue-autocompletion')
   $activityField = $form.find('[name*=activity_id]')
+
+  round = $projectField.find(':selected').data('round-default')
+  $form.find('[type=checkbox][name*=round]').prop('checked', round) unless round is null
+
   $issueTextField.val('').trigger('change') unless $issueTextField.val() is '' or event.type is 'changefromissue'
   chronos.FormValidator.validateField $projectField if event.type is 'changefromissue'
   updateActivityField $activityField, $projectField
