@@ -6,8 +6,8 @@ describe Chronos::TimeBooking do
   end
 
   before :each do
-    Chronos.set :round_minimum,  '0.25'
-    Chronos.set :round_limit,  '50'
+    Chronos::Settings[:round_limit] = '50'
+    Chronos::Settings[:round_minimum] = '0.25'
   end
 
   it 'has a valid factory' do

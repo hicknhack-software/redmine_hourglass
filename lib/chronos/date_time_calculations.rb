@@ -1,7 +1,7 @@
 module Chronos::DateTimeCalculations
   class << self
     def round_limit
-      Chronos.settings[:round_limit].to_f / 100
+      Chronos::Settings[:round_limit].to_f / 100
     end
 
     def round_limit_in_seconds
@@ -9,15 +9,15 @@ module Chronos::DateTimeCalculations
     end
 
     def round_minimum
-      Chronos.settings[:round_minimum].to_f.hours.to_i
+      Chronos::Settings[:round_minimum].to_f.hours.to_i
     end
 
     def round_carry_over_due
-      Chronos.settings[:round_carry_over_due].to_f.hours.to_i
+      Chronos::Settings[:round_carry_over_due].to_f.hours.to_i
     end
 
     def round_default
-      Chronos.settings[:round_default] == 'true'
+      Chronos::Settings[:round_default]
     end
 
     def time_diff(time1, time2)

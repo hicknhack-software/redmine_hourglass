@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title = Chronos.settings[:report_title]
+    title = Chronos::Settings[:report_title]
     = javascript_heads
     = javascript_include_tag 'global', plugin: Chronos.plugin_name
     = javascript_include_tag 'application', plugin: Chronos.plugin_name
@@ -10,9 +10,9 @@ html
     = render partial: 'chronos_ui/lists/chart'
   body.controller-chronos_ui.action-report
     .header
-      h1 = Chronos.settings[:report_title]
-      - if Chronos.settings[:report_logo_url].present?
-        .logo = image_tag Chronos.settings[:report_logo_url], width: Chronos.settings[:report_logo_width] || 150
+      h1 = Chronos::Settings[:report_title]
+      - if Chronos::Settings[:report_logo_url].present?
+        .logo = image_tag Chronos::Settings[:report_logo_url], width: Chronos::Settings[:report_logo_width] || 150
     .content
       .chart
         = render_query_totals @query

@@ -6,8 +6,8 @@ describe Chronos::TimeTracker do
   end
 
   before :each do
-    Chronos.set :round_minimum,  '0.25'
-    Chronos.set :round_limit,  '50'
+    Chronos::Settings[:round_minimum] = '0.25'
+    Chronos::Settings[:round_limit] = '50'
     User.current = create :user
   end
 

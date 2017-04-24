@@ -10,16 +10,7 @@ Redmine::Plugin.register Chronos.plugin_name do
 
   requires_redmine version_or_higher: '3.0.0'
 
-  settings default: {
-      global_tracker: true,
-      report_title: 'Report',
-      report_logo_url: '',
-      report_logo_width: '150',
-      round_minimum: '0.25',
-      round_limit: '50',
-      round_carry_over_due: '12',
-      round_default: false
-  }, :partial => "settings/#{Chronos.plugin_name}"
+  settings default: Chronos::Settings.defaults, :partial => "settings/#{Chronos.plugin_name}"
 
   project_module Chronos.plugin_name do
     def with_foreign(*permissions)

@@ -6,9 +6,9 @@ describe Chronos::TimeLog do
   end
 
   before :each do
-    Chronos.set :round_minimum,  '0.25'
-    Chronos.set :round_limit,  '50'
-    Chronos.set :round_carry_over_due,  '12'
+    Chronos::Settings[:round_minimum] = '0.25'
+    Chronos::Settings[:round_limit] = '50'
+    Chronos::Settings[:round_carry_over_due] = '12'
   end
 
   it 'has a valid factory' do

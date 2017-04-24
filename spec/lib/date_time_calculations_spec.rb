@@ -1,18 +1,18 @@
 require_relative '../spec_helper'
 describe Chronos::DateTimeCalculations do
   it 'gives the round minimum in seconds' do
-    Chronos.set :round_minimum, '0.4'
+    Chronos::Settings[:round_minimum] = '0.4'
     expect(Chronos::DateTimeCalculations.round_minimum).to eql 1440
   end
 
   it 'gives the round limit as number' do
-    Chronos.set :round_limit, '80'
+    Chronos::Settings[:round_limit] = '80'
     expect(Chronos::DateTimeCalculations.round_limit).to eql 0.8
   end
 
   it 'gives the round limit in seconds' do
-    Chronos.set :round_limit,  '70'
-    Chronos.set :round_minimum,  '0.3'
+    Chronos::Settings[:round_limit] = '70'
+    Chronos::Settings[:round_minimum] = '0.3'
     expect(Chronos::DateTimeCalculations.round_limit_in_seconds).to eql 756
   end
 
@@ -34,8 +34,8 @@ describe Chronos::DateTimeCalculations do
     round_limits_in_seconds = 1620
 
     before :each do
-      Chronos.set :round_minimum,  '0.5'
-      Chronos.set :round_limit,  '90'
+      Chronos::Settings[:round_minimum] = '0.5'
+      Chronos::Settings[:round_limit] = '90'
     end
 
     5.times do

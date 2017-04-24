@@ -1,4 +1,4 @@
-- if Chronos.settings[:global_tracker]
+- if Chronos::Settings[:global_tracker]
   - time_tracker = User.current.chronos_time_tracker
   - if time_tracker
     = render partial: 'hooks/time_tracker/stop_link', locals: {time_tracker: time_tracker, issue: nil}

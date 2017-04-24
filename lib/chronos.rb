@@ -8,8 +8,6 @@ end
 
 module Chronos
   class << self
-    delegate :settings, :save_settings, to: Chronos::Settings
-
     def init
       set_autoload_paths
       add_redmine_patches

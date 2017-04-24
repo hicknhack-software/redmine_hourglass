@@ -10,7 +10,7 @@ module Chronos
       def plugin
         return super unless request.post? && params[:id] == Chronos.plugin_name.to_s
 
-        Chronos.save_settings settings_params
+        Chronos::Settings[] = settings_params
         flash[:notice] = l(:notice_successful_update)
         redirect_to plugin_settings_path Chronos.plugin_name
       end
