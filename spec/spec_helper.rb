@@ -68,6 +68,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.start
+    Setting.clear_cache
   end
 
   config.after(:each) do

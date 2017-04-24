@@ -1,19 +1,15 @@
 module Chronos::DateTimeCalculations
   class << self
-    def round_limit
-      Chronos::Settings[:round_limit].to_f / 100
+    def round_limit_in_seconds(project: nil)
+      ((Chronos::Settings[:round_limit, project: project].to_f / 100) * round_minimum(project: project)).to_i
     end
 
-    def round_limit_in_seconds
-      (round_limit * round_minimum).to_i
+    def round_minimum(project: nil)
+      Chronos::Settings[:round_minimum, project: project].to_f.hours.to_i
     end
 
-    def round_minimum
-      Chronos::Settings[:round_minimum].to_f.hours.to_i
-    end
-
-    def round_carry_over_due
-      Chronos::Settings[:round_carry_over_due].to_f.hours.to_i
+    def round_carry_over_due(project: nil)
+      Chronos::Settings[:round_carry_over_due, project: project].to_f.hours.to_i
     end
 
     def time_diff(time1, time2)
@@ -35,18 +31,19 @@ module Chronos::DateTimeCalculations
       }
     end
 
-    def round_interval(time_interval)
-      if time_interval % round_minimum != 0
-        round_multiplier = (time_interval % round_minimum < round_limit_in_seconds ? 0 : 1)
-        (time_interval.to_i / round_minimum + round_multiplier) * round_minimum
+    def round_interval(time_interval, project: nil)
+      round_minimum_value = round_minimum project: project
+      if time_interval % round_minimum_value != 0
+        round_multiplier = (time_interval % round_minimum_value < round_limit_in_seconds(project: project) ? 0 : 1)
+        (time_interval.to_i / round_minimum_value + round_multiplier) * round_minimum_value
       else
         time_interval
       end
     end
 
-    def calculate_bookable_time(start, stop, round_carry_over = 0)
+    def calculate_bookable_time(start, stop, round_carry_over = 0, project: nil)
       start += round_carry_over || 0
-      stop = start + round_interval(time_diff start, stop)
+      stop = start + round_interval(time_diff(start, stop), project: project)
       [start, stop]
     end
 
@@ -54,7 +51,7 @@ module Chronos::DateTimeCalculations
       round = options[:round].nil? ? Chronos::Settings[:round_default, project: options[:project_id]] : options[:round]
       if round
         previous_time_log = closest_booked_time_log user, options[:project_id], options[:start], after_current: false
-        options[:start], options[:stop] = calculate_bookable_time options[:start], options[:stop], previous_time_log && previous_time_log.time_booking && previous_time_log.time_booking.rounding_carry_over
+        options[:start], options[:stop] = calculate_bookable_time options[:start], options[:stop], previous_time_log && previous_time_log.time_booking && previous_time_log.time_booking.rounding_carry_over, project: options[:project_id]
       end
       time_booking = nil
       ActiveRecord::Base.transaction(requires_new: true) do
@@ -81,7 +78,8 @@ module Chronos::DateTimeCalculations
     end
 
     def closest_booked_time_log(user, project_id, start, after_current: false)
-      interval = after_current ? [start, start + round_carry_over_due] : [start - round_carry_over_due, start]
+      round_carry_over_due_value = round_carry_over_due project: project_id
+      interval = after_current ? [start, start + round_carry_over_due_value] : [start - round_carry_over_due_value, start]
       closest_time_logs = user.chronos_time_logs
           .booked_on_project(project_id)
           .with_start_in_interval(*interval)

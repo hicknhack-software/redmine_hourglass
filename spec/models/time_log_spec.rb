@@ -243,133 +243,252 @@ describe Chronos::TimeLog do
       result
     end
 
-    context 'without pauses' do
-      it '6x 10 minutes' do
-        now = Time.now.change(sec: 0)
-        time_logs = create_time_logs start: now, entries: [
-            {length: 10.minutes},
-            {length: 10.minutes},
-            {length: 10.minutes},
-            {length: 10.minutes},
-            {length: 10.minutes},
-            {length: 10.minutes}
-        ]
-        time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
-        expect(time_bookings.last.stop).to eq now + 1.hour
+    describe 'with global settings' do
+      context 'without pauses' do
+        it '6x 10 minutes' do
+          now = Time.now.change(sec: 0)
+          time_logs = create_time_logs start: now, entries: [
+              {length: 10.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes}
+          ]
+          time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
+          expect(time_bookings.last.stop).to eq now + 1.hour
+        end
+
+        it 'different time values' do
+          now = Time.now.change(sec: 0)
+          time_logs = create_time_logs start: now, entries: [
+              {length: 7.minutes},
+              {length: 3.minutes},
+              {length: 25.minutes},
+              {length: 10.minutes},
+              {length: 11.minutes},
+              {length: 13.minutes}
+          ]
+          time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
+          expect(time_bookings.last.stop).to eq now + 1.25.hours
+        end
       end
 
-      it 'different time values' do
-        now = Time.now.change(sec: 0)
-        time_logs = create_time_logs start: now, entries: [
-            {length: 7.minutes},
-            {length: 3.minutes},
-            {length: 25.minutes},
-            {length: 10.minutes},
-            {length: 11.minutes},
-            {length: 13.minutes}
-        ]
-        time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
-        expect(time_bookings.last.stop).to eq now + 1.25.hours
+      context 'with pauses smaller as configured overdue' do
+        it '- 6x 10 minutes' do
+          now = Time.now.change(sec: 0)
+          time_logs = create_time_logs start: now, entries: [
+              {length: 10.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes, offset: 20.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes, offset: 10.minutes},
+              {length: 10.minutes}
+          ]
+          time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
+          expect(time_bookings.last.stop).to eq now + 1.5.hours
+        end
+
+        it '- different time values' do
+          now = Time.now.change(sec: 0)
+          time_logs = create_time_logs start: now, entries: [
+              {length: 7.minutes},
+              {length: 3.minutes, offset: 20.minutes},
+              {length: 25.minutes},
+              {length: 10.minutes},
+              {length: 11.minutes, offset: 10.minutes},
+              {length: 13.minutes}
+          ]
+          time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
+          expect(time_bookings.last.stop).to eq now + 1.75.hours
+        end
+      end
+
+      context 'with pauses greater as configured overdue' do
+        it '- 6x 10 minutes' do
+          now = Time.now.change(sec: 0)
+          time_logs = create_time_logs start: now, entries: [
+              {length: 10.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes, offset: 13.hours},
+              {length: 10.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes}
+          ]
+          time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
+          expect(time_bookings.last.stop).to eq now + 14.hours + 5.minutes
+        end
+
+        it '- different time values' do
+          now = Time.now.change(sec: 0)
+          time_logs = create_time_logs start: now, entries: [
+              {length: 7.minutes},
+              {length: 3.minutes, offset: 15.hours},
+              {length: 25.minutes},
+              {length: 10.minutes},
+              {length: 11.minutes, offset: 12.hours},
+              {length: 13.minutes}
+          ]
+          time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
+          expect(time_bookings.last.stop).to eq now + 28.25.hours
+        end
+      end
+
+      context 'and updates existing bookings' do
+        it '- 5x 10 minutes' do
+          now = Time.now.change(sec: 0)
+          project = create(:project)
+          activity = create(:time_entry_activity)
+          time_logs = create_time_logs start: now, entries: [
+              {length: 10.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes, offset: 10.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes}
+          ]
+          time_bookings = book_all time_logs, project_id: project.id, activity_id: activity.id, round: true
+          expect {
+            second_time_log = time_logs[1]
+            time_log = create(:time_log, user: second_time_log.user, start: second_time_log.stop, stop: second_time_log.stop + 10.minutes)
+            time_log.book project_id: project.id, activity_id: activity.id, round: true
+          }.to change {time_bookings.last.reload.stop - now}.from(55.minutes).to(1.hours)
+        end
+
+        it '- different time values' do
+          now = Time.now.change(sec: 0)
+          project = create(:project)
+          activity = create(:time_entry_activity)
+          time_logs = create_time_logs start: now, entries: [
+              {length: 7.minutes},
+              {length: 3.minutes},
+              {length: 25.minutes},
+              {length: 11.minutes, offset: 10.minutes},
+              {length: 13.minutes}
+          ]
+          time_bookings = book_all time_logs, project_id: project.id, activity_id: activity.id, round: true
+          expect {
+            second_time_log = time_logs[2]
+            time_log = create(:time_log, user: second_time_log.user, start: second_time_log.stop, stop: second_time_log.stop + 10.minutes)
+            time_log.book project_id: project.id, activity_id: activity.id, round: true
+          }.to change {time_bookings.last.reload.stop - now}.from(70.minutes).to(75.minutes)
+        end
       end
     end
 
-    context 'with pauses smaller as configured overdue' do
-      it '- 6x 10 minutes' do
-        now = Time.now.change(sec: 0)
-        time_logs = create_time_logs start: now, entries: [
-            {length: 10.minutes},
-            {length: 10.minutes},
-            {length: 10.minutes, offset: 20.minutes},
-            {length: 10.minutes},
-            {length: 10.minutes, offset: 10.minutes},
-            {length: 10.minutes}
-        ]
-        time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
-        expect(time_bookings.last.stop).to eq now + 1.5.hours
+    describe 'with project specific settings' do
+      before :each do
+        @project = create(:project)
+        Chronos::Settings[project: @project] = {round_minimum: '0.15', round_limit: '75', round_carry_over_due: '8'}
       end
 
-      it '- different time values' do
-        now = Time.now.change(sec: 0)
-        time_logs = create_time_logs start: now, entries: [
-            {length: 7.minutes},
-            {length: 3.minutes, offset: 20.minutes},
-            {length: 25.minutes},
-            {length: 10.minutes},
-            {length: 11.minutes, offset: 10.minutes},
-            {length: 13.minutes}
-        ]
-        time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
-        expect(time_bookings.last.stop).to eq now + 1.75.hours
-      end
-    end
+      context 'without pauses' do
+        it '6x 10 minutes' do
+          now = Time.now.change(sec: 0)
+          time_logs = create_time_logs start: now, entries: [
+              {length: 10.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes}
+          ]
+          time_bookings = book_all time_logs, project_id: @project.id, activity_id: create(:time_entry_activity).id, round: true
+          expect(time_bookings.last.stop).to eq (now + 1.hour - 6.minutes).localtime
+        end
 
-    context 'with pauses greater as configured overdue' do
-      it '- 6x 10 minutes' do
-        now = Time.now.change(sec: 0)
-        time_logs = create_time_logs start: now, entries: [
-            {length: 10.minutes},
-            {length: 10.minutes},
-            {length: 10.minutes, offset: 13.hours},
-            {length: 10.minutes},
-            {length: 10.minutes},
-            {length: 10.minutes}
-        ]
-        time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
-        expect(time_bookings.last.stop).to eq now + 14.hours + 5.minutes
-      end
-
-      it '- different time values' do
-        now = Time.now.change(sec: 0)
-        time_logs = create_time_logs start: now, entries: [
-            {length: 7.minutes},
-            {length: 3.minutes, offset: 15.hours},
-            {length: 25.minutes},
-            {length: 10.minutes},
-            {length: 11.minutes, offset: 12.hours},
-            {length: 13.minutes}
-        ]
-        time_bookings = book_all time_logs, project_id: create(:project).id, activity_id: create(:time_entry_activity).id, round: true
-        expect(time_bookings.last.stop).to eq now + 28.25.hours
-      end
-    end
-
-    context 'and updates existing bookings' do
-      it '- 6x 10 minutes' do
-        now = Time.now.change(sec: 0)
-        project = create(:project)
-        activity = create(:time_entry_activity)
-        time_logs = create_time_logs start: now, entries: [
-            {length: 10.minutes},
-            {length: 10.minutes},
-            {length: 10.minutes, offset: 10.minutes},
-            {length: 10.minutes},
-            {length: 10.minutes}
-        ]
-        time_bookings = book_all time_logs, project_id: project.id, activity_id: activity.id, round: true
-        expect {
-          second_time_log = time_logs[1]
-          time_log = create(:time_log, user: second_time_log.user, start: second_time_log.stop, stop: second_time_log.stop + 10.minutes)
-          time_log.book project_id: project.id, activity_id: activity.id, round: true
-        }.to change { time_bookings.last.reload.stop - now }.from(55.minutes).to(1.hours)
+        it 'different time values' do
+          now = Time.now.change(sec: 0)
+          time_logs = create_time_logs start: now, entries: [
+              {length: 7.minutes},
+              {length: 3.minutes},
+              {length: 25.minutes},
+              {length: 10.minutes},
+              {length: 11.minutes},
+              {length: 13.minutes}
+          ]
+          time_bookings = book_all time_logs, project_id: @project.id, activity_id: create(:time_entry_activity).id, round: true
+          expect(time_bookings.last.stop).to eq (now + 1.hours + 3.minutes).localtime
+        end
       end
 
-      it '- different time values' do
-        now = Time.now.change(sec: 0)
-        project = create(:project)
-        activity = create(:time_entry_activity)
-        time_logs = create_time_logs start: now, entries: [
-            {length: 7.minutes},
-            {length: 3.minutes},
-            {length: 25.minutes},
-            {length: 11.minutes, offset: 10.minutes},
-            {length: 13.minutes}
-        ]
-        time_bookings = book_all time_logs, project_id: project.id, activity_id: activity.id, round: true
-        expect {
-          second_time_log = time_logs[2]
-          time_log = create(:time_log, user: second_time_log.user, start: second_time_log.stop, stop: second_time_log.stop + 10.minutes)
-          time_log.book project_id: project.id, activity_id: activity.id, round: true
-        }.to change { time_bookings.last.reload.stop - now }.from(70.minutes).to(75.minutes)
+      context 'with pauses smaller as configured overdue' do
+        it '- 6x 10 minutes' do
+          now = Time.now.change(sec: 0)
+          time_logs = create_time_logs start: now, entries: [
+              {length: 10.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes, offset: 20.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes, offset: 10.minutes},
+              {length: 10.minutes}
+          ]
+          time_bookings = book_all time_logs, project_id: @project.id, activity_id: create(:time_entry_activity).id, round: true
+          expect(time_bookings.last.stop).to eq (now + 1.5.hours - 6.minutes).localtime
+        end
+
+        it '- different time values' do
+          now = Time.now.change(sec: 0)
+          time_logs = create_time_logs start: now, entries: [
+              {length: 7.minutes},
+              {length: 3.minutes, offset: 20.minutes},
+              {length: 25.minutes},
+              {length: 10.minutes},
+              {length: 11.minutes, offset: 10.minutes},
+              {length: 13.minutes}
+          ]
+          time_bookings = book_all time_logs, project_id: @project.id, activity_id: create(:time_entry_activity).id, round: true
+          expect(time_bookings.last.stop).to eq (now + 1.5.hours + 3.minutes).localtime
+        end
+      end
+
+      context 'with pauses greater as configured overdue' do
+        it '- 6x 10 minutes' do
+          now = Time.now.change(sec: 0)
+          time_logs = create_time_logs start: now, entries: [
+              {length: 10.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes, offset: 9.hours},
+              {length: 10.minutes},
+              {length: 10.minutes},
+              {length: 10.minutes}
+          ]
+          time_bookings = book_all time_logs, project_id: @project.id, activity_id: create(:time_entry_activity).id, round: true
+          expect(time_bookings.last.stop).to eq (now + 10.hours - 4.minutes).localtime
+        end
+
+        it '- different time values' do
+          now = Time.now.change(sec: 0)
+          time_logs = create_time_logs start: now, entries: [
+              {length: 7.minutes},
+              {length: 3.minutes, offset: 9.hours},
+              {length: 25.minutes},
+              {length: 10.minutes},
+              {length: 11.minutes, offset: 11.hours},
+              {length: 13.minutes}
+          ]
+          time_bookings = book_all time_logs, project_id: @project.id, activity_id: create(:time_entry_activity).id, round: true
+          expect(time_bookings.last.stop).to eq (now + 21.hours + 3.minutes).localtime
+        end
+      end
+
+      context 'and updates existing bookings' do
+        it '- different time values' do
+          now = Time.now.change(sec: 0)
+          activity = create(:time_entry_activity)
+          time_logs = create_time_logs start: now, entries: [
+              {length: 7.minutes},
+              {length: 3.minutes},
+              {length: 25.minutes},
+              {length: 11.minutes, offset: 10.minutes},
+              {length: 13.minutes}
+          ]
+          time_bookings = book_all time_logs, project_id: @project.id, activity_id: activity.id, round: true
+          expect {
+            second_time_log = time_logs[2]
+            time_log = create(:time_log, user: second_time_log.user, start: second_time_log.stop, stop: second_time_log.stop + 10.minutes)
+            time_log.book project_id: @project.id, activity_id: activity.id, round: true
+          }.to change {time_bookings.last.reload.stop - now}.from(64.minutes).to(75.minutes)
+        end
       end
     end
   end

@@ -5,15 +5,15 @@ describe Chronos::DateTimeCalculations do
     expect(Chronos::DateTimeCalculations.round_minimum).to eql 1440
   end
 
-  it 'gives the round limit as number' do
-    Chronos::Settings[:round_limit] = '80'
-    expect(Chronos::DateTimeCalculations.round_limit).to eql 0.8
-  end
-
   it 'gives the round limit in seconds' do
     Chronos::Settings[:round_limit] = '70'
     Chronos::Settings[:round_minimum] = '0.3'
     expect(Chronos::DateTimeCalculations.round_limit_in_seconds).to eql 756
+  end
+
+  it 'gives the round carry over due in seconds' do
+    Chronos::Settings[:round_carry_over_due] = '12.5'
+    expect(Chronos::DateTimeCalculations.round_carry_over_due).to eql 45000
   end
 
   describe 'time_diff function' do
