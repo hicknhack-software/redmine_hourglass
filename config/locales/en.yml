@@ -42,7 +42,7 @@ en:
   chronos:
     project_settings:
       global_value: "(Global Value: #{value})"
-      override_hint: Leave empty to use global settings
+      override_hint_html: "Leave empty to use <a href='%{url}'>global settings</a>"
       title: Chronos Plugin Settings
       use_global: Use global
     settings:
