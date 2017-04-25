@@ -29,6 +29,7 @@ de:
   field_round: Runden
   field_start: Beginn
   field_stop: Ende
+  label_this_quarter: aktuelles Quartal
   permission_chronos_book_own_time: Eigene Zeit buchen
   permission_chronos_book_time: Zeit buchen
   permission_chronos_edit_booked_time: Gebuchte Zeit bearbeiten

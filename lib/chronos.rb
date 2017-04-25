@@ -38,7 +38,7 @@ module Chronos
     def add_redmine_patches
       ActionDispatch::Callbacks.to_prepare do
         [Project, TimeEntry, User].each {|module_to_patch| Chronos.add_patch module_to_patch}
-        [ProjectsHelper, SettingsController].each {|module_to_patch| Chronos.add_patch module_to_patch, method: :prepend}
+        [ProjectsHelper, SettingsController, Query].each {|module_to_patch| Chronos.add_patch module_to_patch, method: :prepend}
 
         Redmine::Plugin.find(Chronos.plugin_name).extend Chronos::RedminePatches::MirrorAssetsPatch
       end

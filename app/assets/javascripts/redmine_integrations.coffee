@@ -96,6 +96,11 @@ showStopDialog = (e) ->
     e.stopPropagation()
     $stopDialog.dialog 'open'
 
+window.oldToggleOperator = window.toggleOperator
+window.toggleOperator = (field) ->
+  return enableValues(field, []) if $("#operators_" + field.replace('.', '_')).val() is 'q'
+  window.oldToggleOperator field
+
 $ ->
   $issueActionList = $('#content .contextual')
   $issueActionsToAdd = $('.js-issue-action')
@@ -110,7 +115,7 @@ $ ->
   $contextMenuTarget = null
   $(document).on 'contextmenu', '.chronos-list', (e) ->
     $contextMenuTarget = $(@)
-    
+
   $.ajaxPrefilter (options) ->
     return unless options.url is '/chronos/ui/context_menu'
     options.data = $.param list_type: $contextMenuTarget.data('list-type')

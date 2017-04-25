@@ -25,6 +25,7 @@ en:
   field_round: Round
   field_start: Start
   field_stop: Stop
+  label_this_quarter: current quarter
   permission_chronos_book_own_time: Book own time
   permission_chronos_book_time: Book time
   permission_chronos_edit_booked_time: Edit booked Time

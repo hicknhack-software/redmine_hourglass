@@ -89,6 +89,10 @@ module Chronos::QueryBase
         day_of_week = Date.today.cwday
         days_ago = (day_of_week >= first_day_of_week ? day_of_week - first_day_of_week : day_of_week + 7 - first_day_of_week)
         sql = relative_date_clause(db_table, db_field, - days_ago - 7, - days_ago + 6, is_custom_filter)
+      when 'q'
+        # = current quarter
+        date = User.current.today
+        sql = date_clause(db_table, db_field, date.beginning_of_quarter, date.end_of_quarter, is_custom_filter)
       else
         sql = super
     end
