@@ -25,8 +25,8 @@ module Chronos::DateTimeCalculations
     end
 
     def hours_in_units(hours)
-      [60,60].inject([hours * 3600]) {|result, unitsize|
-        result[0,0] = result.shift.divmod unitsize
+      [60, 60].inject([hours * 3600]) {|result, unitsize|
+        result[0, 0] = result.shift.divmod unitsize
         result
       }
     end
@@ -48,7 +48,8 @@ module Chronos::DateTimeCalculations
     end
 
     def booking_process(user, options)
-      round = options[:round].nil? ? Chronos::Settings[:round_default, project: options[:project_id]] : options[:round]
+      round = (options[:round].nil? ? Chronos::Settings[:round_default, project: options[:project_id]] : options[:round]) &&
+          !Chronos::Settings[:round_sums_only, project: options[:project_id]]
       if round
         previous_time_log = closest_booked_time_log user, options[:project_id], options[:start], after_current: false
         options[:start], options[:stop] = calculate_bookable_time options[:start], options[:stop], previous_time_log && previous_time_log.time_booking && previous_time_log.time_booking.rounding_carry_over, project: options[:project_id]
@@ -81,9 +82,9 @@ module Chronos::DateTimeCalculations
       round_carry_over_due_value = round_carry_over_due project: project_id
       interval = after_current ? [start, start + round_carry_over_due_value] : [start - round_carry_over_due_value, start]
       closest_time_logs = user.chronos_time_logs
-          .booked_on_project(project_id)
-          .with_start_in_interval(*interval)
-          .order(:start)
+                              .booked_on_project(project_id)
+                              .with_start_in_interval(*interval)
+                              .order(:start)
       after_current ? closest_time_logs.first : closest_time_logs.last
     end
   end

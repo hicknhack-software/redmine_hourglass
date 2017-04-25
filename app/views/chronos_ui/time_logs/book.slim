@@ -9,7 +9,7 @@
         .label
           = label :time_booking, :round, t(:field_round), title: t('chronos.ui.time_logs.round_hint')
         .input
-          = check_box :time_booking, :round, checked: Chronos::Settings[:round_default]
+          = check_box :time_booking, :round, checked: !Chronos::Settings[:round_sums_only] && Chronos::Settings[:round_default]
       = form_field :project, f, time_booking, disabled: !can[:book], required: true
       = form_field :activity, f, time_booking, disabled: !can[:book], required: true
       = form_field :issue, f, time_booking, disabled: !can[:book]
