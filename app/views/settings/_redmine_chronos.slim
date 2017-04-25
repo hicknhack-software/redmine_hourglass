@@ -17,6 +17,11 @@ p
   = hidden_field_tag 'settings[round_default]', false
   = check_box_tag 'settings[round_default]', true, @settings[:round_default]
 
+p
+  = label_tag 'settings[round_sums_only]', t('chronos.settings.rounding.fields.sums_only')
+  = hidden_field_tag 'settings[round_sums_only]', false
+  = check_box_tag 'settings[round_sums_only]', true, @settings[:round_sums_only]
+
 h3 = t('chronos.settings.report.title')
 p
   = label_tag 'settings[report_title]', t('chronos.settings.report.fields.title')

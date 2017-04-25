@@ -17,7 +17,7 @@ module Chronos
 
       private
       def settings_params
-        boolean_keys = [:round_default, :global_tracker]
+        boolean_keys = [:round_default, :round_sums_only, :global_tracker]
         parse_boolean boolean_keys, params[:settings].transform_values(&:presence).select { |key, value| boolean_keys.include?(key) || !value.nil? }
       end
     end

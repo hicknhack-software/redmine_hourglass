@@ -10,7 +10,8 @@ module Chronos
             round_minimum: '0.25',
             round_limit: '50',
             round_carry_over_due: '12',
-            round_default: false
+            round_default: false,
+            round_sums_only: true
         }
       end
 

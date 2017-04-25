@@ -40,7 +40,10 @@ module Chronos
     def projects_for_project_select(selected = nil)
       projects = User.current.projects.allowed_to_one_of *Chronos::AccessControl.permissions_from_action(controller: 'chronos/time_logs', action: 'book')
       project_tree_options_for_select projects, selected: selected do |project|
-        {data: {round_default: Chronos::Settings[:round_default, project: project]}}
+        {data: {
+            round_default: Chronos::Settings[:round_default, project: project],
+            round_sums_only: Chronos::Settings[:round_sums_only, project: project]
+        }}
       end
     end
 

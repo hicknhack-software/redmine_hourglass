@@ -21,4 +21,8 @@
       = render partial: 'projects/label_with_global_value_tag', locals: {name: 'settings[round_default]', label_text: t('chronos.settings.rounding.fields.default'), global_value: Chronos::Settings[:round_default] ? t(:general_text_yes) : t(:general_text_no)}
       = select_tag 'settings[round_default]', options_for_select([[t('chronos.project_settings.use_global'), ''], [t(:general_text_Yes), 'true'], [t(:general_text_no), 'false']], settings[:round_default])
 
+    p
+      = render partial: 'projects/label_with_global_value_tag', locals: {name: 'settings[round_sums_only]', label_text: t('chronos.settings.rounding.fields.sums_only'), global_value: Chronos::Settings[:round_sums_only] ? t(:general_text_yes) : t(:general_text_no)}
+      = select_tag 'settings[round_sums_only]', options_for_select([[t('chronos.project_settings.use_global'), ''], [t(:general_text_Yes), 'true'], [t(:general_text_no), 'false']], settings[:round_sums_only])
+
   = submit_tag l(:button_save)

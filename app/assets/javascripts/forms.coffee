@@ -55,6 +55,10 @@ projectFieldChanged = (event) ->
 
   round = $projectField.find(':selected').data('round-default')
   $form.find('[type=checkbox][name*=round]').prop('checked', round) unless round is null
+  sumsOnly = $projectField.find(':selected').data('round-sums-only')
+  roundingDisabled = if sumsOnly is undefined then $projectField.val() is '' else sumsOnly
+  $form.find('[type=checkbox][name*=round]').prop('disabled', roundingDisabled)
+    .closest('.form-field').toggleClass('hidden', roundingDisabled)
 
   $issueTextField.val('').trigger('change') unless $issueTextField.val() is '' or event.type is 'changefromissue'
   chronos.FormValidator.validateField $projectField if event.type is 'changefromissue'

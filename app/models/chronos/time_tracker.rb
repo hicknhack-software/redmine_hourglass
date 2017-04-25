@@ -10,7 +10,7 @@ module Chronos
 
     after_initialize :init
     before_update if: :project_id_changed? do
-      self.round = Chronos::Settings[:round_default, project: project] if project
+      update_round project
       true
     end
 
@@ -50,8 +50,8 @@ module Chronos
       now = Time.now.change sec: 0
       previous_time_log = current_user.chronos_time_logs.find_by(stop: now + 1.minute)
       self.user ||= current_user
-      project_id = project_id || issue && issue.project_id
-      self.round = Chronos::Settings[:round_default, project: project_id] if round.nil?
+      update_round project_id || issue && issue.project_id unless round.present?
+
       self.start ||= previous_time_log && previous_time_log.stop || now
     end
 
@@ -65,6 +65,10 @@ module Chronos
 
     def bookable?
       project.present?
+    end
+
+    def update_round(project = nil)
+      self.round = !Chronos::Settings[:round_sums_only, project: project] && Chronos::Settings[:round_default, project: project]
     end
   end
 end

@@ -77,6 +77,7 @@ de:
           limit: Abrunden wenn unter
           minimum: Minimales Zeitinterval
           carry_over_due: Rundungsübertrag verwerfen nach
+          sums_only: Nur Summen runden?
         title: Rundungsverhalten
     api:
       errors:

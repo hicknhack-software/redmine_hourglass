@@ -72,6 +72,7 @@ en:
           limit: Round down if below
           minimum: Minimum time interval
           carry_over_due: Dismiss round carry-over after
+          sums_only: Only round sums?
         title: Rounding behavior
     api:
       errors:
