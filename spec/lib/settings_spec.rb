@@ -84,11 +84,11 @@ describe Chronos::Settings do
             round_default: true,
             new_setting: 10,
             projects: {
-                '1': {
+                '1'.to_sym => {
                     round_minimum: '0.4',
                     round_default: true
                 },
-                '2': {
+                '2'.to_sym => {
                     round_minimum: '1',
                     round_limit: '100',
                     test: true
@@ -102,11 +102,11 @@ describe Chronos::Settings do
             round_limit: '50',
             round_default: false,
             projects: {
-                '1': {
+                '1'.to_sym => {
                     round_minimum: '0.4',
                     round_default: true
                 },
-                '2': {
+                '2'.to_sym => {
                     round_minimum: '1',
                     round_limit: '100',
                     test: true
@@ -120,11 +120,11 @@ describe Chronos::Settings do
             round_limit: '50',
             round_default: false,
             projects: {
-                '1': {
+                '1'.to_sym => {
                     round_minimum: '0.4',
                     round_default: true
                 },
-                '2': {
+                '2'.to_sym => {
                     round_minimum: '1',
                     round_limit: '100',
                     test: true
@@ -139,11 +139,11 @@ describe Chronos::Settings do
             round_default: false,
             new_setting: 10,
             projects: {
-                '1': {
+                '1'.to_sym => {
                     round_minimum: '0.4',
                     round_default: true
                 },
-                '2': {
+                '2'.to_sym => {
                     round_minimum: '1',
                     round_limit: '100',
                     test: true
@@ -159,13 +159,13 @@ describe Chronos::Settings do
             round_limit: '50',
             round_default: false,
             projects: {
-                '1': {
+                '1'.to_sym => {
                     round_minimum: '0.1',
                     round_limit: '60',
                     round_default: true,
                     new_setting: 10,
                 },
-                '2': {
+                '2'.to_sym => {
                     round_minimum: '1',
                     round_limit: '100',
                     test: true
@@ -179,16 +179,16 @@ describe Chronos::Settings do
             round_limit: '50',
             round_default: false,
             projects: {
-                '1': {
+                '1'.to_sym => {
                     round_minimum: '0.4',
                     round_default: true
                 },
-                '2': {
+                '2'.to_sym => {
                     round_minimum: '1',
                     round_limit: '100',
                     test: true
                 },
-                '3': {
+                '3'.to_sym => {
                     new_setting: 10
                 }
             }
@@ -200,7 +200,7 @@ describe Chronos::Settings do
             round_limit: '50',
             round_default: false,
             projects: {
-                '2': {
+                '2'.to_sym => {
                     round_minimum: '1',
                     round_limit: '100',
                     test: true
@@ -214,11 +214,11 @@ describe Chronos::Settings do
             round_limit: '50',
             round_default: false,
             projects: {
-                '1': {
+                '1'.to_sym => {
                     round_minimum: '0.9',
                     round_default: true
                 },
-                '2': {
+                '2'.to_sym => {
                     round_minimum: '1',
                     round_limit: '100',
                     test: true
@@ -232,12 +232,12 @@ describe Chronos::Settings do
             round_limit: '50',
             round_default: false,
             projects: {
-                '1': {
+                '1'.to_sym => {
                     round_minimum: '0.4',
                     round_default: true,
                     new_setting: 10
                 },
-                '2': {
+                '2'.to_sym => {
                     round_minimum: '1',
                     round_limit: '100',
                     test: true
@@ -251,16 +251,16 @@ describe Chronos::Settings do
             round_limit: '50',
             round_default: false,
             projects: {
-                '1': {
+                '1'.to_sym => {
                     round_minimum: '0.4',
                     round_default: true
                 },
-                '2': {
+                '2'.to_sym => {
                     round_minimum: '1',
                     round_limit: '100',
                     test: true
                 },
-                '3': {
+                '3'.to_sym => {
                     new_setting: 10
                 }
             }
