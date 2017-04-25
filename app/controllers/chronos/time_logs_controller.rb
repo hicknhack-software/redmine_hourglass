@@ -134,8 +134,8 @@ module Chronos
       end
     end
 
-    def find_project(booking_params = time_booking_params, **opts)
-      find_project_from_params booking_params.with_indifferent_access, opts
+    def find_project(booking_params = nil, **opts)
+      find_project_from_params (booking_params || time_booking_params).with_indifferent_access, opts
     end
   end
 end

@@ -66,9 +66,9 @@ module Chronos
       Chronos::TimeBooking.find_by id: params[:id]
     end
 
-    def find_project(booking_params = time_booking_params, **opts)
+    def find_project(booking_params = nil, **opts)
       if action_name == 'update'
-        find_project_from_params time_booking_params.with_indifferent_access, opts
+        find_project_from_params (booking_params || time_booking_params).with_indifferent_access, opts
       else
         super()
       end
