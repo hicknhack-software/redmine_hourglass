@@ -50,6 +50,10 @@
         }
       }
 
+      &.warning:hover {
+        background-color: #FFEBC1;
+      }
+
       td {
         text-align: center;
         @include form-row;

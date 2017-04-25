@@ -13,30 +13,22 @@ module Chronos
     end
 
     def grouped_entry_list(entries, query, count_by_group)
-      previous_group, first = false, true
-      entries.each do |entry|
-        group_name = group_count = nil
-        if query.grouped?
-          group = query.column_value query.group_by_column, entry
-          totals_by_group = query.totalable_columns.inject({}) do |totals, column|
-            totals[column] = query.total_by_group_for(column)
-            totals
-          end
-          if group != previous_group || first
-            group_name = if group.blank? && group != false
-                           "(#{l(:label_blank_value)})"
-                         else
-                           column_content query.group_by_column, entry
-                         end
-            group_count = count_by_group[group] || count_by_group[group.to_s] || (group.respond_to?(:id) && count_by_group[group.id])
-            group_totals = totals_by_group.map do |column, t|
-              total_tag(column, t[group] || t[group.to_s] || (group.respond_to?(:id) && t[group.id]))
-            end.join(' ').html_safe
-          end
-        end
-        yield entry, group_name, group_count, group_totals
-        previous_group, first = group, false
+      return entry_list entries, &Proc.new unless query.grouped?
+
+      entries.group_by do |entry|
+        query.column_value query.group_by_column, entry
+      end.each do |group, group_entries|
+        yield nil, {
+            name: group_name(group, query, group_entries.first),
+            totals: group_totals(group, query) { |t| round_time_booking_total group_entries, t },
+            count: group_count(group, count_by_group)
+        }
+        entry_list group_entries, &Proc.new
       end
+    end
+
+    def entry_list(entries)
+      entries.each {|entry| yield entry}
     end
 
     def date_content(entry)
@@ -57,7 +49,7 @@ module Chronos
       tooltips = Array.new
 
       if @chart_query.valid?
-        hours_per_date = @chart_query.hours_by_group
+        hours_per_date = @chart_query.total_by_group_for :hours
         dates = hours_per_date && hours_per_date.keys.sort
         if dates.present?
           group_key_is_string = dates.first.is_a?(String)
@@ -77,6 +69,35 @@ module Chronos
         end
       end
       [data, ticks, tooltips]
+    end
+
+    private
+    def group_count(group, counts)
+      counts[group] || counts[group.to_s] || (group.respond_to?(:id) && counts[group.id])
+    end
+
+    def group_totals(group, query)
+      Hash[query.totalable_columns.map do |c|
+        [c, query.total_by_group_for(c)]
+      end.map do |column, t|
+        total = t[group] || t[group.to_s] || (group.respond_to?(:id) && t[group.id])
+        [column, block_given? ? yield(total) : total]
+      end]
+    end
+
+    def group_name(group, query, first_entry)
+      if group.blank? && group != false
+        "(#{l(:label_blank_value)})"
+      else
+        column_content query.group_by_column, first_entry
+      end
+    end
+
+    def round_time_booking_total(entries, total)
+      projects = entries.entries.map(&:project).uniq
+      return if projects.length > 1
+      return total.round(2) unless Chronos::Settings[:round_sums_only, project: projects.first]
+      Chronos::DateTimeCalculations.in_hours(Chronos::DateTimeCalculations.round_interval total.hours, project: projects.first)
     end
   end
 end

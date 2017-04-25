@@ -6,15 +6,14 @@ table.list.chronos-list.print
       - columns.each do |column|
         th = h column.caption
   tbody
-    - grouped_entry_list entries, query, list_arguments[:count_by_group] do |entry, group_name, group_count, group_totals|
-      - if group_name
+    - grouped_entry_list entries, query, list_arguments[:count_by_group] do |entry, group|
+      - if group
         - reset_cycle
         tr.group.open
           td colspan="#{columns.size}"
-            = group_name
-            span.count = "(#{group_count})"
-            span.totals = group_totals
-      tr.entry id=entry.id class=cycle('odd', 'even')
-        - columns.each do |column|
-          td class=column.css_classes
-            = column_content column, entry, false
+            = render partial: 'chronos_ui/lists/group', locals: {group: group}
+      - else
+        tr.entry id=entry.id class=cycle('odd', 'even')
+          - columns.each do |column|
+            td class=column.css_classes
+              = column_content column, entry, false

@@ -1,0 +1,6 @@
+= group[:name]
+span.count = "(#{group[:count]})"
+span.totals
+  - group[:totals].each do |column, total|
+    - if total
+      = total_tag column, total

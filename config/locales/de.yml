@@ -144,6 +144,8 @@ de:
         button_book: Buchen
         button_book_all: Alle buchen
         button_update_all: Alle aktualisieren
+        errors:
+          rounding_settings_mismatch: "Fehler beim Summieren: Projektspezifische Rundungseinstellungen passen nicht zusammen"
       chart:
           hour_sign: h
           minute_sign: min
