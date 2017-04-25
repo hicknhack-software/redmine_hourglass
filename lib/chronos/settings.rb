@@ -74,7 +74,7 @@ module Chronos
       private
       def parse_assign_params(new_settings = nil, options = nil, key = nil)
         key, options = [options, nil] if key == nil && options.is_a?(Symbol)
-        new_settings = {"#{key}": new_settings} if key.is_a?(Symbol)
+        new_settings = {"#{key}".to_sym => new_settings} if key.is_a?(Symbol)
         project = options[:project] if options.is_a? Hash
 
         new_settings = new_settings.deep_symbolize_keys if new_settings.is_a? Hash
