@@ -7,11 +7,11 @@ describe Chronos::Settings do
         round_limit: '50',
         round_default: false,
         projects: {
-            '1': {
+            '1'.to_sym => {
                 round_minimum: '0.4',
                 round_default: true
             },
-            '2': {
+            '2'.to_sym => {
                 round_minimum: '1',
                 round_limit: '100',
                 test: true
