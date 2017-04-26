@@ -15,12 +15,10 @@ module Chronos
     def grouped_entry_list(entries, query, count_by_group)
       return entry_list entries, &Proc.new unless query.grouped?
 
-      entries.group_by do |entry|
-        query.column_value query.group_by_column, entry
-      end.each do |group, group_entries|
+      grouped_entries(entries, query).each do |group, group_entries|
         yield nil, {
             name: group_name(group, query, group_entries.first),
-            totals: group_totals(group, query) { |t| round_time_booking_total group_entries, t },
+            totals: group_totals(group, query, group_entries),
             count: group_count(group, count_by_group)
         }
         entry_list group_entries, &Proc.new
@@ -29,6 +27,16 @@ module Chronos
 
     def entry_list(entries)
       entries.each {|entry| yield entry}
+    end
+
+    def render_query_totals(query, entries = nil)
+      return super(query) unless query.grouped? && entries
+      return unless query.totalable_columns.present?
+      content_tag 'p', class: 'query-totals' do
+        totals_sum(query, entries).each do |column, total|
+          concat total_tag(column, total)
+        end
+      end
     end
 
     def date_content(entry)
@@ -72,17 +80,33 @@ module Chronos
     end
 
     private
+    def grouped_entries(entries, query)
+      entries.group_by { |entry| query.column_value query.group_by_column, entry }
+    end
+
     def group_count(group, counts)
       counts[group] || counts[group.to_s] || (group.respond_to?(:id) && counts[group.id])
     end
 
-    def group_totals(group, query)
+    def group_totals(group, query, entries)
       Hash[query.totalable_columns.map do |c|
         [c, query.total_by_group_for(c)]
       end.map do |column, t|
         total = t[group] || t[group.to_s] || (group.respond_to?(:id) && t[group.id])
-        [column, block_given? ? yield(total) : total]
+        [
+            column,
+            query.queried_class == Chronos::TimeBooking ? round_time_booking_total(entries, total) : total
+        ]
       end]
+    end
+
+    def totals_sum(query, entries)
+      grouped_entries(entries, query).reduce(Hash.new(0)) do |totals, (group, group_entries)|
+        group_totals(group, query, group_entries).each do |column, total|
+          totals[column] += total
+        end
+        totals
+      end
     end
 
     def group_name(group, query, first_entry)
@@ -96,7 +120,7 @@ module Chronos
     def round_time_booking_total(entries, total)
       projects = entries.entries.map(&:project).uniq
       return if projects.length > 1
-      return total.round(2) unless Chronos::Settings[:round_sums_only, project: projects.first]
+      return total unless Chronos::Settings[:round_sums_only, project: projects.first]
       Chronos::DateTimeCalculations.in_hours(Chronos::DateTimeCalculations.round_interval total.hours, project: projects.first)
     end
   end

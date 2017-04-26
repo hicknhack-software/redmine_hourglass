@@ -4,7 +4,7 @@
     p.nodata
       = t("chronos.ui.#{action_name}.no_data")
   - else
-    = render_query_totals query
+    = render_query_totals query, entries
     #chart-container
     .autoscroll
       table.list.chronos-list data-list-type=list_arguments[:action_name]
