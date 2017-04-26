@@ -14,3 +14,5 @@
 /.idea/vcs.xml
 /.idea/workspace.xml
 /Gemfile.lock
+
+tmp/rubycritic/

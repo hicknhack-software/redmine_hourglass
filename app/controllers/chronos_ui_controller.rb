@@ -5,6 +5,7 @@ class ChronosUiController < ApplicationController
   helper Chronos::ApplicationHelper
   helper Chronos::UiHelper
   helper Chronos::ListHelper
+  helper Chronos::ChartHelper
   helper Chronos::ReportHelper
 
   before_action :authorize_global

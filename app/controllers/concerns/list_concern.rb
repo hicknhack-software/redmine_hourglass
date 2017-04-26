@@ -23,10 +23,9 @@ module ListConcern
     if query.valid?
       scope = query.results_scope order: sort_clause
       count = scope.count
-      count_by_group = query.count_by_group
       paginator = Paginator.new count, options[:per_page] || per_page_option, params[options[:page_param] || :page], options[:page_param]
       entries = scope.offset(paginator.offset).limit(paginator.per_page)
-      list_arguments.merge! count: count, count_by_group: count_by_group, paginator: paginator, entries: entries
+      list_arguments.merge! count: count, paginator: paginator, entries: entries
     end
     list_arguments
   end

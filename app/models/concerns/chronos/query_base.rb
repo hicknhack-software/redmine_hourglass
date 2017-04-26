@@ -13,8 +13,8 @@ module Chronos::QueryBase
     end
   end
 
-  def initialize(attributes = nil, *args)
-    super attributes
+  def initialize(attributes = nil)
+    super
     self.filters ||= {}
   end
 
@@ -54,6 +54,15 @@ module Chronos::QueryBase
   def count_by_group
     grouped_query do |scope|
       scope.count
+    end
+  end
+
+  def totals_by_group
+    totalable_columns.each_with_object({}) do |column, result|
+      total_by_group_for(column).each do |group, total|
+        result[group] ||= {}
+        result[group][column] = total
+      end
     end
   end
 

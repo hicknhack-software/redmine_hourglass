@@ -4,7 +4,7 @@
     p.nodata
       = t("chronos.ui.#{action_name}.no_data")
   - else
-    = render_query_totals query, entries
+    = render_query_totals query
     #chart-container
     .autoscroll
       table.list.chronos-list data-list-type=list_arguments[:action_name]
@@ -17,7 +17,7 @@
               = column_header column, list_arguments[:sort_param_name]
             th.actions
         tbody
-          - grouped_entry_list entries, query, list_arguments[:count_by_group] do |entry, group|
+          - grouped_entry_list entries, query do |entry, group|
             - if group
               - reset_cycle
               tr.group.open

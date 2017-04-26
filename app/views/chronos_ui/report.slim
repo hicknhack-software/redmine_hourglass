@@ -15,6 +15,6 @@ html
         .logo = image_tag Chronos::Settings[:report_logo_url], width: Chronos::Settings[:report_logo_width] || 150
     .content
       .chart
-        = render_query_totals @query, @list_arguments[:entries]
+        = render_query_totals @query
         #chart-container.print
       = render partial: 'chronos_ui/report/list', locals: {list_arguments: @list_arguments}

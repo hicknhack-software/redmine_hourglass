@@ -6,7 +6,7 @@ table.list.chronos-list.print
       - columns.each do |column|
         th = h column.caption
   tbody
-    - grouped_entry_list entries, query, list_arguments[:count_by_group] do |entry, group|
+    - grouped_entry_list entries, query do |entry, group|
       - if group
         - reset_cycle
         tr.group.open
