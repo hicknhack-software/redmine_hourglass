@@ -68,7 +68,7 @@ module Chronos
           date_range.each do |date|
             date_string = date.to_s
             hours = hours_per_date[group_key_is_string ? date_string : date]
-            data.push hours
+            data.push hours || 0.0
             tooltips.push "#{date_string}, #{localized_hours_in_units hours}"
             # to get readable labels, we have to blank out some of them if there are to many
             # only set 8 labels and set the other blank
