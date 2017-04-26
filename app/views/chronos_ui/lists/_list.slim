@@ -20,10 +20,6 @@
           - grouped_entry_list entries, query, list_arguments[:count_by_group] do |entry, group|
             - if group
               - reset_cycle
-              - unless group[:totals].values.all?
-                tr.warning
-                  td colspan="#{query.inline_columns.size + 2}"
-                    = t('chronos.ui.lists.errors.rounding_settings_mismatch')
               tr.group.open
                 td colspan="#{query.inline_columns.size + 2}"
                   span.expander &nbsp;

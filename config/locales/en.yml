@@ -139,8 +139,6 @@ en:
         button_book: Book
         button_book_all: Book all
         button_update_all: Update all
-        errors:
-          rounding_settings_mismatch: "Error while trying to sum: Projetc specific rounding settings mismatch"
       chart:
           hour_sign: h
           minute_sign: min
