@@ -32,7 +32,6 @@ module Chronos
     end
 
     def render_query_totals(query)
-      return super(query) unless query.grouped?
       return unless query.totalable_columns.present?
       content_tag 'p', class: 'query-totals' do
         totals_sum(query).each do |column, total|
@@ -72,11 +71,16 @@ module Chronos
     end
 
     def totals_sum(query)
-      query.totals_by_group.reduce(Hash.new(0)) do |sum, (_, totals)|
-        transform_totals(totals).each do |column, total|
-          sum[column] += total
+      if query.grouped?
+        query.totals_by_group.each_with_object(Hash.new(0)) do |(_, totals), sum|
+          transform_totals(totals).each do |column, total|
+            sum[column] += total
+          end
         end
-        sum
+      else
+        query.totalable_columns.each_with_object(Hash.new(0)) do |column, sum|
+          sum[column] += time_booking_total query.total_for(column)
+        end
       end
     end
 

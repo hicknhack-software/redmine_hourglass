@@ -67,6 +67,6 @@ module QueryConcern
   end
 
   def build_chart_query
-    @chart_query = Chronos::ChartQuery.new name: '_', filters: @query.filters, group_by: :date, original_query_group_by_statement: @query.group_by_statement
+    @chart_query = Chronos::ChartQuery.new name: '_', filters: @query.filters, group_by: :date, main_query_group_by_statement: @query.group_by_statement
   end
 end

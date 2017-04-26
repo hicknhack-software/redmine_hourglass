@@ -10,6 +10,7 @@ module Chronos
       if chart_query.valid?
         dates = []
         hours_per_column_per_date = chart_query.total_by_group_for(:hours).transform_values do |totals_by_column|
+          totals_by_column = {default: totals_by_column} unless chart_query.main_query_group_by_statement
           Hash[totals_by_column.map { |column, total| [column, time_booking_total(total)] }]
         end.tap do |hours_per_date|
           dates = hours_per_date.keys.sort

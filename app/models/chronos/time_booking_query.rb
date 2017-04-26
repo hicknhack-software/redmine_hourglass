@@ -68,9 +68,13 @@ module Chronos
     end
 
     def total_for_hours(scope)
-      scope.group("#{TimeEntry.table_name}.project_id").sum("#{TimeEntry.table_name}.hours").each_with_object({}) do |((date, project_id), total), totals|
-        totals[date] ||= {}
-        totals[date][project_id] = total
+      scope.group("#{TimeEntry.table_name}.project_id").sum("#{TimeEntry.table_name}.hours").each_with_object({}) do |((column, project_id), total), totals|
+        totals[column] ||= {}
+        if project_id
+          totals[column][project_id] = total
+        else
+          totals[column] = total
+        end
       end
     end
   end
