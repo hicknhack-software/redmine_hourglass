@@ -13,6 +13,6 @@ class ChronosProjectsController < ApplicationController
   private
   def settings_params
     boolean_keys = [:round_default, :round_sums_only]
-    parse_boolean boolean_keys, params[:settings].transform_values(&:presence).select { |key, value| boolean_keys.include?(key) || !value.nil? }
+    parse_boolean boolean_keys, params[:settings].transform_values(&:presence)
   end
 end
