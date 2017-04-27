@@ -9,6 +9,7 @@ describe Chronos::TimeLog do
     Chronos::Settings[:round_minimum] = '0.25'
     Chronos::Settings[:round_limit] = '50'
     Chronos::Settings[:round_carry_over_due] = '12'
+    Chronos::Settings[:round_sums_only] = false
   end
 
   it 'has a valid factory' do
@@ -393,7 +394,7 @@ describe Chronos::TimeLog do
               {length: 10.minutes}
           ]
           time_bookings = book_all time_logs, project_id: @project.id, activity_id: create(:time_entry_activity).id, round: true
-          expect(time_bookings.last.stop).to eq (now + 1.hour - 6.minutes).localtime
+          expect(time_bookings.last.stop).to eq now + 1.hour - 6.minutes
         end
 
         it 'different time values' do
@@ -407,7 +408,7 @@ describe Chronos::TimeLog do
               {length: 13.minutes}
           ]
           time_bookings = book_all time_logs, project_id: @project.id, activity_id: create(:time_entry_activity).id, round: true
-          expect(time_bookings.last.stop).to eq (now + 1.hours + 3.minutes).localtime
+          expect(time_bookings.last.stop).to eq now + 1.hours + 3.minutes
         end
       end
 
@@ -423,7 +424,7 @@ describe Chronos::TimeLog do
               {length: 10.minutes}
           ]
           time_bookings = book_all time_logs, project_id: @project.id, activity_id: create(:time_entry_activity).id, round: true
-          expect(time_bookings.last.stop).to eq (now + 1.5.hours - 6.minutes).localtime
+          expect(time_bookings.last.stop).to eq now + 1.5.hours - 6.minutes
         end
 
         it '- different time values' do
@@ -437,7 +438,7 @@ describe Chronos::TimeLog do
               {length: 13.minutes}
           ]
           time_bookings = book_all time_logs, project_id: @project.id, activity_id: create(:time_entry_activity).id, round: true
-          expect(time_bookings.last.stop).to eq (now + 1.5.hours + 3.minutes).localtime
+          expect(time_bookings.last.stop).to eq now + 1.5.hours + 3.minutes
         end
       end
 
@@ -453,7 +454,7 @@ describe Chronos::TimeLog do
               {length: 10.minutes}
           ]
           time_bookings = book_all time_logs, project_id: @project.id, activity_id: create(:time_entry_activity).id, round: true
-          expect(time_bookings.last.stop).to eq (now + 10.hours - 4.minutes).localtime
+          expect(time_bookings.last.stop).to eq now + 10.hours - 4.minutes
         end
 
         it '- different time values' do
@@ -467,7 +468,7 @@ describe Chronos::TimeLog do
               {length: 13.minutes}
           ]
           time_bookings = book_all time_logs, project_id: @project.id, activity_id: create(:time_entry_activity).id, round: true
-          expect(time_bookings.last.stop).to eq (now + 21.hours + 3.minutes).localtime
+          expect(time_bookings.last.stop).to eq now + 21.hours + 3.minutes
         end
       end
 
