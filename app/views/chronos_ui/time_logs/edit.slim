@@ -4,6 +4,7 @@
     .form-row
       = form_field :start, f, time_log, disabled: !can[:update_time]
       = form_field :stop, f, time_log, disabled: !can[:update_time]
+      = form_field :duration, f, time_log, disabled: !can[:update_time]
       - if time_log.booked? && !Chronos::Settings[:round_sums_only, project: time_log.time_booking.project]
         .form-field
           .label

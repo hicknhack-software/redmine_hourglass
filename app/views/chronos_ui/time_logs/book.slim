@@ -5,6 +5,7 @@
     .form-row
       = form_field :start, f, time_booking, disabled: !can[:book], validate_limit: true, not_in_multi: true
       = form_field :stop, f, time_booking, disabled: !can[:book], validate_limit: true, not_in_multi: true
+      = form_field :duration, f, time_booking, disabled: !can[:book], not_in_multi: true
       .form-field
         .label
           = label :time_booking, :round, t(:field_round), title: t('chronos.ui.time_logs.round_hint')
