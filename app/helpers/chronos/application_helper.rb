@@ -64,5 +64,9 @@ module Chronos
         time.utc? ? time.localtime : time
       end
     end
+
+    def css_classes(*args)
+      args.compact.join(' ')
+    end
   end
 end

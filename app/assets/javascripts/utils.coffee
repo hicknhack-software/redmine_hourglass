@@ -27,9 +27,19 @@ showDialog = (className, $content, buttons = []) ->
     width: 300
     buttons: buttons
 
+formatDuration = (duration, unit = null) ->
+  duration = moment.duration duration, unit unless moment.isDuration duration
+  moment("1900-01-01 00:00:00").add(duration).format('HH:mm')
+
+parseDuration = (durationString) ->
+  [hours, minutes] = durationString.split(':')
+  moment.duration(hours: hours, minutes: minutes)
+
 @chronos ?= {}
 @chronos.Utils =
   clearFlash: clearFlash
+  formatDuration: formatDuration
+  parseDuration: parseDuration
   showDialog: showDialog
   showErrorMessage: showErrorMessage
   showNotice: showNotice

@@ -65,6 +65,8 @@ showInlineForm = (event, response) ->
   .append $('<td/>', colspan: tdCount).append response
   .insertAfter $row
   $formRow.find('.js-validate-limit').each addStartStopLimitMoments
+  $durationField = $formRow.find('.js-duration')
+  $durationField.val chronos.Utils.formatDuration parseFloat($durationField.val()), 'hours' if $durationField
   checkForMultiForm $row, $formRow
 
 showInlineFormMulti = (event, response) ->

@@ -29,6 +29,11 @@ updateActivityField = ($activityField, $projectField) ->
           $activityField.val id if selected_activity is name
       chronos.FormValidator.validateField $activityField
 
+updateDurationField = ($startField, $stopField) ->
+  start = moment($startField.val(), moment.ISO_8601)
+  stop = moment($stopField.val(), moment.ISO_8601)
+  $startField.closest('form').find('.js-duration').val chronos.Utils.formatDuration moment.duration stop.diff(start)
+
 formFieldChanged = (event) ->
   $target = $(event.target)
   $target = $target.next() if $target.hasClass('js-linked-with-hidden')
@@ -39,13 +44,24 @@ startFieldChanged = (event) ->
   $startField = $(event.target)
   return if $startField.hasClass('invalid')
   $stopField = $startField.closest('form').find('[name*=stop]')
-  chronos.FormValidator.validateField $stopField if $stopField.length > 0
+  if $stopField.length > 0
+    chronos.FormValidator.validateField $stopField
+    updateDurationField $startField, $stopField
 
 stopFieldChanged = (event) ->
   $stopField = $(event.target)
   return if $stopField.hasClass('invalid')
   $startField = $stopField.closest('form').find('[name*=start]')
   chronos.FormValidator.validateField $startField
+  updateDurationField $startField, $stopField
+
+durationFieldChanged = (event) ->
+  $durationField = $(event.target)
+  return if $durationField.hasClass('invalid')
+  $startField = $durationField.closest('form').find('[name*=start]')
+  $stopField = $durationField.closest('form').find('[name*=stop]')
+  $stopField.val moment($startField.val(), moment.ISO_8601).add(chronos.Utils.parseDuration $durationField.val()).format()
+  chronos.FormValidator.validateField $stopField
 
 projectFieldChanged = (event) ->
   $projectField = $(@)
@@ -128,6 +144,7 @@ $ ->
   .on 'change', '.js-issue-autocompletion', issueFieldChanged
   .on 'formfieldchanged', '[name*=start]', startFieldChanged
   .on 'formfieldchanged', '[name*=stop]', stopFieldChanged
+  .on 'formfieldchanged', '.js-duration', durationFieldChanged
   .on 'submit ajax:before', '.js-validate-form', (event) ->
     isFormValid = chronos.FormValidator.validateForm $(@)
     unless isFormValid

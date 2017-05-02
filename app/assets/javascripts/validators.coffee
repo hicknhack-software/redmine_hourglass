@@ -11,7 +11,8 @@ isValidTimeField = ($field, limitConditionCallback, additionalConditionCallback)
     additionalConditionCallback(mTime)
 
 isFieldValid = ($field, $form) ->
-  type = $field.attr('name').replace(/[a-z_]*\[([a-z_]*)]/, '$1')
+  name = $field.attr('name')
+  type = name.replace(/[a-z_]*\[([a-z_]*)]/, '$1') if name?
   isRequired = $field.prop('required')
 
   condition = switch type

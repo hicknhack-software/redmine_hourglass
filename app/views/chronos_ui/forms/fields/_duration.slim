@@ -1,0 +1,5 @@
+.form-field
+  .label
+    = form.label :duration
+  .input
+    = form.text_field :duration, size: '10', name: nil, value: entry.hours, disabled: local_assigns[:disabled], class: css_classes('js-duration', ('js-not-in-multi' if local_assigns[:not_in_multi].presence))
