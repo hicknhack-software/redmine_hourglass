@@ -31,7 +31,7 @@ module Chronos
           %w(.. app controllers concerns),
           %w(chronos)
       ].each do |path|
-        ActiveSupport::Dependencies.autoload_paths << File.join(File.dirname(__FILE__), *path)
+        ActiveSupport::Dependencies.eager_load_paths << File.join(File.dirname(__FILE__), *path)
       end
     end
 
