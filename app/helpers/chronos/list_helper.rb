@@ -79,7 +79,8 @@ module Chronos
         end
       else
         query.totalable_columns.each_with_object(Hash.new(0)) do |column, sum|
-          sum[column] += time_booking_total query.total_for(column)
+          total = query.total_for column
+          sum[column] += column.name == :hours && total.is_a?(Hash) ? time_booking_total(total) : total
         end
       end
     end
