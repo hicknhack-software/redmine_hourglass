@@ -16,6 +16,8 @@ $ ->
   $timeTrackerEditForm = $timeTrackerControl.find('.edit-time-tracker-form')
   chronos.FormValidator.validateForm $timeTrackerEditForm
 
-  $timeTrackerEditForm.on 'formfieldchanged', formFieldChanged
-  .find('#time_tracker_start').on 'change', ->
+  $timeTrackerEditForm.on 'formfieldchanged', chronos.Utils.debounce(formFieldChanged, 500)
+  .find('#time_tracker_start')
+  .on 'change', ->
     chronos.Timer.start()
+  .addDateTimePicker()

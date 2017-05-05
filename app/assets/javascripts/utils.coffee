@@ -1,5 +1,31 @@
+$.fn.addDateTimePicker = ->
+  currentTime = moment $('.time-tracker-control [name*=start]').val()
+  @.datetimepicker
+    hour: currentTime.hour()
+    minute: currentTime.minute()
+    dateFormat: 'yy-mm-ddT'
+    separator: ''
+    timeFormat: 'HH:mmz'
+    timeInput: true
+    timeOnly: true
+    timeOnlyShowDate: true
+    showTimezone: false
+    pickerTimeFormat: 'HH:mm'
 clearFlash = ->
   $('#content').find('.flash').remove()
+
+debounce = (func, threshold, execAsap) ->
+  timeout = null
+  (args...) ->
+    obj = this
+    delayed = ->
+      func.apply(obj, args) unless execAsap
+      timeout = null
+    if timeout
+      clearTimeout(timeout)
+    else if (execAsap)
+      func.apply(obj, args)
+    timeout = setTimeout delayed, threshold || 100
 
 showMessage = (message, type) ->
   clearFlash()
@@ -38,6 +64,7 @@ parseDuration = (durationString) ->
 @chronos ?= {}
 @chronos.Utils =
   clearFlash: clearFlash
+  debounce: debounce
   formatDuration: formatDuration
   parseDuration: parseDuration
   showDialog: showDialog
