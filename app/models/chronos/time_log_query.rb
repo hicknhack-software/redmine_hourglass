@@ -41,7 +41,7 @@ module Chronos
     def db_datetime_diff(datetime1, datetime2)
       case ActiveRecord::Base.connection.adapter_name.downcase.to_sym
         when :mysql2
-          "(time_to_sec(#{datetime2}) - time_to_sec(#{datetime1}))"
+          "TIMESTAMPDIFF(SECOND, #{datetime1}, #{datetime2})"
         when :sqlite
           "(strftime('%s', #{datetime2}) - strftime('%s', #{datetime1}))"
         when :postgresql
