@@ -140,8 +140,15 @@ en:
         button_book_all: Book all
         button_update_all: Update all
       chart:
-          hour_sign: h
-          minute_sign: min
+        hour_sign: h
+        minute_sign: min
+      timepicker:
+        close: Close
+        hour: Hour
+        minute: Minute
+        now: Now
+        time: Time
+        title: Choose Time
       time_logs:
         title: Time logs
         no_data: No time logs available

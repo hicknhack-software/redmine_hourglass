@@ -1,5 +1,18 @@
 - content_for :header_tags do
   = javascript_include_tag 'application', plugin: Chronos.plugin_name
+  javascript:
+    if (this.chronos === null) {
+        this.chronos = {};
+    }
+
+    this.chronos.TimepickerLocales = {
+        timeOnlyTitle: "#{t('chronos.ui.timepicker.title')}",
+        timeText: "#{t('chronos.ui.timepicker.time')}",
+        hourText: "#{t('chronos.ui.timepicker.hour')}",
+        minuteText: "#{t('chronos.ui.timepicker.minute')}",
+        currentText: "#{t('chronos.ui.timepicker.now')}",
+        closeText: "#{t('chronos.ui.timepicker.close')}"
+    };
   = stylesheet_link_tag 'application', plugin: Chronos.plugin_name
 
 - if @query && @query.persisted? && @query.editable_by?(User.current)

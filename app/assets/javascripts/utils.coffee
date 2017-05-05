@@ -1,6 +1,6 @@
 $.fn.addDateTimePicker = ->
-  currentTime = moment $('.time-tracker-control [name*=start]').val()
-  @.datetimepicker
+  currentTime = moment @.val()
+  @.datetimepicker $.extend chronos.TimepickerLocales,
     hour: currentTime.hour()
     minute: currentTime.minute()
     dateFormat: 'yy-mm-ddT'

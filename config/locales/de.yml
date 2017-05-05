@@ -145,8 +145,15 @@ de:
         button_book_all: Alle buchen
         button_update_all: Alle aktualisieren
       chart:
-          hour_sign: h
-          minute_sign: min
+        hour_sign: h
+        minute_sign: min
+      timepicker:
+        close: Schließen
+        hour: Stunde
+        minute: Minute
+        now: Jetzt
+        time: Zeit
+        title: Zeit wählen
       time_logs:
         title: Zeiterfassungen
         no_data: Keine Zeiterfassungen vorhanden
