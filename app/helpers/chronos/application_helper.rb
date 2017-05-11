@@ -29,6 +29,10 @@ module Chronos
       User.current.allowed_to_globally? controller: controller, action: action
     end
 
+    def allowed_to?(controller, action, context)
+      User.current.allowed_to?({controller: controller, action: action}, context)
+    end
+
     def form_field(field, form, object, options = {})
       render partial: "chronos_ui/forms/fields/#{field}", locals: {form: form, entry: object}.merge(options)
     end
