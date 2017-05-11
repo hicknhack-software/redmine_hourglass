@@ -1,5 +1,5 @@
 $.fn.addDateTimePicker = ->
-  currentTime = moment @.val()
+  currentTime = moment.parseZone @.val()
   @.datetimepicker $.extend chronos.TimepickerLocales,
     hour: currentTime.hour()
     minute: currentTime.minute()
