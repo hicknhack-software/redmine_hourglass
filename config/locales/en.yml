@@ -129,6 +129,7 @@ en:
         title: Time tracking
         time_tracker_control:
           button_stop: Stop
+          button_stop_new: Stop & New
           button_start: Start
           heading: Specify your task
           label_running_time: Current time

@@ -21,3 +21,16 @@ $ ->
   .on 'change', ->
     chronos.Timer.start()
   .addDateTimePicker()
+
+  $timeTrackerEditForm.find('.js-stop-new').on 'click', ->
+    $timeTrackerEditForm.data('start-new', true)
+
+  $timeTrackerEditForm.on 'ajax:success', (event) ->
+    if $timeTrackerEditForm.data('start-new')
+      event.stopPropagation()
+      $timeTrackerEditForm.data('start-new', false)
+      $.ajax
+        url: chronosRoutes.start_chronos_time_trackers()
+        type: 'post'
+        complete: () ->
+          location.reload()

@@ -134,6 +134,7 @@ de:
         title: Zeitmessung
         time_tracker_control:
           button_stop: Stop
+          button_stop_new: Stop & Neu
           button_start: Start
           heading: Geben sie ihre Aufgabe an
           label_running_time: Laufende Zeitmessung
