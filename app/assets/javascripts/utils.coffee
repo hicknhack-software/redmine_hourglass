@@ -3,6 +3,7 @@ $.fn.addDateTimePicker = ->
   @.datetimepicker $.extend chronos.TimepickerLocales,
     hour: currentTime.hour()
     minute: currentTime.minute()
+    timezone: currentTime._tzm
     dateFormat: 'yy-mm-ddT'
     separator: ''
     timeFormat: 'HH:mmz'
@@ -10,7 +11,7 @@ $.fn.addDateTimePicker = ->
     timeOnly: true
     timeOnlyShowDate: true
     showTimezone: false
-    pickerTimeFormat: 'HH:mm'
+    
 clearFlash = ->
   $('#content').find('.flash').remove()
 

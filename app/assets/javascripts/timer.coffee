@@ -3,8 +3,18 @@ timeTrackerTimerInterval = null
 startTimeTrackerTimer = ->
   duration = moment.duration moment() - moment $('.time-tracker-control [name*=start]').val()
 
+  numberToString = (number)->
+    result = (Math.floor Math.abs number).toString()
+    result = '0' + result if Math.abs(number) < 10
+    result
+
   displayTime = ->
-    $('.time-tracker-control .input.js-running-time').html(moment("1900-01-01 00:00:00").add(duration).format('HH:mm:ss'))
+    durationString = [
+      duration.asHours(),
+      duration.asMinutes() % 60,
+      duration.asSeconds() % 60
+    ].map(numberToString).join(':')
+    $('.time-tracker-control .input.js-running-time').html("#{if duration < 0 then '-' else ''} #{durationString}")
 
   displayTime()
   clearInterval timeTrackerTimerInterval if timeTrackerTimerInterval?
