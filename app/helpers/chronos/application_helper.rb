@@ -68,5 +68,14 @@ module Chronos
     def css_classes(*args)
       args.compact.join(' ')
     end
+
+    def convert_format_identifier(format)
+      format.gsub /%[HIMp]/,
+          '%H' => 'HH',
+          '%I' => 'hh',
+          '%M' => 'mm',
+          '%p' => 'TT',
+          '%P' => 'tt'
+    end
   end
 end
