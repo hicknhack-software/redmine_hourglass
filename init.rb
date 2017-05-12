@@ -6,7 +6,7 @@ Redmine::Plugin.register Chronos.plugin_name do
   url 'https://github.com/hicknhack-software/redmine_time_tracker/tree/rewrite'
   author 'HicknHack Software GmbH'
   author_url 'http://www.hicknhack-software.com'
-  version File.read File.join File.dirname(__FILE__), '.plugin_version'
+  version Chronos::VERSION
 
   requires_redmine version_or_higher: '3.0.0'
 
