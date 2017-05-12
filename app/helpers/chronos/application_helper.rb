@@ -2,7 +2,7 @@ module Chronos
   module ApplicationHelper
     def chronos_asset_paths(type, sources)
       options = sources.extract_options!
-      if options[:plugin] == Chronos.plugin_name && Rails.env.production?
+      if options[:plugin] == Chronos::PLUGIN_NAME && Rails.env.production?
         plugin = options.delete(:plugin)
         sources.map! do |source|
           extname = compute_asset_extname source, options.merge(type: type)

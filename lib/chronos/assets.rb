@@ -43,7 +43,7 @@ class Chronos::Assets < Sprockets::Environment
     end
 
     def assets_directory_path
-      File.join 'plugin_assets', Chronos.plugin_name.to_s
+      File.join 'plugin_assets', Chronos::PLUGIN_NAME.to_s
     end
 
     STATIC_ASSET_DIRECTORIES = {

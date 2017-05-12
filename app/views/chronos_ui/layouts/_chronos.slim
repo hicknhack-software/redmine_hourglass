@@ -1,5 +1,5 @@
 - content_for :header_tags do
-  = javascript_include_tag 'application', plugin: Chronos.plugin_name
+  = javascript_include_tag 'application', plugin: Chronos::PLUGIN_NAME
   javascript:
     if (this.chronos === null) {
         this.chronos = {};
@@ -14,7 +14,7 @@
         closeText: "#{t('chronos.ui.timepicker.close')}",
         pickerTimeFormat: "#{convert_format_identifier t('time.formats.time')}"
     };
-  = stylesheet_link_tag 'application', plugin: Chronos.plugin_name
+  = stylesheet_link_tag 'application', plugin: Chronos::PLUGIN_NAME
 
 - if @query && @query.persisted? && @query.editable_by?(User.current)
   .contextual

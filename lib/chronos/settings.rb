@@ -98,7 +98,7 @@ module Chronos
       end
 
       def redmine_method_name
-        "plugin_#{Chronos.plugin_name}"
+        "plugin_#{Chronos::PLUGIN_NAME}"
       end
     end
   end

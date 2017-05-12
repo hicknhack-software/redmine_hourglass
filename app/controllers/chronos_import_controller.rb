@@ -7,6 +7,6 @@ class ChronosImportController < ApplicationController
     puts e
     flash[:error] = I18n::t('chronos.settings.import.error.redmine_time_tracker')
   ensure
-    redirect_to plugin_settings_path Chronos.plugin_name
+    redirect_to plugin_settings_path Chronos::PLUGIN_NAME
   end
 end

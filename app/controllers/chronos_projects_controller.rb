@@ -7,7 +7,7 @@ class ChronosProjectsController < ApplicationController
 
     Chronos::Settings[project: @project] = settings_params
     flash[:notice] = l(:notice_successful_update)
-    redirect_to settings_project_path @project, tab: Chronos.plugin_name
+    redirect_to settings_project_path @project, tab: Chronos::PLUGIN_NAME
   end
 
   private
