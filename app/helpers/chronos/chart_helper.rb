@@ -31,12 +31,9 @@ module Chronos
               tooltips[column] += ["#{date.to_s}, #{localized_hours_in_units hours}"]
             end
           end
+          # to get readable labels, we have to blank out some of them if there are to many
           gap = (date_range.count / 8).ceil
-          date_range.each do |date|
-            # to get readable labels, we have to blank out some of them if there are to many
-            # only set 8 labels and set the other blank
-            ticks.push gap == 0 || (data.length - 1) % gap == 0 ? date.to_s : ''
-          end
+          ticks = date_range.each_with_index.map { |date, i| i % gap == 0 ? date.to_s : '' }
         end
       end
       [data.values, ticks, tooltips.values]
