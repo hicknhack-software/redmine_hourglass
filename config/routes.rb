@@ -1,6 +1,6 @@
 # gui controllers can't be namespaced because redmine doesn't use link_to properly with a prepended '/'
-scope :chronos, as: :chronos do
-  scope :ui, as: :ui, controller: :chronos_ui do
+scope :hourglass, as: :hourglass do
+  scope :ui, as: :ui, controller: :hourglass_ui do
     root action: :index
     get 'time_logs'
     get 'time_logs/:id/edit', action: :edit_time_logs, as: :edit_time_logs
@@ -17,32 +17,32 @@ scope :chronos, as: :chronos do
     get 'context_menu'
   end
 
-  scope :completion, as: :completion, controller: :chronos_completion do
+  scope :completion, as: :completion, controller: :hourglass_completion do
     get 'issues'
     get 'activities'
   end
 
-  resources :queries, controller: :chronos_queries, except: [:show, :index]
+  resources :queries, controller: :hourglass_queries, except: [:show, :index]
 
-  scope :import, as: :import, controller: :chronos_import do
+  scope :import, as: :import, controller: :hourglass_import do
     put 'redmine_time_tracker_plugin'
   end
 end
 
 resources :projects, only: [] do
   member do
-    scope :chronos, as: :chronos do
-      post 'settings', controller: :chronos_projects
+    scope :hourglass, as: :hourglass do
+      post 'settings', controller: :hourglass_projects
     end
   end
   nested do
-    scope :chronos, as: :chronos do
-      resources :queries, controller: :chronos_queries, only: [:new, :create]
+    scope :hourglass, as: :hourglass do
+      resources :queries, controller: :hourglass_queries, only: [:new, :create]
     end
   end
 end
 
-namespace :chronos do
+namespace :hourglass do
   resources :time_trackers, except: [:new, :edit, :create] do
     collection do
       post 'bulk_update'
@@ -72,7 +72,7 @@ namespace :chronos do
 end
 
 unless Rails.env.production?
-  Chronos::Assets.asset_directories.each do |asset_dir|
-    mount Chronos::Assets.instance, at: File.join(Chronos::Assets.assets_directory_path, asset_dir)
+  Hourglass::Assets.asset_directories.each do |asset_dir|
+    mount Hourglass::Assets.instance, at: File.join(Hourglass::Assets.assets_directory_path, asset_dir)
   end
 end

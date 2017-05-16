@@ -1,6 +1,6 @@
 initIssueAutoCompletion = ->
   $(@).autocomplete
-    source: chronosRoutes.chronos_completion_issues(),
+    source: hourglassRoutes.hourglass_completion_issues(),
     minLength: 1,
     autoFocus: true,
     response: (event, ui) ->
@@ -18,7 +18,7 @@ initIssueAutoCompletion = ->
 updateActivityField = ($activityField, $projectField) ->
   selected_activity = $activityField.find("option:selected").text()
   $.ajax
-    url: chronosRoutes.chronos_completion_activities()
+    url: hourglassRoutes.hourglass_completion_activities()
     data:
       project_id: $projectField.val()
     success: (activities) ->
@@ -27,17 +27,17 @@ updateActivityField = ($activityField, $projectField) ->
         do ->
           $activityField.append $('<option/>', value: id).text(name)
           $activityField.val id if selected_activity is name
-      chronos.FormValidator.validateField $activityField
+      hourglass.FormValidator.validateField $activityField
 
 updateDurationField = ($startField, $stopField) ->
   start = moment($startField.val(), moment.ISO_8601)
   stop = moment($stopField.val(), moment.ISO_8601)
-  $startField.closest('form').find('.js-duration').val chronos.Utils.formatDuration moment.duration stop.diff(start)
+  $startField.closest('form').find('.js-duration').val hourglass.Utils.formatDuration moment.duration stop.diff(start)
 
 formFieldChanged = (event) ->
   $target = $(event.target)
   $target = $target.next() if $target.hasClass('js-linked-with-hidden')
-  chronos.FormValidator.validateField $target
+  hourglass.FormValidator.validateField $target
   $target.trigger 'formfieldchanged'
 
 startFieldChanged = (event) ->
@@ -45,14 +45,14 @@ startFieldChanged = (event) ->
   return if $startField.hasClass('invalid')
   $stopField = $startField.closest('form').find('[name*=stop]')
   if $stopField.length > 0
-    chronos.FormValidator.validateField $stopField
+    hourglass.FormValidator.validateField $stopField
     updateDurationField $startField, $stopField
 
 stopFieldChanged = (event) ->
   $stopField = $(event.target)
   return if $stopField.hasClass('invalid')
   $startField = $stopField.closest('form').find('[name*=start]')
-  chronos.FormValidator.validateField $startField
+  hourglass.FormValidator.validateField $startField
   updateDurationField $startField, $stopField
 
 durationFieldChanged = (event) ->
@@ -60,8 +60,8 @@ durationFieldChanged = (event) ->
   return if $durationField.hasClass('invalid')
   $startField = $durationField.closest('form').find('[name*=start]')
   $stopField = $durationField.closest('form').find('[name*=stop]')
-  $stopField.val moment($startField.val(), moment.ISO_8601).add(chronos.Utils.parseDuration $durationField.val()).format()
-  chronos.FormValidator.validateField $stopField
+  $stopField.val moment($startField.val(), moment.ISO_8601).add(hourglass.Utils.parseDuration $durationField.val()).format()
+  hourglass.FormValidator.validateField $stopField
 
 projectFieldChanged = (event) ->
   $projectField = $(@)
@@ -77,7 +77,7 @@ projectFieldChanged = (event) ->
     .closest('.form-field').toggleClass('hidden', roundingDisabled)
 
   $issueTextField.val('').trigger('change') unless $issueTextField.val() is '' or event.type is 'changefromissue'
-  chronos.FormValidator.validateField $projectField if event.type is 'changefromissue'
+  hourglass.FormValidator.validateField $projectField if event.type is 'changefromissue'
   updateActivityField $activityField, $projectField
 
 issueFieldChanged = ->
@@ -86,7 +86,7 @@ issueFieldChanged = ->
 
 split = (timeLogId, mSplitAt, insertNewBefore, round) ->
   $.ajax
-    url: chronosRoutes.split_chronos_time_log timeLogId
+    url: hourglassRoutes.split_hourglass_time_log timeLogId
     method: 'post'
     data:
       split_at: mSplitAt.toJSON()
@@ -109,10 +109,10 @@ addSplittingSuccessfulHandler = ($form, startJqXhr, stopJqXhr) ->
 addSplittingFailedHandler = (startJqXhr, stopJqXhr) ->
   if stopJqXhr
     stopJqXhr.fail ({responseJSON}) ->
-      chronos.Utils.showErrorMessage responseJSON.message
+      hourglass.Utils.showErrorMessage responseJSON.message
   if startJqXhr
     startJqXhr.fail ({responseJSON}) ->
-      chronos.Utils.showErrorMessage responseJSON.message
+      hourglass.Utils.showErrorMessage responseJSON.message
 
 checkSplitting = ->
   $form = $(@)
@@ -146,7 +146,7 @@ $ ->
   .on 'formfieldchanged', '[name*=stop]', stopFieldChanged
   .on 'formfieldchanged', '.js-duration', durationFieldChanged
   .on 'submit ajax:before', '.js-validate-form', (event) ->
-    isFormValid = chronos.FormValidator.validateForm $(@)
+    isFormValid = hourglass.FormValidator.validateForm $(@)
     unless isFormValid
       event.preventDefault()
       event.stopPropagation()

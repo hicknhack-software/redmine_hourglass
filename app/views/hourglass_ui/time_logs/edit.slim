@@ -1,0 +1,20 @@
+- can = {update: authorize_globally_for('hourglass/time_logs', 'update'), update_time: authorize_globally_for('hourglass/time_logs', 'update_time')}
+- time_logs.each do |time_log|
+  = form_for time_log, as: 'time_log', remote: true, html: {id: "edit_time_log_#{time_log.id}", class: 'edit-time-log-form js-hourglass-remote js-validate-form', data: {form_type: 'edit-time-log', id_for_bulk_edit: time_log.id}} do |f|
+    .form-row
+      = form_field :start, f, time_log, disabled: !can[:update_time]
+      = form_field :stop, f, time_log, disabled: !can[:update_time]
+      = form_field :duration, f, time_log, disabled: !can[:update_time]
+      - if time_log.booked? && !Hourglass::Settings[:round_sums_only, project: time_log.time_booking.project]
+        .form-field
+          .label
+            = label :time_log, :round, t(:field_round), title: t('hourglass.ui.time_logs.round_hint')
+          .input
+            = check_box :time_log, :round, checked: Hourglass::Settings[:round_default, project: time_log.time_booking.project]
+      = form_field :comments, f, time_log, disabled: !can[:update]
+      .form-field
+        .input
+          = f.submit t(:button_update)
+          button type='button' class='js-bulk-edit hidden' data-url=bulk_update_hourglass_time_logs_path data-name='time_logs'
+            = t('hourglass.ui.lists.button_update_all')
+          = link_to t(:button_cancel), '#', class: 'js-hide-inline-form'

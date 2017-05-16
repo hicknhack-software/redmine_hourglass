@@ -7,8 +7,8 @@ module ListConcern
   end
 
   def context_menu
-    @records = Chronos.const_get(params[:list_type].classify).find params[:ids]
-    render "chronos_ui/#{params[:list_type]}/context_menu", layout: false
+    @records = Hourglass.const_get(params[:list_type].classify).find params[:ids]
+    render "hourglass_ui/#{params[:list_type]}/context_menu", layout: false
   end
 
   private

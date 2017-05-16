@@ -1,0 +1,19 @@
+- query, entries = list_arguments.values_at :query, :entries
+- columns = combined_columns
+table.list.hourglass-list.print
+  thead
+    tr
+      - columns.each do |column|
+        th = h column.caption
+  tbody
+    - grouped_entry_list entries, query do |entry, group|
+      - if group
+        - reset_cycle
+        tr.group.open
+          td colspan="#{columns.size}"
+            = render partial: 'hourglass_ui/lists/group', locals: {group: group}
+      - else
+        tr.entry id=entry.id class=cycle('odd', 'even')
+          - columns.each do |column|
+            td class=column.css_classes
+              = column_content column, entry, false

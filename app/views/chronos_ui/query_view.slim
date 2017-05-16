@@ -1,9 +1,0 @@
-- content_for :sidebar do
-  = render_sidebar_queries
-
-= render layout: 'chronos_ui/layouts/chronos' do
-
-  = title_for_query_view
-
-  = render partial: 'chronos_ui/lists/query_form', locals: {query: @query}
-  = render partial: 'chronos_ui/lists/list', locals: {list_arguments: @list_arguments}

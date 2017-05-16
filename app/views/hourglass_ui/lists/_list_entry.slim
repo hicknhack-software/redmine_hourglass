@@ -1,0 +1,7 @@
+td.checkbox.hide-when-print
+  input type='checkbox'
+- query.columns.each do |column|
+  td class=column.css_classes
+    = column_content column, entry
+td.actions
+  = render partial: "hourglass_ui/#{action_name}/list_entry_actions", locals: {:"#{action_name.singularize}" => entry}

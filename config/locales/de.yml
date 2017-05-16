@@ -6,7 +6,7 @@ de:
   activerecord:
     errors:
       models:
-        chronos/time_tracker:
+        hourglass/time_tracker:
           attributes:
             project:
               blank: existiert nicht
@@ -16,7 +16,7 @@ de:
               blank: existiert nicht
             user_id:
               taken: hat bereits eine laufende Zeitmessung
-        chronos/time_log:
+        hourglass/time_log:
           attributes:
             base:
               overlaps: Es existiert bereits eine sich überschneidende Zeiterfassung
@@ -30,25 +30,25 @@ de:
   field_start: Beginn
   field_stop: Ende
   label_this_quarter: aktuelles Quartal
-  permission_chronos_book_own_time: Eigene Zeit buchen
-  permission_chronos_book_time: Zeit buchen
-  permission_chronos_edit_booked_time: Gebuchte Zeit bearbeiten
-  permission_chronos_edit_own_booked_time: Eigene gebuchte Zeit bearbeiten
-  permission_chronos_edit_own_tracked_time: Eigene erfasste Zeit bearbeiten
-  permission_chronos_edit_tracked_time: Erfasste Zeit bearbeiten
-  permission_chronos_track_time: Zeit erfassen
-  permission_chronos_view_booked_time: Gebuchte Zeit ansehen
-  permission_chronos_view_own_booked_time: Eigene gebuchte Zeit ansehen
-  permission_chronos_view_own_tracked_time: Eigene erfasste Zeit ansehen
-  permission_chronos_view_tracked_time: Erfasste Zeit ansehen
-  project_module_redmine_chronos: Redmine Chronos (Zeitmessung)
+  permission_hourglass_book_own_time: Eigene Zeit buchen
+  permission_hourglass_book_time: Zeit buchen
+  permission_hourglass_edit_booked_time: Gebuchte Zeit bearbeiten
+  permission_hourglass_edit_own_booked_time: Eigene gebuchte Zeit bearbeiten
+  permission_hourglass_edit_own_tracked_time: Eigene erfasste Zeit bearbeiten
+  permission_hourglass_edit_tracked_time: Erfasste Zeit bearbeiten
+  permission_hourglass_track_time: Zeit erfassen
+  permission_hourglass_view_booked_time: Gebuchte Zeit ansehen
+  permission_hourglass_view_own_booked_time: Eigene gebuchte Zeit ansehen
+  permission_hourglass_view_own_tracked_time: Eigene erfasste Zeit ansehen
+  permission_hourglass_view_tracked_time: Erfasste Zeit ansehen
+  project_module_redmine_hourglass: Redmine Hourglass (Zeitmessung)
 ################################################################
 
-  chronos:
+  hourglass:
     project_settings:
       global_value: "(Globaler Wert: %{value})"
       override_hint_html: "Leerlassen um <a href='%{url}'>globale Einstellungen</a> zu verwenden"
-      title: Chronos Plugin Einstellungen
+      title: Hourglass Plugin Einstellungen
       use_global: Verwende Global
       global_link: "Globale Einstellungen"
     settings:
@@ -59,7 +59,7 @@ de:
           redmine_time_tracker: Vom Redmine Time Tracker Plugin
         label_start: Jetzt starten
         success:
-          redmine_time_tracker: Die Daten des Redmine Time Trackers wurden erfolgreich in Redmine Chronos importiert.
+          redmine_time_tracker: Die Daten des Redmine Time Trackers wurden erfolgreich in Redmine Hourglass importiert.
         title: Import
       misc:
         fields:

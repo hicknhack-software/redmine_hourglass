@@ -1,0 +1,11 @@
+- data, ticks, tooltips = chart_data @chart_query
+javascript:
+  window.hourglass = window.hourglass || {};
+  window.hourglass.jqplotData = {
+    data: #{raw data.to_json},
+    ticks: #{raw ticks.to_json},
+    highlightData: #{raw tooltips.to_json},
+    hourSign: "#{t('hourglass.ui.chart.hour_sign')}"
+  };
+= javascript_include_tag 'jqplot', plugin: Hourglass::PLUGIN_NAME
+= stylesheet_link_tag 'jqplot/jquery.jqplot', plugin: Hourglass::PLUGIN_NAME

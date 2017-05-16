@@ -1,9 +1,0 @@
-- content_for :header_tags do
-  = render partial: 'chronos_ui/lists/chart'
-
-- content_for :sidebar do
-  h3 = t('chronos.ui.time_bookings.heading_report')
-  - if authorize_globally_for 'chronos_ui', 'report'
-    = link_to t('chronos.ui.time_bookings.label_print'), chronos_ui_report_path
-
-= render template: 'chronos_ui/query_view'

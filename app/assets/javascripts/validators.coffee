@@ -69,7 +69,7 @@ validateForm = ($form) ->
   toggle_submit $form, valid
   valid
 
-@chronos ?= {}
-@chronos.FormValidator =
+@hourglass ?= {}
+@hourglass.FormValidator =
   validateField: validateField
   validateForm: validateForm

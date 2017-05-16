@@ -1,15 +1,15 @@
 require_relative '../spec_helper'
-describe Chronos::TimeLog do
+describe Hourglass::TimeLog do
 
   before :all do
     Timecop.travel Time.new 2015, 2, 2, 15
   end
 
   before :each do
-    Chronos::Settings[:round_minimum] = '0.25'
-    Chronos::Settings[:round_limit] = '50'
-    Chronos::Settings[:round_carry_over_due] = '12'
-    Chronos::Settings[:round_sums_only] = false
+    Hourglass::Settings[:round_minimum] = '0.25'
+    Hourglass::Settings[:round_limit] = '50'
+    Hourglass::Settings[:round_carry_over_due] = '12'
+    Hourglass::Settings[:round_sums_only] = false
   end
 
   it 'has a valid factory' do
@@ -21,7 +21,7 @@ describe Chronos::TimeLog do
     time_booking = time_log.book project_id: create(:project).id, activity_id: create(:time_entry_activity).id
     expect(time_booking.persisted?).to be_truthy
     time_log.destroy
-    expect(Chronos::TimeBooking.find_by_id(time_booking.id)).to be_nil
+    expect(Hourglass::TimeBooking.find_by_id(time_booking.id)).to be_nil
   end
 
   it 'is invalid without a user' do
@@ -59,7 +59,7 @@ describe Chronos::TimeLog do
     let (:book!) { time_log.book booking_arguments }
     let (:booking_arguments) { {} }
     let (:hours) do
-      Chronos::DateTimeCalculations.time_diff_in_hours(time_log.start, time_log.stop)
+      Hourglass::DateTimeCalculations.time_diff_in_hours(time_log.start, time_log.stop)
     end
 
     context 'with no extra arguments' do
@@ -102,7 +102,7 @@ describe Chronos::TimeLog do
 
       it 'throws the correct exception' do
         time_log.book booking_arguments
-        expect { book! }.to raise_exception Chronos::AlreadyBookedException
+        expect { book! }.to raise_exception Hourglass::AlreadyBookedException
       end
     end
   end
@@ -379,7 +379,7 @@ describe Chronos::TimeLog do
     describe 'with project specific settings' do
       before :each do
         @project = create(:project)
-        Chronos::Settings[project: @project] = {round_minimum: '0.15', round_limit: '75', round_carry_over_due: '8'}
+        Hourglass::Settings[project: @project] = {round_minimum: '0.15', round_limit: '75', round_carry_over_due: '8'}
       end
 
       context 'without pauses' do

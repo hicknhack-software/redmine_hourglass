@@ -1,18 +1,18 @@
-require 'chronos'
+require 'hourglass'
 
-Redmine::Plugin.register Chronos::PLUGIN_NAME do
-  name 'Chronos'
-  description 'Control your time like the god you think you are'
+Redmine::Plugin.register Hourglass::PLUGIN_NAME do
+  name 'Hourglass'
+  description 'Track your time and book it on issues and projects'
   url 'https://github.com/hicknhack-software/redmine_time_tracker/tree/rewrite'
   author 'HicknHack Software GmbH'
   author_url 'http://www.hicknhack-software.com'
-  version Chronos::VERSION
+  version Hourglass::VERSION
 
   requires_redmine version_or_higher: '3.0.0'
 
-  settings default: Chronos::Settings.defaults, :partial => "settings/#{Chronos::PLUGIN_NAME}"
+  settings default: Hourglass::Settings.defaults, :partial => "settings/#{Hourglass::PLUGIN_NAME}"
 
-  project_module Chronos::PLUGIN_NAME do
+  project_module Hourglass::PLUGIN_NAME do
     def with_foreign(*permissions)
       permissions.map { |x| [x, "#{x}_foreign".to_sym] }.flatten
     end
@@ -21,93 +21,92 @@ Redmine::Plugin.register Chronos::PLUGIN_NAME do
       permissions.map { |x| [x, "bulk_#{x}".to_sym] }.flatten
     end
 
-    permission :chronos_track_time,
+    permission :hourglass_track_time,
                {
-                   :'chronos/time_trackers' => [:start, *with_bulk(:update), :stop],
-                   :'chronos/time_logs' => [*with_bulk(:update), :split, :combine],
-                   :'chronos_ui' => [:index, :time_trackers, *with_bulk(:edit_time_trackers, :edit_time_logs)]
+                   :'hourglass/time_trackers' => [:start, *with_bulk(:update), :stop],
+                   :'hourglass/time_logs' => [*with_bulk(:update), :split, :combine],
+                   :'hourglass_ui' => [:index, :time_trackers, *with_bulk(:edit_time_trackers, :edit_time_logs)]
                },
                require: :loggedin
 
-    permission :chronos_view_tracked_time,
+    permission :hourglass_view_tracked_time,
                {
-                   :'chronos/time_trackers' => with_foreign(:index, :show),
-                   :'chronos/time_logs' => with_foreign(:index, :show),
-                   :'chronos_ui' => [:index, *with_foreign(:time_logs, :time_trackers)]
+                   :'hourglass/time_trackers' => with_foreign(:index, :show),
+                   :'hourglass/time_logs' => with_foreign(:index, :show),
+                   :'hourglass_ui' => [:index, *with_foreign(:time_logs, :time_trackers)]
                }, require: :loggedin
 
-    permission :chronos_view_own_tracked_time,
+    permission :hourglass_view_own_tracked_time,
                {
-                   :'chronos/time_trackers' => [:index, :show],
-                   :'chronos/time_logs' => [:index, :show],
-                   :'chronos_ui' => [:index, :time_logs, :time_trackers]
+                   :'hourglass/time_trackers' => [:index, :show],
+                   :'hourglass/time_logs' => [:index, :show],
+                   :'hourglass_ui' => [:index, :time_logs, :time_trackers]
                }, require: :loggedin
 
-    permission :chronos_edit_tracked_time,
+    permission :hourglass_edit_tracked_time,
                {
-                   :'chronos/time_trackers' => with_foreign(*with_bulk(:update, :destroy), :update_time),
-                   :'chronos/time_logs' => with_foreign(*with_bulk(:update, :destroy), :update_time, :split, :combine),
-                   :'chronos_ui' => with_foreign(*with_bulk(:edit_time_logs, :edit_time_trackers))
+                   :'hourglass/time_trackers' => with_foreign(*with_bulk(:update, :destroy), :update_time),
+                   :'hourglass/time_logs' => with_foreign(*with_bulk(:update, :destroy), :update_time, :split, :combine),
+                   :'hourglass_ui' => with_foreign(*with_bulk(:edit_time_logs, :edit_time_trackers))
                }, require: :loggedin
 
-    permission :chronos_edit_own_tracked_time,
+    permission :hourglass_edit_own_tracked_time,
                {
-                   :'chronos/time_trackers' => [*with_bulk(:update, :destroy), :update_time],
-                   :'chronos/time_logs' => [*with_bulk(:update, :destroy), :update_time, :split, :combine],
-                   :'chronos_ui' => with_bulk(:edit_time_logs, :edit_time_trackers)
+                   :'hourglass/time_trackers' => [*with_bulk(:update, :destroy), :update_time],
+                   :'hourglass/time_logs' => [*with_bulk(:update, :destroy), :update_time, :split, :combine],
+                   :'hourglass_ui' => with_bulk(:edit_time_logs, :edit_time_trackers)
                }, require: :loggedin
 
-    permission :chronos_book_time,
+    permission :hourglass_book_time,
                {
-                   :'chronos/time_logs' => with_foreign(*with_bulk(:book)),
-                   :'chronos/time_bookings' => with_foreign(*with_bulk(:update)),
-                   :'chronos_ui' => with_foreign(*with_bulk(:book_time_logs, :edit_time_bookings))
+                   :'hourglass/time_logs' => with_foreign(*with_bulk(:book)),
+                   :'hourglass/time_bookings' => with_foreign(*with_bulk(:update)),
+                   :'hourglass_ui' => with_foreign(*with_bulk(:book_time_logs, :edit_time_bookings))
                }, require: :loggedin
 
-    permission :chronos_book_own_time,
+    permission :hourglass_book_own_time,
                {
-                   :'chronos/time_logs' => with_bulk(:book),
-                   :'chronos/time_bookings' => with_bulk(:update),
-                   :'chronos_ui' => with_bulk(:book_time_logs, :edit_time_bookings)
+                   :'hourglass/time_logs' => with_bulk(:book),
+                   :'hourglass/time_bookings' => with_bulk(:update),
+                   :'hourglass_ui' => with_bulk(:book_time_logs, :edit_time_bookings)
                }, require: :loggedin
 
-    permission :chronos_view_booked_time,
+    permission :hourglass_view_booked_time,
                {
-                   :'chronos/time_bookings' => with_foreign(:index, :show),
-                   :'chronos_ui' => [:index, *with_foreign(:report, :time_bookings)]
+                   :'hourglass/time_bookings' => with_foreign(:index, :show),
+                   :'hourglass_ui' => [:index, *with_foreign(:report, :time_bookings)]
                }, require: :member
 
-    permission :chronos_view_own_booked_time,
+    permission :hourglass_view_own_booked_time,
                {
-                   :'chronos/time_bookings' => [:index, :show],
-                   :'chronos_ui' => [:index, :report, :time_bookings]
+                   :'hourglass/time_bookings' => [:index, :show],
+                   :'hourglass_ui' => [:index, :report, :time_bookings]
                }, require: :loggedin
 
-    permission :chronos_edit_booked_time,
+    permission :hourglass_edit_booked_time,
                {
-                   :'chronos/time_bookings' => with_foreign(*with_bulk(:update, :destroy), :update_time),
-                   :'chronos_ui' => with_foreign(*with_bulk(:edit_time_bookings))
+                   :'hourglass/time_bookings' => with_foreign(*with_bulk(:update, :destroy), :update_time),
+                   :'hourglass_ui' => with_foreign(*with_bulk(:edit_time_bookings))
                }, require: :loggedin
 
-    permission :chronos_edit_own_booked_time,
+    permission :hourglass_edit_own_booked_time,
                {
-                   :'chronos/time_bookings' => [*with_bulk(:update, :destroy), :update_time],
-                   :'chronos_ui' => with_bulk(:edit_time_bookings)
+                   :'hourglass/time_bookings' => [*with_bulk(:update, :destroy), :update_time],
+                   :'hourglass_ui' => with_bulk(:edit_time_bookings)
                }, require: :loggedin
   end
 
   def allowed_to_see_index?
-    proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'index' }
+    proc { User.current.allowed_to_globally? controller: 'hourglass_ui', action: 'index' }
   end
 
-  menu :top_menu, :chronos_root, :chronos_ui_root_path, caption: :'chronos.ui.menu.main', if: allowed_to_see_index?
-  menu :account_menu, :chronos_quick, '#', caption: '', if: allowed_to_see_index?, before: :my_account
-  #menu :project_menu, :chronos_main_menu, chronos_ui_root_path, caption: 'test'
+  menu :top_menu, :hourglass_root, :hourglass_ui_root_path, caption: :'hourglass.ui.menu.main', if: allowed_to_see_index?
+  menu :account_menu, :hourglass_quick, '#', caption: '', if: allowed_to_see_index?, before: :my_account
 
-  Redmine::MenuManager.map :chronos_menu do |menu|
-    menu.push :chronos_overview, :chronos_ui_root_path, caption: :'chronos.ui.menu.overview', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'index' }
-    menu.push :chronos_time_logs, :chronos_ui_time_logs_path, caption: :'chronos.ui.menu.time_logs', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'time_logs' }
-    menu.push :chronos_time_bookings, :chronos_ui_time_bookings_path, caption: :'chronos.ui.menu.time_bookings', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'time_bookings' }
-    menu.push :chronos_time_trackers, :chronos_ui_time_trackers_path, caption: :'chronos.ui.menu.time_trackers', if: proc { User.current.allowed_to_globally? controller: 'chronos_ui', action: 'time_trackers' }
+  Redmine::MenuManager.map :hourglass_menu do |menu|
+    menu.push :hourglass_overview, :hourglass_ui_root_path, caption: :'hourglass.ui.menu.overview', if: proc { User.current.allowed_to_globally? controller: 'hourglass_ui', action: 'index' }
+    menu.push :hourglass_time_logs, :hourglass_ui_time_logs_path, caption: :'hourglass.ui.menu.time_logs', if: proc { User.current.allowed_to_globally? controller: 'hourglass_ui', action: 'time_logs' }
+    menu.push :hourglass_time_bookings, :hourglass_ui_time_bookings_path, caption: :'hourglass.ui.menu.time_bookings', if: proc { User.current.allowed_to_globally? controller: 'hourglass_ui', action: 'time_bookings' }
+    menu.push :hourglass_time_trackers, :hourglass_ui_time_trackers_path, caption: :'hourglass.ui.menu.time_trackers', if: proc { User.current.allowed_to_globally? controller: 'hourglass_ui', action: 'time_trackers' }
   end
 end

@@ -1,0 +1,9 @@
+- content_for :sidebar do
+  = render_sidebar_queries
+
+= render layout: 'hourglass_ui/layouts/hourglass' do
+
+  = title_for_query_view
+
+  = render partial: 'hourglass_ui/lists/query_form', locals: {query: @query}
+  = render partial: 'hourglass_ui/lists/list', locals: {list_arguments: @list_arguments}

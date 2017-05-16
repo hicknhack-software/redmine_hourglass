@@ -1,0 +1,9 @@
+- content_for :header_tags do
+  = render partial: 'hourglass_ui/lists/chart'
+
+- content_for :sidebar do
+  h3 = t('hourglass.ui.time_bookings.heading_report')
+  - if authorize_globally_for 'hourglass_ui', 'report'
+    = link_to t('hourglass.ui.time_bookings.label_print'), hourglass_ui_report_path
+
+= render template: 'hourglass_ui/query_view'

@@ -1,4 +1,4 @@
-Chronos is a Redmine plugin intended to aid in time tracking on issues and projects with reports and management supporting tools.
+Hourglass is a Redmine plugin intended to aid in time tracking on issues and projects with reports and management supporting tools.
 
 Authors: Robert Kranz
 

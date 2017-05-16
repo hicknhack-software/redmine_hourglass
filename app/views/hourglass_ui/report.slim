@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    title = Hourglass::Settings[:report_title]
+    = javascript_heads
+    = javascript_include_tag 'global', plugin: Hourglass::PLUGIN_NAME
+    = javascript_include_tag 'application', plugin: Hourglass::PLUGIN_NAME
+    = stylesheet_link_tag 'global', plugin: Hourglass::PLUGIN_NAME, media: :all
+    = stylesheet_link_tag 'application', plugin: Hourglass::PLUGIN_NAME, media: :all
+    = render partial: 'hourglass_ui/lists/chart'
+  body.controller-hourglass_ui.action-report
+    .header
+      h1 = Hourglass::Settings[:report_title]
+      - if Hourglass::Settings[:report_logo_url].present?
+        .logo = image_tag Hourglass::Settings[:report_logo_url], width: Hourglass::Settings[:report_logo_width] || 150
+    .content
+      .chart
+        = render_query_totals @query
+        #chart-container.print
+      = render partial: 'hourglass_ui/report/list', locals: {list_arguments: @list_arguments}

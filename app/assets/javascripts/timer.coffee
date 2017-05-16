@@ -23,7 +23,7 @@ startTimeTrackerTimer = ->
     displayTime()
   , 1000
 
-@chronos ?= {}
-@chronos.Timer = {
+@hourglass ?= {}
+@hourglass.Timer = {
   start: startTimeTrackerTimer
 }

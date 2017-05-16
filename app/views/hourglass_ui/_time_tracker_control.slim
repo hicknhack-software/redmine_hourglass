@@ -1,0 +1,36 @@
+- can = {update: authorize_globally_for('hourglass/time_trackers', 'update'), update_time: authorize_globally_for('hourglass/time_trackers', 'update_time'), book: authorize_globally_for('hourglass/time_logs', 'book')}
+.time-tracker-control
+  h3 = t('hourglass.ui.index.time_tracker_control.heading')
+  - unless @time_tracker.persisted?
+    = form_for @time_tracker, url: start_hourglass_time_trackers_path, as: 'time_tracker', remote: true, html: {class: 'new-time-tracker-form js-hourglass-remote'} do |f|
+      .form-row
+        .form-field
+          = f.text_field :comments, size: '30', maxlength: 255, id: 'task', disabled: !can[:update], class: ('js-issue-autocompletion' if can[:book])
+          = f.hidden_field :issue_id if can[:book]
+        .form-field
+          = f.submit t('hourglass.ui.index.time_tracker_control.button_start')
+  - else
+    = form_for @time_tracker, url: stop_hourglass_time_tracker_path(@time_tracker), method: :delete, as: 'time_tracker', remote: true, html: {class: 'edit-time-tracker-form js-validate-form js-hourglass-remote'} do |f|
+      .form-row
+        = form_field :issue, f, @time_tracker, disabled: !can[:book]
+        = form_field :comments, f, @time_tracker, disabled: !can[:update]
+
+        - rounding_disabled = !@time_tracker.project || Hourglass::Settings[:round_sums_only, project: @time_tracker.project]
+        .form-field class=('hidden' if rounding_disabled)
+          .label
+            = f.label :round
+          .input
+            = f.check_box :round, disabled: rounding_disabled
+        .form-field
+          .label
+            = t('hourglass.ui.index.time_tracker_control.label_running_time')
+          .input.js-running-time
+      .form-row
+        = form_field :project, f, @time_tracker, disabled: !can[:book]
+        = form_field :activity, f, @time_tracker, disabled: !can[:book]
+        = form_field :start, f, @time_tracker, disabled: !can[:update_time]
+        .form-field
+          .input
+            = f.submit t('hourglass.ui.index.time_tracker_control.button_stop')
+            '
+            = f.submit t('hourglass.ui.index.time_tracker_control.button_stop_new'), class: 'js-stop-new'

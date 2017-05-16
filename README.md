@@ -1,14 +1,14 @@
-[![Dependency Status](https://gemnasium.com/hicknhack-software/redmine_time_tracker.png)](https://gemnasium.com/hicknhack-software/redmine_time_tracker)
-[![Code Climate](https://codeclimate.com/github/hicknhack-software/redmine_time_tracker.png)](https://codeclimate.com/github/hicknhack-software/redmine_time_tracker)
-[![Build Status](https://travis-ci.org/hicknhack-software/redmine_time_tracker.png?branch=rewrite)](https://travis-ci.org/hicknhack-software/redmine_time_tracker)
+[![Dependency Status](https://gemnasium.com/hicknhack-software/redmine-hourglass.png)](https://gemnasium.com/hicknhack-software/redmine-hourglass)
+[![Code Climate](https://codeclimate.com/github/hicknhack-software/redmine-hourglass.png)](https://codeclimate.com/github/hicknhack-software/redmine-hourglass)
+[![Build Status](https://travis-ci.org/hicknhack-software/redmine-hourglass.png)](https://travis-ci.org/hicknhack-software/redmine-hourglass)
 
-# Redmine Chronos Plugin
+# Redmine Hourglass Plugin
  
- Chronos is a Redmine plugin to aid in tracking spent time on projects and issues. It allows users to start / stop a timer with an optional reference to what they are working on.
+ Hourglass is a Redmine plugin to aid in tracking spent time on projects and issues. It allows users to start / stop a timer with an optional reference to what they are working on.
   
   It allows various queries for time entries as well as possibilities to update existing entries.
   
-  Chronos can be configured on a global base as well as per project.
+  Hourglass can be configured on a global base as well as per project.
 
 _Note: This is a complete rewrite of the [Redmine Time Tracker Plugin](https://github.com/hicknhack-software/redmine_time_tracker). While it has feature parity (atleast we hope we didn't forget anything), the code base has changed positively, so further additions are no longer a pain to do._
 
@@ -34,7 +34,7 @@ See [.travis.yml](.travis.yml) for details about supported version. If a newer v
 
 ## Installation
 
-1. Download and put the plugin code in `plugins/redmine_chronos`. For example by issuing `git clone https://github.com/hicknhack-software/redmine_time_tracker.git` in the `plugins` directory.
+1. Download and put the plugin code in `plugins/redmine-hourglass`. For example by issuing `git clone https://github.com/hicknhack-software/redmine-hourglass.git` in the `plugins` directory.
 1. Run `bundle install` to install necessary gems.
 1. Run `rake redmine:plugins:migrate RAILS_ENV=production`
 1. Run `rake redmine:plugins:assets RAILS_ENV=production`. (If you redmine is deployed in a subfolder like `www.example.com/redmine` you need to add `RAILS_RELATIVE_URL_ROOT=/redmine` to that task like this `rake redmine:plugins:assets RAILS_ENV=production RAILS_RELATIVE_URL_ROOT=/redmine`)
@@ -45,12 +45,12 @@ See [.travis.yml](.travis.yml) for details about supported version. If a newer v
 
 The process is roughly the same as installing. Make sure you have the desired version in the `plugins` directory and run the steps 2 - 5 from above.
 
-If you had it installed via git before, the first step is simply doing `git pull` in the `plugins/redmine_chronos` directory.
+If you had it installed via git before, the first step is simply doing `git pull` in the `plugins/redmine_hourglass` directory.
 
 ## Usage
 
 1. Login as an administrator and setup the permissions for your roles
-1. Enable the "Chronos" module for your project
+1. Enable the "Hourglass" module for your project
 1. You should now see the Time Tracking link in the top menu
                     
 To track time directly on an issue, you can use the context menu (right click in the issues list) in
@@ -60,7 +60,7 @@ the issue list to start or stop the timer or press the "Start Tracking" button o
 ### What's what?
 
 The plugin is intended to help us create invoices for customers. This requires the separation of time that was spent and time that is booked. Only booked times can be billed.
-More information are available in the [wiki](http://github.com/hicknhack-software/redmine_time_tracker/wiki).
+More information are available in the [wiki](http://github.com/hicknhack-software/redmine-hourglass/wiki).
 
 #### Time Tracker
 
@@ -81,7 +81,7 @@ The plugin offers a list of settings at the Redmine roles and permission setting
 
 ## Contributing
 
-Bug reports and pull requests are welcome on [GitHub](https://github.com/hicknhack-software/redmine_chronos). Please check the [contribution guide](CONTRIBUTING.md).This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to our [code of conduct](CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on [GitHub](https://github.com/hicknhack-software/redmine_hourglass). Please check the [contribution guide](CONTRIBUTING.md).This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to our [code of conduct](CODE_OF_CONDUCT.md).
 
 ## License
 

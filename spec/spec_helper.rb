@@ -10,8 +10,8 @@ require 'rspec/rails'
 require 'rake'
 require 'factory_girl_rails'
 
-# require chronos
-require File.expand_path File.dirname(__FILE__) + '/../lib/chronos'
+# require hourglass
+require File.expand_path File.dirname(__FILE__) + '/../lib/hourglass'
 
 FactoryGirl.definition_file_paths << File.join(File.dirname(__FILE__), 'factories')
 FactoryGirl.find_definitions

@@ -1,8 +1,8 @@
 require_relative '../spec_helper'
-describe Chronos::Settings do
+describe Hourglass::Settings do
 
   before :each do
-    Setting.plugin_redmine_chronos = {
+    Setting.plugin_redmine_hourglass = {
         round_minimum: '0.25',
         round_limit: '50',
         round_default: false,
@@ -22,7 +22,7 @@ describe Chronos::Settings do
 
   describe 'global' do
     it 'returns the complete settings with projects specifics' do
-      expect(described_class.global).to eql Setting.plugin_redmine_chronos
+      expect(described_class.global).to eql Setting.plugin_redmine_hourglass
     end
   end
 
@@ -79,7 +79,7 @@ describe Chronos::Settings do
     describe 'without project' do
       it 'sets all settings without affecting project specifics' do
         described_class[] = {round_minimum: '0.1', round_limit: '60', round_default: true, new_setting: 10}
-        expect(Setting.plugin_redmine_chronos).to eql round_minimum: '0.1',
+        expect(Setting.plugin_redmine_hourglass).to eql round_minimum: '0.1',
             round_limit: '60',
             round_default: true,
             new_setting: 10,
@@ -98,7 +98,7 @@ describe Chronos::Settings do
 
       it 'won\'t clear settings' do
         described_class[] = nil
-        expect(Setting.plugin_redmine_chronos).to eql round_minimum: '0.25',
+        expect(Setting.plugin_redmine_hourglass).to eql round_minimum: '0.25',
             round_limit: '50',
             round_default: false,
             projects: {
@@ -116,7 +116,7 @@ describe Chronos::Settings do
 
       it 'sets a new value for a key without affecting project specifics' do
         described_class[:round_minimum] = '0.1'
-        expect(Setting.plugin_redmine_chronos).to eql round_minimum: '0.1',
+        expect(Setting.plugin_redmine_hourglass).to eql round_minimum: '0.1',
             round_limit: '50',
             round_default: false,
             projects: {
@@ -134,7 +134,7 @@ describe Chronos::Settings do
 
       it 'adds a new value for a key without affecting project specifics' do
         described_class[:new_setting] = 10
-        expect(Setting.plugin_redmine_chronos).to eql round_minimum: '0.25',
+        expect(Setting.plugin_redmine_hourglass).to eql round_minimum: '0.25',
             round_limit: '50',
             round_default: false,
             new_setting: 10,
@@ -155,7 +155,7 @@ describe Chronos::Settings do
     describe 'with project' do
       it 'sets project settings without affecting anything else' do
         described_class[project: 1] = {round_minimum: '0.1', round_limit: '60', new_setting: 10}
-        expect(Setting.plugin_redmine_chronos).to eql round_minimum: '0.25',
+        expect(Setting.plugin_redmine_hourglass).to eql round_minimum: '0.25',
             round_limit: '50',
             round_default: false,
             projects: {
@@ -175,7 +175,7 @@ describe Chronos::Settings do
 
       it 'adds settings for a new project without affecting anything else' do
         described_class[project: 3] = {new_setting: 10}
-        expect(Setting.plugin_redmine_chronos).to eql round_minimum: '0.25',
+        expect(Setting.plugin_redmine_hourglass).to eql round_minimum: '0.25',
             round_limit: '50',
             round_default: false,
             projects: {
@@ -196,7 +196,7 @@ describe Chronos::Settings do
 
       it 'clears project settings without affecting anything else' do
         described_class[project: 1] = nil
-        expect(Setting.plugin_redmine_chronos).to eql round_minimum: '0.25',
+        expect(Setting.plugin_redmine_hourglass).to eql round_minimum: '0.25',
             round_limit: '50',
             round_default: false,
             projects: {
@@ -210,7 +210,7 @@ describe Chronos::Settings do
 
       it 'sets a value for a key without affecting anything else' do
         described_class[:round_minimum, project: 1] = '0.9'
-        expect(Setting.plugin_redmine_chronos).to eql round_minimum: '0.25',
+        expect(Setting.plugin_redmine_hourglass).to eql round_minimum: '0.25',
             round_limit: '50',
             round_default: false,
             projects: {
@@ -228,7 +228,7 @@ describe Chronos::Settings do
 
       it 'adds a new value for a key without affecting anything else' do
         described_class[:new_setting, project: 1] = 10
-        expect(Setting.plugin_redmine_chronos).to eql round_minimum: '0.25',
+        expect(Setting.plugin_redmine_hourglass).to eql round_minimum: '0.25',
             round_limit: '50',
             round_default: false,
             projects: {
@@ -247,7 +247,7 @@ describe Chronos::Settings do
 
       it 'adds a new project for a key without affecting anything else' do
         described_class[:new_setting, project: 3] = 10
-        expect(Setting.plugin_redmine_chronos).to eql round_minimum: '0.25',
+        expect(Setting.plugin_redmine_hourglass).to eql round_minimum: '0.25',
             round_limit: '50',
             round_default: false,
             projects: {

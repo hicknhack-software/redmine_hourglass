@@ -36,7 +36,7 @@ submitMultiForm = (event) ->
       success: ->
         location.reload()
       error: ({responseJSON}) ->
-        chronos.Utils.showErrorMessage responseJSON.message
+        hourglass.Utils.showErrorMessage responseJSON.message
   else
     alert 'Not yet implemented'
 
@@ -67,7 +67,7 @@ showInlineForm = (event, response) ->
   $formRow.find('.js-validate-limit').each addStartStopLimitMoments
   $formRow.find('[name*=start], [name*=stop]').each -> $(@).addDateTimePicker()
   $durationField = $formRow.find('.js-duration')
-  $durationField.val chronos.Utils.formatDuration parseFloat($durationField.val()), 'hours' if $durationField
+  $durationField.val hourglass.Utils.formatDuration parseFloat($durationField.val()), 'hours' if $durationField
   checkForMultiForm $row, $formRow
 
 showInlineFormMulti = (event, response) ->
@@ -87,14 +87,14 @@ processErrorPageResponse = (event, {responseText}) ->
   if responseText
     $response = $(responseText)
     message = "#{$response.filter('h2').text()} - #{$response.filter('#errorExplanation').text()}"
-    chronos.Utils.showErrorMessage message
+    hourglass.Utils.showErrorMessage message
 
 addStartStopLimitMoments = ->
   $field = $(@)
   $field.data 'mLimit', moment($field.val()) unless moment.isMoment($field.data('mLimit'))
 
 $ ->
-  $list = $('.chronos-list')
+  $list = $('.hourglass-list')
   $list
   .on 'click', '.checkbox a', toggleAllCheckBoxes
   .on 'ajax:success', '.js-show-inline-form', showInlineForm

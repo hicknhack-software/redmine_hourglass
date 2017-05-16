@@ -2,7 +2,7 @@ en:
   activerecord:
     errors:
       models:
-        chronos/time_tracker:
+        hourglass/time_tracker:
           attributes:
             project:
               blank: doesn't exist
@@ -12,7 +12,7 @@ en:
               blank: doesn't exist
             user_id:
               taken: already has a running time tracker
-        chronos/time_log:
+        hourglass/time_log:
           attributes:
             base:
               overlaps: There is a overlapping time log
@@ -26,25 +26,25 @@ en:
   field_start: Start
   field_stop: Stop
   label_this_quarter: current quarter
-  permission_chronos_book_own_time: Book own time
-  permission_chronos_book_time: Book time
-  permission_chronos_edit_booked_time: Edit booked Time
-  permission_chronos_edit_own_booked_time: Edit own booked time
-  permission_chronos_edit_own_tracked_time: Edit own tracked time
-  permission_chronos_edit_tracked_time: Edit tracked time
-  permission_chronos_track_time: Track time
-  permission_chronos_view_booked_time: View booked time
-  permission_chronos_view_own_booked_time: View own booked time
-  permission_chronos_view_own_tracked_time: View own tracked time
-  permission_chronos_view_tracked_time: View tracked time
-  project_module_redmine_chronos: Redmine Chronos (Time Tracker)
+  permission_hourglass_book_own_time: Book own time
+  permission_hourglass_book_time: Book time
+  permission_hourglass_edit_booked_time: Edit booked Time
+  permission_hourglass_edit_own_booked_time: Edit own booked time
+  permission_hourglass_edit_own_tracked_time: Edit own tracked time
+  permission_hourglass_edit_tracked_time: Edit tracked time
+  permission_hourglass_track_time: Track time
+  permission_hourglass_view_booked_time: View booked time
+  permission_hourglass_view_own_booked_time: View own booked time
+  permission_hourglass_view_own_tracked_time: View own tracked time
+  permission_hourglass_view_tracked_time: View tracked time
+  project_module_redmine_hourglass: Redmine Hourglass (Time Tracker)
 ################################################################
 
-  chronos:
+  hourglass:
     project_settings:
       global_value: "(Global Value: #{value})"
       override_hint_html: "Leave empty to use <a href='%{url}'>global settings</a>"
-      title: Chronos Plugin Settings
+      title: Hourglass Plugin Settings
       use_global: Use global
     settings:
       import:
@@ -54,7 +54,7 @@ en:
           redmine_time_tracker: From Redmine Time Tracker plugin
         label_start: Start now
         success:
-          redmine_time_tracker: Redmine Time Tracker data was successfully imported to Redmine Chronos.
+          redmine_time_tracker: Redmine Time Tracker data was successfully imported to Redmine Hourglass.
         title: Import
       misc:
         fields:

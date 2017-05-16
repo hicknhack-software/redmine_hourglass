@@ -8,15 +8,15 @@ timeTrackerAjax = (args) ->
     data: $.extend {_method: args.method}, args.data or {}
     success: args.success
     error: ({responseJSON}) ->
-      chronos.Utils.showErrorMessage responseJSON.message
+      hourglass.Utils.showErrorMessage responseJSON.message
 
 stopDialogApplyHandler = (args) ->
   $stopDialog = $(@)
   $activityField = $stopDialog.find('[name*=activity_id]')
-  return unless chronos.FormValidator.validateField $activityField
+  return unless hourglass.FormValidator.validateField $activityField
   $stopDialog.dialog 'close'
   timeTrackerAjax
-    url: chronosRoutes.chronos_time_tracker 'current'
+    url: hourglassRoutes.hourglass_time_tracker 'current'
     type: 'put'
     data:
       time_tracker:
@@ -30,17 +30,17 @@ startDialogApplyHandler = ->
   switch $startDialog.find('input[type=radio]:checked').val()
     when 'log'
       timeTrackerAjax
-        url: chronosRoutes.stop_chronos_time_tracker 'current'
+        url: hourglassRoutes.stop_hourglass_time_tracker 'current'
         method: 'delete'
         success: startNewTracker
     when 'discard'
       timeTrackerAjax
-        url: chronosRoutes.chronos_time_tracker 'current'
+        url: hourglassRoutes.hourglass_time_tracker 'current'
         method: 'delete'
         success: startNewTracker
     when 'takeover'
       timeTrackerAjax
-        url: chronosRoutes.chronos_time_tracker 'current'
+        url: hourglassRoutes.hourglass_time_tracker 'current'
         type: 'put'
         data: $('.js-start-tracker').data('params')
         success: ->
@@ -54,7 +54,7 @@ showStartDialog = (e) ->
     if $startDialogContent.length isnt 0
       e.preventDefault()
       e.stopPropagation()
-      chronos.Utils.showDialog 'js-start-dialog', $startDialogContent, [
+      hourglass.Utils.showDialog 'js-start-dialog', $startDialogContent, [
         {
           text: $startDialogContent.data('button-ok-text')
           click: startDialogApplyHandler
@@ -78,7 +78,7 @@ showStopDialog = (e) ->
     if $stopDialogContent.length isnt 0
       e.preventDefault()
       e.stopPropagation()
-      chronos.Utils.showDialog 'js-stop-dialog', $stopDialogContent, [
+      hourglass.Utils.showDialog 'js-stop-dialog', $stopDialogContent, [
         {
           text: $stopDialogContent.data('button-ok-text')
           click: stopDialogApplyHandler
@@ -90,7 +90,7 @@ showStopDialog = (e) ->
         }
       ]
       $stopDialogContent.on 'change', '[name*=activity_id]', ->
-        chronos.FormValidator.validateField $(@)
+        hourglass.FormValidator.validateField $(@)
   else
     e.preventDefault()
     e.stopPropagation()
@@ -106,18 +106,18 @@ $ ->
   $issueActionsToAdd = $('.js-issue-action')
   $issueActionList.first().add($issueActionList.last()).find(':nth-child(2)').after $issueActionsToAdd.removeClass('hidden')
 
-  $('.chronos-quick').replaceWith $('.js-account-menu-link').removeClass('hidden')
+  $('.hourglass-quick').replaceWith $('.js-account-menu-link').removeClass('hidden')
 
   $('#content, #top-menu')
     .on 'click', '.js-start-tracker', showStartDialog
     .on 'click', '.js-stop-tracker', showStopDialog
 
   $contextMenuTarget = null
-  $(document).on 'contextmenu', '.chronos-list', (e) ->
+  $(document).on 'contextmenu', '.hourglass-list', (e) ->
     $contextMenuTarget = $(@)
 
   $.ajaxPrefilter (options) ->
-    return unless options.url is '/chronos/ui/context_menu'
+    return unless options.url is '/hourglass/ui/context_menu'
     options.data = $.param list_type: $contextMenuTarget.data('list-type')
     $contextMenuTarget.find('.context-menu-selection').each ->
       options.data += "&ids[]=#{@id}"

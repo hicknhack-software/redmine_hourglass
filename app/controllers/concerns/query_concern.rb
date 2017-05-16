@@ -8,9 +8,9 @@ module QueryConcern
   private
   def query_class_map
     {
-        time_logs: Chronos::TimeLogQuery,
-        time_bookings: Chronos::TimeBookingQuery,
-        time_trackers: Chronos::TimeTrackerQuery
+        time_logs: Hourglass::TimeLogQuery,
+        time_bookings: Hourglass::TimeBookingQuery,
+        time_trackers: Hourglass::TimeTrackerQuery
     }.with_indifferent_access
   end
 
@@ -67,6 +67,6 @@ module QueryConcern
   end
 
   def build_chart_query
-    @chart_query = Chronos::ChartQuery.new name: '_', filters: @query.filters, group_by: :date, main_query: @query
+    @chart_query = Hourglass::ChartQuery.new name: '_', filters: @query.filters, group_by: :date, main_query: @query
   end
 end

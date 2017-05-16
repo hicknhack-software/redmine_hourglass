@@ -1,6 +1,0 @@
-h2 = t(:label_query)
-= form_tag chronos_query_path(@query), method: :put do
-  = hidden_field_tag 'request_referer', params[:request_referer] || URI(request.referer || '').path
-  = hidden_field_tag 't[]'
-  = render partial: 'queries/form', locals: {query: @query}
-  = submit_tag t(:button_save)

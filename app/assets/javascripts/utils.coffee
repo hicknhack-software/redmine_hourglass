@@ -1,6 +1,6 @@
 $.fn.addDateTimePicker = ->
   currentTime = moment.parseZone @.val()
-  @.datetimepicker $.extend chronos.TimepickerLocales,
+  @.datetimepicker $.extend hourglass.TimepickerLocales,
     hour: currentTime.hour()
     minute: currentTime.minute()
     timezone: currentTime._tzm
@@ -62,8 +62,8 @@ parseDuration = (durationString) ->
   [hours, minutes] = durationString.split(':')
   moment.duration(hours: hours, minutes: minutes)
 
-@chronos ?= {}
-@chronos.Utils =
+@hourglass ?= {}
+@hourglass.Utils =
   clearFlash: clearFlash
   debounce: debounce
   formatDuration: formatDuration
@@ -74,7 +74,7 @@ parseDuration = (durationString) ->
 
 $ ->
   $(document)
-  .on 'ajax:success', '.js-chronos-remote', ->
+  .on 'ajax:success', '.js-hourglass-remote', ->
     location.reload()
-  .on 'ajax:error', '.js-chronos-remote', (event, {responseJSON}) ->
-    chronos.Utils.showErrorMessage responseJSON.message
+  .on 'ajax:error', '.js-hourglass-remote', (event, {responseJSON}) ->
+    hourglass.Utils.showErrorMessage responseJSON.message
