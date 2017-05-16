@@ -1,6 +1,6 @@
-[![Dependency Status](https://gemnasium.com/hicknhack-software/redmine-hourglass.png)](https://gemnasium.com/hicknhack-software/redmine-hourglass)
-[![Code Climate](https://codeclimate.com/github/hicknhack-software/redmine-hourglass.png)](https://codeclimate.com/github/hicknhack-software/redmine-hourglass)
-[![Build Status](https://travis-ci.org/hicknhack-software/redmine-hourglass.png)](https://travis-ci.org/hicknhack-software/redmine-hourglass)
+[![Dependency Status](https://gemnasium.com/hicknhack-software/redmine_hourglass.png)](https://gemnasium.com/hicknhack-software/redmine_hourglass)
+[![Code Climate](https://codeclimate.com/github/hicknhack-software/redmine_hourglass.png)](https://codeclimate.com/github/hicknhack-software/redmine_hourglass)
+[![Build Status](https://travis-ci.org/hicknhack-software/redmine_hourglass.png)](https://travis-ci.org/hicknhack-software/redmine_hourglass)
 
 # Redmine Hourglass Plugin
  
@@ -34,7 +34,7 @@ See [.travis.yml](.travis.yml) for details about supported version. If a newer v
 
 ## Installation
 
-1. Download and put the plugin code in `plugins/redmine-hourglass`. For example by issuing `git clone https://github.com/hicknhack-software/redmine-hourglass.git` in the `plugins` directory.
+1. Download and put the plugin code in `plugins/redmine_hourglass`. For example by issuing `git clone https://github.com/hicknhack-software/redmine_hourglass.git` in the `plugins` directory.
 1. Run `bundle install` to install necessary gems.
 1. Run `rake redmine:plugins:migrate RAILS_ENV=production`
 1. Run `rake redmine:plugins:assets RAILS_ENV=production`. (If you redmine is deployed in a subfolder like `www.example.com/redmine` you need to add `RAILS_RELATIVE_URL_ROOT=/redmine` to that task like this `rake redmine:plugins:assets RAILS_ENV=production RAILS_RELATIVE_URL_ROOT=/redmine`)
@@ -60,7 +60,7 @@ the issue list to start or stop the timer or press the "Start Tracking" button o
 ### What's what?
 
 The plugin is intended to help us create invoices for customers. This requires the separation of time that was spent and time that is booked. Only booked times can be billed.
-More information are available in the [wiki](http://github.com/hicknhack-software/redmine-hourglass/wiki).
+More information are available in the [wiki](http://github.com/hicknhack-software/redmine_hourglass/wiki).
 
 #### Time Tracker
 
