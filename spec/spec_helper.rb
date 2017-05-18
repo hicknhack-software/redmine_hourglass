@@ -6,15 +6,16 @@ if ENV['PATH_TO_REDMINE']
 else
   require File.expand_path(File.dirname(__FILE__) + '/../../../test/test_helper')
 end
-require 'rspec/rails'
-require 'rake'
-require 'factory_girl_rails'
 
 # require hourglass
 require File.expand_path File.dirname(__FILE__) + '/../lib/hourglass'
 
+require 'rspec/rails'
+require 'rake'
+require 'factory_girl_rails'
+
 FactoryGirl.definition_file_paths << File.join(File.dirname(__FILE__), 'factories')
-FactoryGirl.find_definitions
+FactoryGirl.reload
 
 #ENV['ZONEBIE_TZ'] = 'Pacific/Pago_Pago' #possibility to set a specific timezone
 Zonebie.set_random_timezone

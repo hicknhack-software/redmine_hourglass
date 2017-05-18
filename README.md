@@ -13,6 +13,8 @@
 _Note: This is a complete rewrite of the [Redmine Time Tracker Plugin](https://github.com/hicknhack-software/redmine_time_tracker). While it has feature parity (atleast we hope we didn't forget anything), the code base has changed positively, so further additions are no longer a pain to do._
 
 _We already did some additions to the existing version, see [CHANGELOG.md](CHANGELOG.md) for details._
+
+___To ease migrating we added a function to import time entries from the redmine_time_tracker. You can find this in the plugin settings and as a rake task.___
  
 ## Features
 - Per user time tracking
