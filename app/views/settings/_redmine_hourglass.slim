@@ -1,4 +1,10 @@
 h3 = t('hourglass.settings.rounding.title')
+
+p
+  = label_tag 'settings[round_sums_only]', t('hourglass.settings.rounding.fields.sums_only')
+  = hidden_field_tag 'settings[round_sums_only]', false
+  = check_box_tag 'settings[round_sums_only]', true, @settings[:round_sums_only]
+
 p
   = label_tag 'settings[round_minimum]', t('hourglass.settings.rounding.fields.minimum')
   = text_field_tag 'settings[round_minimum]', @settings[:round_minimum], {size: 2}
@@ -7,20 +13,15 @@ p
   = label_tag 'settings[round_limit]', t('hourglass.settings.rounding.fields.limit')
   = text_field_tag 'settings[round_limit]', @settings[:round_limit], {size: 2}
   |  (%)
-p
-  = label_tag 'settings[round_carry_over_due]', t('hourglass.settings.rounding.fields.carry_over_due')
-  = text_field_tag 'settings[round_carry_over_due]', @settings[:round_carry_over_due], {size: 2}
-  = " (#{t(:field_hours)})"
-
+    
 p
   = label_tag 'settings[round_default]', t('hourglass.settings.rounding.fields.default')
   = hidden_field_tag 'settings[round_default]', false
   = check_box_tag 'settings[round_default]', true, @settings[:round_default]
-
 p
-  = label_tag 'settings[round_sums_only]', t('hourglass.settings.rounding.fields.sums_only')
-  = hidden_field_tag 'settings[round_sums_only]', false
-  = check_box_tag 'settings[round_sums_only]', true, @settings[:round_sums_only]
+  = label_tag 'settings[round_carry_over_due]', t('hourglass.settings.rounding.fields.carry_over_due')
+  = text_field_tag 'settings[round_carry_over_due]', @settings[:round_carry_over_due], {size: 2}
+  = " (#{t(:field_hours)})"
 
 h3 = t('hourglass.settings.report.title')
 p

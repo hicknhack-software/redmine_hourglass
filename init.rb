@@ -3,7 +3,7 @@ require 'hourglass'
 Redmine::Plugin.register Hourglass::PLUGIN_NAME do
   name 'Hourglass'
   description 'Track your time and book it on issues and projects'
-  url 'https://github.com/hicknhack-software/redmine_time_tracker/tree/rewrite'
+  url 'http://github.com/hicknhack-software/redmine_hourglass'
   author 'HicknHack Software GmbH'
   author_url 'http://www.hicknhack-software.com'
   version Hourglass::VERSION
