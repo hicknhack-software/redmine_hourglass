@@ -10,6 +10,7 @@ class HourglassCompletionController < Hourglass::ApiBaseController
             .or(issue_arel[:id].matches("%#{params[:term]}%"))
             .or(issue_arel[:subject].matches("%#{params[:term]}%"))
     )
+    issues = issues.where(project_id: params[:project_id]) if params[:project_id].present?
     issue_list = issues.map do |issue|
       {
           label: "##{issue.id} #{issue.subject}",

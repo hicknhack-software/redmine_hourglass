@@ -1,17 +1,24 @@
 initIssueAutoCompletion = ->
-  $(@).autocomplete
-    source: hourglassRoutes.hourglass_completion_issues(),
+  $issueField = $(@)
+  $projectField = $issueField.closest('form').find('[name*=project_id]')
+  $issueField.autocomplete
+    source: (request, response) ->
+      $.ajax
+        url: hourglassRoutes.hourglass_completion_issues(project_id: $projectField.val()),
+        dataType: 'json',
+        data: request
+        success: response
     minLength: 1,
     autoFocus: true,
     response: (event, ui) ->
       $(event.target).next().val('')
     select: (event, ui) ->
       event.preventDefault()
-      $target = $(event.target).trigger('change')
-      $target.closest('form').find('[name*=project_id]').val(ui.item.project_id).trigger('changefromissue')
+      $issueField.trigger('change')
+      $projectField.val(ui.item.project_id).trigger('changefromissue') if $projectField.val() isnt ui.item.project_id
     focus: (event, ui) ->
       event.preventDefault()
-      $(event.target)
+      $issueField
       .val(ui.item.label)
       .next().val(ui.item.issue_id)
 
