@@ -28,7 +28,7 @@ en:
   label_this_quarter: current quarter
   permission_hourglass_book_own_time: Book own time
   permission_hourglass_book_time: Book time
-  permission_hourglass_edit_booked_time: Edit booked Time
+  permission_hourglass_edit_booked_time: Edit booked time
   permission_hourglass_edit_own_booked_time: Edit own booked time
   permission_hourglass_edit_own_tracked_time: Edit own tracked time
   permission_hourglass_edit_tracked_time: Edit tracked time
