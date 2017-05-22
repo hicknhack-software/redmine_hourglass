@@ -34,3 +34,6 @@
             = f.submit t('hourglass.ui.index.time_tracker_control.button_stop')
             '
             = f.submit t('hourglass.ui.index.time_tracker_control.button_stop_new'), class: 'js-stop-new'
+            - if authorize_globally_for 'hourglass/time_trackers', 'destroy'
+              = link_to hourglass_time_tracker_path(@time_tracker), class: 'js-hourglass-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)} do
+                input type='button' value=t(:button_delete)
