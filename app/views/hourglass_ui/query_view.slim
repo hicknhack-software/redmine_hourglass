@@ -2,6 +2,9 @@
   = render_sidebar_queries
 
 = render layout: 'hourglass_ui/layouts/hourglass' do
+  - if content_for? :contextual
+    .contextual
+      = yield :contextual
 
   = title_for_query_view
 

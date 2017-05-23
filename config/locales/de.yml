@@ -157,10 +157,12 @@ de:
         title: Zeit wählen
       time_logs:
         title: Zeiterfassungen
+        button_create: Neue Zeiterfassung
         no_data: Keine Zeiterfassungen vorhanden
         round_hint: Dies zu aktivieren bedeutet zusätzlich, dass Zeitbuchungen nach der Zeitbuchung dieser Zeiterfassung neuberechnet werden
       time_bookings:
         title: Zeitbuchungen
+        button_create: Neue Zeitbuchung
         no_data: Keine Zeitbuchungen vorhanden
         heading_report: Report
         label_print: Drucken

@@ -152,10 +152,12 @@ en:
         title: Choose Time
       time_logs:
         title: Time logs
+        button_create: New time log
         no_data: No time logs available
         round_hint: Enabling this means also, that time bookings after the time booking of this time log will get recalculated
       time_bookings:
         title: Time bookings
+        button_create: New time booking
         no_data: No time bookings available
         heading_report: Report
         label_print: Print

@@ -10,7 +10,6 @@ module HourglassUi
       retrieve_query
       init_sort
       @list_arguments = list_arguments
-      render 'hourglass_ui/query_view'
     end
 
     def edit_time_logs

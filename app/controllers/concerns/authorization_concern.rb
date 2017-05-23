@@ -2,8 +2,8 @@ module AuthorizationConcern
   extend ActiveSupport::Concern
 
   private
-  def find_project
-    @project = @request_resource.project
+  def find_project(resource = @request_resource)
+    @project = resource.project
   end
 
   def find_project_from_params(resource_params, mode: :render)
@@ -34,8 +34,8 @@ module AuthorizationConcern
     end
   end
 
-  def foreign_allowed_to?(resource = @request_resource)
-    resource.user == User.current || allowed_to?("#{params[:action]}_foreign")
+  def foreign_allowed_to?(resource = @request_resource, action = params[:action], controller = params[:controller])
+    resource.user == User.current || allowed_to?("#{action}_foreign", controller)
   end
 
   def allowed_to?(action = params[:action], controller = params[:controller])
