@@ -92,7 +92,7 @@ module Hourglass
       !booked?
     end
 
-    def to_json(args = {})
+    def as_json(args = {})
       super args.deep_merge methods: :hours
     end
 

@@ -64,8 +64,9 @@ namespace :hourglass do
       post 'combine'
     end
   end
-  resources :time_bookings, except: [:new, :edit, :create] do
+  resources :time_bookings, except: [:new, :edit] do
     collection do
+      post 'bulk_create'
       post 'bulk_update'
       delete 'bulk_destroy'
     end

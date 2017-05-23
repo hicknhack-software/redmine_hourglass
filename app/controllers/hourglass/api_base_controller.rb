@@ -87,8 +87,8 @@ module Hourglass
       t("hourglass.api.#{controller_name}.errors.change_others_forbidden")
     end
 
-    def authorize_update_time(controller_params = params[controller_name.singularize])
-      render_403 message: update_time_forbidden_message unless update_time_allowed? controller_params
+    def authorize_update_time
+      render_403 message: update_time_forbidden_message unless update_time_allowed? params[controller_name.singularize]
     end
 
     def update_time_allowed?(controller_params = params[controller_name.singularize])

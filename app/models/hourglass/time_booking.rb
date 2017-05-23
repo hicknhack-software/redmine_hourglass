@@ -37,8 +37,14 @@ module Hourglass
       (stop - time_log.stop).to_i
     end
 
-    def to_json(args = {})
-      super args.deep_merge include: :time_entry
+    def as_json(args = {})
+      includes = [:time_entry]
+      includes << :time_log if include_time_log?
+      super({include: includes}.deep_merge args)
+    end
+
+    def include_time_log!
+      @include_time_log = true
     end
 
     private
@@ -53,6 +59,10 @@ module Hourglass
     def stop_is_valid
       #this is different from the stop validation of time log
       errors.add :stop, :invalid if stop.present? && start.present? && stop < start
+    end
+
+    def include_time_log?
+      @include_time_log
     end
   end
 end
