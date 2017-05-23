@@ -1,7 +1,8 @@
 = form_for time_log, as: 'time_log', remote: true, html: {id: 'new_time_log', class: 'new-time-log-form js-hourglass-remote js-validate-form', data: {form_type: 'new-time-log'}} do |f|
+  - index = Time.now.to_i
   .form-row
-    = form_field :start, f, time_log, css_classes: %w(js-picker-with-date)
-    = form_field :stop, f, time_log, css_classes: %w(js-picker-with-date)
+    = form_field :start, f, time_log, css_classes: %w(js-picker-with-date), id: "time_log_#{index}_start"
+    = form_field :stop, f, time_log, css_classes: %w(js-picker-with-date), id: "time_log_#{index}_stop"
     = form_field :duration, f, time_log
     = form_field :comments, f, time_log
     = form_field :user_id, f, time_log
