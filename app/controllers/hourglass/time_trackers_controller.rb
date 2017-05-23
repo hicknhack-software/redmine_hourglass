@@ -36,11 +36,11 @@ module Hourglass
 
     def bulk_update
       bulk do |id, params|
-        @request_resource = Hourglass::TimeTracker.find_by(id: id) or next
-        next foreign_forbidden_message unless foreign_allowed_to?
-        next update_time_forbidden_message unless update_time_allowed?
-        @request_resource.update params.permit(:start, :project_id, :activity_id, :issue_id, :comments)
-        @request_resource
+        time_tracker = Hourglass::TimeTracker.find_by(id: id) or next
+        next foreign_forbidden_message unless foreign_allowed_to? time_tracker
+        next update_time_forbidden_message unless update_time_allowed? params
+        time_tracker.update params.permit(:start, :project_id, :activity_id, :issue_id, :comments)
+        time_tracker
       end
     end
 
@@ -63,9 +63,9 @@ module Hourglass
 
     def bulk_destroy
       bulk do |id|
-        @request_resource = Hourglass::TimeTracker.find_by(id: id) or next
-        next foreign_forbidden_message unless foreign_allowed_to?
-        @request_resource.destroy
+        time_tracker = Hourglass::TimeTracker.find_by(id: id) or next
+        next foreign_forbidden_message unless foreign_allowed_to? time_tracker
+        time_tracker.destroy
       end
     end
 

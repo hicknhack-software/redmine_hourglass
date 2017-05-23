@@ -34,17 +34,17 @@ module Hourglass
     end
 
     def bulk_create
-      bulk do |_, booking_params|
-        error_msg = find_project booking_params, mode: :inline
+      bulk do |_, params|
+        error_msg = find_project params, mode: :inline
         next error_msg if error_msg.is_a? String
         next t('hourglass.api.errors.forbidden') unless allowed_to?
-        next update_time_forbidden_message unless update_time_allowed? booking_params
+        next update_time_forbidden_message unless update_time_allowed? params
         result = nil
         ActiveRecord::Base.transaction do
-          result = time_log = TimeLog.create booking_params.permit(:start, :stop, :comments, :user_id)
+          result = time_log = TimeLog.create params.permit(:start, :stop, :comments, :user_id)
           raise ActiveRecord::Rollback unless time_log.persisted?
           result = foreign_forbidden_message and raise ActiveRecord::Rollback unless foreign_allowed_to? time_log, :bulk_create, :time_logs
-          result = time_booking = time_log.book booking_params.permit(:comments, :project_id, :issue_id, :activity_id)
+          result = time_booking = time_log.book params.permit(:comments, :project_id, :issue_id, :activity_id)
           raise ActiveRecord::Rollback unless time_booking.persisted?
           result = foreign_forbidden_message and raise ActiveRecord::Rollback unless foreign_allowed_to? time_booking
           time_booking.include_time_log!
@@ -62,13 +62,13 @@ module Hourglass
     end
 
     def bulk_update
-      bulk do |id, booking_params|
+      bulk do |id, params|
         time_booking = Hourglass::TimeBooking.find_by(id: id) or next
-        error_msg = find_project booking_params, mode: :inline
+        error_msg = find_project params, mode: :inline
         next error_msg if error_msg.is_a? String
         next t('hourglass.api.errors.forbidden') unless allowed_to?
         next foreign_forbidden_message unless foreign_allowed_to? time_booking
-        time_booking.update time_entry_attributes: booking_params.permit(:comments, :project_id, :issue_id, :activity_id)
+        time_booking.update time_entry_attributes: params.permit(:comments, :project_id, :issue_id, :activity_id)
         time_booking
       end
     end
@@ -107,9 +107,9 @@ module Hourglass
       Hourglass::TimeBooking.find_by id: params[:id]
     end
 
-    def find_project(booking_params = nil, resource = @request_resource, **opts)
+    def find_project(params = nil, resource = @request_resource, **opts)
       if action_name.in? %w(create bulk_create update bulk_update)
-        find_project_from_params (booking_params || time_booking_params).with_indifferent_access, opts
+        find_project_from_params (params || time_booking_params).with_indifferent_access, opts
       else
         super resource
       end
