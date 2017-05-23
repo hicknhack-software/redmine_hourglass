@@ -1,0 +1,22 @@
+= form_for time_booking, as: 'time_booking', remote: true, html: {id: 'new_time_booking', class: 'new-time-booking-form js-hourglass-remote js-validate-form', data: {form_type: 'new-time-booking'}} do |f|
+  .form-row
+    = form_field :start, f, time_booking, css_classes: %w(js-picker-with-date)
+    = form_field :stop, f, time_booking, css_classes: %w(js-picker-with-date)
+    = form_field :duration, f, time_booking
+    - rounding_disabled = Hourglass::Settings[:round_sums_only]
+    .form-field class=('hidden' if rounding_disabled)
+      .label
+        = label :time_booking, :round, t(:field_round), title: t('hourglass.ui.time_bookings.round_hint')
+      .input
+        = check_box :time_booking, :round, checked: Hourglass::Settings[:round_default]
+    = form_field :project, f, time_booking, required: true
+    = form_field :activity, f, time_booking, required: true
+    = form_field :issue, f, time_booking
+    = form_field :comments, f, time_booking
+    = form_field :user_id, f, time_booking
+    .form-field
+      .input
+        = f.submit t(:button_create)
+        button type='button' class='js-bulk-edit hidden' data-url=bulk_create_hourglass_time_bookings_path data-name='time_bookings'
+          = t('hourglass.ui.lists.button_create_all')
+        = link_to t(:button_cancel), '#', class: 'js-hide-inline-form'

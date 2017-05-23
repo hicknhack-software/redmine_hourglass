@@ -12,12 +12,12 @@ toggleAllCheckBoxes = (event) ->
 multiFormParameters = ($form) ->
   entries = {}
   type = $form.data('formType')
-  $form.closest('table').find(".#{type}-form").each ->
+  $form.closest('table').find(".#{type}-form").each (i) ->
     $form = $(@)
     entry = {}
     for param in $form.find('.form-field').find('input, select, textarea').serializeArray()
       entry[param.name.replace /[a-z_]*\[([a-z_]*)]/, '$1'] = param.value
-    entries[$form.data('id-for-bulk-edit')] = entry
+    entries[$form.data('id-for-bulk-edit') || "new#{i}"] = entry
   entries
 
 submitMultiForm = (event) ->
@@ -55,9 +55,11 @@ checkForMultiForm = ($row, $formRow)->
 
 showInlineForm = (event, response) ->
   $row = $(@).closest 'tr'
-  $formRow = $row.clone()
-  $row.hide()
-  tdCount = $formRow.find('td').length - 1
+  $row.addClass('hidden')
+  $formRow = $row.clone().removeClass('hidden')
+  tdCount = $formRow.find('td').toArray().reduce((total, elem) ->
+    total + (parseInt(elem.colSpan) || 1)
+  , 0) - 1
   $formRow
   .removeClass 'hascontextmenu context-menu-selection'
   .empty()
@@ -75,12 +77,15 @@ showInlineFormMulti = (event, response) ->
     showInlineForm.call $("##{$(@).data('id-for-bulk-edit')} .js-show-inline-form").get(), event, @
   window.contextMenuHide()
 
+showInlineFormCreate = (event, response) ->
+  showInlineForm.call $('.js-create-form-anchor').get(), event, response
+
 hideInlineForm = (event) ->
   event.preventDefault()
   $formRow = $(@).closest('tr')
   $row = $formRow.prev()
   $formRow.remove()
-  $row.show()
+  $row.removeClass('hidden')
   checkForMultiForm $row, $formRow
 
 processErrorPageResponse = (event, {responseText}) ->
@@ -104,7 +109,8 @@ $ ->
 
   $(document)
   .on 'ajax:success', '.js-show-inline-form-multi', showInlineFormMulti
-  .on 'ajax:error', '.js-show-inline-form-multi', processErrorPageResponse
+  .on 'ajax:success', '.js-create-record', showInlineFormCreate
+  .on 'ajax:error', '.js-show-inline-form-multi, .js-create-record', processErrorPageResponse
 
   $list.find '.group'
   .on 'click', '.expander', (event) ->

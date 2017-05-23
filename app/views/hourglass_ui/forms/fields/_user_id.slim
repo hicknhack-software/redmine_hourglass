@@ -1,0 +1,5 @@
+.form-field
+  .label
+    = form.label :user_id
+  .input
+    = form.select :user_id, options_from_collection_for_select(User.active, :id, :name, User.current.id), {include_blank: !local_assigns[:required]}, disabled: local_assigns[:disabled], required: local_assigns[:required]

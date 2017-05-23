@@ -12,6 +12,12 @@ module HourglassUi
       @list_arguments = list_arguments
     end
 
+    def new_time_logs
+      now = Time.now.change(sec: 0)
+      time_log = Hourglass::TimeLog.new start: now, stop: now + Hourglass::DateTimeCalculations.round_minimum
+      render 'hourglass_ui/time_logs/new', locals: {time_log: time_log}, layout: false
+    end
+
     def edit_time_logs
       time_log = get_time_log
       authorize_foreign
@@ -20,9 +26,9 @@ module HourglassUi
 
     def bulk_edit_time_logs
       time_logs = params[:ids].map do |id|
-        @request_resource = Hourglass::TimeLog.find_by id: id
-        next unless @request_resource && foreign_allowed_to?
-        @request_resource
+        time_log = Hourglass::TimeLog.find_by id: id
+        next unless time_log && foreign_allowed_to?(time_log)
+        time_log
       end.compact
       render_404 if time_logs.empty?
       render 'hourglass_ui/time_logs/edit', locals: {time_logs: time_logs}, layout: false unless performed?
@@ -37,9 +43,9 @@ module HourglassUi
 
     def bulk_book_time_logs
       time_logs = params[:ids].map do |id|
-        @request_resource = Hourglass::TimeLog.find_by id: id
-        next unless @request_resource && !@request_resource.booked? && foreign_allowed_to?
-        @request_resource
+        time_log = Hourglass::TimeLog.find_by id: id
+        next unless time_log && !time_log.booked? && foreign_allowed_to?(time_log)
+        time_log
       end.compact
       render_404 if time_logs.empty?
       render 'hourglass_ui/time_logs/book', locals: {time_logs: time_logs}, layout: false unless performed?

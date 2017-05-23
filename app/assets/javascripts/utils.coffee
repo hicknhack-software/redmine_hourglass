@@ -8,7 +8,7 @@ $.fn.addDateTimePicker = ->
     separator: ''
     timeFormat: 'HH:mmz'
     timeInput: true
-    timeOnly: true
+    timeOnly: not @.hasClass('js-picker-with-date')
     timeOnlyShowDate: true
     showTimezone: false
     

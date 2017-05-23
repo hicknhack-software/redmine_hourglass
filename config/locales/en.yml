@@ -140,6 +140,7 @@ en:
         button_book: Book
         button_book_all: Book all
         button_update_all: Update all
+        button_create_all: Create all
       chart:
         hour_sign: h
         minute_sign: min

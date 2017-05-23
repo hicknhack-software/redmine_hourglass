@@ -17,6 +17,8 @@
               = column_header column, list_arguments[:sort_param_name]
             th.actions
         tbody
+          tr.create-form
+            td.js-create-form-anchor colspan="#{query.inline_columns.size + 2}"
           - grouped_entry_list entries, query do |entry, group|
             - if group
               - reset_cycle

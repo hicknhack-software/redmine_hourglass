@@ -46,6 +46,10 @@
       white-space: nowrap;
       text-align: center;
 
+      &.create-form {
+        background-color: #fff;
+      }
+
       &:hover {
         td.actions a {
           visibility: visible;

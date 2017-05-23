@@ -13,6 +13,14 @@ module HourglassUi
       build_chart_query
     end
 
+    def new_time_bookings
+      now = Time.now.change(sec: 0)
+      duration = Hourglass::DateTimeCalculations.in_hours Hourglass::DateTimeCalculations.round_minimum
+      time_booking = Hourglass::TimeBooking.new start: now, stop: now + duration.hours,
+                                                time_entry_attributes: {hours: duration}
+      render 'hourglass_ui/time_bookings/new', locals: {time_booking: time_booking}, layout: false
+    end
+
     def edit_time_bookings
       time_booking = get_time_booking
       authorize_foreign
