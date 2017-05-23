@@ -98,6 +98,7 @@ de:
           already_booked: Diese Zeiterfassung wurde bereits gebucht.
           booking_forbidden: Sie sind nicht berechtigt auf diesem Projekt zu buchen.
           bulk_error_preface: Fehler für Zeiterfassung mit ID %{id}
+          bulk_create_error_preface: Fehler für neue Zeiterfassung %{id}
           change_others_forbidden: Sie sind nicht berechtigt diese Aktion für die Zeiterfassung eines anderes Nutzers durchzuführen.
           combine_failed: Die zu kombinierenden Zeiterfassungen wurden entweder bereits gebucht oder ihre Beginne und Enden passen nicht zusammen.
           not_found: Diese Zeiterfassung existiert nicht.
@@ -107,6 +108,7 @@ de:
       time_bookings:
         errors:
           bulk_error_preface: Fehler für Zeitbuchung mit ID %{id}
+          bulk_create_error_preface: Fehler für neue Zeitbuchung %{id}
           change_others_forbidden: Sie sind nicht berechtigt diese Aktion für die Zeitbuchung eines anderes Nutzers durchzuführen.
           not_found: Diese Zeitbuchung existiert nicht.
           update_time_forbidden: Sie sind nicht berechtigt den Beginn oder das Ende der Zeitbuchung zu ändern.

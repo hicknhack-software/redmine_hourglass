@@ -93,6 +93,7 @@ en:
           already_booked: This time log was already booked
           booking_forbidden: You are not authorized to book on this project
           bulk_error_preface: Errors for time log with id %{id}
+          bulk_create_error_preface: Errors for the new time log %{id}
           change_others_forbidden: You are not authorized to execute this action for another users time log
           combine_failed: There are either bookings defined on the submitted time logs or the time logs start and stop doesn't match
           not_found: This time log doesn't exist
@@ -102,6 +103,7 @@ en:
       time_bookings:
         errors:
           bulk_error_preface: Errors for time booking with id %{id}
+          bulk_create_error_preface: Errors for the new time booking %{id}
           change_others_forbidden: You are not authorized to execute this action for another users time booking
           not_found: This time booking doesn't exist
           update_time_forbidden: You are not authorized to change the start or the stop of a time booking
