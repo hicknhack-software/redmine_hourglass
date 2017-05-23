@@ -51,8 +51,9 @@ namespace :hourglass do
     end
     delete 'stop', on: :member
   end
-  resources :time_logs, except: [:new, :edit, :create] do
+  resources :time_logs, except: [:new, :edit] do
     collection do
+      post 'bulk_create'
       post 'bulk_update'
       delete 'bulk_destroy'
       post 'bulk_book'

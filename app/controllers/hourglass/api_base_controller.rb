@@ -52,6 +52,7 @@ module Hourglass
       success = []
       errors = []
       params[params_key].each do |id, params|
+        id, params = 'new', id unless params.present?
         error_preface = "[#{t("hourglass.api.#{controller_name}.errors.bulk_error_preface", id: id)}:]"
         entry = yield id, params
         if entry
@@ -68,7 +69,7 @@ module Hourglass
       end
       if success.length > 0
         flash[:error] = errors if errors.length > 0
-        respond_with_success
+        respond_with_success success: success, errors: errors
       else
         respond_with_error :bad_request, errors
       end

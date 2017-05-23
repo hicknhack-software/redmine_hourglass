@@ -34,8 +34,8 @@ module AuthorizationConcern
     end
   end
 
-  def foreign_allowed_to?
-    @request_resource.user == User.current || allowed_to?("#{params[:action]}_foreign")
+  def foreign_allowed_to?(resource = @request_resource)
+    resource.user == User.current || allowed_to?("#{params[:action]}_foreign")
   end
 
   def allowed_to?(action = params[:action], controller = params[:controller])
