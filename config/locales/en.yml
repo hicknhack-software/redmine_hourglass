@@ -95,9 +95,8 @@ en:
           bulk_error_preface: Errors for time log with id %{id}
           bulk_create_error_preface: Errors for the new time log %{id}
           change_others_forbidden: You are not authorized to execute this action for another users time log
-          combine_failed: There are either bookings defined on the submitted time logs or the time logs start and stop doesn't match
+          join_failed: There are either bookings defined on the submitted time logs or the time logs start and stop doesn't match
           not_found: This time log doesn't exist
-          other_not_found: The time log to combine with doesn't exist
           split_failed: Submitted split_at is not within the bounds of the time log
           update_time_forbidden: You are not authorized to change the start or the stop of a time log
       time_bookings:
@@ -155,6 +154,7 @@ en:
         title: Choose Time
       time_logs:
         title: Time logs
+        button_join: Join time logs
         button_create: New time log
         no_data: No time logs available
         round_hint: Enabling this means also, that time bookings after the time booking of this time log will get recalculated

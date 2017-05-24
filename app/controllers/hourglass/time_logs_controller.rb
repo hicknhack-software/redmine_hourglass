@@ -1,11 +1,11 @@
 module Hourglass
   class TimeLogsController < ApiBaseController
-    accept_api_auth :index, :show, :update, :create, :bulk_create, :bulk_update, :split, :combine, :book, :bulk_book, :destroy, :bulk_destroy
+    accept_api_auth :index, :show, :update, :create, :bulk_create, :bulk_update, :split, :join, :book, :bulk_book, :destroy, :bulk_destroy
 
-    before_action :get_time_log, only: [:show, :update, :split, :combine, :book, :destroy]
-    before_action :authorize_global, only: [:index, :show, :create, :bulk_create, :update, :bulk_update, :split, :combine, :destroy, :bulk_destroy]
+    before_action :get_time_log, only: [:show, :update, :split, :book, :destroy]
+    before_action :authorize_global, only: [:index, :show, :create, :bulk_create, :update, :bulk_update, :split, :join, :destroy, :bulk_destroy]
     before_action :find_project, :authorize_book, only: [:book]
-    before_action :authorize_foreign, only: [:show, :update, :split, :combine, :book, :destroy]
+    before_action :authorize_foreign, only: [:show, :update, :split, :book, :destroy]
     before_action :authorize_update_time, only: [:create, :update]
     before_action :authorize_update_booking, only: [:split]
 
@@ -75,13 +75,21 @@ module Hourglass
       end
     end
 
-    def combine
-      time_log2 = Hourglass::TimeLog.find_by id: params[:other]
-      render_404 message: t('hourglass.api.time_logs.errors.other_not_found') unless time_log2.present?
-      if @time_log.combine_with time_log2
-        respond_with_success @time_log
+    def join
+      time_logs = Hourglass::TimeLog.where(id: params[:ids]).order start: :asc
+      render_404 unless params[:ids].uniq.length == time_logs.length
+      render_403 message: foreign_forbidden_message unless foreign_allowed_to? time_logs.first
+      time_log = nil
+      ActiveRecord::Base.transaction do
+        time_log = time_logs.reduce do |joined, tl|
+          raise ActiveRecord::Rollback unless joined.join_with tl
+          joined
+        end
+      end
+      if time_log && time_log.persisted?
+        respond_with_success time_log
       else
-        respond_with_error :bad_request, t('hourglass.api.time_logs.errors.combine_failed')
+        respond_with_error :bad_request, t('hourglass.api.time_logs.errors.join_failed')
       end
     end
 
@@ -124,7 +132,7 @@ module Hourglass
     def time_log_params
       parse_boolean :round, params.require(:time_log).permit(:start, :stop, :comments, :round)
     end
-    
+
     def create_time_log_params
       params.require(:time_log).permit(:start, :stop, :comments, :user_id)
     end

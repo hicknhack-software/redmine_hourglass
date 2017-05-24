@@ -59,11 +59,11 @@ namespace :hourglass do
       post 'bulk_update'
       delete 'bulk_destroy'
       post 'bulk_book'
+      post 'join'
     end
     member do
       post 'book'
       post 'split'
-      post 'combine'
     end
   end
   resources :time_bookings, except: [:new, :edit] do

@@ -70,7 +70,7 @@ module Hourglass
       end
     end
 
-    def combine_with(time_log)
+    def join_with(time_log)
       return false if stop != time_log.start || booked? || time_log.booked?
       new_stop = time_log.stop
       ActiveRecord::Base.transaction do

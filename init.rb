@@ -24,7 +24,7 @@ Redmine::Plugin.register Hourglass::PLUGIN_NAME do
     permission :hourglass_track_time,
                {
                    :'hourglass/time_trackers' => [:start, *with_bulk(:update), :stop],
-                   :'hourglass/time_logs' => [*with_bulk(:update), :split, :combine],
+                   :'hourglass/time_logs' => [*with_bulk(:update), :split, :join],
                    :'hourglass_ui' => [:index, :time_trackers, *with_bulk(:edit_time_trackers, :edit_time_logs)]
                },
                require: :loggedin
@@ -46,14 +46,14 @@ Redmine::Plugin.register Hourglass::PLUGIN_NAME do
     permission :hourglass_edit_tracked_time,
                {
                    :'hourglass/time_trackers' => with_foreign(*with_bulk(:update, :destroy), :update_time),
-                   :'hourglass/time_logs' => with_foreign(*with_bulk(:create, :update, :destroy), :update_time, :split, :combine),
+                   :'hourglass/time_logs' => with_foreign(*with_bulk(:create, :update, :destroy), :update_time, :split, :join),
                    :'hourglass_ui' => [*with_foreign(*with_bulk(:edit_time_logs, :edit_time_trackers)), :new_time_logs]
                }, require: :loggedin
 
     permission :hourglass_edit_own_tracked_time,
                {
                    :'hourglass/time_trackers' => [*with_bulk(:update, :destroy), :update_time],
-                   :'hourglass/time_logs' => [*with_bulk(:create, :update, :destroy), :update_time, :split, :combine],
+                   :'hourglass/time_logs' => [*with_bulk(:create, :update, :destroy), :update_time, :split, :join],
                    :'hourglass_ui' => [*with_bulk(:edit_time_logs, :edit_time_trackers), :new_time_logs]
                }, require: :loggedin
 

@@ -186,41 +186,41 @@ describe Hourglass::TimeLog do
     end
   end
 
-  describe 'combining' do
+  describe 'joining' do
     let (:user) { create(:user) }
     let (:now) { Time.now.change(sec: 0) }
 
-    it 'removes the time log which gets combined to the original' do
+    it 'removes the time log which gets joined to the original' do
       time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
       time_log2 = create(:time_log, user: user, start: now + 10.minutes, stop: now + 20.minutes)
-      time_log.combine_with time_log2
+      time_log.join_with time_log2
       expect(time_log2.destroyed?).to be_truthy
     end
 
-    it 'returns true if it successfully combined the 2 time logs' do
+    it 'returns true if it successfully joined the 2 time logs' do
       time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
       time_log2 = create(:time_log, user: user, start: now + 10.minutes, stop: now + 20.minutes)
-      expect(time_log.combine_with time_log2).to be_truthy
+      expect(time_log.join_with time_log2).to be_truthy
     end
 
     it 'adjusts the stop time of the original' do
       time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
       time_log2 = create(:time_log, user: user, start: now + 10.minutes, stop: now + 20.minutes)
-      time_log.combine_with time_log2
+      time_log.join_with time_log2
       expect(time_log.stop).to eq now + 20.minutes
     end
 
     it 'returns false if the time logs start and stop time doesn\'t match' do
       time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
       time_log2 = create(:time_log, user: user, start: now + 15.minutes, stop: now + 20.minutes)
-      expect(time_log.combine_with time_log2).to be_falsey
+      expect(time_log.join_with time_log2).to be_falsey
     end
 
     it 'returns false if the time log has a time booking' do
       time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
       time_log.book project_id: create(:project).id, activity_id: create(:time_entry_activity).id
       time_log2 = create(:time_log, user: user, start: now + 10.minutes, stop: now + 20.minutes)
-      expect(time_log.combine_with time_log2).to be_falsey
+      expect(time_log.join_with time_log2).to be_falsey
     end
   end
 
