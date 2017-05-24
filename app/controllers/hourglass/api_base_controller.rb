@@ -52,7 +52,7 @@ module Hourglass
       success = []
       errors = []
       params[params_key].each_with_index do |(id, params), index|
-        id, params = "new#{index}", id unless params.present?
+        id, params = "new#{index}", id if id.is_a?(Hash)
         is_new = id.start_with?('new')
         error_preface = "[#{t("hourglass.api.#{controller_name}.errors.bulk_#{'create_' if is_new}error_preface", id: is_new ? index : id)}:]"
         entry = yield id, params

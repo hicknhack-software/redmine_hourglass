@@ -81,7 +81,7 @@ module Hourglass
     def bulk_destroy
       bulk do |id|
         time_booking = Hourglass::TimeBooking.find_by(id: id) or next
-        find_project time_booking
+        find_project resource: time_booking
         next t('hourglass.api.errors.forbidden') unless allowed_to?
         next foreign_forbidden_message unless foreign_allowed_to? time_booking
         time_booking.destroy
@@ -107,7 +107,7 @@ module Hourglass
       Hourglass::TimeBooking.find_by id: params[:id]
     end
 
-    def find_project(params = nil, resource = @request_resource, **opts)
+    def find_project(params = nil, resource: @request_resource, **opts)
       if action_name.in? %w(create bulk_create update bulk_update)
         find_project_from_params (params || time_booking_params).with_indifferent_access, opts
       else
