@@ -6,4 +6,4 @@ JsRoutes.setup do |config|
   config.namespace = "#{Hourglass::NAMESPACE}Routes"
 end
 
-Hourglass::Assets.precompile += %w(application.js application.css global.js global.css jqplot.js jqplot/jquery.jqplot.css time_start.png time_stop.png)
+Hourglass::Assets.precompile += %w(application.js application.css global.js global.css jqplot.js jqplot/jquery.jqplot.css icons/*.png)
