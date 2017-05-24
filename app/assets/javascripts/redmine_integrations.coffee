@@ -117,7 +117,7 @@ $ ->
     $contextMenuTarget = $(@)
 
   $.ajaxPrefilter (options) ->
-    return unless options.url is '/hourglass/ui/context_menu'
+    return unless options.url.endsWith 'hourglass/ui/context_menu'
     options.data = $.param list_type: $contextMenuTarget.data('list-type')
     $contextMenuTarget.find('.context-menu-selection').each ->
       options.data += "&ids[]=#{@id}"
