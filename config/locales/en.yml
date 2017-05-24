@@ -42,7 +42,7 @@ en:
 
   hourglass:
     project_settings:
-      global_value: "(Global Value: #{value})"
+      global_value: "(Global Value: %{value})"
       override_hint_html: "Leave empty to use <a href='%{url}'>global settings</a>"
       title: Hourglass Plugin Settings
       use_global: Use global
