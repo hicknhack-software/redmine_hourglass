@@ -3,6 +3,8 @@
 [![Build Status](https://travis-ci.org/hicknhack-software/redmine_hourglass.png)](https://travis-ci.org/hicknhack-software/redmine_hourglass)
 
 # Redmine Hourglass Plugin
+
+[![Join the chat at https://gitter.im/hicknhack-software/redmine_hourglass](https://badges.gitter.im/hicknhack-software/redmine_hourglass.svg)](https://gitter.im/hicknhack-software/redmine_hourglass?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
  
  Hourglass is a Redmine plugin to aid in tracking spent time on projects and issues. It allows users to start / stop a timer with an optional reference to what they are working on.
   
