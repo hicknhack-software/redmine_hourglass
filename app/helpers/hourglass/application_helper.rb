@@ -13,10 +13,6 @@ module Hourglass
       sources.push options
     end
 
-    def render_flash_messages
-      render partial: 'hourglass_ui/shared/flash_messages'
-    end
-
     def javascript_include_tag(*sources)
       super *hourglass_asset_paths(:javascript, sources)
     end
@@ -75,11 +71,11 @@ module Hourglass
 
     def convert_format_identifier(format)
       format.gsub /%[HIMp]/,
-          '%H' => 'HH',
-          '%I' => 'hh',
-          '%M' => 'mm',
-          '%p' => 'TT',
-          '%P' => 'tt'
+                  '%H' => 'HH',
+                  '%I' => 'hh',
+                  '%M' => 'mm',
+                  '%p' => 'TT',
+                  '%P' => 'tt'
     end
   end
 end

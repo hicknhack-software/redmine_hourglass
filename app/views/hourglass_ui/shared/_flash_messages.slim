@@ -1,9 +1,0 @@
-- flash.each do |k, v|
-  .flash class=k id="flash_#{k}"
-    - if v.is_a? Array
-      ul
-        - v.each do |msg|
-          li == msg
-    - else
-      == v
-

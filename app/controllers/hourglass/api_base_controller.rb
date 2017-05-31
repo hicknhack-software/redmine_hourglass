@@ -69,7 +69,7 @@ module Hourglass
         end
       end
       if success.length > 0
-        flash[:error] = errors if errors.length > 0
+        flash_array :error, errors if errors.length > 0
         respond_with_success success: success, errors: errors
       else
         respond_with_error :bad_request, errors
@@ -111,6 +111,14 @@ module Hourglass
 
     def booking_forbidden_message
       t("hourglass.api.#{controller_name}.errors.booking_forbidden")
+    end
+
+    def flash_array(type, messages)
+      flash[type] = content_tag :ul do
+        messages.each do |msg|
+          concat content_tag(:li, msg.html_safe)
+        end
+      end
     end
   end
 end
