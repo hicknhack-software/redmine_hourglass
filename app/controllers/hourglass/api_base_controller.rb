@@ -113,7 +113,6 @@ module Hourglass
       t("hourglass.api.#{controller_name}.errors.booking_forbidden")
     end
 
-    private
     def flash_array(type, messages)
       flash[type] = content_tag :ul do
         messages.each do |msg|
