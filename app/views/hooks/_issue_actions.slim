@@ -1,6 +1,6 @@
 - time_tracker = User.current.hourglass_time_tracker
 - if @issue.nil?
-  -# operations on issues
+  -# operations on multiple issues
 - elsif time_tracker && time_tracker.issue_id == @issue.id
   li
     = render partial: 'hooks/time_tracker/stop_link', locals: {time_tracker: time_tracker, issue: @issue}
