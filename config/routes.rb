@@ -80,3 +80,6 @@ unless Rails.env.production?
     mount Hourglass::Assets.instance, at: File.join(Hourglass::Assets.assets_directory_path, asset_dir)
   end
 end
+
+mount Rswag::Ui::Engine => '/api-docs'
+mount Rswag::Api::Engine => '/api-docs'

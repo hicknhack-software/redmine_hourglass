@@ -6,5 +6,9 @@ FactoryGirl.define do
     mail { Faker::Internet.email }
     status 1
     language 'en'
+
+    factory :admin do
+      admin 1
+    end
   end
 end
