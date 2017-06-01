@@ -1,5 +1,3 @@
-require 'rake'
-
 namespace :redmine do
   namespace :plugins do
     namespace :hourglass do
