@@ -4,8 +4,8 @@ def add_patch(module_to_patch, method: :include)
 end
 
 ActionDispatch::Callbacks.to_prepare do
-  [Project, TimeEntry, User, ProjectsHelper].each {|module_to_patch| add_patch module_to_patch}
-  [SettingsController, Query].each {|module_to_patch| add_patch module_to_patch, method: :prepend}
+  [Project, TimeEntry, User, ProjectsHelper, SettingsController].each { |module_to_patch| add_patch module_to_patch }
+  [Query].each { |module_to_patch| add_patch module_to_patch, method: :prepend }
 
   Redmine::Plugin.find(Hourglass::PLUGIN_NAME).extend Hourglass::RedminePatches::MirrorAssetsPatch
 end
