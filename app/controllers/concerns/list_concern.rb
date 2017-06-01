@@ -2,15 +2,6 @@ module ListConcern
   include Redmine::Pagination
   extend ActiveSupport::Concern
 
-  included do
-    skip_before_action :authorize_global, only: :context_menu
-  end
-
-  def context_menu
-    @records = Hourglass.const_get(params[:list_type].classify).find params[:ids]
-    render "hourglass_ui/#{params[:list_type]}/context_menu", layout: false
-  end
-
   private
   def init_sort(query = @query)
     sort_init query.sort_criteria.empty? ? [%w(date asc)] : query.sort_criteria

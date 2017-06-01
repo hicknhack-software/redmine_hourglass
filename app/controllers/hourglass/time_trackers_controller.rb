@@ -9,7 +9,7 @@ module Hourglass
     before_action :authorize_update_time, only: [:update]
 
     def index
-      time_trackers = allowed_to?('index_foreign') ? Hourglass::TimeTracker.all : User.current.hourglass_time_tracker
+      time_trackers = allowed_to?('index_foreign') ? Hourglass::TimeTracker.all : [User.current.hourglass_time_tracker]
       respond_with_success time_trackers
     end
 

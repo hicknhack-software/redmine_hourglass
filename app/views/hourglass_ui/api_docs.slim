@@ -1,0 +1,56 @@
+- content_for :header_tags do
+  = stylesheet_link_tag 'swagger', plugin: Hourglass::PLUGIN_NAME, media: 'screen'
+  = stylesheet_link_tag 'swagger-print', plugin: Hourglass::PLUGIN_NAME, media: 'print'
+  = javascript_include_tag 'swagger', plugin: Hourglass::PLUGIN_NAME
+  javascript:
+      $(function () {
+          hljs.configure({
+              highlightSizeThreshold: 5000
+          });
+
+          // Pre load translate...
+          if (window.SwaggerTranslator) {
+              window.SwaggerTranslator.translate();
+          }
+          window.swaggerUi = new SwaggerUi({
+              url: "#{@swagger_endpoints.first[:path]}",
+              dom_id: "swagger-ui-container",
+              supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
+              onComplete: function (swaggerApi, swaggerUi) {
+                  if (typeof initOAuth == "function") {
+                      initOAuth({
+                          clientId: "your-client-id",
+                          clientSecret: "your-client-secret-if-required",
+                          realm: "your-realms",
+                          appName: "your-app-name",
+                          scopeSeparator: " ",
+                          additionalQueryStringParams: {}
+                      });
+                  }
+
+                  if (window.SwaggerTranslator) {
+                      window.SwaggerTranslator.translate();
+                  }
+              },
+              onFailure: function (data) {
+                  log("Unable to Load SwaggerUI");
+              },
+              docExpansion: "list",
+              jsonEditor: false,
+              defaultModelRendering: 'schema',
+              showRequestHeaders: false
+          });
+
+          window.swaggerUi.load();
+
+          function log() {
+              if ('console' in window) {
+                  console.log.apply(console, arguments);
+              }
+          }
+      });
+
+= render layout: 'hourglass_ui/layouts/hourglass' do
+  - html_title 'Swagger UI'
+
+  = render partial: 'rswag/ui/home/old'
