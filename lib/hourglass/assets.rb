@@ -2,7 +2,7 @@ class Hourglass::Assets < Sprockets::Environment
   include Singleton
 
   def initialize
-    super File.join(File.dirname(__FILE__), '..', '..') do |env|
+    super Hourglass::PLUGIN_ROOT do |env|
       %w(app vendor).each do |dir|
         self.class.asset_directories.each do |asset_dir|
           env.append_path File.join dir, 'assets', asset_dir

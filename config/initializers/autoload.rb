@@ -1,6 +1,6 @@
 [
-    %w(.. .. app models concerns),
-    %w(.. .. app controllers concerns)
+    %w(app models concerns),
+    %w(app controllers concerns)
 ].each do |path|
-  ActiveSupport::Dependencies.autoload_paths << Pathname.new(File.join(File.dirname(__FILE__), *path)).cleanpath
+  ActiveSupport::Dependencies.autoload_paths << File.join(Hourglass::PLUGIN_ROOT, *path)
 end
