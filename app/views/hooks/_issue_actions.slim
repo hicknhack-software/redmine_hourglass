@@ -1,5 +1,7 @@
 - time_tracker = User.current.hourglass_time_tracker
-- if time_tracker && time_tracker.issue_id == @issue.id
+- if @issue.nil?
+  -# operations on multiple issues
+- elsif time_tracker && time_tracker.issue_id == @issue.id
   li
     = render partial: 'hooks/time_tracker/stop_link', locals: {time_tracker: time_tracker, issue: @issue}
     - if !Hourglass::Settings[:global_tracker] && time_tracker.project.present? && time_tracker.activity.blank?
