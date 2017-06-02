@@ -7,8 +7,17 @@ FactoryGirl.define do
     status 1
     language 'en'
 
-    factory :admin do
+    trait :admin do
       admin 1
+    end
+
+    trait :as_member do
+      transient do
+        permissions []
+      end
+      after(:create) do |user, evaluator|
+        user.memberships << FactoryGirl.create(:member, user: user, permissions: evaluator.permissions)
+      end
     end
   end
 end

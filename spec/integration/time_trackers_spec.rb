@@ -1,26 +1,17 @@
 require 'swagger_helper'
 
 describe 'Time trackers API', type: :request do
-  let(:user) { create :admin }
+  let(:key) { user.api_key }
 
   path '/time_trackers.json' do
-    get 'Creates a blog' do
+    get 'Returns a list of currently running time trackers' do
       produces 'application/json'
-      
-      response '200', 'index' do
-        let(:key) { user.api_key }
-        run_test!
-      end
+      tags 'Time Trackers'
 
-      response '401', 'unauthorized' do
-        let(:key) { 'fake' }
-        run_test!
-      end
+      test_permissions :hourglass_view_tracked_time, :hourglass_view_own_tracked_time
 
-      # response '403', 'invalid request' do
-      #   let(:key) { 'fake' }
-      #   run_test!
-      # end
+      test_forbidden
+      test_unauthorized
     end
   end
 end
