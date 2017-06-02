@@ -7,6 +7,7 @@ module Hourglass
         sources.map! do |source|
           extname = compute_asset_extname source, options.merge(type: type)
           source = "#{source}#{extname}" if extname.present?
+          source = File.join Hourglass::Assets.asset_directory_map[type], source
           "/plugin_assets/#{plugin}/#{Hourglass::Assets.manifest.assets[source]}"
         end
       end

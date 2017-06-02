@@ -75,12 +75,9 @@ namespace :hourglass do
       delete 'bulk_destroy'
     end
   end
-  
+
   mount Rswag::Api::Engine => '/api-docs'
 end
 
-unless Rails.env.production?
-  Hourglass::Assets.asset_directories.each do |asset_dir|
-    mount Hourglass::Assets.instance, at: File.join(Hourglass::Assets.assets_directory_path, asset_dir)
-  end
-end
+
+mount Hourglass::Assets.instance, at: File.join(Hourglass::Assets.assets_directory_path) unless Rails.env.production?
