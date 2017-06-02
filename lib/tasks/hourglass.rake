@@ -5,8 +5,13 @@ spec_path = File.join File.expand_path('../..',  File.dirname(__FILE__)), 'spec'
 namespace :redmine do
   namespace :plugins do
     namespace :hourglass do
-      desc 'Generate Swagger JSON files from integration specs'
-      RSpec::Core::RakeTask.new('swaggerize') do |t|
+      desc 'Import the database from the Redmine Time Tracker Plugin'
+      task import_redmine_time_tracker: :environment do
+        Hourglass::RedmineTimeTrackerImport.start!
+      end
+
+      desc 'Generate Swagger JSON files from the integration specs'
+      RSpec::Core::RakeTask.new('api_docs') do |t|
         t.pattern = "#{spec_path}/integration/**/*_spec.rb"
 
         # NOTE: rspec 2.x support

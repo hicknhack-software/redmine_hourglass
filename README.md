@@ -42,10 +42,11 @@ See [.travis.yml](.travis.yml) for details about supported version. If a newer v
 1. Run `rake redmine:plugins:assets RAILS_ENV=production`. (If you redmine is deployed in a subfolder like `www.example.com/redmine` you need to add `RAILS_RELATIVE_URL_ROOT=/redmine` to that task like this `rake redmine:plugins:assets RAILS_ENV=production RAILS_RELATIVE_URL_ROOT=/redmine`)
 1. (Re)start your redmine
 1. The plugin is now installed and can be used.
+1. (Optional) If you want to use the API documentation run `rake redmine:plugins:hourglass:api_docs` 
 
 ## Update
 
-The process is roughly the same as installing. Make sure you have the desired version in the `plugins` directory and run the steps 2 - 5 from above.
+The process is roughly the same as installing. Make sure you have the desired version in the `plugins` directory and run the steps above (except 1).
 
 If you had it installed via git before, the first step is simply doing `git pull` in the `plugins/redmine_hourglass` directory.
 

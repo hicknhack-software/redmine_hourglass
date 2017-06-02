@@ -16,7 +16,8 @@ RSpec.configure do |config|
           info: {
               title: 'Hourglass API',
               description: 'This API allows you to do everything you can do in the UI.',
-              version: 'v1'
+              version: 'v1',
+              'x-docsVersion': Hourglass::SWAGGER_DOCS_VERSION
           },
           basePath: '/hourglass',
           securityDefinitions: {

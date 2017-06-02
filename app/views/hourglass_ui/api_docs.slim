@@ -8,12 +8,17 @@
       $(function () {
           hljs.configure({highlightSizeThreshold: 5000});
           window.swaggerUi = new SwaggerUi({
-              url: "/#{Hourglass::NAMESPACE}/api-docs/v1/swagger.json",
+              url: "#{hourglass_rswag_api_path}/v1/swagger.json",
               authorizations: {key: new SwaggerClient.ApiKeyAuthorization('key', "#{User.current.api_key}", 'query')},
               dom_id: "swagger-ui-container",
               supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
-              onFailure: function (data) {
-                  console.log("Unable to Load SwaggerUI");
+              onFailure: function () {
+                  hourglass.Utils.showErrorMessage("#{t('hourglass.ui.api_docs.error_json_missing', task: 'redmine:plugins:hourglass:api_docs')}");
+              },
+              onComplete: function () {
+                  if (window.swaggerUi.api.info['x-docsVersion'] !== '#{Hourglass::SWAGGER_DOCS_VERSION}') {
+                      hourglass.Utils.showErrorMessage("#{t('hourglass.ui.api_docs.error_outdated', task: 'redmine:plugins:hourglass:api_docs')}");
+                  }
               },
               docExpansion: 'list'
           });
