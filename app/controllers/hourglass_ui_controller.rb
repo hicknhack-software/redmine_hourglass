@@ -26,7 +26,6 @@ class HourglassUiController < ApplicationController
   end
 
   def api_docs
-    @swagger_endpoints = [{path: "/#{Hourglass::NAMESPACE}/api-docs/v1/swagger.json", title: 'API V1'}]
   end
 
   private

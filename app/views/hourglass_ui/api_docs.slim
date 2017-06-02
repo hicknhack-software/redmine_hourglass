@@ -1,56 +1,46 @@
+- api_enabled = Setting.rest_api_enabled == '1'
+
 - content_for :header_tags do
   = stylesheet_link_tag 'swagger', plugin: Hourglass::PLUGIN_NAME, media: 'screen'
   = stylesheet_link_tag 'swagger-print', plugin: Hourglass::PLUGIN_NAME, media: 'print'
   = javascript_include_tag 'swagger', plugin: Hourglass::PLUGIN_NAME
   javascript:
       $(function () {
-          hljs.configure({
-              highlightSizeThreshold: 5000
-          });
-
-          // Pre load translate...
-          if (window.SwaggerTranslator) {
-              window.SwaggerTranslator.translate();
-          }
+          hljs.configure({highlightSizeThreshold: 5000});
           window.swaggerUi = new SwaggerUi({
-              url: "#{@swagger_endpoints.first[:path]}",
+              url: "/#{Hourglass::NAMESPACE}/api-docs/v1/swagger.json",
+              authorizations: {key: new SwaggerClient.ApiKeyAuthorization('key', "#{User.current.api_key}", 'query')},
               dom_id: "swagger-ui-container",
               supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
-              onComplete: function (swaggerApi, swaggerUi) {
-                  if (typeof initOAuth == "function") {
-                      initOAuth({
-                          clientId: "your-client-id",
-                          clientSecret: "your-client-secret-if-required",
-                          realm: "your-realms",
-                          appName: "your-app-name",
-                          scopeSeparator: " ",
-                          additionalQueryStringParams: {}
-                      });
-                  }
-
-                  if (window.SwaggerTranslator) {
-                      window.SwaggerTranslator.translate();
-                  }
-              },
               onFailure: function (data) {
-                  log("Unable to Load SwaggerUI");
+                  console.log("Unable to Load SwaggerUI");
               },
-              docExpansion: "list",
-              jsonEditor: false,
-              defaultModelRendering: 'schema',
-              showRequestHeaders: false
+              docExpansion: 'list'
           });
-
-          window.swaggerUi.load();
-
-          function log() {
-              if ('console' in window) {
-                  console.log.apply(console, arguments);
-              }
+          if (#{api_enabled}) {
+              window.swaggerUi.load();
           }
       });
 
 = render layout: 'hourglass_ui/layouts/hourglass' do
-  - html_title 'Swagger UI'
+  - html_title t('hourglass.ui.api_docs.title')
 
-  = render partial: 'rswag/ui/home/old'
+  p = t('hourglass.ui.api_docs.description')
+
+  - if api_enabled
+    .swagger-section
+      #auth_container
+      #message-bar.swagger-ui-wrap
+      #swagger-ui-container.swagger-ui-wrap
+
+      .swagger-note
+        = t('hourglass.ui.api_docs.swagger_note')
+        | :
+        .swagger-link
+          a href="http://swagger.io"
+            img.logo__img alt="swagger" height="30" width="30" src=asset_path('swagger-ui/images/logo_small.png')
+            span.logo__title Swagger
+  - else
+    = t('hourglass.ui.api_docs.error_api_disabled')
+    ' :
+    = link_to t('hourglass.ui.api_docs.api_settings'), settings_path(tab: 'api')

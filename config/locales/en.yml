@@ -107,6 +107,12 @@ en:
           not_found: This time booking doesn't exist
           update_time_forbidden: You are not authorized to change the start or the stop of a time booking
     ui:
+      api_docs:
+        title: Hourglass API documentation
+        description: This documentation describes the available API endpoints for the usage of hourglass. It's currently only available in english. Your API key is already configured, so you can start right away. But please be careful, cause there is no test system in place, it will always operate on the live data. If you want to test the API with another user, click on the 'Authorize' button and enter the appropriate API key.
+        error_api_disabled: The API is currently disabled. Enable it here to make use of it
+        api_settings: API settings
+        swagger_note: This documentation was built with
       menu:
         main: Time tracking
         overview: Overview
