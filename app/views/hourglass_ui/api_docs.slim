@@ -6,10 +6,10 @@
   = javascript_include_tag 'swagger', plugin: Hourglass::PLUGIN_NAME
   javascript:
       $(function () {
+          var initiated = false;
           hljs.configure({highlightSizeThreshold: 5000});
           window.swaggerUi = new SwaggerUi({
               url: "#{hourglass_rswag_api_path}/v1/swagger.json",
-              authorizations: {key: new SwaggerClient.ApiKeyAuthorization('key', "#{User.current.api_key}", 'query')},
               dom_id: "swagger-ui-container",
               supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
               onFailure: function () {
@@ -18,6 +18,12 @@
               onComplete: function () {
                   if (window.swaggerUi.api.info['x-docsVersion'] !== '#{Hourglass::SWAGGER_DOCS_VERSION}') {
                       hourglass.Utils.showErrorMessage("#{t('hourglass.ui.api_docs.error_outdated', task: 'redmine:plugins:hourglass:api_docs')}");
+                  }
+                  if (!initiated) {
+                      initiated = true;
+                      $('.authorize__btn').click();
+                      $('.auth_input.input_apiKey_entry').val('#{User.current.api_key}').change();
+                      $('.auth__button.auth_submit__button').click();
                   }
               },
               docExpansion: 'list'
