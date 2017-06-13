@@ -13,13 +13,7 @@ namespace :redmine do
       desc 'Generate Swagger JSON files from the integration specs'
       RSpec::Core::RakeTask.new('api_docs') do |t|
         t.pattern = "#{spec_path}/integration/**/*_spec.rb"
-
-        # NOTE: rspec 2.x support
-        if Rswag::Specs::RSPEC_VERSION > 2 && Rswag::Specs.config.swagger_dry_run
-          t.rspec_opts = ["-I#{spec_path}", '--format Rswag::Specs::SwaggerFormatter', '--dry-run', '--order defined']
-        else
-          t.rspec_opts = ["-I#{spec_path}", '--format Rswag::Specs::SwaggerFormatter', '--order defined']
-        end
+        t.rspec_opts = ["-I#{spec_path}", '--format Rswag::Specs::SwaggerFormatter', '--order defined']
       end
     end
   end

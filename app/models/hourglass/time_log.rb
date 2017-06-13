@@ -2,7 +2,7 @@ module Hourglass
   class AlreadyBookedException < StandardError
   end
 
-  class TimeLog < ActiveRecord::Base
+  class TimeLog < ApplicationRecord
     include Namespace
 
     belongs_to :user

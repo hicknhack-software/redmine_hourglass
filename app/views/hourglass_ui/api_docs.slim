@@ -16,7 +16,7 @@
                   hourglass.Utils.showErrorMessage("#{t('hourglass.ui.api_docs.error_json_missing', task: 'redmine:plugins:hourglass:api_docs')}");
               },
               onComplete: function () {
-                  if (window.swaggerUi.api.info['x-docsVersion'] !== '#{Hourglass::SWAGGER_DOCS_VERSION}') {
+                  if (window.swaggerUi.api.info['x-docsVersion'] !== '#{Hourglass.swagger_docs_version}') {
                       hourglass.Utils.showErrorMessage("#{t('hourglass.ui.api_docs.error_outdated', task: 'redmine:plugins:hourglass:api_docs')}");
                   }
                   if (!initiated) {

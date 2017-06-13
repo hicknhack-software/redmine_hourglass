@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :role do
-    name { Faker::Base.fetch('name.title.job') }
+    name { "#{[*1..1000].sample}. #{Faker::Base.fetch('name.title.job')}"  }
   end
 end

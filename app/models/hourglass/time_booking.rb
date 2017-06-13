@@ -1,5 +1,5 @@
 module Hourglass
-  class TimeBooking < ActiveRecord::Base
+  class TimeBooking < ApplicationRecord
     include Namespace
     include ProjectIssueSyncing
 
