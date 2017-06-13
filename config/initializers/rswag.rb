@@ -12,7 +12,7 @@ def files_for_docs_version
 end
 
 module Hourglass
-  def swagger_docs_version
+  def self.swagger_docs_version
     Digest::MD5.hexdigest(files_for_docs_version.map { |f| File.read(f) }.join)
   end
 end
