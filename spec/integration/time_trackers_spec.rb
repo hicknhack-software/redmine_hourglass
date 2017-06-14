@@ -19,16 +19,16 @@ describe 'Time trackers API', type: :request do
                title: 'Array'
         let(:user) { create :user, :as_member, permissions: [:hourglass_view_tracked_time] }
 
-        before do |example|
+        before do
           User.current = user
           @time_tracker = Hourglass::TimeTracker.start
           User.current = create(:user, :as_member, permissions: [:hourglass_view_tracked_time])
           @time_tracker2 = Hourglass::TimeTracker.start comments: 'test', project: create(:project), activity: create(:time_entry_activity)
-          submit_request example.metadata
         end
 
-        it 'returns a valid response' do |example|
-          assert_response_matches_metadata example.metadata
+        include_examples 'has a valid response'
+
+        it 'returns correct data' do
           data = JSON.parse(response.body, symbolize_names: true)
           expect(data.length).to eq 2
           expect(data.first[:id]).to eq @time_tracker.id
@@ -37,10 +37,6 @@ describe 'Time trackers API', type: :request do
           expect(data.second[:comments]).to eq @time_tracker2.comments
           expect(data.second[:project_id]).to eq @time_tracker2.project_id
           expect(data.second[:activity_id]).to eq @time_tracker2.activity_id
-        end
-
-        after do |example|
-          example.metadata[:response][:examples] = { 'application/json' => JSON.parse(response.body, symbolize_names: true) }
         end
       end
     end
