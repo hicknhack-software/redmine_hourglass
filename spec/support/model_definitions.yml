@@ -22,6 +22,8 @@ support:
       <<: *date_time
     updated_at:
       <<: *date_time
+    user_id:
+      <<: *user_id
       
 definitions:
   time_tracker_start:
@@ -39,8 +41,6 @@ definitions:
       <<: *default
       start:
         <<: *date_time
-      user_id:
-        <<: *user_id
       project_id:
         <<: *project_id
       activity_id:
@@ -65,6 +65,23 @@ definitions:
         <<: *issue_id
       comments:
         type: string
+  time_log:
+    title: Time log
+    type: object
+    properties:
+      <<: *default
+      start:
+        <<: *date_time
+      stop:
+        <<: *date_time
+      comments:
+        type: string
+  time_booking:
+    title: Time booking
+    type: object
+    properties:
+      <<: *default
+
   error_msg:
     title: Error
     properties:

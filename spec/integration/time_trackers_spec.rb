@@ -163,4 +163,50 @@ describe 'Time trackers API', type: :request do
       }
     end
   end
+
+  path '/time_trackers/{id}/stop.json' do
+    # todo: test booking creation once start works better
+    delete 'Stops a time tracker and create time records from it' do
+      tags 'Time trackers'
+      parameter name: :id, in: :path, type: :string
+
+      let(:user) { create :user, :as_member, permissions: [:hourglass_track_time] }
+      let(:time_tracker) do
+        User.current = user
+        Hourglass::TimeTracker.start comments: 'test'
+      end
+      let(:id) { time_tracker.id }
+
+      include_examples 'access rights', :hourglass_track_time
+
+      include_examples 'not found'
+
+      response '200', 'time log created' do
+        schema type: 'object',
+               properties: {
+                   time_log: {
+                       '$ref': '#/definitions/time_log',
+                       required: %w(id start stop user_id created_at updated_at)
+                   },
+                   time_booking: {
+                       '$ref': '#/definitions/time_booking',
+                       required: %w(id user_id created_at updated_at)
+                   }
+               },
+               required: %w(time_log)
+        include_examples 'has a valid response'
+
+        it 'returns correct data' do
+          data = JSON.parse(response.body, symbolize_names: true)
+          expect(data[:time_log][:user_id]).to eq user.id
+          expect(data[:time_log][:comments]).to eq time_tracker.comments
+          expect(Time.parse data[:time_log][:start]).to eq time_tracker.start
+        end
+      end
+
+      include_examples 'error message', 'time tracker not stopped', proc { |example|
+        Hourglass::TimeLog.create user: user, start: time_tracker.start, stop: Time.now.change(sec: 0) + 1.minute
+      }
+    end
+  end
 end
