@@ -24,6 +24,14 @@ support:
       <<: *date_time
       
 definitions:
+  time_tracker_start:
+    title: Time tracker
+    type: object
+    properties:
+      issue_id:
+        <<: *issue_id
+      comments:
+        type: string
   time_tracker:
     title: Time tracker
     type: object
@@ -41,4 +49,24 @@ definitions:
         <<: *issue_id
       comments:
         type: string
-
+  time_tracker_update:
+    title: Time tracker
+    type: object
+    properties:
+      start:
+        <<: *date_time
+      user_id:
+        <<: *user_id
+      project_id:
+        <<: *project_id
+      activity_id:
+        <<: *activity_id
+      issue_id:
+        <<: *issue_id
+      comments:
+        type: string
+  error_msg:
+    title: Error
+    properties:
+      message:
+        type: string

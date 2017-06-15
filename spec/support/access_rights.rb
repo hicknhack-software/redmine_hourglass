@@ -6,9 +6,9 @@ def with_permission(permission)
   end
 end
 
-def test_permissions(*permissions)
+def test_permissions(*permissions, success_code: '200')
   permissions.each do |permission|
-    with_permission(permission) { '200' }
+    with_permission(permission) { success_code }
   end
 
   (AVAILABLE_PERMISSIONS - permissions).each do |permission|
@@ -30,8 +30,8 @@ def test_unauthorized
   end
 end
 
-RSpec.shared_examples 'access rights' do |*permissions|
-  test_permissions *permissions
+RSpec.shared_examples 'access rights' do |*permissions, **opts|
+  test_permissions *permissions, opts
   test_forbidden
   test_unauthorized
 end
