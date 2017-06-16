@@ -22,7 +22,7 @@ describe 'Time trackers API', type: :request do
         before do
           User.current = user
           @time_tracker = Hourglass::TimeTracker.start
-          User.current = create(:user, :as_member, permissions: [:hourglass_view_tracked_time])
+          User.current = create :user
           @time_tracker2 = Hourglass::TimeTracker.start comments: 'test', project: create(:project), activity: create(:time_entry_activity)
         end
 
@@ -123,7 +123,7 @@ describe 'Time trackers API', type: :request do
 
       include_examples 'not found'
 
-      response '204', 'time tracker found' do
+      response '204', 'time tracker deleted' do
         run_test!
       end
     end
@@ -207,6 +207,56 @@ describe 'Time trackers API', type: :request do
       include_examples 'error message', 'time tracker not stopped', proc { |example|
         Hourglass::TimeLog.create user: user, start: time_tracker.start, stop: Time.now.change(sec: 0) + 1.minute
       }
+    end
+  end
+
+  path '/time_trackers/bulk_destroy.json' do
+    delete 'Deletes multiple time trackers at once' do
+      tags 'Time trackers'
+      parameter name: :'time_trackers[]', in: :query, type: :array, items: {type: :string}, collectionFormat: :multi
+
+      let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
+      let(:time_tracker_ids) do
+        User.current = user
+        tt1 = Hourglass::TimeTracker.start comments: 'test'
+        User.current = create :user
+        tt2 = Hourglass::TimeTracker.start comments: 'test2'
+        [tt1.id, tt2.id]
+      end
+
+      let(:'time_trackers[]') { time_tracker_ids }
+
+      include_examples 'access rights', :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
+
+      response '200', 'time trackers found' do
+        run_test!
+      end
+    end
+  end
+
+  path '/time_trackers/bulk_update.json' do
+    post 'Updates multiple time trackers at once' do
+      consumes 'application/json'
+      produces 'application/json'
+      tags 'Time trackers'
+      parameter name: :time_trackers, in: :body, type: :object, additionalProperties: {'$ref': '#/definitions/time_tracker'}, description: 'takes an object of time trackers'
+
+      let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
+      let(:time_tracker_ids) do
+        User.current = user
+        tt1 = Hourglass::TimeTracker.start comments: 'test'
+        User.current = create :user
+        tt2 = Hourglass::TimeTracker.start comments: 'test2'
+        [tt1.id, tt2.id]
+      end
+
+      let(:'time_trackers') { {time_trackers: {time_tracker_ids[0] => {comments: 'test3'}, time_tracker_ids[1] => {comments: 'test4'}}} }
+
+      include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
+
+      response '200', 'time trackers found' do
+        run_test!
+      end
     end
   end
 end

@@ -69,7 +69,7 @@ module Hourglass
         end
       end
       if success.length > 0
-        flash_array :error, errors if errors.length > 0
+        flash_array :error, errors if errors.length > 0 && !api_request?
         respond_with_success success: success, errors: errors
       else
         respond_with_error :bad_request, errors
