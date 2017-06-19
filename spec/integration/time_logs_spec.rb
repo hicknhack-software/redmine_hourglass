@@ -122,6 +122,84 @@ describe 'Time logs API', type: :request do
     end
   end
 
+  path '/time_logs/{id}/book.json' do
+    post 'Book a time log' do
+      consumes 'application/json'
+      produces 'application/json'
+      tags 'Time logs'
+      parameter name: :id, in: :path, type: :string
+      parameter name: :time_booking, in: :body, schema: {
+          '$ref': '#/definitions/time_booking_create'
+      }
+
+      let(:user) { create :user, :as_member, permissions: [:hourglass_book_time] }
+      let(:time_log) { create :time_log, user: user }
+      let(:id) { time_log.id }
+      let(:time_booking) { {time_booking: {
+          project_id: user.projects.first.id, activity_id: create(:time_entry_activity).id
+      }} }
+
+      include_examples 'access rights', :hourglass_book_time, :hourglass_book_own_time
+      include_examples 'not found'
+
+      response '200', 'time log found' do
+        schema '$ref': '#/definitions/time_booking',
+               required: %w(id start stop created_at updated_at)
+
+        include_examples 'has a valid response'
+
+        it 'returns correct data' do
+          data = JSON.parse(response.body, symbolize_names: true)
+          expect(data[:time_log_id]).to eq time_log.id
+          expect(data[:time_entry][:project_id]).to eq time_booking[:time_booking][:project_id]
+          expect(data[:time_entry][:activity_id]).to eq time_booking[:time_booking][:activity_id]
+          expect(Time.parse(data[:start])).to eq time_log.start.change(sec: 0)
+          expect(Time.parse(data[:stop])).to eq time_log.stop.change(sec: 0)
+        end
+      end
+    end
+  end
+
+  path '/time_logs/{id}/split.json' do
+    post 'Split a time log' do
+      produces 'application/json'
+      tags 'Time logs'
+      parameter name: :id, in: :path, type: :string
+      parameter name: :split_at, in: :query, type: :dateTime, required: true
+
+      let(:user) { create :user, :as_member, permissions: [:hourglass_track_time] }
+      let(:time_log) { create :time_log, user: user }
+      let(:split_at) { (time_log.start + 10.minutes).utc }
+      let(:id) { time_log.id }
+
+      include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
+      include_examples 'not found'
+
+      response '200', 'time log found' do
+        schema type: 'object',
+               properties: {
+                   time_log: {
+                       '$ref': '#/definitions/time_log',
+                       required: %w(id start stop user_id created_at updated_at)
+                   },
+                   new_time_log: {
+                       '$ref': '#/definitions/time_log',
+                       required: %w(id start stop user_id created_at updated_at)
+                   }
+               }
+
+        include_examples 'has a valid response'
+
+        it 'returns correct data' do
+          data = JSON.parse(response.body, symbolize_names: true)
+          expect(data[:time_log][:id]).to eq time_log.id
+          expect(Time.parse(data[:time_log][:start])).to eq time_log.start.change(sec: 0)
+          expect(Time.parse(data[:new_time_log][:stop])).to eq time_log.stop.change(sec: 0)
+        end
+      end
+    end
+  end
+
   path '/time_logs/bulk_destroy.json' do
     delete 'Deletes multiple time logs at once' do
       tags 'Time logs'

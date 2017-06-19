@@ -102,7 +102,13 @@ module Hourglass
     end
 
     def authorize_book
-      render_403 message: booking_forbidden_message unless book_allowed?
+      unless book_allowed?
+        if User.current.logged?
+          render_403 message: booking_forbidden_message
+        else
+          require_login
+        end
+      end
     end
 
     def book_allowed?

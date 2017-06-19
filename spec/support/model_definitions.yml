@@ -91,6 +91,10 @@ definitions:
     type: object
     properties:
       <<: *default
+      start:
+        <<: *date_time
+      stop:
+        <<: *date_time
 
   error_msg:
     title: Error
