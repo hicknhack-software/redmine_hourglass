@@ -285,4 +285,34 @@ describe 'Time logs API', type: :request do
       end
     end
   end
+
+  path '/time_logs/bulk_create.json' do
+    post 'Create multiple time logs at once' do
+      consumes 'application/json'
+      produces 'application/json'
+      tags 'Time logs'
+      parameter name: :time_logs, in: :body, type: :array, items: {'$ref': '#/definitions/time_log'}, description: 'takes an array of time logs'
+
+      let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
+
+      let(:time_logs) do
+        {time_logs: [
+            build(:time_log, user: user),
+            build(:time_log),
+            build(:time_log)
+        ]
+        }
+      end
+
+      include_examples 'access rights', :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
+
+      response '200', 'time logs found' do
+        run_test!
+
+        it 'creates the time logs' do
+          expect(Hourglass::TimeLog.count).to eq 3
+        end
+      end
+    end
+  end
 end
