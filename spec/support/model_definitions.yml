@@ -76,6 +76,16 @@ definitions:
         <<: *date_time
       comments:
         type: string
+  time_log_update:
+    title: Time log
+    type: object
+    properties:
+      start:
+        <<: *date_time
+      stop:
+        <<: *date_time
+      comments:
+        type: string
   time_booking:
     title: Time booking
     type: object
