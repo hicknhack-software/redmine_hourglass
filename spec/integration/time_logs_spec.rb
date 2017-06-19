@@ -21,7 +21,7 @@ describe 'Time logs API', type: :request do
 
         before do
           @time_log = create :time_log, user: user
-          @time_log2 = create :time_log_with_comments, user: create(:user)
+          @time_log2 = create :time_log_with_comments
         end
 
         include_examples 'has a valid response'
@@ -208,7 +208,7 @@ describe 'Time logs API', type: :request do
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
       let(:time_log_ids) do
         tt1 = create :time_log, user: user
-        tt2 = create :time_log, user: create(:user)
+        tt2 = create :time_log
         [tt1.id, tt2.id]
       end
 
@@ -232,11 +232,11 @@ describe 'Time logs API', type: :request do
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
       let(:time_log_ids) do
         tt1 = create :time_log_with_comments, user: user
-        tt2 = create :time_log_with_comments, user: create(:user)
+        tt2 = create :time_log_with_comments
         [tt1.id, tt2.id]
       end
 
-      let(:'time_logs') { {time_logs: {time_log_ids[0] => {comments: 'test3'}, time_log_ids[1] => {comments: 'test4'}}} }
+      let(:time_logs) { {time_logs: {time_log_ids[0] => {comments: 'test3'}, time_log_ids[1] => {comments: 'test4'}}} }
 
       include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
 
@@ -246,6 +246,41 @@ describe 'Time logs API', type: :request do
         it 'changes the time logs' do
           expect(Hourglass::TimeLog.find(time_log_ids.first).comments).to eq 'test3'
           expect(Hourglass::TimeLog.find(time_log_ids.last).comments).to eq 'test4'
+        end
+      end
+    end
+  end
+
+  path '/time_logs/bulk_book.json' do
+    post 'Books multiple time logs at once' do
+      consumes 'application/json'
+      produces 'application/json'
+      tags 'Time logs'
+      parameter name: :time_bookings, in: :body, type: :object, additionalProperties: {'$ref': '#/definitions/time_booking'}, description: 'takes an object of time bookings'
+
+      let(:user) { create :user, :as_member, permissions: [:hourglass_book_time] }
+      let(:time_logs) do
+        tl1 = create :time_log_with_comments, user: user
+        tl2 = create :time_log_with_comments
+        [tl1, tl2]
+      end
+
+      let(:time_bookings) do
+        tl1, tl2 = time_logs
+        {time_bookings: {
+            tl1.id => {project_id: tl1.user.projects.first.id, activity_id: create(:time_entry_activity).id},
+            tl2.id => {}
+        }
+        }
+      end
+
+      include_examples 'access rights', :hourglass_book_time, :hourglass_book_own_time, error_code: '400'
+
+      response '200', 'time logs found' do
+        run_test!
+
+        it 'books the time logs' do
+          expect(time_logs.first.time_booking).to be
         end
       end
     end

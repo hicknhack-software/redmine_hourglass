@@ -8,6 +8,7 @@ module Hourglass
     before_action :authorize_foreign, only: [:show, :update, :split, :book, :destroy]
     before_action :authorize_update_time, only: [:create, :update]
     before_action :authorize_update_booking, only: [:split]
+    before_action :require_login, only: :bulk_book
 
     rescue_from Query::StatementInvalid, :with => :query_statement_invalid
 
