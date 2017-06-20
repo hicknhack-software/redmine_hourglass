@@ -115,7 +115,7 @@ describe 'Time logs API', type: :request do
 
         include_examples 'error message', 'time log not updated', proc { |example|
           tt = Hourglass::TimeLog.find id
-          tt.comments = (0..300).map(&:to_s).join('')
+          tt.comments = (0..500).map(&:to_s).join('')
           tt.save validate: false
         }
       end
