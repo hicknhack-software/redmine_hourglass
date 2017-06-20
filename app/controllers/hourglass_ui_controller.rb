@@ -22,6 +22,7 @@ class HourglassUiController < ApplicationController
   include HourglassUi::TimeTrackers
 
   def context_menu
+    render_403 unless %w(time_bookings time_logs time_trackers).include? params[:list_type]
     @records = Hourglass.const_get(params[:list_type].classify).find params[:ids]
     render "hourglass_ui/#{params[:list_type]}/context_menu", layout: false
   end
