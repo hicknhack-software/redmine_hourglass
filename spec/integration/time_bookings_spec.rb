@@ -1,4 +1,4 @@
-require 'swagger_helper'
+require_relative '../swagger_helper'
 
 describe 'Time bookings API', type: :request do
   let(:key) { user.api_key }

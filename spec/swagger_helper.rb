@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative 'spec_helper'
 
 AVAILABLE_PERMISSIONS = Redmine::AccessControl.permissions.select { |p| p.project_module == Hourglass::PLUGIN_NAME }.map &:name
 
