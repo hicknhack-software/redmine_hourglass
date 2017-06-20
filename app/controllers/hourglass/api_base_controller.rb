@@ -120,11 +120,7 @@ module Hourglass
     end
 
     def flash_array(type, messages)
-      flash[type] = content_tag :ul do
-        messages.each do |msg|
-          concat content_tag(:li, msg.html_safe)
-        end
-      end
+      flash[type] = render_to_string partial: 'hourglass_ui/flash_array', locals: {messages: messages}
     end
   end
 end
