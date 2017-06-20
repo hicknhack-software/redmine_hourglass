@@ -100,10 +100,15 @@ describe 'Time bookings API', type: :request do
       end
       let(:time_booking) { {time_booking: {comments: 'test2'}} }
 
-      # include_examples 'access rights', :hourglass_book_time, :hourglass_book_own_time, :hourglass_edit_booked_time, :hourglass_edit_own_booked_time, success_code: '204'
+      include_examples 'access rights', :hourglass_book_time, :hourglass_book_own_time, :hourglass_edit_booked_time, :hourglass_edit_own_booked_time, success_code: '204'
 
-      # include_examples 'not found'
+      include_examples 'not found'
       context do
+        let(:time_booking) do
+          project = create :project
+          create :member, project: project, user: user, permissions: [:hourglass_edit_booked_time]
+          {time_booking: {project_id: project.id}}
+        end
         response '204', 'time booking found' do
           run_test!
 
