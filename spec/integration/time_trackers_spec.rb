@@ -13,7 +13,7 @@ describe 'Time trackers API', type: :request do
       response '200', 'time trackers found' do
         schema type: 'array',
                items: {
-                   '$ref': '#/definitions/time_tracker',
+                   '$ref' => '#/definitions/time_tracker',
                    required: %w(id start user_id created_at updated_at)
                },
                title: 'Array'
@@ -48,7 +48,7 @@ describe 'Time trackers API', type: :request do
       produces 'application/json'
       tags 'Time trackers'
       parameter name: :time_tracker, in: :body, schema: {
-          '$ref': '#/definitions/time_tracker_start'
+          '$ref' => '#/definitions/time_tracker_start'
       }
 
       let(:time_tracker) { {time_tracker: {comments: 'test'}} }
@@ -62,7 +62,7 @@ describe 'Time trackers API', type: :request do
       }
 
       response '200', 'time tracker created' do
-        schema '$ref': '#/definitions/time_tracker',
+        schema '$ref' => '#/definitions/time_tracker',
                required: %w(id start user_id created_at updated_at)
 
         include_examples 'has a valid response'
@@ -93,7 +93,7 @@ describe 'Time trackers API', type: :request do
       include_examples 'not found'
 
       response '200', 'time tracker found' do
-        schema '$ref': '#/definitions/time_tracker',
+        schema '$ref' => '#/definitions/time_tracker',
                required: %w(id start user_id created_at updated_at)
 
         include_examples 'has a valid response'
@@ -133,7 +133,7 @@ describe 'Time trackers API', type: :request do
       tags 'Time trackers'
       parameter name: :id, in: :path, type: :string
       parameter name: :time_tracker, in: :body, schema: {
-          '$ref': '#/definitions/time_tracker_update'
+          '$ref' => '#/definitions/time_tracker_update'
       }
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
@@ -185,11 +185,11 @@ describe 'Time trackers API', type: :request do
         schema type: 'object',
                properties: {
                    time_log: {
-                       '$ref': '#/definitions/time_log',
+                       '$ref' => '#/definitions/time_log',
                        required: %w(id start stop user_id created_at updated_at)
                    },
                    time_booking: {
-                       '$ref': '#/definitions/time_booking',
+                       '$ref' => '#/definitions/time_booking',
                        required: %w(id user_id created_at updated_at)
                    }
                },
@@ -239,7 +239,7 @@ describe 'Time trackers API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time trackers'
-      parameter name: :time_trackers, in: :body, type: :object, additionalProperties: {'$ref': '#/definitions/time_tracker'}, description: 'takes an object of time trackers'
+      parameter name: :time_trackers, in: :body, type: :object, additionalProperties: {'$ref' => '#/definitions/time_tracker'}, description: 'takes an object of time trackers'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
       let(:time_tracker_ids) do

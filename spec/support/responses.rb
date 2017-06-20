@@ -8,7 +8,7 @@ end
 
 RSpec.shared_examples 'error message' do |message, before_exec|
   response '400', message do
-    schema '$ref': '#/definitions/error_msg'
+    schema '$ref' => '#/definitions/error_msg'
     before &before_exec if before_exec
 
     run_test!

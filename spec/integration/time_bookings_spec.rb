@@ -13,7 +13,7 @@ describe 'Time bookings API', type: :request do
       response '200', 'time bookings found' do
         schema type: 'array',
                items: {
-                   '$ref': '#/definitions/time_booking',
+                   '$ref' => '#/definitions/time_booking',
                    required: %w(id start stop created_at updated_at)
                },
                title: 'Array'
@@ -52,7 +52,7 @@ describe 'Time bookings API', type: :request do
       include_examples 'not found'
 
       response '200', 'time booking found' do
-        schema '$ref': '#/definitions/time_booking',
+        schema '$ref' => '#/definitions/time_booking',
                required: %w(id start stop created_at updated_at)
 
         include_examples 'has a valid response'
@@ -90,7 +90,7 @@ describe 'Time bookings API', type: :request do
       tags 'Time bookings'
       parameter name: :id, in: :path, type: :string
       parameter name: :time_booking, in: :body, schema: {
-          '$ref': '#/definitions/time_booking_update'
+          '$ref' => '#/definitions/time_booking_update'
       }
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_booked_time] }
@@ -153,7 +153,7 @@ describe 'Time bookings API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time bookings'
-      parameter name: :time_bookings, in: :body, type: :object, additionalProperties: {'$ref': '#/definitions/time_booking'}, description: 'takes an object of time bookings'
+      parameter name: :time_bookings, in: :body, type: :object, additionalProperties: {'$ref' => '#/definitions/time_booking'}, description: 'takes an object of time bookings'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_booked_time] }
       let(:time_booking_ids) do
@@ -182,7 +182,7 @@ describe 'Time bookings API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time bookings'
-      parameter name: :time_bookings, in: :body, type: :array, items: {'$ref': '#/definitions/time_booking'}, description: 'takes an array of time bookings'
+      parameter name: :time_bookings, in: :body, type: :array, items: {'$ref' => '#/definitions/time_booking'}, description: 'takes an array of time bookings'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_booked_time] }
 

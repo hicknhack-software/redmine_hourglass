@@ -13,7 +13,7 @@ describe 'Time logs API', type: :request do
       response '200', 'time logs found' do
         schema type: 'array',
                items: {
-                   '$ref': '#/definitions/time_log',
+                   '$ref' => '#/definitions/time_log',
                    required: %w(id start stop user_id created_at updated_at)
                },
                title: 'Array'
@@ -52,7 +52,7 @@ describe 'Time logs API', type: :request do
       include_examples 'not found'
 
       response '200', 'time log found' do
-        schema '$ref': '#/definitions/time_log',
+        schema '$ref' => '#/definitions/time_log',
                required: %w(id start stop user_id created_at updated_at)
 
         include_examples 'has a valid response'
@@ -90,7 +90,7 @@ describe 'Time logs API', type: :request do
       tags 'Time logs'
       parameter name: :id, in: :path, type: :string
       parameter name: :time_log, in: :body, schema: {
-          '$ref': '#/definitions/time_log_update'
+          '$ref' => '#/definitions/time_log_update'
       }
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
@@ -129,7 +129,7 @@ describe 'Time logs API', type: :request do
       tags 'Time logs'
       parameter name: :id, in: :path, type: :string
       parameter name: :time_booking, in: :body, schema: {
-          '$ref': '#/definitions/time_booking_create'
+          '$ref' => '#/definitions/time_booking_create'
       }
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_book_time] }
@@ -143,7 +143,7 @@ describe 'Time logs API', type: :request do
       include_examples 'not found'
 
       response '200', 'time log found' do
-        schema '$ref': '#/definitions/time_booking',
+        schema '$ref' => '#/definitions/time_booking',
                required: %w(id start stop created_at updated_at)
 
         include_examples 'has a valid response'
@@ -179,11 +179,11 @@ describe 'Time logs API', type: :request do
         schema type: 'object',
                properties: {
                    time_log: {
-                       '$ref': '#/definitions/time_log',
+                       '$ref' => '#/definitions/time_log',
                        required: %w(id start stop user_id created_at updated_at)
                    },
                    new_time_log: {
-                       '$ref': '#/definitions/time_log',
+                       '$ref' => '#/definitions/time_log',
                        required: %w(id start stop user_id created_at updated_at)
                    }
                }
@@ -227,7 +227,7 @@ describe 'Time logs API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time logs'
-      parameter name: :time_logs, in: :body, type: :object, additionalProperties: {'$ref': '#/definitions/time_log'}, description: 'takes an object of time logs'
+      parameter name: :time_logs, in: :body, type: :object, additionalProperties: {'$ref' => '#/definitions/time_log'}, description: 'takes an object of time logs'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
       let(:time_log_ids) do
@@ -256,7 +256,7 @@ describe 'Time logs API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time logs'
-      parameter name: :time_bookings, in: :body, type: :object, additionalProperties: {'$ref': '#/definitions/time_booking'}, description: 'takes an object of time bookings'
+      parameter name: :time_bookings, in: :body, type: :object, additionalProperties: {'$ref' => '#/definitions/time_booking'}, description: 'takes an object of time bookings'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_book_time] }
       let(:time_logs) do
@@ -291,7 +291,7 @@ describe 'Time logs API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time logs'
-      parameter name: :time_logs, in: :body, type: :array, items: {'$ref': '#/definitions/time_log'}, description: 'takes an array of time logs'
+      parameter name: :time_logs, in: :body, type: :array, items: {'$ref' => '#/definitions/time_log'}, description: 'takes an array of time logs'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
 
