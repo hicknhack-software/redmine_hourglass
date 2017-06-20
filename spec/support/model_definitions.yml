@@ -90,12 +90,34 @@ definitions:
     title: Time booking
     type: object
     properties:
-      <<: *default
+      id:
+        <<: *id
+      created_at:
+        <<: *date_time
+      updated_at:
+        <<: *date_time
       start:
         <<: *date_time
       stop:
         <<: *date_time
-
+  time_booking_update:
+    title: Time booking
+    type: object
+    properties:
+      start:
+        <<: *date_time
+      stop:
+        <<: *date_time
+      user_id:
+        <<: *user_id
+      project_id:
+        <<: *project_id
+      activity_id:
+        <<: *activity_id
+      issue_id:
+        <<: *issue_id
+      comments:
+        type: string
   error_msg:
     title: Error
     properties:

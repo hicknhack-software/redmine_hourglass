@@ -12,7 +12,7 @@ module Hourglass
     after_initialize :init
 
     validates_presence_of :user, :start, :stop
-    validates_length_of :comments, maximum: 255, allow_blank: true
+    validates_length_of :comments, maximum: 1024, allow_blank: true
     validate :stop_is_valid
     validate :does_not_overlap_with_other, if: [:user, :start?, :stop?]
 
