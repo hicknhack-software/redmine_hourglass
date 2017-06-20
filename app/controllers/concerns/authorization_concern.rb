@@ -14,12 +14,13 @@ module AuthorizationConcern
         return t('hourglass.api.errors.booking_issue_not_found')
       end
       @project = issue.project
-    else
+    elsif resource_params[:project_id].present?
       @project = Project.visible.find_by id: resource_params[:project_id]
-    end
-    unless @project.present?
-      render_404 message: t('hourglass.api.errors.booking_project_not_found') if mode == :render
-      t('hourglass.api.errors.booking_project_not_found')
+      unless @project.present?
+        render_404 message: t('hourglass.api.errors.booking_project_not_found') if mode == :render
+        t('hourglass.api.errors.booking_project_not_found')
+      end
+      @project
     end
   end
 

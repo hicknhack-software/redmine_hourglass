@@ -7,6 +7,7 @@ module Hourglass
     before_action :find_project, :authorize, only: [:show, :create, :update, :destroy]
     before_action :authorize_foreign, only: [:show, :update, :destroy]
     before_action :authorize_update_time, only: [:create]
+    before_action :require_login, only: [:bulk_update, :bulk_create, :bulk_destroy]
 
     def index
       time_bookings = allowed_to?('index_foreign') ? Hourglass::TimeBooking.all : User.current.hourglass_time_bookings
@@ -64,7 +65,7 @@ module Hourglass
     def bulk_update
       bulk do |id, params|
         time_booking = Hourglass::TimeBooking.find_by(id: id) or next
-        error_msg = find_project params, mode: :inline
+        error_msg = find_project params, resource: time_booking, mode: :inline
         next error_msg if error_msg.is_a? String
         next t('hourglass.api.errors.forbidden') unless allowed_to?
         next foreign_forbidden_message unless foreign_allowed_to? time_booking
@@ -109,7 +110,7 @@ module Hourglass
 
     def find_project(params = nil, resource: @request_resource, **opts)
       if action_name.in? %w(create bulk_create update bulk_update)
-        find_project_from_params (params || time_booking_params).with_indifferent_access, opts
+        find_project_from_params((params || time_booking_params).with_indifferent_access, opts) || (@request_resource && @request_resource.project)
       else
         super resource
       end
