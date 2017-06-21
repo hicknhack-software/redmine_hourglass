@@ -5,8 +5,9 @@
     = form_for @time_tracker, url: start_hourglass_time_trackers_path, as: 'time_tracker', remote: true, html: {class: 'new-time-tracker-form js-hourglass-remote'} do |f|
       .form-row
         .form-field
-          = f.text_field :comments, size: '30', maxlength: 255, id: 'task', disabled: !can[:update], class: ('js-issue-autocompletion' if can[:book])
+          = text_field_tag :time_tracker_task, nil, size: '30', maxlength: 1024, disabled: !can[:update], class: ('js-issue-autocompletion' if can[:book])
           = f.hidden_field :issue_id if can[:book]
+          = f.hidden_field :comments
         .form-field
           = f.submit t('hourglass.ui.index.time_tracker_control.button_start')
   - else
