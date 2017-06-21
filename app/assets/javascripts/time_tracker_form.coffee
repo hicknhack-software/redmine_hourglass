@@ -1,7 +1,11 @@
 formFieldChanged = (event) ->
   data = {}
   $target = $(event.target)
-  data[$target.attr('name')] = $target.val()
+  attribute = $target.attr('name')
+  data[attribute] = $target.val()
+  if attribute.indexOf 'project_id' > -1
+    $issueField = $(@).find('.js-issue-autocompletion').next()
+    data[$issueField.attr('name')] = $issueField.val()
   hourglass.Utils.clearFlash()
   $.ajax
     url: hourglassRoutes.hourglass_time_tracker('current')
