@@ -18,7 +18,7 @@ module Hourglass
     end
 
     def start
-      time_tracker = Hourglass::TimeTracker.start start_time_tracker_params
+      time_tracker = Hourglass::TimeTracker.start time_tracker_params
       if time_tracker.persisted?
         respond_with_success time_tracker
       else
@@ -27,7 +27,7 @@ module Hourglass
     end
 
     def update
-      if @time_tracker.update update_time_tracker_params
+      if @time_tracker.update time_tracker_params
         respond_with_success
       else
         respond_with_error :bad_request, @time_tracker.errors.full_messages, array_mode: :sentence
@@ -70,14 +70,7 @@ module Hourglass
     end
 
     private
-    def start_time_tracker_params
-      return unless params[:time_tracker]
-      time_tracker_params = params.require(:time_tracker).permit(:issue_id, :comments)
-      time_tracker_params.delete :comments if time_tracker_params[:issue_id].present?
-      time_tracker_params
-    end
-
-    def update_time_tracker_params
+    def time_tracker_params
       params.require(:time_tracker).permit(:start, :comments, :round, :project_id, :issue_id, :activity_id)
     end
 

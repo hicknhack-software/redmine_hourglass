@@ -51,7 +51,7 @@ describe 'Time trackers API', type: :request do
           '$ref' => '#/definitions/time_tracker_start'
       }
 
-      let(:time_tracker) { {time_tracker: {comments: 'test'}} }
+      let(:time_tracker) { {time_tracker: {comments: 'test', project_id: user.projects.first.id}} }
       let(:user) { create :user, :as_member, permissions: [:hourglass_track_time] }
 
       include_examples 'access rights', :hourglass_track_time
@@ -71,6 +71,7 @@ describe 'Time trackers API', type: :request do
           data = JSON.parse(response.body, symbolize_names: true)
           expect(data[:user_id]).to eq user.id
           expect(data[:comments]).to eq time_tracker[:time_tracker][:comments]
+          expect(data[:project_id]).to eq time_tracker[:time_tracker][:project_id]
         end
       end
     end
