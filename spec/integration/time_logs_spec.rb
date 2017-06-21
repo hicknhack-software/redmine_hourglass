@@ -167,7 +167,7 @@ describe 'Time logs API', type: :request do
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_track_time] }
       let(:time_log) { create :time_log, user: user }
-      let(:split_at) { (time_log.start + 10.minutes).utc.to_s }
+      let(:split_at) { URI.encode (time_log.start + 10.minutes).utc.to_s }
       let(:id) { time_log.id }
 
       include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
