@@ -94,17 +94,15 @@ describe 'Time logs API', type: :request do
       }
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
-      let(:id) do
-        time_log = create :time_log, user: user
-        time_log.id
-      end
+      let(:existing_time_log) { create :time_log, user: user }
+      let(:id) { existing_time_log.id }
       let(:time_log) { {time_log: {comments: 'test2'}} }
 
       include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time, success_code: '204'
 
       include_examples 'not found'
       context do
-        let(:time_log) { {time_log: {stop: Time.now}} }
+        let(:time_log) { {time_log: {stop: existing_time_log.stop + 1.hour}} }
         response '204', 'time log found' do
           run_test!
 
@@ -169,7 +167,7 @@ describe 'Time logs API', type: :request do
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_track_time] }
       let(:time_log) { create :time_log, user: user }
-      let(:split_at) { (time_log.start + 10.minutes).utc }
+      let(:split_at) { (time_log.start + 10.minutes).utc.to_s }
       let(:id) { time_log.id }
 
       include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
