@@ -22,9 +22,9 @@ class HourglassUiController < ApplicationController
   include HourglassUi::TimeTrackers
 
   def context_menu
-    render_403 unless %w(time_bookings time_logs time_trackers).include? params[:list_type]
-    @records = Hourglass.const_get(params[:list_type].classify).find params[:ids]
-    render "hourglass_ui/#{params[:list_type]}/context_menu", layout: false
+    list_type = get_list_type
+    @records = Hourglass.const_get(list_type.classify).find params[:ids]
+    render "hourglass_ui/#{list_type}/context_menu", layout: false
   end
 
   def api_docs
@@ -33,5 +33,11 @@ class HourglassUiController < ApplicationController
   private
   def authorize_foreign
     super { render_403 }
+  end
+
+  def get_list_type
+    list_type = %w(time_bookings time_logs time_trackers).select {|val| val == params[:list_type]}.first
+    render_403 unless list_type
+    list_type
   end
 end

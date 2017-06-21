@@ -8,20 +8,28 @@ module AuthorizationConcern
 
   def find_project_from_params(resource_params, mode: :render)
     if resource_params[:issue_id].present?
-      issue = Issue.visible.find_by id: resource_params[:issue_id]
-      unless issue.present?
-        render_404 message: t('hourglass.api.errors.booking_issue_not_found') if mode == :render
-        return t('hourglass.api.errors.booking_issue_not_found')
-      end
-      @project = issue.project
+      find_project_from_issue_id resource_params[:issue_id], mode
     elsif resource_params[:project_id].present?
-      @project = Project.visible.find_by id: resource_params[:project_id]
-      unless @project.present?
-        render_404 message: t('hourglass.api.errors.booking_project_not_found') if mode == :render
-        t('hourglass.api.errors.booking_project_not_found')
-      end
-      @project
+      find_project_from_project_id resource_params[:project_id], mode
     end
+  end
+
+  def find_project_from_issue_id(id, mode)
+    issue = Issue.visible.find_by id: id
+    unless issue.present?
+      render_404 message: t('hourglass.api.errors.booking_issue_not_found') if mode == :render
+      return t('hourglass.api.errors.booking_issue_not_found')
+    end
+    @project = issue.project
+  end
+
+  def find_project_from_project_id(id, mode)
+    project = Project.visible.find_by id: id
+    unless project.present?
+      render_404 message: t('hourglass.api.errors.booking_project_not_found') if mode == :render
+      t('hourglass.api.errors.booking_project_not_found')
+    end
+    @project = project
   end
 
   def authorize_global(*args)
