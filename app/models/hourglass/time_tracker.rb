@@ -1,5 +1,5 @@
 module Hourglass
-  class TimeTracker < ActiveRecord::Base
+  class TimeTracker < ApplicationRecord
     include Namespace
     include ProjectIssueSyncing
 

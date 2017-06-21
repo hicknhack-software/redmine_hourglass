@@ -51,7 +51,7 @@ describe Hourglass::TimeLog do
   end
 
   it 'is invalid with a comment greater' do
-    expect(build :time_log_with_comments, comments: 'Hello!' * 43).not_to be_valid
+    expect(build :time_log_with_comments, comments: 'Hello!' * 200).not_to be_valid
   end
 
   describe 'booking' do

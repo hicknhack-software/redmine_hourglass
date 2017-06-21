@@ -1,0 +1,125 @@
+support:
+  date_time: &date_time
+    type: string
+    format: date-time
+  id: &id
+    type: integer
+    minimum: 0
+  attributes:
+    ids:
+      activity: &activity_id
+        <<: *id
+      project: &project_id
+        <<: *id
+      user: &user_id
+        <<: *id
+      issue: &issue_id
+        <<: *id
+  default: &default
+    id:
+      <<: *id
+    created_at:
+      <<: *date_time
+    updated_at:
+      <<: *date_time
+    user_id:
+      <<: *user_id
+      
+definitions:
+  time_tracker_start:
+    title: Time tracker
+    type: object
+    properties:
+      issue_id:
+        <<: *issue_id
+      comments:
+        type: string
+  time_tracker:
+    title: Time tracker
+    type: object
+    properties:
+      <<: *default
+      start:
+        <<: *date_time
+      project_id:
+        <<: *project_id
+      activity_id:
+        <<: *activity_id
+      issue_id:
+        <<: *issue_id
+      comments:
+        type: string
+  time_tracker_update:
+    title: Time tracker
+    type: object
+    properties:
+      start:
+        <<: *date_time
+      user_id:
+        <<: *user_id
+      project_id:
+        <<: *project_id
+      activity_id:
+        <<: *activity_id
+      issue_id:
+        <<: *issue_id
+      comments:
+        type: string
+  time_log:
+    title: Time log
+    type: object
+    properties:
+      <<: *default
+      start:
+        <<: *date_time
+      stop:
+        <<: *date_time
+      comments:
+        type: string
+  time_log_update:
+    title: Time log
+    type: object
+    properties:
+      start:
+        <<: *date_time
+      stop:
+        <<: *date_time
+      comments:
+        type: string
+  time_booking:
+    title: Time booking
+    type: object
+    properties:
+      id:
+        <<: *id
+      created_at:
+        <<: *date_time
+      updated_at:
+        <<: *date_time
+      start:
+        <<: *date_time
+      stop:
+        <<: *date_time
+  time_booking_update:
+    title: Time booking
+    type: object
+    properties:
+      start:
+        <<: *date_time
+      stop:
+        <<: *date_time
+      user_id:
+        <<: *user_id
+      project_id:
+        <<: *project_id
+      activity_id:
+        <<: *activity_id
+      issue_id:
+        <<: *issue_id
+      comments:
+        type: string
+  error_msg:
+    title: Error
+    properties:
+      message:
+        type: string

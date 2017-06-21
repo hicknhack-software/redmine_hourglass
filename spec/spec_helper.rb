@@ -1,4 +1,4 @@
-#clear all arguments given to rspec to prevent them to be given to redmine minitest as well
+# clear all arguments given to rspec to prevent them to be given to redmine minitest as well
 ARGV.clear
 
 if ENV['PATH_TO_REDMINE']
@@ -29,7 +29,7 @@ Rails.application.load_tasks
 # run twice. It is recommended that you do not name files matching this glob to
 # end with _spec.rb. You can configure this pattern with with the --pattern
 # option on the command line or in ~/.rspec, .rspec or `.rspec-local`.
-Dir[File.expand_path(File.dirname(__FILE__) + '/support/**/*.rb"')].each { |f| require f }
+Dir[Hourglass::PLUGIN_ROOT.join('spec/support/**/*.rb')].each { |f| require f }
 
 RSpec.configure do |config|
 

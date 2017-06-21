@@ -7,6 +7,7 @@ module Hourglass
     before_action :find_project, :authorize, only: [:show, :create, :update, :destroy]
     before_action :authorize_foreign, only: [:show, :update, :destroy]
     before_action :authorize_update_time, only: [:create]
+    before_action :require_login, only: [:bulk_update, :bulk_create, :bulk_destroy]
 
     def index
       time_bookings = allowed_to?('index_foreign') ? Hourglass::TimeBooking.all : User.current.hourglass_time_bookings
@@ -43,7 +44,6 @@ module Hourglass
         ActiveRecord::Base.transaction do
           result = time_log = TimeLog.create params.permit(:start, :stop, :comments, :user_id)
           raise ActiveRecord::Rollback unless time_log.persisted?
-          result = foreign_forbidden_message and raise ActiveRecord::Rollback unless foreign_allowed_to? time_log, :bulk_create, :time_logs
           result = time_booking = time_log.book params.permit(:comments, :project_id, :issue_id, :activity_id)
           raise ActiveRecord::Rollback unless time_booking.persisted?
           result = foreign_forbidden_message and raise ActiveRecord::Rollback unless foreign_allowed_to? time_booking
@@ -64,7 +64,7 @@ module Hourglass
     def bulk_update
       bulk do |id, params|
         time_booking = Hourglass::TimeBooking.find_by(id: id) or next
-        error_msg = find_project params, mode: :inline
+        error_msg = find_project params, resource: time_booking, mode: :inline
         next error_msg if error_msg.is_a? String
         next t('hourglass.api.errors.forbidden') unless allowed_to?
         next foreign_forbidden_message unless foreign_allowed_to? time_booking
@@ -109,7 +109,7 @@ module Hourglass
 
     def find_project(params = nil, resource: @request_resource, **opts)
       if action_name.in? %w(create bulk_create update bulk_update)
-        find_project_from_params (params || time_booking_params).with_indifferent_access, opts
+        find_project_from_params((params || time_booking_params).with_indifferent_access, opts) || (resource && super(resource))
       else
         super resource
       end

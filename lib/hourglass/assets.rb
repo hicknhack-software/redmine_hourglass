@@ -2,8 +2,9 @@ class Hourglass::Assets < Sprockets::Environment
   include Singleton
 
   def initialize
-    super File.join(File.dirname(__FILE__), '..', '..') do |env|
+    super Hourglass::PLUGIN_ROOT do |env|
       %w(app vendor).each do |dir|
+        env.append_path File.join dir, 'assets'
         self.class.asset_directories.each do |asset_dir|
           env.append_path File.join dir, 'assets', asset_dir
         end
@@ -39,27 +40,26 @@ class Hourglass::Assets < Sprockets::Environment
     end
 
     def asset_directories
-      STATIC_ASSET_DIRECTORIES.values + %w(javascripts stylesheets)
+      asset_directory_map.values
     end
 
     def assets_directory_path
       File.join 'plugin_assets', Hourglass::PLUGIN_NAME.to_s
     end
 
-    STATIC_ASSET_DIRECTORIES = {
-        audio: 'audios',
-        font: 'fonts',
-        image: 'images',
-        video: 'videos'
-    }
+    def asset_directory_map
+      {
+          javascript: 'javascripts',
+          stylesheet: 'stylesheets',
+          audio: 'audios',
+          font: 'fonts',
+          image: 'images',
+          video: 'videos'
+      }
+    end
 
     def path(path, options = {})
-      if Rails.env.production?
-        instance.find_asset(path).digest_path
-      else
-        folder = STATIC_ASSET_DIRECTORIES[options[:type]] || ''
-        File.join '..', folder, path
-      end
+      File.join '..', Rails.env.production? ? instance.find_asset(path).digest_path : File.join(asset_directory_map[options[:type]] || '', path)
     end
   end
 end

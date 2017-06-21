@@ -1,5 +1,5 @@
 module Hourglass
-  class TimeBooking < ActiveRecord::Base
+  class TimeBooking < ApplicationRecord
     include Namespace
     include ProjectIssueSyncing
 
@@ -24,7 +24,7 @@ module Hourglass
     delegate :id, to: :activity, prefix: true, allow_nil: true
     delegate :id, to: :project, prefix: true, allow_nil: true
     delegate :id, to: :user, prefix: true, allow_nil: true
-    delegate :comments, :hours, :project_id=, to: :time_entry, allow_nil: true
+    delegate :comments, :comments=, :hours, :project_id=, to: :time_entry, allow_nil: true
 
     def update(args = {})
       if args[:time_entry_attributes].present? && time_entry.present?

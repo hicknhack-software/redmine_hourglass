@@ -5,7 +5,7 @@ module Hourglass
 
       included do
         has_many :hourglass_time_logs, class_name: 'Hourglass::TimeLog'
-        has_many :hourglass_time_bookings, :through => :hourglass_time_logs, class_name: 'Hourglass::TimeBooking', source: :time_bookings
+        has_many :hourglass_time_bookings, :through => :hourglass_time_logs, class_name: 'Hourglass::TimeBooking', source: :time_booking
         has_one :hourglass_time_tracker, class_name: 'Hourglass::TimeTracker'
       end
 

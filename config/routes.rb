@@ -17,6 +17,8 @@ scope :hourglass, as: :hourglass do
     get 'time_trackers/:id/edit', action: :edit_time_trackers, as: :edit_time_trackers
     get 'time_trackers/edit', action: :bulk_edit_time_trackers, as: :bulk_edit_time_trackers
     get 'context_menu'
+
+    get 'api_docs'
   end
 
   scope :completion, as: :completion, controller: :hourglass_completion do
@@ -73,10 +75,9 @@ namespace :hourglass do
       delete 'bulk_destroy'
     end
   end
+
+  mount Rswag::Api::Engine => '/api-docs'
 end
 
-unless Rails.env.production?
-  Hourglass::Assets.asset_directories.each do |asset_dir|
-    mount Hourglass::Assets.instance, at: File.join(Hourglass::Assets.assets_directory_path, asset_dir)
-  end
-end
+
+mount Hourglass::Assets.instance, at: File.join(Hourglass::Assets.assets_directory_path) unless Rails.env.production?

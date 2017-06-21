@@ -69,7 +69,7 @@ module Hourglass
         end
       end
       if success.length > 0
-        flash_array :error, errors if errors.length > 0
+        flash_array :error, errors if errors.length > 0 && !api_request?
         respond_with_success success: success, errors: errors
       else
         respond_with_error :bad_request, errors
@@ -102,7 +102,13 @@ module Hourglass
     end
 
     def authorize_book
-      render_403 message: booking_forbidden_message unless book_allowed?
+      unless book_allowed?
+        if User.current.logged?
+          render_403 message: booking_forbidden_message
+        else
+          require_login
+        end
+      end
     end
 
     def book_allowed?
@@ -114,11 +120,7 @@ module Hourglass
     end
 
     def flash_array(type, messages)
-      flash[type] = content_tag :ul do
-        messages.each do |msg|
-          concat content_tag(:li, msg.html_safe)
-        end
-      end
+      flash[type] = render_to_string partial: 'hourglass_ui/flash_array', locals: {messages: messages}
     end
   end
 end

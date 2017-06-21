@@ -6,5 +6,8 @@ FactoryGirl.define do
     sequence(:identifier) { |n| "#{name.underscore.gsub(' ', '_')}_#{n}" }
     is_public true
     status 1
+    after(:create) do |project|
+      project.enabled_modules.create name: :redmine_hourglass
+    end
   end
 end

@@ -64,6 +64,7 @@ de:
       misc:
         fields:
           global_tracker: Globalen Start/Stop-Link im Menü zeigen?
+          api_docs_link: Hourglass API-Dokumentation
         title: Verschiedene
       report:
         fields:
@@ -112,6 +113,14 @@ de:
           not_found: Diese Zeitbuchung existiert nicht.
           update_time_forbidden: Sie sind nicht berechtigt den Beginn oder das Ende der Zeitbuchung zu ändern.
     ui:
+      api_docs:
+        title: Hourglass API documentation
+        description: Diese Dokumentation beschreibt die verfügbaren API Endpunkten für die Benutzung von Hourglass. Sie ist zur Zeit nur in Englisch verfügbar. Ihr API Schlüssel wurde bereits vorkonfiguriert, sodass sie direkt loslegen können. Aber Vorsicht es gibt kein Testsystem, sie operieren direkt auf den Live-Daten. Wenn sie die API mit einem anderen Nutzer testen wollen, drücken sie auf den 'Authorize' Button und geben dort den entsprechenden API-Schlüssel ein.
+        error_api_disabled: Die API ist zur Zeit abgeschaltet, um sie zu verwenden können Sie sie hier anschalten
+        error_json_missing: Die API Spezifikation fehlt oder ist ungültig. Bitte führen sie den Rake Task `%{task}` aus oder bitten Sie einen Admin dies für Sie auszuführen. Probieren Sie es anschließend erneut.
+        error_json_missing: Sie betrachten eine veraltete Version der API Dokumentation an. Bitte führen sie den Rake Task `%{task}` aus um zu aktualisieren oder bitten Sie einen Admin dies für Sie auszuführen.
+        api_settings: API Einstellungen
+        swagger_note: Diese Dokumentation wurde erstellt mit
       menu:
         main: Zeitmessung
         overview: Übersicht

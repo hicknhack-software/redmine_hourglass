@@ -9,7 +9,7 @@ module Hourglass
     before_action :authorize_update_time, only: [:update]
 
     def index
-      time_trackers = allowed_to?('index_foreign') ? Hourglass::TimeTracker.all : User.current.hourglass_time_tracker
+      time_trackers = allowed_to?('index_foreign') ? Hourglass::TimeTracker.all : [User.current.hourglass_time_tracker]
       respond_with_success time_trackers
     end
 
@@ -48,7 +48,7 @@ module Hourglass
       time_log = @time_tracker.stop
       time_booking = time_log && time_log.time_booking
       if @time_tracker.destroyed?
-        respond_with_success time_log: time_log, time_booking: time_booking
+        respond_with_success({time_log: time_log, time_booking: time_booking}.compact)
       else
         error_messages = time_log.errors.full_messages
         error_messages += time_booking.errors.full_messages if time_booking

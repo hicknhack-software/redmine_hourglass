@@ -8,20 +8,27 @@ module Hourglass
     before_action :authorize_foreign, only: [:show, :update, :split, :book, :destroy]
     before_action :authorize_update_time, only: [:create, :update]
     before_action :authorize_update_booking, only: [:split]
+    before_action :require_login, only: :bulk_book
 
     rescue_from Query::StatementInvalid, :with => :query_statement_invalid
 
+    # removed to have consistency with other api controller
+    # def index
+    #   params.merge! user_id: 'me' unless allowed_to?('index_foreign')
+    #   @query = Hourglass::TimeLogQuery.build_from_params params, name: '_'
+    #   scope = @query.results_scope
+    #   offset, limit = api_offset_and_limit
+    #   respond_with_success(
+    #       count: scope.count,
+    #       offset: offset,
+    #       limit: limit,
+    #       time_logs: scope.offset(offset).limit(limit).to_a
+    #   )
+    # end
+
     def index
-      params.merge! user_id: 'me' unless allowed_to?('index_foreign')
-      @query = Hourglass::TimeLogQuery.build_from_params params, name: '_'
-      scope = @query.results_scope
-      offset, limit = api_offset_and_limit
-      respond_with_success(
-          count: scope.count,
-          offset: offset,
-          limit: limit,
-          time_logs: scope.offset(offset).limit(limit).to_a
-      )
+      time_logs = allowed_to?('index_foreign') ? Hourglass::TimeLog.all : User.current.hourglass_time_logs
+      respond_with_success time_logs
     end
 
     def show
