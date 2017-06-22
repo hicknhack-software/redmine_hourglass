@@ -18,7 +18,7 @@ module Hourglass
     end
 
     def start
-      time_tracker = Hourglass::TimeTracker.start time_tracker_params
+      time_tracker = Hourglass::TimeTracker.start params[:time_tracker] ? time_tracker_params : {}
       if time_tracker.persisted?
         respond_with_success time_tracker
       else
