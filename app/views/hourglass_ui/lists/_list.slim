@@ -1,24 +1,25 @@
 - query, entries, action_name, sort_criteria = list_arguments.values_at :query, :entries, :action_name, :sort_criteria
 - if query.valid?
-  - if !entries || entries.empty?
-    p.nodata
-      = t("hourglass.ui.#{action_name}.no_data")
-  - else
-    = render_query_totals query
-    #chart-container
-    .autoscroll
-      table.list.hourglass-list data-list-type=list_arguments[:action_name]
-        thead
+  = render_query_totals query
+  #chart-container
+  .autoscroll
+    table.list.hourglass-list data-list-type=list_arguments[:action_name]
+      thead
+        tr
+          th.checkbox.hide-when-print
+            = link_to image_tag('toggle_check.png'), {}, title: "#{t(:button_check_all)} / #{t(:button_uncheck_all)}"
+          - @sort_criteria = sort_criteria
+          - query.columns.each do |column|
+            = column_header column, list_arguments[:sort_param_name]
+          th.actions
+      tbody
+        tr.create-form
+          td.js-create-form-anchor colspan="#{query.inline_columns.size + 2}"
+        - if !entries || entries.empty?
           tr
-            th.checkbox.hide-when-print
-              = link_to image_tag('toggle_check.png'), {}, title: "#{t(:button_check_all)} / #{t(:button_uncheck_all)}"
-            - @sort_criteria = sort_criteria
-            - query.columns.each do |column|
-              = column_header column, list_arguments[:sort_param_name]
-            th.actions
-        tbody
-          tr.create-form
-            td.js-create-form-anchor colspan="#{query.inline_columns.size + 2}"
+            td.nodata colspan="#{query.inline_columns.size + 2}"
+              = t("hourglass.ui.#{action_name}.no_data")
+        - else
           - grouped_entry_list entries, query do |entry, group|
             - if group
               - reset_cycle
@@ -31,5 +32,5 @@
             - else
               tr.entry.hascontextmenu id=entry.id class=cycle('odd', 'even')
                 = render partial: 'hourglass_ui/lists/list_entry', locals: {query: query, entry: entry, action_name: action_name}
-    span.pagination
-      = pagination_links_full list_arguments[:paginator], list_arguments[:count], per_page_links: !list_arguments[:hide_per_page_links]
+  span.pagination
+    = pagination_links_full list_arguments[:paginator], list_arguments[:count], per_page_links: !list_arguments[:hide_per_page_links]
