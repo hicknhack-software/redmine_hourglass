@@ -31,6 +31,7 @@ ___To ease migrating we added a function to import time entries from the redmine
 ## Requirements
 * Ruby >= 2.0.0
 * Redmine >= 3.0.0
+* An [ExecJS](https://github.com/sstephenson/execjs) compatible runtime, the gemfile includes [therubyracer](https://github.com/cowboyd/therubyracer) for unix based systems and windows ships with a default js interpreter (from Win 7 upwards), so most people should be set. If you happen to have problems like for example [#29](https://github.com/hicknhack-software/redmine_hourglass/issues/29), take a look on the linked ExecJS and install one of the mentioned runtimes.
 
 See [.travis.yml](.travis.yml) for details about supported version. If a newer version doesn't appear in there, feel free to open an issue and report your experience with that redmine or ruby version.
 
