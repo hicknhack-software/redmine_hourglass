@@ -5,6 +5,10 @@ gem 'uglifier'
 gem 'coffee-script'
 gem 'sass'
 
+# this is useful for unix based systems which don't have a js runtime installed
+# if you are on windows and this makes problems, simply remove the line
+gem 'therubyracer', :platform => :ruby
+
 #views
 gem 'slim'
 gem 'js-routes', '~> 1.3'
