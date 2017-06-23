@@ -151,6 +151,7 @@ en:
         button_book_all: Book all
         button_update_all: Update all
         button_create_all: Create all
+        button_delete_booking: Delete time booking
       chart:
         hour_sign: h
         minute_sign: min
