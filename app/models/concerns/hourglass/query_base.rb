@@ -3,6 +3,31 @@ module Hourglass::QueryBase
 
   included do
     self.queried_class = name.gsub('Query', '').constantize
+
+    # copied from issue query, without the view_issues right check
+    scope :visible, lambda { |*args|
+      user = args.shift || User.current
+      scope = joins("LEFT OUTER JOIN #{Project.table_name} ON #{table_name}.project_id = #{Project.table_name}.id").
+          where("#{table_name}.project_id IS NULL")
+
+      if user.admin?
+        scope.where("#{table_name}.visibility <> ? OR #{table_name}.user_id = ?", Query::VISIBILITY_PRIVATE, user.id)
+      elsif user.memberships.any?
+        scope.where("#{table_name}.visibility = ?" +
+                        " OR (#{table_name}.visibility = ? AND #{table_name}.id IN (" +
+                        "SELECT DISTINCT q.id FROM #{table_name} q" +
+                        " INNER JOIN #{table_name_prefix}queries_roles#{table_name_suffix} qr on qr.query_id = q.id" +
+                        " INNER JOIN #{MemberRole.table_name} mr ON mr.role_id = qr.role_id" +
+                        " INNER JOIN #{Member.table_name} m ON m.id = mr.member_id AND m.user_id = ?" +
+                        " WHERE q.project_id IS NULL OR q.project_id = m.project_id))" +
+                        " OR #{table_name}.user_id = ?",
+                    Query::VISIBILITY_PUBLIC, Query::VISIBILITY_ROLES, user.id, user.id)
+      elsif user.logged?
+        scope.where("#{table_name}.visibility = ? OR #{table_name}.user_id = ?", Query::VISIBILITY_PUBLIC, user.id)
+      else
+        scope.where("#{table_name}.visibility = ?", Query::VISIBILITY_PUBLIC)
+      end
+    }
   end
 
   class_methods do
@@ -91,7 +116,7 @@ module Hourglass::QueryBase
         first_day_of_week = l(:general_first_day_of_week).to_i
         day_of_week = Date.today.cwday
         days_ago = (day_of_week >= first_day_of_week ? day_of_week - first_day_of_week : day_of_week + 7 - first_day_of_week)
-        sql = relative_date_clause(db_table, db_field, - days_ago - 7, - days_ago + 6, is_custom_filter)
+        sql = relative_date_clause(db_table, db_field, -days_ago - 7, -days_ago + 6, is_custom_filter)
       when 'q'
         # = current quarter
         date = User.current.today

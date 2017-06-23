@@ -13,7 +13,7 @@ module Hourglass
     end
 
     def sidebar_queries
-      @sidebar_queries ||= query_class.where(project: [nil, @project]).order(name: :asc)
+      @sidebar_queries ||= query_class.visible.where(project: [nil, @project]).order(name: :asc)
     end
 
     def column_content(column, entry, use_html = true)
