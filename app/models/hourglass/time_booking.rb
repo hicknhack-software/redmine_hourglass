@@ -26,6 +26,9 @@ module Hourglass
     delegate :id, to: :user, prefix: true, allow_nil: true
     delegate :comments, :comments=, :hours, :project_id=, to: :time_entry, allow_nil: true
 
+    scope :visible, lambda { |*args| joins(:project).where(projects: {id: visible_condition(args.shift || User.current, *args)})
+    }
+
     def update(args = {})
       if args[:time_entry_attributes].present? && time_entry.present?
         args[:time_entry_attributes].merge! id: time_entry_id
@@ -48,6 +51,12 @@ module Hourglass
     end
 
     private
+    def self.visible_condition(user, options = {})
+      project_ids = Project.allowed_to(user, :hourglass_view_booked_time).pluck :id
+      project_ids += Project.allowed_to(user, :hourglass_view_own_booked_time).pluck :id
+      project_ids.uniq
+    end
+
     def fix_nil_hours
       time_entry.hours ||= 0 if time_entry && time_entry.activity_id.blank? #redmine sets hours to nil, if it's 0 on initializing
     end

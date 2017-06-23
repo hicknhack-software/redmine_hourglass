@@ -34,7 +34,7 @@ module Hourglass
     end
 
     def base_scope
-      super.joins(:user, :project, :activity).eager_load(issue: :fixed_version)
+      super.visible.joins(:user, :activity).eager_load(issue: :fixed_version)
     end
 
     def sql_for_user_id_field(field, operator, value)
