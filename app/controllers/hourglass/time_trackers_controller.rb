@@ -4,7 +4,7 @@ module Hourglass
 
     before_action :get_time_tracker, only: [:show, :update, :stop, :destroy]
     before_action :authorize_global, only: [:index, :show, :start, :stop, :update, :bulk_update, :destroy, :bulk_destroy]
-    before_action :find_project, :authorize_book, only: [:stop]
+    before_action :find_project, :authorize_book, only: [:stop, :update]
     before_action :authorize_foreign, only: [:show, :update, :stop, :destroy]
     before_action :authorize_update_time, only: [:update]
 
@@ -90,6 +90,14 @@ module Hourglass
 
     def authorize_book
       super if @project.present?
+    end
+
+    def find_project
+      if action_name == 'update'
+        find_project_from_params time_tracker_params.with_indifferent_access
+      else
+        super
+      end
     end
   end
 end
