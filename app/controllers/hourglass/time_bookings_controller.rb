@@ -10,7 +10,7 @@ module Hourglass
     before_action :require_login, only: [:bulk_update, :bulk_create, :bulk_destroy]
 
     def index
-      time_bookings = allowed_to?('index_foreign') ? Hourglass::TimeBooking.all : User.current.hourglass_time_bookings
+      time_bookings = allowed_to?('index_foreign') ? Hourglass::TimeBooking.visible : User.current.hourglass_time_bookings
       respond_with_success time_bookings
     end
 
