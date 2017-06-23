@@ -28,7 +28,7 @@ module Hourglass
     end
 
     def entry_list(entries)
-      entries.each {|entry| yield entry}
+      entries.each { |entry| yield entry }
     end
 
     def render_query_totals(query)
@@ -72,7 +72,7 @@ module Hourglass
 
     def totals_sum(query)
       if query.grouped?
-        query.totals_by_group.each_with_object(Hash.new(0)) do |(_, totals), sum|
+        query.totals_by_group.each_with_object(query.totalable_columns.map { |column| [column, 0.00] }.to_h) do |(_, totals), sum|
           transform_totals(totals).each do |column, total|
             sum[column] += total
           end
