@@ -22,6 +22,7 @@ describe 'Time bookings API', type: :request do
         before do
           @time_booking = create :time_booking, project: user.projects.first, user: user
           @time_booking2 = create :time_booking
+          create :member, project: @time_booking2.project, user: user, permissions: [:hourglass_view_booked_time]
         end
 
         include_examples 'has a valid response'
