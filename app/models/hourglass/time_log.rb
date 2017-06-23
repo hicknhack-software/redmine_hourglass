@@ -70,11 +70,11 @@ module Hourglass
       end
     end
 
-    def join_with(time_log)
-      return false if stop != time_log.start || booked? || time_log.booked?
-      new_stop = time_log.stop
+    def join_with(other)
+      return false unless joinable? other
+      new_stop = other.stop
       ActiveRecord::Base.transaction do
-        time_log.destroy
+        other.destroy
         update stop: new_stop
       end
       true
@@ -94,6 +94,18 @@ module Hourglass
 
     def as_json(args = {})
       super args.deep_merge methods: :hours
+    end
+
+    def joinable?(other)
+      stop == other.start && bookable? && other.bookable?
+    end
+
+    def self.joinable?(*ids)
+      where(id: ids).order(start: :asc).reduce do |previous, time_log|
+        return false unless previous.joinable?(time_log)
+        time_log
+      end
+      true
     end
 
     private
