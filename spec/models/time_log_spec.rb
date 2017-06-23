@@ -251,14 +251,14 @@ describe Hourglass::TimeLog do
       it 'returns true if joinable' do
         time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
         time_log2 = create(:time_log, user: user, start: now + 10.minutes, stop: now + 20.minutes)
-        expect(TimeLog.joinable? time_log, time_log2).to be_truthy
+        expect(Hourglass::TimeLog.joinable? time_log, time_log2).to be_truthy
         expect(time_log.join_with time_log2).to be_truthy
       end
 
       it 'returns false if the time logs start and stop time doesn\'t match' do
         time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
         time_log2 = create(:time_log, user: user, start: now + 15.minutes, stop: now + 20.minutes)
-        expect(TimeLog.joinable? time_log, time_log2).to be_falsey
+        expect(Hourglass::TimeLog.joinable? time_log, time_log2).to be_falsey
         expect(time_log.join_with time_log2).to be_falsey
       end
 
@@ -266,7 +266,7 @@ describe Hourglass::TimeLog do
         time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
         time_log.book project_id: create(:project).id, activity_id: create(:time_entry_activity).id
         time_log2 = create(:time_log, user: user, start: now + 10.minutes, stop: now + 20.minutes)
-        expect(TimeLog.joinable? time_log, time_log2).to be_falsey
+        expect(Hourglass::TimeLog.joinable? time_log, time_log2).to be_falsey
         expect(time_log.join_with time_log2).to be_falsey
       end
     end
