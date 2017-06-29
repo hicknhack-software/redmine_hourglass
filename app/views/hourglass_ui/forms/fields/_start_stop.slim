@@ -2,6 +2,6 @@
   .label
     = form.label field
   .input
-    - options = {size: '20', value: entry[field] && in_user_time_zone(entry[field]).iso8601, disabled: local_assigns[:disabled], class: css_classes(local_assigns[:css_classes], ('js-validate-limit' if local_assigns[:validate_limit].present?), ('js-allow-zero-duration' if local_assigns[:allow_zero_duration].present?), ('js-not-in-multi' if local_assigns[:not_in_multi].present?))}
+    - options = {size: '22', value: entry[field] && in_user_time_zone(entry[field]).iso8601, disabled: local_assigns[:disabled], class: css_classes(local_assigns[:css_classes], ('js-validate-limit' if local_assigns[:validate_limit].present?), ('js-allow-zero-duration' if local_assigns[:allow_zero_duration].present?), ('js-not-in-multi' if local_assigns[:not_in_multi].present?))}
     - options[:id] = local_assigns[:id] if local_assigns[:id].present?
     = form.text_field field, options
