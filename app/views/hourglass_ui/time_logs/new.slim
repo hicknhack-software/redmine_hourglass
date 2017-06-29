@@ -6,7 +6,7 @@
     = form_field :duration, f, time_log
     = form_field :comments, f, time_log
     - if User.current.allowed_to?(:hourglass_edit_tracked_time, nil, global: true)
-      = form_field :user_id, f, time_log
+      = form_field :user_id, f, time_log, required: true
     - else
       = f.hidden_field :user_id, value: User.current.id
     .form-field

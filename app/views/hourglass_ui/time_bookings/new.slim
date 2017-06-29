@@ -14,7 +14,7 @@
     = form_field :activity, f, time_booking, required: true
     = form_field :issue, f, time_booking
     = form_field :comments, f, time_booking
-    = form_field :user_id, f, time_booking
+    = form_field :user_id, f, time_booking, required: true
     .form-field
       .input
         = f.submit t(:button_create)

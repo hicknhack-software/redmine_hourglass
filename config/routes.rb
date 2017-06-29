@@ -24,6 +24,7 @@ scope :hourglass, as: :hourglass do
   scope :completion, as: :completion, controller: :hourglass_completion do
     get 'issues'
     get 'activities'
+    get 'users'
   end
 
   resources :queries, controller: :hourglass_queries, except: [:show, :index]

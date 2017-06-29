@@ -22,12 +22,12 @@ class HourglassCompletionController < Hourglass::ApiBaseController
 
   def activities
     activities = activity_collection User.current.projects.find_by id: params[:project_id]
-    activities_list = activities.map do |activity|
-      {
-          id: activity.id,
-          name: activity.name
-      }
-    end
-    respond_with_success activities_list
+    respond_with_success activities.map { |activity| {id: activity.id, name: activity.name} }
+  end
+
+  def users
+    project = User.current.projects.find_by id: params[:project_id]
+    users = project.nil? || User.current.allowed_to?(:hourglass_edit_booked_time, project) ? user_collection(project) : [User.current]
+    respond_with_success users.map { |user| {id: user.id, name: user.name} }
   end
 end

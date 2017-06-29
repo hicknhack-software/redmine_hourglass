@@ -39,7 +39,7 @@ module Hourglass
     end
 
     def projects_for_project_select(selected = nil)
-      projects = User.current.projects.allowed_to_one_of *Hourglass::AccessControl.permissions_from_action(controller: 'hourglass/time_logs', action: 'book')
+      projects = User.current.projects.allowed_to_one_of *(Hourglass::AccessControl.permissions_from_action(controller: 'hourglass/time_logs', action: 'book') + Hourglass::AccessControl.permissions_from_action(controller: 'hourglass/time_bookings', action: 'update')).flatten
       project_tree_options_for_select projects, selected: selected do |project|
         {data: {
             round_default: Hourglass::Settings[:round_default, project: project],
@@ -50,6 +50,10 @@ module Hourglass
 
     def activity_collection(project = nil)
       project.present? ? project.activities : TimeEntryActivity.shared.active
+    end
+
+    def user_collection(project = nil)
+      project.present? ? project.users : User.active
     end
 
     def localized_hours_in_units(hours)

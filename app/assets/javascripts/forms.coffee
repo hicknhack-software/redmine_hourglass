@@ -36,6 +36,20 @@ updateActivityField = ($activityField, $projectField) ->
           $activityField.val id if selected_activity is name
       hourglass.FormValidator.validateField $activityField
 
+updateUserField = ($userField, $projectField) ->
+  selected_user = $userField.find("option:selected").text()
+  $.ajax
+    url: hourglassRoutes.hourglass_completion_users()
+    data:
+      project_id: $projectField.val()
+    success: (users) ->
+      $userField.find('option[value!=""]').remove()
+      for {id, name} in users
+        do ->
+          $userField.append $('<option/>', value: id).text(name)
+          $userField.val id if selected_user is name
+      hourglass.FormValidator.validateField $userField
+
 updateDurationField = ($startField, $stopField) ->
   start = moment($startField.val(), moment.ISO_8601)
   stop = moment($stopField.val(), moment.ISO_8601)
@@ -75,6 +89,7 @@ projectFieldChanged = (event) ->
   $form = $projectField.closest('form')
   $issueTextField = $form.find('.js-issue-autocompletion')
   $activityField = $form.find('[name*=activity_id]')
+  $userField = $form.find('[name*=user_id]')
 
   round = $projectField.find(':selected').data('round-default')
   $form.find('[type=checkbox][name*=round]').prop('checked', round) unless round is null
@@ -86,6 +101,7 @@ projectFieldChanged = (event) ->
   $issueTextField.val('').trigger('change') unless $issueTextField.val() is '' or event.type is 'changefromissue'
   hourglass.FormValidator.validateField $projectField if event.type is 'changefromissue'
   updateActivityField $activityField, $projectField
+  updateUserField $userField, $projectField if $userField.length > 0
 
 issueFieldChanged = ->
   $issueTextField = $(@)
