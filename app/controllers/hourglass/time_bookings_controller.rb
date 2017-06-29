@@ -54,7 +54,9 @@ module Hourglass
     end
 
     def update
-      if @time_booking.update time_entry_attributes: time_booking_params, time_log_attributes: time_booking_params.slice(:user_id)
+      attributes = {time_entry_attributes: time_booking_params}
+      attributes[:time_log_attributes] = time_booking_params.slice(:user_id) if time_booking_params[:user_id]
+      if @time_booking.update attributes
         respond_with_success
       else
         respond_with_error :bad_request, @time_booking.errors.full_messages, array_mode: :sentence
@@ -68,7 +70,9 @@ module Hourglass
         next error_msg if error_msg.is_a? String
         next t('hourglass.api.errors.forbidden') unless allowed_to?
         next foreign_forbidden_message unless foreign_allowed_to? time_booking
-        time_booking.update time_entry_attributes: params.permit(:comments, :project_id, :issue_id, :activity_id), time_log_attributes: params.permit(:user_id)
+        attributes = {time_entry_attributes: params.permit(:comments, :project_id, :issue_id, :activity_id)}
+        attributes[:time_log_attributes] = params.permit(:user_id) if params[:user_id]
+        time_booking.update attributes
         time_booking
       end
     end
