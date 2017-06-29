@@ -12,6 +12,11 @@ module Hourglass
       Redmine::MenuManager.items(:hourglass_menu).children.present?
     end
 
+    def query_links(title, queries)
+      params.delete :set_filter
+      super
+    end
+
     def sidebar_queries
       @sidebar_queries ||= query_class.visible.where(project: [nil, @project]).order(name: :asc)
     end
