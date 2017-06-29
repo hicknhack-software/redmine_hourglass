@@ -6,7 +6,7 @@ module Hourglass
     before_action :authorize_global, only: [:index, :show, :create, :bulk_create, :update, :bulk_update, :split, :join, :destroy, :bulk_destroy]
     before_action :find_project, :authorize_book, only: [:book]
     before_action :authorize_foreign, only: [:show, :update, :split, :book, :destroy]
-    before_action :authorize_update_time, only: [:create, :update]
+    before_action :authorize_update_all, only: [:create, :update]
     before_action :authorize_update_booking, only: [:split]
     before_action :require_login, only: :bulk_book
 
@@ -47,7 +47,7 @@ module Hourglass
 
     def bulk_create
       bulk do |_, params|
-        next update_time_forbidden_message unless update_time_allowed? params
+        next update_all_forbidden_message unless update_all_allowed? params
         time_log = TimeLog.new params.permit(:start, :stop, :comments, :user_id)
         next foreign_forbidden_message unless foreign_allowed_to? time_log
         time_log.save
@@ -65,10 +65,10 @@ module Hourglass
 
     def bulk_update
       bulk do |id, params|
-        next update_time_forbidden_message unless update_time_allowed? params
+        next update_all_forbidden_message unless update_all_allowed? params
         time_log = Hourglass::TimeLog.find_by(id: id) or next
         next foreign_forbidden_message unless foreign_allowed_to? time_log
-        time_log.update parse_boolean :round, params.permit(:start, :stop, :comments, :round)
+        time_log.update parse_boolean :round, params.permit(:start, :stop, :comments, :round, :user_id)
         time_log
       end
     end
@@ -137,7 +137,7 @@ module Hourglass
 
     private
     def time_log_params
-      parse_boolean :round, params.require(:time_log).permit(:start, :stop, :comments, :round)
+      parse_boolean :round, params.require(:time_log).permit(:start, :stop, :comments, :round, :user_id)
     end
 
     def create_time_log_params
@@ -168,8 +168,8 @@ module Hourglass
     end
 
     def authorize_update_booking
-      if @time_log.booked? && !allowed_to?('update_time', 'hourglass/time_bookings')
-        render_403 message: t('hourglass.api.time_bookings.errors.update_time_forbidden')
+      if @time_log.booked? && !allowed_to?('update_all', 'hourglass/time_bookings')
+        render_403 message: t('hourglass.api.time_bookings.errors.update_all_forbidden')
       end
     end
 

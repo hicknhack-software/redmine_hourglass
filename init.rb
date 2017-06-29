@@ -45,15 +45,15 @@ Redmine::Plugin.register Hourglass::PLUGIN_NAME do
 
     permission :hourglass_edit_tracked_time,
                {
-                   :'hourglass/time_trackers' => with_foreign(*with_bulk(:update, :destroy), :update_time),
-                   :'hourglass/time_logs' => with_foreign(*with_bulk(:create, :update, :destroy), :update_time, :split, :join),
+                   :'hourglass/time_trackers' => with_foreign(*with_bulk(:update, :destroy), :update_all),
+                   :'hourglass/time_logs' => with_foreign(*with_bulk(:create, :update, :destroy), :update_all, :split, :join),
                    :'hourglass_ui' => [*with_foreign(*with_bulk(:edit_time_logs, :edit_time_trackers)), :new_time_logs]
                }, require: :loggedin
 
     permission :hourglass_edit_own_tracked_time,
                {
-                   :'hourglass/time_trackers' => [*with_bulk(:update, :destroy), :update_time],
-                   :'hourglass/time_logs' => [*with_bulk(:create, :update, :destroy), :update_time, :split, :join],
+                   :'hourglass/time_trackers' => [*with_bulk(:update, :destroy), :update_all],
+                   :'hourglass/time_logs' => [*with_bulk(:create, :update, :destroy), :update_all, :split, :join],
                    :'hourglass_ui' => [*with_bulk(:edit_time_logs, :edit_time_trackers), :new_time_logs]
                }, require: :loggedin
 
@@ -85,13 +85,13 @@ Redmine::Plugin.register Hourglass::PLUGIN_NAME do
 
     permission :hourglass_edit_booked_time,
                {
-                   :'hourglass/time_bookings' => with_foreign(*with_bulk(:create, :update, :destroy), :update_time),
+                   :'hourglass/time_bookings' => with_foreign(*with_bulk(:create, :update, :destroy), :update_all),
                    :'hourglass_ui' => [*with_foreign(*with_bulk(:edit_time_bookings)), :new_time_bookings]
                }, require: :loggedin
 
     permission :hourglass_edit_own_booked_time,
                {
-                   :'hourglass/time_bookings' => [*with_bulk(:create, :update, :destroy), :update_time],
+                   :'hourglass/time_bookings' => [*with_bulk(:create, :update, :destroy), :update_all],
                    :'hourglass_ui' => [*with_bulk(:edit_time_bookings), :new_time_bookings]
                }, require: :loggedin
   end

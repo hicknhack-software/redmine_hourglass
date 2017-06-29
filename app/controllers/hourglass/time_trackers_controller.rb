@@ -6,7 +6,7 @@ module Hourglass
     before_action :authorize_global, only: [:index, :show, :start, :stop, :update, :bulk_update, :destroy, :bulk_destroy]
     before_action :find_project, :authorize_book, only: [:stop, :update]
     before_action :authorize_foreign, only: [:show, :update, :stop, :destroy]
-    before_action :authorize_update_time, only: [:update]
+    before_action :authorize_update_all, only: [:update]
 
     def index
       time_trackers = allowed_to?('index_foreign') ? Hourglass::TimeTracker.all : [User.current.hourglass_time_tracker]
@@ -38,7 +38,7 @@ module Hourglass
       bulk do |id, params|
         time_tracker = Hourglass::TimeTracker.find_by(id: id) or next
         next foreign_forbidden_message unless foreign_allowed_to? time_tracker
-        next update_time_forbidden_message unless update_time_allowed? params
+        next update_all_forbidden_message unless update_all_allowed? params
         time_tracker.update params.permit(:start, :project_id, :activity_id, :issue_id, :comments)
         time_tracker
       end

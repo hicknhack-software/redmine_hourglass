@@ -6,7 +6,7 @@ module Hourglass
     before_action :authorize_global, only: [:index]
     before_action :find_project, :authorize, only: [:show, :create, :update, :destroy]
     before_action :authorize_foreign, only: [:show, :update, :destroy]
-    before_action :authorize_update_time, only: [:create]
+    before_action :authorize_update_all, only: [:create]
     before_action :require_login, only: [:bulk_update, :bulk_create, :bulk_destroy]
 
     def index
@@ -39,7 +39,7 @@ module Hourglass
         error_msg = find_project params, mode: :inline
         next error_msg if error_msg.is_a? String
         next t('hourglass.api.errors.forbidden') unless allowed_to?
-        next update_time_forbidden_message unless update_time_allowed? params
+        next update_all_forbidden_message unless update_all_allowed? params
         result = nil
         ActiveRecord::Base.transaction do
           result = time_log = TimeLog.create params.permit(:start, :stop, :comments, :user_id)
@@ -54,7 +54,7 @@ module Hourglass
     end
 
     def update
-      if @time_booking.update time_entry_attributes: time_booking_params
+      if @time_booking.update time_entry_attributes: time_booking_params, time_log_attributes: time_booking_params.slice(:user_id)
         respond_with_success
       else
         respond_with_error :bad_request, @time_booking.errors.full_messages, array_mode: :sentence
@@ -68,7 +68,7 @@ module Hourglass
         next error_msg if error_msg.is_a? String
         next t('hourglass.api.errors.forbidden') unless allowed_to?
         next foreign_forbidden_message unless foreign_allowed_to? time_booking
-        time_booking.update time_entry_attributes: params.permit(:comments, :project_id, :issue_id, :activity_id)
+        time_booking.update time_entry_attributes: params.permit(:comments, :project_id, :issue_id, :activity_id), time_log_attributes: params.permit(:user_id)
         time_booking
       end
     end
@@ -94,7 +94,7 @@ module Hourglass
     end
 
     def time_booking_params
-      params.require(:time_booking).permit(:comments, :project_id, :issue_id, :activity_id)
+      params.require(:time_booking).permit(:comments, :project_id, :issue_id, :activity_id, :user_id)
     end
 
     def get_time_booking

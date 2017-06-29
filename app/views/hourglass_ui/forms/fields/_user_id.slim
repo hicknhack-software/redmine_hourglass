@@ -2,4 +2,5 @@
   .label
     = form.label :user_id
   .input
-    = form.select :user_id, options_from_collection_for_select(user_collection(entry && entry.project), :id, :name, User.current.id), {include_blank: !local_assigns[:required]}, disabled: local_assigns[:disabled], required: local_assigns[:required]
+    - project = entry && entry.respond_to?(:project) && entry.project || nil
+    = form.select :user_id, options_from_collection_for_select(user_collection(project), :id, :name, entry.user_id || User.current.id), {include_blank: !local_assigns[:required]}, disabled: local_assigns[:disabled], required: local_assigns[:required]

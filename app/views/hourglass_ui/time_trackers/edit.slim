@@ -1,8 +1,8 @@
-- can = {update: authorize_globally_for('hourglass/time_trackers', 'update'), update_time: authorize_globally_for('hourglass/time_trackers', 'update_time'), book: authorize_globally_for('hourglass/time_logs', 'book')}
+- can = {update: authorize_globally_for('hourglass/time_trackers', 'update'), update_all: authorize_globally_for('hourglass/time_trackers', 'update_all'), book: authorize_globally_for('hourglass/time_logs', 'book')}
 - time_trackers.each do |time_tracker|
   = form_for time_tracker, as: 'time_tracker', remote: true, html: {id: "edit_time_tracker_#{time_tracker.id}", class: 'edit-time-tracker-form js-hourglass-remote js-validate-form', data: {form_type: 'edit-time-tracker', id_for_bulk_edit: time_tracker.id}} do |f|
     .form-row
-      = form_field :start, f, time_tracker, disabled: !can[:update_time]
+      = form_field :start, f, time_tracker, disabled: !can[:update_all]
       = form_field :project, f, time_tracker, disabled: !can[:book]
       = form_field :activity, f, time_tracker, disabled: !can[:book]
       = form_field :issue, f, time_tracker, disabled: !can[:book]

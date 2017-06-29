@@ -88,17 +88,21 @@ module Hourglass
       t("hourglass.api.#{controller_name}.errors.change_others_forbidden")
     end
 
-    def authorize_update_time
-      render_403 message: update_time_forbidden_message unless update_time_allowed? params[controller_name.singularize]
+    def authorize_update_all
+      render_403 message: update_all_forbidden_message unless update_all_allowed? params[controller_name.singularize]
     end
 
-    def update_time_allowed?(controller_params = params[controller_name.singularize])
-      has_start_or_stop_parameter = controller_params && (controller_params.include?(:start) || controller_params.include?(:stop))
-      !has_start_or_stop_parameter || allowed_to?('update_time')
+    def update_all_params
+      %i(start stop user_id)
     end
 
-    def update_time_forbidden_message
-      t("hourglass.api.#{controller_name}.errors.update_time_forbidden")
+    def update_all_allowed?(controller_params = params[controller_name.singularize])
+      has_update_all_parameter = controller_params && update_all_params.any? { |param| controller_params.include? param }
+      !has_update_all_parameter || allowed_to?('update_all')
+    end
+
+    def update_all_forbidden_message
+      t("hourglass.api.#{controller_name}.errors.update_all_forbidden")
     end
 
     def authorize_book

@@ -12,6 +12,7 @@ module Hourglass
     has_one :fixed_version, through: :issue
 
     accepts_nested_attributes_for :time_entry
+    accepts_nested_attributes_for :time_log
 
     after_initialize :fix_nil_hours
     after_validation :filter_time_entry_invalid_error
@@ -32,6 +33,9 @@ module Hourglass
     def update(args = {})
       if args[:time_entry_attributes].present? && time_entry.present?
         args[:time_entry_attributes].merge! id: time_entry_id
+      end
+      if args[:time_log_attributes].present? && time_log.present?
+        args[:time_log_attributes].merge! id: time_log_id
       end
       super args
     end
