@@ -28,7 +28,7 @@ module Hourglass
             date_range.each do |date|
               hours = hours_per_date[group_key_is_string ? date.to_s : date]
               data[column] += [hours || 0.0]
-              tooltips[column] += ["#{date.to_s}, #{localized_hours_in_units hours}"]
+              tooltips[column] += ["#{format_date date.to_time}, #{localized_hours_in_units hours}"]
             end
           end
           # to get readable labels, we have to blank out some of them if there are to many
