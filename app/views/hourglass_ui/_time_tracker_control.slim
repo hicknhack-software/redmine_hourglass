@@ -13,7 +13,7 @@
     = form_for @time_tracker, url: stop_hourglass_time_tracker_path(@time_tracker), method: :delete, as: 'time_tracker', remote: true, html: {class: 'edit-time-tracker-form js-validate-form js-hourglass-remote'} do |f|
       .form-row
         = form_field :issue, f, @time_tracker, disabled: !policy(Hourglass::TimeLog).book?
-        = form_field :comments, f, @time_tracker, disabled: !policy(@time_tracker).change?
+        = form_field :comments, f, @time_tracker
 
         - rounding_disabled = !@time_tracker.project || Hourglass::Settings[:round_sums_only, project: @time_tracker.project]
         .form-field class=('hidden' if rounding_disabled)

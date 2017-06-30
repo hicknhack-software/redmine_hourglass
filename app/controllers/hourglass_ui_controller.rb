@@ -8,8 +8,6 @@ class HourglassUiController < ApplicationController
   helper Hourglass::ChartHelper
   helper Hourglass::ReportHelper
 
-  before_action :require_login, only: [:context_menu, :api_docs]
-
   include AuthorizationConcern
   include SortHelper
   include QueryConcern
@@ -19,6 +17,10 @@ class HourglassUiController < ApplicationController
   include HourglassUi::TimeLogs
   include HourglassUi::TimeBookings
   include HourglassUi::TimeTrackers
+
+  rescue_from(Pundit::NotAuthorizedError) { render_403 }
+
+  before_action :require_login, only: [:context_menu, :api_docs]
 
   def context_menu
     list_type = get_list_type

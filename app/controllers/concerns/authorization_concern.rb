@@ -7,6 +7,11 @@ module AuthorizationConcern
     def pundit_user
       User.current
     end
+
+    def authorize(record, query = nil)
+      super
+      record
+    end
   end
 
   private
