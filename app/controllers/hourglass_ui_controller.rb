@@ -8,7 +8,6 @@ class HourglassUiController < ApplicationController
   helper Hourglass::ChartHelper
   helper Hourglass::ReportHelper
 
-  before_action :authorize_global, except: [:context_menu, :api_docs]
   before_action :require_login, only: [:context_menu, :api_docs]
 
   include AuthorizationConcern

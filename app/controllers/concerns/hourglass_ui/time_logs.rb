@@ -4,6 +4,10 @@ module HourglassUi
 
     included do
       menu_item :hourglass_time_logs, only: :time_logs
+      before_action(only: :time_logs) { authorize Hourglass::TimeBooking, :view? }
+      before_action(only: :new_time_logs) { authorize Hourglass::TimeBooking, :create? }
+      before_action(only: [:edit_time_logs, :bulk_edit_time_logs]) { authorize Hourglass::TimeBooking, :change? }
+      before_action(only: [:book_time_logs, :bulk_book_time_logs]) { authorize Hourglass::TimeBooking, :book? }
     end
 
     def time_logs

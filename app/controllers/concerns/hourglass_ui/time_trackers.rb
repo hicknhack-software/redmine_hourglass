@@ -4,6 +4,9 @@ module HourglassUi
 
     included do
       menu_item :hourglass_time_trackers, only: :time_trackers
+      before_action(only: :time_trackers) { authorize Hourglass::TimeTracker, :view? }
+      before_action(only: :new_time_trackers) { authorize Hourglass::TimeTracker, :create? }
+      before_action(only: [:edit_time_trackers, :bulk_edit_time_trackers]) { authorize Hourglass::TimeTracker, :change? }
     end
 
     def time_trackers

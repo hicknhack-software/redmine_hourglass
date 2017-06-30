@@ -1,6 +1,14 @@
 module AuthorizationConcern
   extend ActiveSupport::Concern
 
+  included do
+    include Pundit
+
+    def pundit_user
+      User.current
+    end
+  end
+
   private
   def find_project(resource = @request_resource)
     @project = resource.project

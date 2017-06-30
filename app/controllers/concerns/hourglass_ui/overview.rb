@@ -4,6 +4,7 @@ module HourglassUi
 
     included do
       menu_item :hourglass_overview, only: :index
+      before_action(only: :index) { authorize :'hourglass/ui', :view? }
     end
 
     def index
