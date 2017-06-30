@@ -1,21 +1,20 @@
-- can = {update: authorize_globally_for('hourglass/time_bookings', 'update'), update_all: authorize_globally_for('hourglass/time_bookings', 'update_all')}
 - time_bookings.each do |time_booking|
   = form_for time_booking, as: 'time_booking', remote: true, html: {id: "edit_time_booking_#{time_booking.id}", class: 'edit-time-booking-form js-hourglass-remote js-validate-form js-check-splitting', data: {time_log_id: time_booking.time_log_id, form_type: 'edit-time-booking', id_for_bulk_edit: time_booking.id}} do |f|
     .form-row
-      = form_field :start, f, time_booking, disabled: !can[:update_all], validate_limit: true, allow_zero_duration: true, not_in_multi: true
-      = form_field :stop, f, time_booking, disabled: !can[:update_all], validate_limit: true, allow_zero_duration: true, not_in_multi: true
-      = form_field :duration, f, time_booking, disabled: !can[:update_all], not_in_multi: true
+      = form_field :start, f, time_booking, disabled: !policy(time_booking).change_all?, validate_limit: true, allow_zero_duration: true, not_in_multi: true
+      = form_field :stop, f, time_booking, disabled: !policy(time_booking).change_all?, validate_limit: true, allow_zero_duration: true, not_in_multi: true
+      = form_field :duration, f, time_booking, disabled: !policy(time_booking).change_all?, not_in_multi: true
       - rounding_disabled = Hourglass::Settings[:round_sums_only, project: time_booking.project]
       .form-field class=('hidden' if rounding_disabled)
         .label
           = label :time_booking, :round, t(:field_round), title: t('hourglass.ui.time_bookings.round_hint')
         .input
           = check_box :time_booking, :round, checked: Hourglass::Settings[:round_default, project: time_booking.project], disabled: rounding_disabled
-      = form_field :project, f, time_booking, disabled: !can[:update], required: true
-      = form_field :activity, f, time_booking, disabled: !can[:update], required: true
-      = form_field :issue, f, time_booking, disabled: !can[:update]
-      = form_field :comments, f, time_booking, disabled: !can[:update]
-      = form_field :user_id, f, time_booking, required: true, disabled: !can[:update_all]
+      = form_field :project, f, time_booking, disabled: !policy(time_booking).change?, required: true
+      = form_field :activity, f, time_booking, disabled: !policy(time_booking).change?, required: true
+      = form_field :issue, f, time_booking, disabled: !policy(time_booking).change?
+      = form_field :comments, f, time_booking, disabled: !policy(time_booking).change?
+      = form_field :user_id, f, time_booking, required: true, disabled: !policy(time_booking).change_all?
       .form-field
         .input
           = f.submit t(:button_update)

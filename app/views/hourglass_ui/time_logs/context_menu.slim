@@ -1,12 +1,13 @@
 - ids = @records.map(&:id)
 ul
-  - if authorize_globally_for('hourglass/time_logs', 'book') && @records.all? { |time_log| time_log.bookable? }
+  - if @records.all? { |time_log| policy(time_log).book? }
     li = link_to t('hourglass.ui.lists.button_book'), hourglass_ui_bulk_book_time_logs_path(ids: ids), class: 'icon-time js-show-inline-form-multi', title: t('hourglass.ui.lists.button_book'), remote: true, data: {type: 'html'}
-  - if authorize_globally_for 'hourglass/time_logs', 'update'
+  - if @records.all? { |time_log| policy(time_log).change? }
     li = link_to t(:button_edit), hourglass_ui_bulk_edit_time_logs_path(ids: ids), class: 'icon-edit js-show-inline-form-multi', title: t(:button_edit), remote: true, data: {type: 'html'}
-  - if authorize_globally_for 'hourglass/time_logs', 'destroy'
+  - if @records.all? { |time_log| policy(time_log).destroy? }
     li = link_to t(:button_delete), @records.length == 1 ? hourglass_time_log_path(@records.first) : bulk_destroy_hourglass_time_logs_path(time_logs: ids), class: 'icon-del js-hourglass-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)}
-  - if ids.length > 1 && authorize_globally_for('hourglass/time_logs', 'join') && Hourglass::TimeLog.joinable?(*ids)
+  - if ids.length > 1 && @records.all? { |time_log| policy(time_log).join? } && Hourglass::TimeLog.joinable?(*ids)
     li = link_to t('hourglass.ui.time_logs.button_join'), join_hourglass_time_logs_path(ids: ids), class: 'icon-hourglass-join js-hourglass-remote', title: t('hourglass.ui.time_logs.button_join'), remote: true, data: {method: 'post'}
-  - if @records.all? { |time_log| time_log.booked? && allowed_to?('hourglass/time_bookings', 'destroy', time_log.time_booking.project) }
-    li = link_to t('hourglass.ui.lists.button_delete_booking'), @records.length == 1 ? hourglass_time_booking_path(@records.first.time_booking) : bulk_destroy_hourglass_time_bookings_path(time_bookings: @records.map{ |tl| tl.time_booking.id }), class: 'icon-del js-hourglass-remote', title: t('hourglass.ui.lists.button_delete_booking'), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)}
+  - time_bookings = @records.map(&:time_booking).compact
+  - if time_bookings.present? && time_bookings.all? { |time_booking| policy(time_booking).destroy? }
+    li = link_to t('hourglass.ui.lists.button_delete_booking'), time_bookings.length == 1 ? hourglass_time_booking_path(time_bookings.first) : bulk_destroy_hourglass_time_bookings_path(time_bookings: time_bookings.map(&:id)), class: 'icon-del js-hourglass-remote', title: t('hourglass.ui.lists.button_delete_booking'), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)}

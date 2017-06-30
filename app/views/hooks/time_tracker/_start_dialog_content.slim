@@ -4,7 +4,7 @@
   p
     = radio_button_tag 'running_time', 'log', true
     = label_tag 'running_time_log', t('hourglass.ui.issues.start_dialog.options.log')
-    - if authorize_globally_for 'hourglass/time_trackers', 'delete'
+    - if policy(time_tracker).destroy?
     p
       = radio_button_tag 'running_time', 'discard', false
       = label_tag 'running_time_discard', t('hourglass.ui.issues.start_dialog.options.discard')

@@ -5,6 +5,9 @@ gem 'uglifier'
 gem 'coffee-script'
 gem 'sass'
 
+# access control
+gem 'pundit'
+
 # this is useful for unix based systems which don't have a js runtime installed
 # if you are on windows and this makes problems, simply remove the line
 gem 'therubyracer', :platform => :ruby

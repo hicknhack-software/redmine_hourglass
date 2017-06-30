@@ -1,6 +1,6 @@
 - ids = @records.map(&:id)
 ul
-  - if authorize_globally_for 'hourglass/time_trackers', 'update'
+  - if  @records.all? { |time_tracker| policy(time_tracker).change? }
     li = link_to t(:button_edit), hourglass_ui_bulk_edit_time_trackers_path(ids: ids), class: 'icon-edit js-show-inline-form-multi', title: t(:button_edit), remote: true, data: {type: 'html'}
-  - if authorize_globally_for 'hourglass/time_trackers', 'destroy'
+  - if  @records.all? { |time_tracker| policy(time_tracker).destroy? }
     li = link_to t(:button_delete), @records.length == 1 ? hourglass_time_tracker_path(@records.first) : bulk_destroy_hourglass_time_trackers_path(time_trackers: ids), class: 'icon-del js-hourglass-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)}

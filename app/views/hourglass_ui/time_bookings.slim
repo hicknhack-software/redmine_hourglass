@@ -3,10 +3,9 @@
 
 - content_for :sidebar do
   h3 = t('hourglass.ui.time_bookings.heading_report')
-  - if authorize_globally_for 'hourglass_ui', 'report'
-    = link_to t('hourglass.ui.time_bookings.label_print'), hourglass_ui_report_path
+  = link_to t('hourglass.ui.time_bookings.label_print'), hourglass_ui_report_path
 
-- if authorize_globally_for 'hourglass_ui', 'new_time_bookings'
+- if policy(Hourglass::TimeBooking).create?
   - content_for :contextual do
     = link_to t('hourglass.ui.time_bookings.button_create'), hourglass_ui_time_bookings_new_path, class: 'icon icon-time-add js-create-record', remote: true, data: {type: 'html'}
 

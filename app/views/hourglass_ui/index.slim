@@ -2,13 +2,13 @@
 
   - html_title t('hourglass.ui.index.title')
 
-  - if authorize_globally_for 'hourglass/time_trackers', 'start'
+  - if policy(Hourglass::TimeTracker).start?
     = render partial: 'time_tracker_control'
 
-  - if authorize_globally_for 'hourglass/time_logs', 'index'
+  - if policy(Hourglass::TimeLog).view?
     h3 = t('hourglass.ui.index.headings.time_logs')
     = render partial: 'hourglass_ui/lists/list', locals: {list_arguments: @time_log_list_arguments}
 
-  - if authorize_globally_for 'hourglass/time_bookings', 'index'
+  - if policy(Hourglass::TimeBooking).view?
     h3 = t('hourglass.ui.index.headings.time_bookings')
     = render partial: 'hourglass_ui/lists/list', locals: {list_arguments: @time_booking_list_arguments}

@@ -1,6 +1,6 @@
-- if authorize_globally_for('hourglass/time_logs', 'book') && time_log.bookable?
+- if policy(time_log).book?
   = link_to '', hourglass_ui_book_time_logs_path(time_log), class: 'icon-time js-show-inline-form', title: t('hourglass.ui.lists.button_book'), remote: true, data: {type: 'html'}
-- if authorize_globally_for 'hourglass/time_logs', 'update'
+- if policy(time_log).change?
   = link_to '', hourglass_ui_edit_time_logs_path(time_log), class: 'icon-edit js-show-inline-form', title: t(:button_edit), remote: true, data: {type: 'html'}
-- if authorize_globally_for 'hourglass/time_logs', 'destroy'
+- if policy(time_log).destroy?
   = link_to '', hourglass_time_log_path(time_log), class: 'icon-del js-hourglass-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)}
