@@ -1,6 +1,10 @@
 module Hourglass
   class ApplicationPolicy
+    include RedmineAuthorization
+
     class Scope
+      include RedmineAuthorization
+
       attr_reader :user, :scope
 
       def initialize(user, scope)
@@ -9,7 +13,16 @@ module Hourglass
       end
 
       def resolve
-        scope
+        scope.where(user: user)
+      end
+
+      private
+      def project
+        nil
+      end
+
+      def record_user
+        nil
       end
     end
 
@@ -27,6 +40,9 @@ module Hourglass
     end
 
     def create?
+      if unsafe_attributes?
+        update_all_forbidden_message and return false unless authorized? :change_all
+      end
       authorized? :create
     end
 
@@ -35,7 +51,11 @@ module Hourglass
     end
 
     def change?(param = nil)
-      authorized? protected_parameters.include?(param) ? :change_all : :change
+      condition = param ? protected_parameters.include?(param) : unsafe_attributes?
+      if condition
+        update_all_forbidden_message and return false unless authorized? :change_all
+      end
+      authorized? :change
     end
 
     def destroy?
@@ -47,24 +67,7 @@ module Hourglass
     alias_method :new?, :create?
     alias_method :edit?, :change?
     alias_method :update?, :change?
-
-    private
-    def authorized?(action)
-      return foreign_authorized? action if record_user && record_user != user
-      allowed_to? action
-    end
-
-    def foreign_authorized?(action)
-      allowed_to? "#{action}_foreign"
-    end
-
-    def allowed_to?(action_args)
-      action_args = {controller: "hourglass/#{controller_name}", action: action_args}
-      project.blank? ? user.allowed_to_globally?(action_args) : user.allowed_to?(action_args, project)
-    end
-
-    def controller_name
-      self.class.name.demodulize.gsub('Policy', '').tableize
-    end
+    alias_method :bulk_update?, :change?
+    alias_method :bulk_destroy?, :destroy?
   end
 end

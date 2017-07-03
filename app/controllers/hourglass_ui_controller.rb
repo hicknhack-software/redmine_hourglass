@@ -31,10 +31,6 @@ class HourglassUiController < ApplicationController
   end
 
   private
-  def authorize_foreign
-    super { render_403 }
-  end
-
   def get_list_type
     list_type = %w(time_bookings time_logs time_trackers).select {|val| val == params[:list_type]}.first
     render_403 unless list_type

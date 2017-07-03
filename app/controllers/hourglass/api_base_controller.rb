@@ -1,11 +1,14 @@
 module Hourglass
   class ApiBaseController < ApplicationController
-    include ::AuthorizationConcern
     include BooleanParsing
-
     around_action :catch_halt
-
+    before_action :require_login
+    
+    rescue_from StandardError, with: :internal_server_error
     rescue_from ActionController::ParameterMissing, with: :missing_parameters
+    rescue_from(ActiveRecord::RecordNotFound) { render_404 no_halt: true }
+
+    include ::AuthorizationConcern
 
     private
     # use only these codes:
@@ -39,7 +42,7 @@ module Hourglass
     end
 
     def render_404(options = {})
-      respond_with_error :not_found, options[:message] || t("hourglass.api.#{controller_name}.errors.not_found", default: t('hourglass.api.errors.not_found'))
+      respond_with_error :not_found, options[:message] || t("hourglass.api.#{controller_name}.errors.not_found", default: t('hourglass.api.errors.not_found')), no_halt: options[:no_halt]
     end
 
     def catch_halt
@@ -48,14 +51,14 @@ module Hourglass
       end
     end
 
-    def bulk(params_key = controller_name)
+    def bulk(params_key = controller_name, &block)
       success = []
       errors = []
       params[params_key].each_with_index do |(id, params), index|
         id, params = "new#{index}", id if id.is_a?(Hash)
         is_new = id.start_with?('new')
         error_preface = "[#{t("hourglass.api.#{controller_name}.errors.bulk_#{'create_' if is_new}error_preface", id: is_new ? index : id)}:]"
-        entry = yield id, params
+        entry = bulk_entry id, params, &block
         if entry
           if entry.is_a? String
             errors.push "#{error_preface} #{entry}"
@@ -76,51 +79,20 @@ module Hourglass
       end
     end
 
+    def bulk_entry(id, params)
+      yield id, params
+    rescue ActiveRecord::RecordNotFound
+      nil
+    rescue Pundit::NotAuthorizedError => e
+      e.policy.message || t('hourglass.api.errors.forbidden')
+    end
+
     def missing_parameters(e)
       respond_with_error :bad_request, t('hourglass.api.errors.missing_parameters'), no_halt: true
     end
 
-    def authorize_foreign
-      super { render_403 message: foreign_forbidden_message }
-    end
-
-    def foreign_forbidden_message
-      t("hourglass.api.#{controller_name}.errors.change_others_forbidden")
-    end
-
-    def authorize_update_all
-      render_403 message: update_all_forbidden_message unless update_all_allowed? params[controller_name.singularize]
-    end
-
-    def update_all_params
-      %i(start stop user_id)
-    end
-
-    def update_all_allowed?(controller_params = params[controller_name.singularize])
-      has_update_all_parameter = controller_params && update_all_params.any? { |param| controller_params.include? param }
-      !has_update_all_parameter || allowed_to?('update_all')
-    end
-
-    def update_all_forbidden_message
-      t("hourglass.api.#{controller_name}.errors.update_all_forbidden")
-    end
-
-    def authorize_book
-      unless book_allowed?
-        if User.current.logged?
-          render_403 message: booking_forbidden_message
-        else
-          require_login
-        end
-      end
-    end
-
-    def book_allowed?
-      allowed_to? 'book', 'hourglass/time_logs'
-    end
-
-    def booking_forbidden_message
-      t("hourglass.api.#{controller_name}.errors.booking_forbidden")
+    def internal_server_error(e)
+      respond_with_error :internal_server_error, Rails.env.development? ? [e.message] + e.backtrace : t('hourglass.api.errors.internal_server_error'), no_halt: true
     end
 
     def flash_array(type, messages)
