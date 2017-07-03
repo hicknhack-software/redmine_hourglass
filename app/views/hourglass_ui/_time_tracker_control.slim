@@ -28,7 +28,7 @@
       .form-row
         = form_field :project, f, @time_tracker, disabled: !policy(Hourglass::TimeLog).book?
         = form_field :activity, f, @time_tracker, disabled: !policy(Hourglass::TimeLog).book?
-        = form_field :start, f, @time_tracker, disabled: !policy(@time_tracker).change_all?
+        = form_field :start, f, @time_tracker, disabled: !policy(@time_tracker).change?(:start)
         .form-field
           .input
             = f.submit t('hourglass.ui.index.time_tracker_control.button_stop')

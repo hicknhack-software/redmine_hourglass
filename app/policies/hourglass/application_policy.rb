@@ -30,8 +30,12 @@ module Hourglass
       authorized? :create
     end
 
-    def change?
-      authorized? :change
+    def protected_parameters
+      %i(start stop user user_id)
+    end
+
+    def change?(param = nil)
+      authorized? protected_parameters.include?(param) ? :change_all : :change
     end
 
     def destroy?
