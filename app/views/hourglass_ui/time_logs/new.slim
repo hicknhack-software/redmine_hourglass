@@ -5,10 +5,7 @@
     = form_field :stop, f, time_log, css_classes: %w(js-picker-with-date), id: "time_log_#{index}_stop"
     = form_field :duration, f, time_log
     = form_field :comments, f, time_log
-    - if policy(time_log).change_foreign?
-      = form_field :user_id, f, time_log, required: true
-    - else
-      = f.hidden_field :user_id, value: User.current.id
+    = form_field :user_id, f, time_log, required: true
     .form-field
       .input
         = f.submit t(:button_create)

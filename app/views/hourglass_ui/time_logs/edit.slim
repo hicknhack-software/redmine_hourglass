@@ -11,8 +11,7 @@
           .input
             = check_box :time_log, :round, checked: Hourglass::Settings[:round_default, project: time_log.time_booking.project]
       = form_field :comments, f, time_log, disabled: !policy(time_log).change?
-      - if policy(time_log).change_foreign?
-        = form_field :user_id, f, time_log, required: true, disabled: !policy(time_log).change?(:user_id)
+      = form_field :user_id, f, time_log, required: true, disabled: !policy(time_log).change?(:user_id)
       .form-field
         .input
           = f.submit t(:button_update)
