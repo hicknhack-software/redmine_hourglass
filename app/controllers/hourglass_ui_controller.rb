@@ -18,7 +18,6 @@ class HourglassUiController < ApplicationController
   include HourglassUi::TimeBookings
   include HourglassUi::TimeTrackers
 
-  rescue_from(Pundit::NotAuthorizedError) { render_403 }
 
   before_action :require_login, only: [:context_menu, :api_docs]
 

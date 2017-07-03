@@ -13,7 +13,7 @@ module Hourglass
       end
     end
 
-    attr_reader :user, :record, :record_user, :project
+    attr_reader :user, :record, :record_user, :project, :message
 
     def initialize(user, record)
       @user = user

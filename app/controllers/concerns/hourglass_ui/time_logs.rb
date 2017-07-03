@@ -26,7 +26,6 @@ module HourglassUi
     end
 
     def book_time_logs
-      #render_error t('hourglass.api.time_logs.errors.already_booked') if time_log.booked? # todo: dead code cause the line before already checks if booked
       record_form Hourglass::TimeLog, action: :book?, template: :book
     end
 

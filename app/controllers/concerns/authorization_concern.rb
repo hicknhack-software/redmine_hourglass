@@ -12,6 +12,10 @@ module AuthorizationConcern
       super
       record
     end
+
+    rescue_from(Pundit::NotAuthorizedError) do |e|
+      render_403 message: e.policy.message
+    end
   end
 
   private

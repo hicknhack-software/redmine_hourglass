@@ -35,7 +35,8 @@ module ListConcern
 
   def bulk_record_form(klass, action: :change?, template: :edit)
     records = params[:ids].map do |id|
-      record = klass.find_by(id: id) and policy(record).send(action) or next
+      record = klass.find_by(id: id)
+      policy(record).send(action) ? record : next
     end.compact
     render_404 if records.empty?
     render_forms get_type(klass), records, template
@@ -46,7 +47,7 @@ module ListConcern
   end
 
   def render_forms(type, records, template)
-    render "hourglass_ui/#{type}/#{template}", locals: {"#{type}" => records}, layout: false unless performed?
+    render "hourglass_ui/#{type}/#{template}", locals: {"#{type}".to_sym => records}, layout: false unless performed?
   end
 
   def get_type(klass)
