@@ -14,7 +14,7 @@ module AuthorizationConcern
     end
 
     rescue_from(Pundit::NotAuthorizedError) do |e|
-      render_403 message: e.policy.message
+      render_403 message: e.policy.message, no_halt: true
     end
   end
 
@@ -47,11 +47,6 @@ module AuthorizationConcern
       t('hourglass.api.errors.booking_project_not_found')
     end
     @project = project
-  end
-
-  def authorize_global(*args)
-    super
-    @authorize_global = true
   end
 
   def authorize_foreign

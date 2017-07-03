@@ -35,7 +35,7 @@ module Hourglass
     end
 
     def render_403(options = {})
-      respond_with_error :forbidden, options[:message] || t('hourglass.api.errors.forbidden')
+      respond_with_error :forbidden, options[:message] || t('hourglass.api.errors.forbidden'), no_halt: options[:no_halt]
     end
 
     def render_404(options = {})
