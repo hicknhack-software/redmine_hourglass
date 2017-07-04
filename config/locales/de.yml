@@ -82,36 +82,29 @@ de:
         title: Rundungsverhalten
     api:
       errors:
-        booking_issue_not_found: Übermitteltes Ticket existiert nicht
-        booking_project_not_found: Übermitteltes Projekt existiert nicht
+        change_others_forbidden: Sie sind nicht berechtigt diese Aktion für deinen anderen Nutzers durchzuführen.
         forbidden: Sie sind nicht berechtigt diese Aktion auszuführen.
+        internal_server_error: Leider gab es einen Fehler, bitte probieren sie es erneut.
         missing_parameters: Ungültige Parameter übermittelt
         not_found: Das angefragte Objekt existiert nicht.
+        update_all_forbidden: Sie sind nicht berechtigt alle Eigenschaften zu ändern, die sie geändert haben.
       time_trackers:
         errors:
-          booking_forbidden: Sie sind nicht berechtigt auf diesem Projekt zu buchen.
           bulk_error_preface: Fehler für Zeitmessung mit ID %{id}
-          change_others_forbidden: Sie sind nicht berechtigt diese Aktion für die Zeitmessung eines anderes Nutzers durchzuführen.
           not_found: Diese Zeitmessung existiert nicht.
-          update_all_forbidden: Sie sind nicht berechtigt alle Eigenschaften einer Zeitmessung zu ändern.
       time_logs:
         errors:
           already_booked: Diese Zeiterfassung wurde bereits gebucht.
-          booking_forbidden: Sie sind nicht berechtigt auf diesem Projekt zu buchen.
           bulk_error_preface: Fehler für Zeiterfassung mit ID %{id}
           bulk_create_error_preface: Fehler für neue Zeiterfassung %{id}
-          change_others_forbidden: Sie sind nicht berechtigt diese Aktion für die Zeiterfassung eines anderes Nutzers durchzuführen.
           join_failed: Die zusammen zu fügenden Zeiterfassungen wurden entweder bereits gebucht oder ihre Beginne und Enden passen nicht zusammen.
           not_found: Diese Zeiterfassung existiert nicht.
           split_failed: Der übermittelte Zeitpunkt zum Aufteilen befindet sich außerhalb der Grenzen der Zeiterfassung.
-          update_all_forbidden: Sie sind nicht berechtigt alle Eigenschaften einer Zeiterfassung zu ändern.
       time_bookings:
         errors:
           bulk_error_preface: Fehler für Zeitbuchung mit ID %{id}
           bulk_create_error_preface: Fehler für neue Zeitbuchung %{id}
-          change_others_forbidden: Sie sind nicht berechtigt diese Aktion für die Zeitbuchung eines anderes Nutzers durchzuführen.
           not_found: Diese Zeitbuchung existiert nicht.
-          update_all_forbidden: Sie sind nicht berechtigt alle Eigenschaften einer Zeitbuchung zu ändern.
     ui:
       api_docs:
         title: Hourglass API documentation

@@ -171,7 +171,7 @@ describe 'Time trackers API', type: :request do
       tags 'Time trackers'
       parameter name: :id, in: :path, type: :string
 
-      let(:user) { create :user, :as_member, permissions: [:hourglass_track_time] }
+      let(:user) { create :user, :as_member, permissions: [:hourglass_track_time, :hourglass_book_time] }
       let(:time_tracker) do
         User.current = user
         Hourglass::TimeTracker.start comments: 'test'

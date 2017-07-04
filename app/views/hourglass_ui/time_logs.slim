@@ -1,4 +1,4 @@
-- if authorize_globally_for 'hourglass_ui', 'new_time_logs'
+- if policy(Hourglass::TimeLog).create?
   - content_for :contextual do
     = link_to t('hourglass.ui.time_logs.button_create'), hourglass_ui_time_logs_new_path, class: 'icon icon-time-add js-create-record', remote: true, data: {type: 'html'}
 

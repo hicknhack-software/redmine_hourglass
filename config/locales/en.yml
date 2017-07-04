@@ -77,36 +77,29 @@ en:
         title: Rounding behavior
     api:
       errors:
-        booking_issue_not_found: Submitted issue doesn't exist
-        booking_project_not_found: Submitted project doesn't exist
+        change_others_forbidden: You are not authorized to execute this action for another user
         forbidden: You are not authorized to execute this action
+        internal_server_error: We encountered an error, please try again.
         missing_parameters: Insufficient parameters submitted
         not_found: The requested object doesn't exist
+        update_all_forbidden: You are not authorized to change all of the attributes you changed
       time_trackers:
         errors:
-          booking_forbidden: You are not authorized to book on this project
           bulk_error_preface: Errors for time tracker with id %{id}
-          change_others_forbidden: You are not authorized to execute this action for another users time tracker
           not_found: This time tracker doesn't exist
-          update_all_forbidden: You are not authorized to change all of these attributes of a timer
       time_logs:
         errors:
           already_booked: This time log was already booked
-          booking_forbidden: You are not authorized to book on this project
           bulk_error_preface: Errors for time log with id %{id}
           bulk_create_error_preface: Errors for the new time log %{id}
-          change_others_forbidden: You are not authorized to execute this action for another users time log
           join_failed: There are either bookings defined on the submitted time logs or the time logs start and stop doesn't match
           not_found: This time log doesn't exist
           split_failed: Submitted split_at is not within the bounds of the time log
-          update_all_forbidden: You are not authorized to change all of these attributes of a time log
       time_bookings:
         errors:
           bulk_error_preface: Errors for time booking with id %{id}
           bulk_create_error_preface: Errors for the new time booking %{id}
-          change_others_forbidden: You are not authorized to execute this action for another users time booking
           not_found: This time booking doesn't exist
-          update_all_forbidden: You are not authorized to change all of these attributes of a time booking
     ui:
       api_docs:
         title: Hourglass API documentation

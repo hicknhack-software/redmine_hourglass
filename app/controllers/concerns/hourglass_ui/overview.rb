@@ -7,6 +7,7 @@ module HourglassUi
     end
 
     def index
+      authorize :'hourglass/ui', :view?
       @time_tracker = User.current.hourglass_time_tracker || Hourglass::TimeTracker.new
 
       @time_log_list_arguments = index_page_list_arguments :time_logs do |time_log_query|

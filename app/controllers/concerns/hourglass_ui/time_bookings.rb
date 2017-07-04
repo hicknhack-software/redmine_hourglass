@@ -7,13 +7,12 @@ module HourglassUi
     end
 
     def time_bookings
-      retrieve_query
-      init_sort
-      @list_arguments = list_arguments
+      list_records Hourglass::TimeBooking
       build_chart_query
     end
 
     def new_time_bookings
+      authorize Hourglass::TimeBooking, :create?
       now = Time.now.change(sec: 0)
       duration = Hourglass::DateTimeCalculations.in_hours Hourglass::DateTimeCalculations.round_minimum
       time_booking = Hourglass::TimeBooking.new start: now, stop: now + duration.hours,
@@ -22,36 +21,19 @@ module HourglassUi
     end
 
     def edit_time_bookings
-      time_booking = get_time_booking
-      authorize_foreign
-      render 'hourglass_ui/time_bookings/edit', locals: {time_bookings: [time_booking]}, layout: false unless performed?
+      record_form Hourglass::TimeBooking
     end
 
     def bulk_edit_time_bookings
-      time_bookings = params[:ids].map do |id|
-        @request_resource = Hourglass::TimeBooking.find_by id: id
-        next unless @request_resource && foreign_allowed_to?
-        @request_resource
-      end.compact
-      render_404 if time_bookings.empty?
-      render 'hourglass_ui/time_bookings/edit', locals: {time_bookings: time_bookings}, layout: false unless performed?
+      bulk_record_form Hourglass::TimeBooking
     end
 
     def report
       @query_identifier = :time_bookings
-      retrieve_query
-      init_sort
-      @list_arguments = list_arguments
+      list_records Hourglass::TimeBooking
       @list_arguments[:entries] = @list_arguments[:entries].offset(nil).limit(nil)
       build_chart_query
       render layout: false
-    end
-
-    private
-    def get_time_booking
-      time_booking = Hourglass::TimeBooking.find_by id: params[:id]
-      render_404 unless time_booking.present?
-      @request_resource = time_booking
     end
   end
 end

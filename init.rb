@@ -17,87 +17,72 @@ Redmine::Plugin.register Hourglass::PLUGIN_NAME do
       permissions.map { |x| [x, "#{x}_foreign".to_sym] }.flatten
     end
 
-    def with_bulk(*permissions)
-      permissions.map { |x| [x, "bulk_#{x}".to_sym] }.flatten
-    end
-
     permission :hourglass_track_time,
                {
-                   :'hourglass/time_trackers' => [:start, *with_bulk(:update), :stop],
-                   :'hourglass/time_logs' => [*with_bulk(:update), :split, :join],
-                   :'hourglass_ui' => [:index, :time_trackers, *with_bulk(:edit_time_trackers, :edit_time_logs)]
+                   :'hourglass/time_trackers' => [:create, :change],
+                   :'hourglass/time_logs' => [:change]
                },
                require: :loggedin
 
     permission :hourglass_view_tracked_time,
                {
-                   :'hourglass/time_trackers' => with_foreign(:index, :show),
-                   :'hourglass/time_logs' => with_foreign(:index, :show),
-                   :'hourglass_ui' => [:index, *with_foreign(:time_logs, :time_trackers)]
+                   :'hourglass/time_trackers' => with_foreign(:view),
+                   :'hourglass/time_logs' => with_foreign(:view)
                }, require: :loggedin
 
     permission :hourglass_view_own_tracked_time,
                {
-                   :'hourglass/time_trackers' => [:index, :show],
-                   :'hourglass/time_logs' => [:index, :show],
-                   :'hourglass_ui' => [:index, :time_logs, :time_trackers]
+                   :'hourglass/time_trackers' => [:view],
+                   :'hourglass/time_logs' => [:view]
                }, require: :loggedin
 
     permission :hourglass_edit_tracked_time,
                {
-                   :'hourglass/time_trackers' => with_foreign(*with_bulk(:update, :destroy), :update_all),
-                   :'hourglass/time_logs' => with_foreign(*with_bulk(:create, :update, :destroy), :update_all, :split, :join),
-                   :'hourglass_ui' => [*with_foreign(*with_bulk(:edit_time_logs, :edit_time_trackers)), :new_time_logs]
+                   :'hourglass/time_trackers' => with_foreign(:change, :change_all, :destroy),
+                   :'hourglass/time_logs' => with_foreign(:create, :change, :change_all, :destroy)
                }, require: :loggedin
 
     permission :hourglass_edit_own_tracked_time,
                {
-                   :'hourglass/time_trackers' => [*with_bulk(:update, :destroy), :update_all],
-                   :'hourglass/time_logs' => [*with_bulk(:create, :update, :destroy), :update_all, :split, :join],
-                   :'hourglass_ui' => [*with_bulk(:edit_time_logs, :edit_time_trackers), :new_time_logs]
+                   :'hourglass/time_trackers' => [:change, :change_all, :destroy],
+                   :'hourglass/time_logs' => [:create, :change, :change_all, :destroy]
                }, require: :loggedin
 
     permission :hourglass_book_time,
                {
-                   :'hourglass/time_logs' => with_foreign(*with_bulk(:book)),
-                   :'hourglass/time_bookings' => with_foreign(*with_bulk(:update)),
-                   :'hourglass_ui' => with_foreign(*with_bulk(:book_time_logs, :edit_time_bookings))
+                   :'hourglass/time_logs' => with_foreign(:book),
+                   :'hourglass/time_bookings' => with_foreign(:change)
                }, require: :loggedin
 
     permission :hourglass_book_own_time,
                {
-                   :'hourglass/time_logs' => with_bulk(:book),
-                   :'hourglass/time_bookings' => with_bulk(:update),
-                   :'hourglass_ui' => with_bulk(:book_time_logs, :edit_time_bookings)
+                   :'hourglass/time_logs' => [:book],
+                   :'hourglass/time_bookings' => [:change]
                }, require: :loggedin
 
     permission :hourglass_view_booked_time,
                {
-                   :'hourglass/time_bookings' => with_foreign(:index, :show),
-                   :'hourglass_ui' => [:index, *with_foreign(:report, :time_bookings)]
+                   :'hourglass/time_bookings' => with_foreign(:view)
                }, require: :member
 
     permission :hourglass_view_own_booked_time,
                {
-                   :'hourglass/time_bookings' => [:index, :show],
-                   :'hourglass_ui' => [:index, :report, :time_bookings]
+                   :'hourglass/time_bookings' => [:view]
                }, require: :loggedin
 
     permission :hourglass_edit_booked_time,
                {
-                   :'hourglass/time_bookings' => with_foreign(*with_bulk(:create, :update, :destroy), :update_all),
-                   :'hourglass_ui' => [*with_foreign(*with_bulk(:edit_time_bookings)), :new_time_bookings]
+                   :'hourglass/time_bookings' => with_foreign(:create, :change, :change_all, :destroy)
                }, require: :loggedin
 
     permission :hourglass_edit_own_booked_time,
                {
-                   :'hourglass/time_bookings' => [*with_bulk(:create, :update, :destroy), :update_all],
-                   :'hourglass_ui' => [*with_bulk(:edit_time_bookings), :new_time_bookings]
+                   :'hourglass/time_bookings' => [:create, :change, :change_all, :destroy]
                }, require: :loggedin
   end
 
   def allowed_to_see_index?
-    proc { User.current.allowed_to_globally? controller: 'hourglass_ui', action: 'index' }
+    proc { Pundit.policy!(User.current, :'hourglass/ui').view? }
   end
 
   menu :top_menu, :hourglass_root, :hourglass_ui_root_path, caption: :'hourglass.ui.menu.main', if: allowed_to_see_index?

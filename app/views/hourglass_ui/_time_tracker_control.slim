@@ -1,20 +1,19 @@
-- can = {update: authorize_globally_for('hourglass/time_trackers', 'update'), update_all: authorize_globally_for('hourglass/time_trackers', 'update_all'), book: authorize_globally_for('hourglass/time_logs', 'book')}
 .time-tracker-control
   h3 = t('hourglass.ui.index.time_tracker_control.heading')
   - unless @time_tracker.persisted?
     = form_for @time_tracker, url: start_hourglass_time_trackers_path, as: 'time_tracker', remote: true, html: {class: 'new-time-tracker-form js-hourglass-remote'} do |f|
       .form-row
         .form-field
-          = text_field_tag :time_tracker_task, nil, size: '30', maxlength: 1024, disabled: !can[:update], class: ('js-issue-autocompletion' if can[:book])
-          = f.hidden_field :issue_id if can[:book]
+          = text_field_tag :time_tracker_task, nil, size: '30', maxlength: 1024, disabled: !policy(@time_tracker).change?, class: ('js-issue-autocompletion' if policy(Hourglass::TimeLog).book?)
+          = f.hidden_field :issue_id if policy(Hourglass::TimeLog).book?
           = f.hidden_field :comments
         .form-field
           = f.submit t('hourglass.ui.index.time_tracker_control.button_start')
   - else
     = form_for @time_tracker, url: stop_hourglass_time_tracker_path(@time_tracker), method: :delete, as: 'time_tracker', remote: true, html: {class: 'edit-time-tracker-form js-validate-form js-hourglass-remote'} do |f|
       .form-row
-        = form_field :issue, f, @time_tracker, disabled: !can[:book]
-        = form_field :comments, f, @time_tracker, disabled: !can[:update]
+        = form_field :issue, f, @time_tracker, disabled: !policy(Hourglass::TimeLog).book?
+        = form_field :comments, f, @time_tracker
 
         - rounding_disabled = !@time_tracker.project || Hourglass::Settings[:round_sums_only, project: @time_tracker.project]
         .form-field class=('hidden' if rounding_disabled)
@@ -27,14 +26,14 @@
             = t('hourglass.ui.index.time_tracker_control.label_running_time')
           .input.js-running-time
       .form-row
-        = form_field :project, f, @time_tracker, disabled: !can[:book]
-        = form_field :activity, f, @time_tracker, disabled: !can[:book]
-        = form_field :start, f, @time_tracker, disabled: !can[:update_all]
+        = form_field :project, f, @time_tracker, disabled: !policy(Hourglass::TimeLog).book?
+        = form_field :activity, f, @time_tracker, disabled: !policy(Hourglass::TimeLog).book?
+        = form_field :start, f, @time_tracker, disabled: !policy(@time_tracker).change?(:start)
         .form-field
           .input
             = f.submit t('hourglass.ui.index.time_tracker_control.button_stop')
             '
             = f.submit t('hourglass.ui.index.time_tracker_control.button_stop_new'), class: 'js-stop-new'
-            - if authorize_globally_for 'hourglass/time_trackers', 'destroy'
+            - if policy(@time_tracker).destroy?
               = link_to hourglass_time_tracker_path(@time_tracker), class: 'js-hourglass-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)} do
                 input type='button' value=t(:button_delete)
