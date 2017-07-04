@@ -60,8 +60,7 @@ module Hourglass
     def bulk_destroy
       authorize Hourglass::TimeTracker
       bulk do |id|
-        time_tracker = authorize time_tracker_from_id id
-        time_tracker.destroy
+        authorize(time_tracker_from_id id).destroy
       end
     end
 

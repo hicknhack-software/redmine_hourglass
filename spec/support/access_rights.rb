@@ -1,18 +1,21 @@
-def with_permission(permission)
+def with_permission(*permissions)
   code = yield
-  response code, "with #{permission} permission" do
-    let(:user) { create :user, :as_member, permissions: [permission] }
+  response code, "with #{permissions.first} permission" do
+    let(:user) { create :user, :as_member, permissions: permissions }
     run_test!
   end
 end
 
-def test_permissions(*permissions, success_code: '200', error_code: '403')
+def test_permissions(*permissions, success_code: '200', error_code: '403', extra_permission: nil)
+  extra_permission = [extra_permission].flatten
   permissions.each do |permission|
-    with_permission(permission) { success_code }
+    with_permission(permission, *extra_permission) { success_code }
   end
 
   (AVAILABLE_PERMISSIONS - permissions).each do |permission|
-    with_permission(permission) { error_code }
+    with_permission(permission) do
+      extra_permission.include?(permission) ? 403 : error_code
+    end
   end
 end
 
