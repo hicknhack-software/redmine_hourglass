@@ -42,12 +42,7 @@ module Hourglass
     def update
       attributes = {time_entry_attributes: time_booking_params}
       attributes[:time_log_attributes] = attributes[:time_entry_attributes][:user_id] if attributes[:time_entry_attributes][:user_id]
-      time_booking = authorize_update time_booking_from_id, attributes
-      if time_booking.errors.empty?
-        respond_with_success
-      else
-        respond_with_error :bad_request, time_booking.errors.full_messages, array_mode: :sentence
-      end
+      do_update time_booking_from_id, attributes
     end
 
     def bulk_update

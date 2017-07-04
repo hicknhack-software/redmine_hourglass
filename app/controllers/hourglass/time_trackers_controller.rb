@@ -21,12 +21,7 @@ module Hourglass
     end
 
     def update
-      time_tracker = authorize_update get_time_tracker, time_tracker_params
-      if time_tracker.errors.empty?
-        respond_with_success
-      else
-        respond_with_error :bad_request, time_tracker.errors.full_messages, array_mode: :sentence
-      end
+      do_update get_time_tracker, time_tracker_params
     end
 
     def bulk_update

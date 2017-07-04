@@ -51,6 +51,15 @@ module Hourglass
       end
     end
 
+    def do_update(record, params_hash)
+      record = authorize_update record, params_hash
+      if record.errors.empty?
+        respond_with_success
+      else
+        respond_with_error :bad_request, record.errors.full_messages, array_mode: :sentence
+      end
+    end
+
     def bulk(params_key = controller_name, &block)
       success = []
       errors = []

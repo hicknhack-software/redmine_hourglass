@@ -45,12 +45,7 @@ module Hourglass
     end
 
     def update
-      time_log = authorize_update time_log_from_id, time_log_params
-      if time_log.errors.empty?
-        respond_with_success
-      else
-        respond_with_error :bad_request, time_log.errors.full_messages, array_mode: :sentence
-      end
+      do_update time_log_from_id, time_log_params
     end
 
     def bulk_update
@@ -121,7 +116,7 @@ module Hourglass
     def bulk_destroy
       authorize Hourglass::TimeLog
       bulk do |id|
-        authorize (time_log_from_id id).destroy
+        authorize(time_log_from_id id).destroy
       end
     end
 
