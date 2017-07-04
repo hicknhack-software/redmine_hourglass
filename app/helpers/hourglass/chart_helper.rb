@@ -32,7 +32,7 @@ module Hourglass
             end
           end
           # to get readable labels, we have to blank out some of them if there are to many
-          gap = [(date_range.count / 8).ceil, 1].max
+          gap = [(date_range.count / 8.to_f).ceil, 1].max
           ticks = date_range.each_with_index.map { |date, i| i % gap == 0 ? format_date(date.to_time) : '' }
         end
       end
