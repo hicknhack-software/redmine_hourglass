@@ -44,7 +44,7 @@ module Hourglass
       output = ActiveSupport::SafeBuffer.new
       output.concat localized_hours_in_units entry.hours
       output.concat (content_tag :div, class: 'start-stop' do
-        [format_time(entry.start, false), format_time(entry.stop, false)].compact.join('-')
+        [format_time(entry.start, false), format_time(entry.stop, false)].compact.join(' - ')
       end)
       output
     end
