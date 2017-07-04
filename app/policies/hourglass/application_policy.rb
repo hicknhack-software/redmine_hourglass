@@ -65,6 +65,7 @@ module Hourglass
     alias_method :index?, :view?
     alias_method :show?, :view?
     alias_method :new?, :create?
+    alias_method :bulk_create?, :create?
     alias_method :edit?, :change?
     alias_method :update?, :change?
     alias_method :bulk_update?, :change?

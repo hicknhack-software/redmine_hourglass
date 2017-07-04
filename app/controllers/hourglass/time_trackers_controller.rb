@@ -22,7 +22,7 @@ module Hourglass
 
     def update
       time_tracker = authorize_update get_time_tracker, time_tracker_params
-      if time_tracker.save
+      if time_tracker.errors.empty?
         respond_with_success
       else
         respond_with_error :bad_request, time_tracker.errors.full_messages, array_mode: :sentence
@@ -32,9 +32,7 @@ module Hourglass
     def bulk_update
       authorize Hourglass::TimeTracker
       bulk do |id, params|
-        time_tracker = authorize_update time_tracker_from_id(id), time_tracker_params(params)
-        time_tracker.save
-        time_tracker
+        authorize_update time_tracker_from_id(id), time_tracker_params(params)
       end
     end
 

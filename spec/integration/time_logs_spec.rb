@@ -227,7 +227,7 @@ describe 'Time logs API', type: :request do
       tags 'Time logs'
       parameter name: :time_logs, in: :body, type: :object, additionalProperties: {'$ref' => '#/definitions/time_log'}, description: 'takes an object of time logs'
 
-      let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
+      let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time, :hourglass_view_tracked_time] }
       let(:time_log_ids) do
         tt1 = create :time_log_with_comments, user: user
         tt2 = create :time_log_with_comments
@@ -256,7 +256,7 @@ describe 'Time logs API', type: :request do
       tags 'Time logs'
       parameter name: :time_bookings, in: :body, type: :object, additionalProperties: {'$ref' => '#/definitions/time_booking'}, description: 'takes an object of time bookings'
 
-      let(:user) { create :user, :as_member, permissions: [:hourglass_book_time] }
+      let(:user) { create :user, :as_member, permissions: [:hourglass_book_time, :hourglass_view_tracked_time] }
       let(:time_logs) do
         tl1 = create :time_log_with_comments, user: user
         tl2 = create :time_log_with_comments
@@ -272,7 +272,7 @@ describe 'Time logs API', type: :request do
         }
       end
 
-      include_examples 'access rights', :hourglass_book_time, :hourglass_book_own_time, error_code: '400'
+      include_examples 'access rights', :hourglass_book_time, :hourglass_book_own_time
 
       response '200', 'time logs found' do
         run_test!

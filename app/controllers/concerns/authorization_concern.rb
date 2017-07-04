@@ -19,8 +19,10 @@ module AuthorizationConcern
 
     def authorize_update(record, params)
       authorize record
-      record.attributes = params
-      authorize record
+      record.transaction do
+        record.update params
+        authorize record
+      end
     end
   end
 end

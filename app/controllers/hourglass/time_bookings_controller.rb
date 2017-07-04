@@ -3,13 +3,13 @@ module Hourglass
     accept_api_auth :index, :show, :create, :bulk_create, :update, :bulk_update, :destroy, :bulk_destroy
 
     before_action :get_time_booking, only: [:show, :update, :destroy]
-    before_action :authorize_global, only: [:index]
     before_action :find_project, :authorize, only: [:show, :create, :update, :destroy]
     before_action :authorize_foreign, only: [:show, :update, :destroy]
     before_action :authorize_update_all, only: [:create]
     before_action :require_login, only: [:bulk_update, :bulk_create, :bulk_destroy]
 
     def index
+      authorize Hourglass::TimeBooking, :view?
       time_bookings = allowed_to?('index_foreign') ? Hourglass::TimeBooking.visible : User.current.hourglass_time_bookings
       respond_with_success time_bookings
     end

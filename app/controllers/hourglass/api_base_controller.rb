@@ -92,7 +92,7 @@ module Hourglass
     end
 
     def internal_server_error(e)
-      respond_with_error :internal_server_error, Rails.env.development? ? [e.message] + e.backtrace : t('hourglass.api.errors.internal_server_error'), no_halt: true
+      respond_with_error :internal_server_error, Rails.env.production? ? t('hourglass.api.errors.internal_server_error') : [e.message] + e.backtrace, no_halt: true
     end
 
     def flash_array(type, messages)
