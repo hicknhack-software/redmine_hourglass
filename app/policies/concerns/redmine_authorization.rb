@@ -1,4 +1,9 @@
 module RedmineAuthorization
+  def allowed_to?(action)
+    action_args = {controller: "hourglass/#{controller_name}", action: action}
+    project.blank? ? user.allowed_to_globally?(action_args) : user.allowed_to?(action_args, project)
+  end
+
   private
   def authorized?(action)
     return foreign_authorized? action if foreign_entry?
@@ -22,11 +27,6 @@ module RedmineAuthorization
       unsafe_attributes.delete :start
     end
     unsafe_attributes.length > 0
-  end
-
-  def allowed_to?(action)
-    action_args = {controller: "hourglass/#{controller_name}", action: action}
-    project.blank? ? user.allowed_to_globally?(action_args) : user.allowed_to?(action_args, project)
   end
 
   def controller_name
