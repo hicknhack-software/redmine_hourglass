@@ -38,5 +38,5 @@ $ ->
   $(window).resize ->
     clearTimeout timeout
     timeout = setTimeout  ->
-      plot.replot resetAxes: true
+      plot.replot()
     , 250
