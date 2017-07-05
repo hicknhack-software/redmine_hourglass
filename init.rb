@@ -19,7 +19,7 @@ Redmine::Plugin.register Hourglass::PLUGIN_NAME do
 
     permission :hourglass_track_time,
                {
-                   :'hourglass/time_trackers' => [:create, :change],
+                   :'hourglass/time_trackers' => [:create, :change, :destroy],
                    :'hourglass/time_logs' => [:change]
                },
                require: :loggedin
