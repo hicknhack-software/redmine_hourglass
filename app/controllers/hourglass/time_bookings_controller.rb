@@ -41,7 +41,7 @@ module Hourglass
 
     def update
       attributes = {time_entry_attributes: time_booking_params}
-      attributes[:time_log_attributes] = attributes[:time_entry_attributes][:user_id] if attributes[:time_entry_attributes][:user_id]
+      attributes[:time_log_attributes] = attributes[:time_entry_attributes].slice(:user_id) if attributes[:time_entry_attributes][:user_id]
       do_update time_booking_from_id, attributes
     end
 
@@ -49,7 +49,7 @@ module Hourglass
       authorize Hourglass::TimeBooking
       bulk do |id, params|
         attributes = {time_entry_attributes: time_booking_params(params)}
-        attributes[:time_log_attributes] = attributes[:time_entry_attributes][:user_id] if attributes[:time_entry_attributes][:user_id]
+        attributes[:time_log_attributes] = attributes[:time_entry_attributes].slice(:user_id) if attributes[:time_entry_attributes][:user_id]
         authorize_update time_booking_from_id(id), attributes
       end
     end
