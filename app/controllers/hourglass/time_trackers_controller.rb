@@ -35,7 +35,7 @@ module Hourglass
       time_tracker = authorize get_time_tracker
       time_log, time_booking = time_tracker.transaction do
         time_log = time_tracker.stop
-        authorize time_log, :book? if time_tracker.project
+        authorize time_log, :booking_allowed? if time_tracker.project
         [time_log, time_log && time_log.time_booking]
       end
       if time_tracker.destroyed?
