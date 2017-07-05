@@ -111,6 +111,9 @@ $ ->
   .on 'ajax:success', '.js-show-inline-form-multi', showInlineFormMulti
   .on 'ajax:success', '.js-create-record', showInlineFormCreate
   .on 'ajax:error', '.js-show-inline-form-multi, .js-create-record', processErrorPageResponse
+  .on 'ajax:before', '.disabled[data-remote]', ->
+    window.contextMenuHide()
+    return false;
 
   $list.find '.group'
   .on 'click', '.expander', (event) ->

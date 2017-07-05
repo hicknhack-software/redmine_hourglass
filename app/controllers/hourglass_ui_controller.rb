@@ -2,6 +2,7 @@ class HourglassUiController < ApplicationController
   helper QueriesHelper
   helper IssuesHelper
   helper SortHelper
+  helper ContextMenusHelper
   helper Hourglass::ApplicationHelper
   helper Hourglass::UiHelper
   helper Hourglass::ListHelper
