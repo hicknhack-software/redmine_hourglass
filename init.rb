@@ -89,9 +89,9 @@ Redmine::Plugin.register Hourglass::PLUGIN_NAME do
   menu :account_menu, :hourglass_quick, '#', caption: '', if: allowed_to_see_index?, before: :my_account
 
   Redmine::MenuManager.map :hourglass_menu do |menu|
-    menu.push :hourglass_overview, :hourglass_ui_root_path, caption: :'hourglass.ui.menu.overview', if: proc { User.current.allowed_to_globally? controller: 'hourglass_ui', action: 'index' }
-    menu.push :hourglass_time_logs, :hourglass_ui_time_logs_path, caption: :'hourglass.ui.menu.time_logs', if: proc { User.current.allowed_to_globally? controller: 'hourglass_ui', action: 'time_logs' }
-    menu.push :hourglass_time_bookings, :hourglass_ui_time_bookings_path, caption: :'hourglass.ui.menu.time_bookings', if: proc { User.current.allowed_to_globally? controller: 'hourglass_ui', action: 'time_bookings' }
-    menu.push :hourglass_time_trackers, :hourglass_ui_time_trackers_path, caption: :'hourglass.ui.menu.time_trackers', if: proc { User.current.allowed_to_globally? controller: 'hourglass_ui', action: 'time_trackers' }
+    menu.push :hourglass_overview, :hourglass_ui_root_path, caption: :'hourglass.ui.menu.overview', if: proc { Pundit.policy!(User.current, :'hourglass/ui').view? }
+    menu.push :hourglass_time_logs, :hourglass_ui_time_logs_path, caption: :'hourglass.ui.menu.time_logs', if: proc { Pundit.policy!(User.current, Hourglass::TimeLog).view? }
+    menu.push :hourglass_time_bookings, :hourglass_ui_time_bookings_path, caption: :'hourglass.ui.menu.time_bookings', if: proc { Pundit.policy!(User.current, Hourglass::TimeBooking).view? }
+    menu.push :hourglass_time_trackers, :hourglass_ui_time_trackers_path, caption: :'hourglass.ui.menu.time_trackers', if: proc { Pundit.policy!(User.current, Hourglass::TimeTracker).view? }
   end
 end
