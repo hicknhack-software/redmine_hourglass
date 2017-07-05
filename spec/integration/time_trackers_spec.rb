@@ -227,7 +227,7 @@ describe 'Time trackers API', type: :request do
 
       let(:'time_trackers[]') { time_tracker_ids }
 
-      include_examples 'access rights', :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
+      include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
 
       response '200', 'time trackers found' do
         run_test!
