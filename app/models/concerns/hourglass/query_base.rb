@@ -193,6 +193,6 @@ module Hourglass::QueryBase
                  Version.visible.where(sharing: 'system').to_a
                end
     values = versions.uniq.sort.collect { |s| ["#{s.project.name} - #{s.name}", s.id.to_s] }
-    add_available_filter 'fixed_version_id', type: :list_optional, values: values if values.any?
+    add_available_filter 'fixed_version_id', type: :list_optional, values: values
   end
 end
