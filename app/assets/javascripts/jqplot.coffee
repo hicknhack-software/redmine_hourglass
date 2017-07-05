@@ -21,10 +21,9 @@ $ ->
           renderer: $.jqplot.CategoryAxisRenderer
           ticks: hourglass.jqplotData.ticks
         yaxis:
-          autoscale: true
           min: 0
-          pad: 1
-          tickInterval: 1
+          pad: 1.2
+          tickInterval: Math.max(Math.ceil(Math.max.apply(null, hourglass.jqplotData.data[0]) / 8), 1)
           tickOptions: {formatString: "%d #{hourglass.jqplotData.hourSign}"}
       grid:
         background: "#ffffff"
