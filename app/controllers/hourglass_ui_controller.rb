@@ -19,7 +19,7 @@ class HourglassUiController < ApplicationController
   include HourglassUi::TimeTrackers
 
 
-  before_action :require_login, only: [:context_menu, :api_docs]
+  before_action :require_login
 
   def context_menu
     list_type = get_list_type
