@@ -6,7 +6,7 @@
     = render partial: 'hooks/time_tracker/stop_link', locals: {time_tracker: time_tracker, issue: @issue}
     - if !Hourglass::Settings[:global_tracker] && time_tracker.project.present? && time_tracker.activity.blank?
       = render partial: 'hooks/time_tracker/activity_dialog_content', locals: {time_tracker: time_tracker}
-- elsif policy(Hourglass::TimeTracker).start?
+- elsif Pundit.policy!(User.current, Hourglass::TimeTracker).start?
   li
     = render partial: 'hooks/time_tracker/start_link', locals: {time_tracker: time_tracker, issue: @issue, time_tracker_data: {params: {time_tracker: {issue_id: @issue.id}}}}
     - if time_tracker
