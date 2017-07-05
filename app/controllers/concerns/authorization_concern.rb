@@ -20,9 +20,11 @@ module AuthorizationConcern
     def authorize_update(record, params)
       authorize record
       record.transaction do
-        record.update params
-        authorize record
+        record.with_before_save proc { authorize record } do
+          record.update params
+        end
       end
+      record
     end
   end
 end
