@@ -51,7 +51,7 @@ describe 'Time trackers API', type: :request do
           '$ref' => '#/definitions/time_tracker_start'
       }
 
-      let(:time_tracker) { {time_tracker: {comments: 'test', project_id: user.projects.first.id}} }
+      let(:time_tracker) { {time_tracker: {comments: 'test'}} }
       let(:user) { create :user, :as_member, permissions: [:hourglass_track_time] }
 
       include_examples 'access rights', :hourglass_track_time
@@ -71,7 +71,18 @@ describe 'Time trackers API', type: :request do
           data = JSON.parse(response.body, symbolize_names: true)
           expect(data[:user_id]).to eq user.id
           expect(data[:comments]).to eq time_tracker[:time_tracker][:comments]
-          expect(data[:project_id]).to eq time_tracker[:time_tracker][:project_id]
+        end
+
+        context 'with project id' do
+          let(:time_tracker) { {time_tracker: {comments: 'test', project_id: user.projects.first.id}} }
+          let(:user) { create :user, :as_member, permissions: [:hourglass_track_time, :hourglass_book_time] }
+
+          it 'returns correct data' do
+            data = JSON.parse(response.body, symbolize_names: true)
+            expect(data[:user_id]).to eq user.id
+            expect(data[:comments]).to eq time_tracker[:time_tracker][:comments]
+            expect(data[:project_id]).to eq time_tracker[:time_tracker][:project_id]
+          end
         end
       end
     end
@@ -120,7 +131,7 @@ describe 'Time trackers API', type: :request do
       end
       let(:id) { time_tracker.id }
 
-      include_examples 'access rights', :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time, success_code: '204'
+      include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time, success_code: '204'
 
       include_examples 'not found'
 
