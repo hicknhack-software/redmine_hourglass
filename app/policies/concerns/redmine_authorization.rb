@@ -1,6 +1,7 @@
 module RedmineAuthorization
-  def allowed_to?(action)
-    action_args = {controller: "hourglass/#{controller_name}", action: action}
+  def allowed_to?(action, controller_name = nil)
+    controller = controller_name || self.class.name.gsub('::Scope', '').demodulize.gsub('Policy', '').tableize
+    action_args = {controller: "hourglass/#{controller}", action: action}
     project.blank? ? user.allowed_to_globally?(action_args) : user.allowed_to?(action_args, project)
   end
 
@@ -27,10 +28,6 @@ module RedmineAuthorization
       unsafe_attributes.delete :start
     end
     unsafe_attributes.length > 0
-  end
-
-  def controller_name
-    self.class.name.gsub('::Scope', '').demodulize.gsub('Policy', '').tableize
   end
 
   def foreign_forbidden_message

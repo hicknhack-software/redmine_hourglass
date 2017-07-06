@@ -22,7 +22,7 @@ module Hourglass
 
     private
     def booking_parameters_forbidden?
-      booking_attributes? && !user.allowed_to?({controller: 'hourglass/time_logs', action: :book}, project)
+      booking_attributes? && !allowed_to?(:book, :time_logs)
     end
 
     def booking_parameters
