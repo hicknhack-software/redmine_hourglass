@@ -1,7 +1,9 @@
 timeTrackerTimerInterval = null
 
 startTimeTrackerTimer = ->
-  duration = moment.duration moment() - moment "#{hourglass.Utils.detranslateDateTime($('.time-tracker-control [name*=start]').val())} #{window.hourglass.UtcOffset}", "#{window.hourglass.DateTimeFormat} ZZ"
+  start = hourglass.Utils.detranslateDateTime $('.time-tracker-control [name*=start]').val()
+  duration = moment.duration moment() -
+      moment("#{start} #{window.hourglass.UtcOffset}", "#{window.hourglass.DateTimeFormat} ZZ")
 
   numberToString = (number)->
     result = (Math.floor Math.abs number).toString()

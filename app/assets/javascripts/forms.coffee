@@ -81,7 +81,9 @@ durationFieldChanged = (event) ->
   return if $durationField.hasClass('invalid')
   $startField = $durationField.closest('form').find('[name*=start]')
   $stopField = $durationField.closest('form').find('[name*=stop]')
-  $stopField.val moment(hourglass.Utils.detranslateDateTime($startField.val()), window.hourglass.DateTimeFormat).add(hourglass.Utils.parseDuration $durationField.val()).format(window.hourglass.DateTimeFormat)
+  start = moment hourglass.Utils.detranslateDateTime($startField.val()), window.hourglass.DateTimeFormat
+  duration = hourglass.Utils.parseDuration $durationField.val()
+  $stopField.val start.add(duration).format(window.hourglass.DateTimeFormat)
   hourglass.FormValidator.validateField $stopField
 
 projectFieldChanged = (event) ->
