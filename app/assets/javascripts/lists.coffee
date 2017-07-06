@@ -95,7 +95,7 @@ processErrorPageResponse = (event, {responseText}) ->
 
 addStartStopLimitMoments = ->
   $field = $(@)
-  $field.data 'mLimit', moment($field.val(), window.hourglass.DateTimeFormat) unless moment.isMoment($field.data('mLimit'))
+  $field.data 'mLimit', moment(hourglass.Utils.detranslateDateTime($field.val()), window.hourglass.DateTimeFormat) unless moment.isMoment($field.data('mLimit'))
 
 $ ->
   $list = $('.hourglass-list')

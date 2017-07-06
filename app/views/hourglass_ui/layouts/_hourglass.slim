@@ -7,6 +7,7 @@
 
     window.hourglass.DateTimeFormat = "#{format_identifier_to_js date_time_format}";
     window.hourglass.UtcOffset = "#{utc_offset}";
+    window.hourglass.DateTimeStrings = #{date_time_strings_map.to_json.html_safe};
 
   = stylesheet_link_tag 'application', plugin: Hourglass::PLUGIN_NAME
 
