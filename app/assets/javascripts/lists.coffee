@@ -67,7 +67,6 @@ showInlineForm = (event, response) ->
   .append $('<td/>', colspan: tdCount).append response
   .insertAfter $row
   $formRow.find('.js-validate-limit').each addStartStopLimitMoments
-  $formRow.find('[name*=start], [name*=stop]').each -> $(@).addDateTimePicker()
   $durationField = $formRow.find('.js-duration')
   $durationField.val hourglass.Utils.formatDuration parseFloat($durationField.val()), 'hours' if $durationField
   checkForMultiForm $row, $formRow
@@ -96,7 +95,8 @@ processErrorPageResponse = (event, {responseText}) ->
 
 addStartStopLimitMoments = ->
   $field = $(@)
-  $field.data 'mLimit', moment($field.val()) unless moment.isMoment($field.data('mLimit'))
+  unless moment.isMoment($field.data('mLimit'))
+    $field.data 'mLimit', moment(hourglass.Utils.detranslateDateTime($field.val()), window.hourglass.DateTimeFormat)
 
 $ ->
   $list = $('.hourglass-list')

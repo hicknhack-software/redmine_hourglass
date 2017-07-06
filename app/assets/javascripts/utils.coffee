@@ -1,17 +1,3 @@
-$.fn.addDateTimePicker = ->
-  currentTime = moment.parseZone @.val()
-  @.datetimepicker $.extend hourglass.TimepickerLocales,
-    hour: currentTime.hour()
-    minute: currentTime.minute()
-    timezone: currentTime._tzm
-    dateFormat: 'yy-mm-ddT'
-    separator: ''
-    timeFormat: 'HH:mmz'
-    timeInput: true
-    timeOnly: not @.hasClass('js-picker-with-date')
-    timeOnlyShowDate: true
-    showTimezone: false
-    
 clearFlash = ->
   $('#content').find('.flash').remove()
 
@@ -62,10 +48,16 @@ parseDuration = (durationString) ->
   [hours, minutes] = durationString.split(':')
   moment.duration(hours: hours, minutes: minutes)
 
+detranslateDateTime = (durationString) ->
+  window.hourglass.DateTimeStrings.reduce (a, [pattern, replace]) ->
+    a.replace pattern, replace
+  , durationString
+
 @hourglass ?= {}
 @hourglass.Utils =
   clearFlash: clearFlash
   debounce: debounce
+  detranslateDateTime: detranslateDateTime
   formatDuration: formatDuration
   parseDuration: parseDuration
   showDialog: showDialog

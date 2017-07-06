@@ -148,13 +148,6 @@ en:
       chart:
         hour_sign: h
         minute_sign: min
-      timepicker:
-        close: Close
-        hour: Hour
-        minute: Minute
-        now: Now
-        time: Time
-        title: Choose Time
       time_logs:
         title: Time logs
         button_join: Join time logs

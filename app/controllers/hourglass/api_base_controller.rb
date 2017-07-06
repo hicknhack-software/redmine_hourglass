@@ -1,9 +1,12 @@
 module Hourglass
   class ApiBaseController < ApplicationController
     include BooleanParsing
+    include DateTimeParsing
     around_action :catch_halt
     before_action :require_login
-    
+
+    before_action :parse_date_time
+
     rescue_from StandardError, with: :internal_server_error
     rescue_from ActionController::ParameterMissing, with: :missing_parameters
     rescue_from(ActiveRecord::RecordNotFound) { render_404 no_halt: true }

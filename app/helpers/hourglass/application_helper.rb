@@ -66,13 +66,19 @@ module Hourglass
       args.compact.join(' ')
     end
 
-    def convert_format_identifier(format)
-      format.gsub /%[HIMp]/,
-                  '%H' => 'HH',
-                  '%I' => 'hh',
-                  '%M' => 'mm',
-                  '%p' => 'TT',
-                  '%P' => 'tt'
+    def format_identifier_to_js(format)
+      {
+          '%b' => 'MMM',
+          '%B' => 'MMMM',
+          '%d' => 'DD',
+          '%m' => 'MM',
+          '%M' => 'mm',
+          '%H' => 'HH',
+          '%I' => 'hh',
+          '%p' => 'A',
+          '%P' => 'a',
+          '%Y' => 'YYYY'
+      }.inject(format) { |str, (k, v)| str.gsub(k, v) }
     end
   end
 end
