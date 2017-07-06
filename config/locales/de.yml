@@ -153,13 +153,6 @@ de:
       chart:
         hour_sign: h
         minute_sign: min
-      timepicker:
-        close: Schließen
-        hour: Stunde
-        minute: Minute
-        now: Jetzt
-        time: Zeit
-        title: Zeit wählen
       time_logs:
         title: Zeiterfassungen
         button_join: Zeiterfassungen zusammenfügen

@@ -7,12 +7,13 @@ formFieldChanged = (event) ->
     $issueField = $(@).find('.js-issue-autocompletion').next()
     data[$issueField.attr('name')] = $issueField.val()
   hourglass.Utils.clearFlash()
-  $.ajax
-    url: hourglassRoutes.hourglass_time_tracker('current')
-    type: 'put'
-    data: data
-    error: ({responseJSON}) ->
-      hourglass.Utils.showErrorMessage responseJSON.message
+  unless $target.hasClass('invalid')
+    $.ajax
+      url: hourglassRoutes.hourglass_time_tracker('current')
+      type: 'put'
+      data: data
+      error: ({responseJSON}) ->
+        hourglass.Utils.showErrorMessage responseJSON.message
 
 $ ->
   $timeTrackerControl = $('.time-tracker-control')
@@ -25,7 +26,6 @@ $ ->
   .find('#time_tracker_start')
   .on 'change', ->
     hourglass.Timer.start()
-  .addDateTimePicker()
 
   $timeTrackerEditForm.find('.js-stop-new').on 'click', ->
     $timeTrackerEditForm.data('start-new', true)

@@ -1,17 +1,3 @@
-$.fn.addDateTimePicker = ->
-  currentTime = moment.parseZone @.val()
-  @.datetimepicker $.extend hourglass.TimepickerLocales,
-    hour: currentTime.hour()
-    minute: currentTime.minute()
-    timezone: currentTime._tzm
-    dateFormat: 'yy-mm-ddT'
-    separator: ''
-    timeFormat: 'HH:mmz'
-    timeInput: true
-    timeOnly: not @.hasClass('js-picker-with-date')
-    timeOnlyShowDate: true
-    showTimezone: false
-    
 clearFlash = ->
   $('#content').find('.flash').remove()
 

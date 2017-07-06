@@ -1,19 +1,13 @@
 - content_for :header_tags do
   = javascript_include_tag 'application', plugin: Hourglass::PLUGIN_NAME
   javascript:
-    if (this.hourglass === null) {
-        this.hourglass = {};
+    if (window.hourglass === null) {
+        window.hourglass = {};
     }
 
-    this.hourglass.TimepickerLocales = {
-        timeOnlyTitle: "#{t('hourglass.ui.timepicker.title')}",
-        timeText: "#{t('hourglass.ui.timepicker.time')}",
-        hourText: "#{t('hourglass.ui.timepicker.hour')}",
-        minuteText: "#{t('hourglass.ui.timepicker.minute')}",
-        currentText: "#{t('hourglass.ui.timepicker.now')}",
-        closeText: "#{t('hourglass.ui.timepicker.close')}",
-        pickerTimeFormat: "#{convert_format_identifier t('time.formats.time')}"
-    };
+    window.hourglass.DateTimeFormat = "#{format_identifier_to_js date_time_format}";
+    window.hourglass.UtcOffset = "#{utc_offset}";
+
   = stylesheet_link_tag 'application', plugin: Hourglass::PLUGIN_NAME
 
 - if @query && @query.persisted? && @query.editable_by?(User.current)

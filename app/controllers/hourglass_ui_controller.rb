@@ -8,11 +8,14 @@ class HourglassUiController < ApplicationController
   helper Hourglass::ListHelper
   helper Hourglass::ChartHelper
   helper Hourglass::ReportHelper
+  helper_method :date_time_format
+  helper_method :utc_offset
 
   include AuthorizationConcern
   include SortHelper
   include QueryConcern
   include ListConcern
+  include DateTimeParsing
 
   include HourglassUi::Overview
   include HourglassUi::TimeLogs
