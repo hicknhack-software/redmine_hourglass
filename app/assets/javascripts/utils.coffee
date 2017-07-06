@@ -48,10 +48,11 @@ parseDuration = (durationString) ->
   [hours, minutes] = durationString.split(':')
   moment.duration(hours: hours, minutes: minutes)
 
-detranslateDateTime = (durationString) ->
+detranslateDateTime = (dateTimeString) ->
+  return unless dateTimeString
   window.hourglass.DateTimeStrings.reduce (a, [pattern, replace]) ->
     a.replace pattern, replace
-  , durationString
+  , dateTimeString
 
 @hourglass ?= {}
 @hourglass.Utils =
