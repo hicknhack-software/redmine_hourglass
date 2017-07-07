@@ -4,38 +4,37 @@ class Hourglass::RedmineTimeTrackerImport
       check_for_plugin!
 
       TimeTracker.all.each do |time_tracker|
-        new_time_tracker = Hourglass::TimeTracker.find_or_create_by(
+        new_time_tracker = Hourglass::TimeTracker.find_or_initialize_by(
             user_id: time_tracker.user_id
         )
-        log_errors new_time_tracker
-
-        new_time_tracker.update(
+        new_time_tracker.attributes = {
             start: time_tracker.started_on,
             comments: time_tracker.comments,
             round: time_tracker.round,
             project_id: time_tracker.project_id,
             issue_id: time_tracker.issue_id,
             activity_id: time_tracker.activity_id
-        )
-        log_errors new_time_tracker
+        }
+        log_errors time_tracker, new_time_tracker unless new_time_tracker.save
       end
 
       TimeBooking.all.each do |time_booking|
-        new_time_booking = Hourglass::TimeBooking.find_or_create_by(
+        new_time_booking = Hourglass::TimeBooking.find_or_initialize_by(
             time_entry_id: time_booking.time_entry_id
         )
-        log_errors new_time_booking
-        new_time_booking.update(
+        time_log_attributes = {
             start: time_booking.started_on,
             stop: time_booking.stopped_at,
-            time_log_attributes: {
-                start: time_booking.started_on,
-                stop: time_booking.stopped_at,
-                comments: time_booking.time_log.comments,
-                user_id: time_booking.time_log.user_id
-            }
-        )
-        log_errors new_time_booking
+            comments: time_booking.time_log.comments,
+            user_id: time_booking.time_log.user_id
+        }
+        time_log_attributes[:id] = new_time_booking.time_log_id if new_time_booking.persisted?
+        new_time_booking.attributes = {
+            start: time_booking.started_on,
+            stop: time_booking.stopped_at,
+            time_log_attributes: time_log_attributes
+        }
+        log_errors time_booking, new_time_booking unless new_time_booking.save
       end
 
       TimeLog.all.each do |time_log|
@@ -51,22 +50,19 @@ class Hourglass::RedmineTimeTrackerImport
 
     private
     def create_new_time_log(time_log, start = time_log.started_on, stop = time_log.stopped_at)
-      new_time_log = Hourglass::TimeLog.find_or_create_by(
+      new_time_log = Hourglass::TimeLog.find_or_initialize_by(
           start: start,
           stop: stop,
           user_id: time_log.user_id
       )
-      log_errors new_time_log
-      new_time_log.update(
+      new_time_log.attributes = {
           comments: time_log.comments
-      )
-      log_errors new_time_log
+      }
+      log_errors time_log, new_time_log unless new_time_log.save
     end
 
-    def log_errors(record)
-      if record.errors
-        puts record.errors.full_messages
-      end
+    def log_errors(old, new)
+      puts "[#{old.class.name} #{old.id}] #{new.errors.full_messages}"
     end
 
     def find_gaps(bookings, start, stop)
