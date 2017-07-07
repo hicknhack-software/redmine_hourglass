@@ -4,7 +4,6 @@ module Hourglass
       extend ActiveSupport::Concern
 
       included do
-        has_many :hourglass_time_bookings, dependent: :delete_all, class_name: 'Hourglass::TimeBooking'
         scope :allowed_to_one_of, lambda {|*args|
           options = args.extract_options!
           if args.first.is_a?(Symbol)
