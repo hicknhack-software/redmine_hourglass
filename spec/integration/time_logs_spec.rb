@@ -11,12 +11,8 @@ describe 'Time logs API', type: :request do
       include_examples 'access rights', :hourglass_view_tracked_time, :hourglass_view_own_tracked_time
 
       response '200', 'time logs found' do
-        schema type: 'array',
-               items: {
-                   '$ref' => '#/definitions/time_log',
-                   required: %w(id start stop user_id created_at updated_at)
-               },
-               title: 'Array'
+        schema '$ref' => '#/definitions/index_response'
+
         let(:user) { create :user, :as_member, permissions: [:hourglass_view_tracked_time] }
 
         before do
@@ -28,11 +24,14 @@ describe 'Time logs API', type: :request do
 
         it 'returns correct data' do
           data = JSON.parse(response.body, symbolize_names: true)
-          expect(data.length).to eq 2
-          expect(data.first[:id]).to eq @time_log.id
-          expect(Time.parse(data.first[:start])).to eq @time_log.start.change(sec: 0)
-          expect(data.first[:user_id]).to eq @time_log.user_id
-          expect(data.second[:comments]).to eq @time_log2.comments
+          expect(data[:count]).to eq 2
+          first, second = data[:records]
+          if first[:id] != @time_log.id
+            second, first = [first, second]
+          end
+          expect(Time.parse(first[:start])).to eq @time_log.start.change(sec: 0)
+          expect(first[:user_id]).to eq @time_log.user_id
+          expect(second[:comments]).to eq @time_log2.comments
         end
       end
     end

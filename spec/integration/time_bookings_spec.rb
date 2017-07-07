@@ -11,12 +11,8 @@ describe 'Time bookings API', type: :request do
       include_examples 'access rights', :hourglass_view_booked_time, :hourglass_view_own_booked_time
 
       response '200', 'time bookings found' do
-        schema type: 'array',
-               items: {
-                   '$ref' => '#/definitions/time_booking',
-                   required: %w(id start stop created_at updated_at)
-               },
-               title: 'Array'
+        schema '$ref' => '#/definitions/index_response'
+
         let(:user) { create :user, :as_member, permissions: [:hourglass_view_booked_time] }
 
         before do
@@ -29,11 +25,14 @@ describe 'Time bookings API', type: :request do
 
         it 'returns correct data' do
           data = JSON.parse(response.body, symbolize_names: true)
-          expect(data.length).to eq 2
-          expect(data.first[:id]).to eq @time_booking.id
-          expect(Time.parse(data.first[:start])).to eq @time_booking.start
-          expect(data.first[:time_entry][:user_id]).to eq @time_booking.time_entry.user_id
-          expect(data.second[:time_entry][:comments]).to eq @time_booking2.time_entry.comments
+          expect(data[:count]).to eq 2
+          first, second = data[:records]
+          if first[:id] != @time_booking.id
+            second, first = [first, second]
+          end
+          expect(Time.parse(first[:start])).to eq @time_booking.start
+          expect(first[:time_entry][:user_id]).to eq @time_booking.time_entry.user_id
+          expect(second[:time_entry][:comments]).to eq @time_booking2.time_entry.comments
         end
       end
     end

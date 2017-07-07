@@ -120,6 +120,20 @@ definitions:
         type: string
   error_msg:
     title: Error
+    type: object
     properties:
       message:
         type: string
+  index_response:
+    title: Records
+    type: object
+    properties:
+      count:
+        type: integer
+      offset:
+        type: integer
+      limit:
+        type: integer
+      records:
+        type: array
+

@@ -77,7 +77,7 @@ module Hourglass
           count: scope.count,
           offset: offset,
           limit: limit,
-          "#{@query_identifier}" => scope.offset(offset).limit(limit).to_a
+          records: scope.offset(offset).limit(limit).to_a
       )
     end
 
