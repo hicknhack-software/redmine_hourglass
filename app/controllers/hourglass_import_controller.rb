@@ -4,7 +4,7 @@ class HourglassImportController < ApplicationController
 
     flash[:notice] = I18n::t('hourglass.settings.import.success.redmine_time_tracker')
   rescue => e
-    puts e
+    Rails.logger.error ([e.message] + e.backtrace).join("\n")
     flash[:error] = I18n::t('hourglass.settings.import.error.redmine_time_tracker')
   ensure
     redirect_to plugin_settings_path Hourglass::PLUGIN_NAME

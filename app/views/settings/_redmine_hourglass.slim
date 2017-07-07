@@ -41,11 +41,9 @@ p
   = hidden_field_tag 'settings[global_tracker]', false
   = check_box_tag 'settings[global_tracker]', true, @settings[:global_tracker]
 
-/TODO: if more imports possible, move condition below title
-- if Redmine::Plugin.all.any? {|plugin| plugin.id == :redmine_time_tracker}
-  h3 = t('hourglass.settings.import.title')
-  p
-    = label_tag 'import_time_tracker_plugin', t('hourglass.settings.import.fields.redmine_time_tracker')
-    = link_to t('hourglass.settings.import.label_start'), hourglass_import_redmine_time_tracker_plugin_path, id: 'import_time_tracker_plugin', method: :put
+h3 = t('hourglass.settings.import.title')
+p
+  = label_tag 'import_time_tracker_plugin', t('hourglass.settings.import.fields.redmine_time_tracker')
+  = link_to t('hourglass.settings.import.label_start'), hourglass_import_redmine_time_tracker_plugin_path, id: 'import_time_tracker_plugin', method: :put
 
 h3 = link_to t('hourglass.settings.misc.fields.api_docs_link'), hourglass_ui_api_docs_path

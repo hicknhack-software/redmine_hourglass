@@ -5,7 +5,7 @@ class Hourglass::RedmineTimeTrackerImport
 
       TimeTracker.all.each do |time_tracker|
         Hourglass::TimeTracker.create(
-            start: time_tracker.start_time,
+            start: time_tracker.started_on,
             comments: time_tracker.comments,
             round: time_tracker.round,
             user_id: time_tracker.user_id,
@@ -16,23 +16,19 @@ class Hourglass::RedmineTimeTrackerImport
       end
 
       TimeLog.all.each do |time_log|
-        bookings = []
-
-        time_log.time_bookings.each do |time_booking|
-          bookings << Hourglass::TimeBooking.new(
+        bookings = time_log.time_bookings.map do |time_booking|
+          Hourglass::TimeBooking.create(
               start: time_booking.started_on,
               stop: time_booking.stopped_at,
               time_entry_id: time_booking.time_entry_id,
-              time_log: Hourglass::TimeLog.create(
+              time_log_attributes: {
                   start: time_booking.started_on,
                   stop: time_booking.stopped_at,
                   comments: time_log.comments,
                   user_id: time_log.user_id
-              )
+              }
           )
         end
-
-        bookings.each { |booking| booking.save rescue nil }
 
         if time_log.bookable_hours > 0
           if bookings.empty?
@@ -82,8 +78,38 @@ class Hourglass::RedmineTimeTrackerImport
     end
 
     def check_for_plugin!
-      unless Redmine::Plugin.all.any? { |plugin| plugin.id == :redmine_time_tracker }
-        raise('Can\'t import your data from Redmine Time Tracker, the plugin is not installed.')
+      unless Redmine::Plugin.installed? :redmine_time_tracker
+        Object.const_set :TimeTracker, Class.new(ActiveRecord::Base) unless const_defined?(:TimeTracker)
+        unless const_defined?(:TimeLog)
+          time_log = Class.new ActiveRecord::Base do
+            has_many :time_bookings
+            def hours_spent
+              ((started_on.to_i - stopped_at.to_i) / 3600.0).to_f
+            end
+
+            def bookable_hours
+              hours_spent - hours_booked
+            end
+
+            def hours_booked
+              time_booked = 0
+              time_bookings.each do |tb|
+                time_booked += tb.hours_spent
+              end
+              time_booked
+            end
+          end
+          Object.const_set :TimeLog, time_log
+        end
+        unless const_defined?(:TimeBooking)
+          time_booking = Class.new ActiveRecord::Base do
+            belongs_to :time_log
+            def hours_spent
+              ((started_on.to_i - stopped_at.to_i) / 3600.0).to_f
+            end
+          end
+          Object.const_set :TimeBooking, time_booking
+        end
       end
     end
   end
