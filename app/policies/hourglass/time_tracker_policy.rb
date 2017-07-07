@@ -1,12 +1,5 @@
 module Hourglass
   class TimeTrackerPolicy < ApplicationPolicy
-    class Scope < Scope
-      def resolve
-        return scope.all if foreign_authorized? :view
-        super
-      end
-    end
-
     def create?
       return false if booking_parameters_forbidden?
       super

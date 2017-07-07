@@ -49,7 +49,7 @@ describe 'Time bookings API', type: :request do
       let(:time_booking) { create :time_booking, project: user.projects.first, user: user }
       let(:id) { time_booking.id }
 
-      include_examples 'access rights', :hourglass_view_booked_time, :hourglass_view_own_booked_time, error_code: '404'
+      include_examples 'access rights', :hourglass_view_booked_time, :hourglass_view_own_booked_time
       include_examples 'not found'
 
       response '200', 'time booking found' do
@@ -77,7 +77,7 @@ describe 'Time bookings API', type: :request do
       let(:time_booking) { create :time_booking, project: user.projects.first, user: user }
       let(:id) { time_booking.id }
 
-      include_examples 'access rights', :hourglass_edit_booked_time, :hourglass_edit_own_booked_time, success_code: '204', error_code: '404', extra_permission: [:hourglass_view_booked_time, :hourglass_view_own_booked_time]
+      include_examples 'access rights', :hourglass_edit_booked_time, :hourglass_edit_own_booked_time, success_code: '204'
 
       include_examples 'not found'
 
@@ -101,7 +101,7 @@ describe 'Time bookings API', type: :request do
       end
       let(:time_booking) { {time_booking: {comments: 'test2'}} }
 
-      include_examples 'access rights', :hourglass_book_time, :hourglass_book_own_time, :hourglass_edit_booked_time, :hourglass_edit_own_booked_time, success_code: '204', error_code: '404', extra_permission: [:hourglass_view_booked_time, :hourglass_view_own_booked_time]
+      include_examples 'access rights', :hourglass_book_time, :hourglass_book_own_time, :hourglass_edit_booked_time, :hourglass_edit_own_booked_time, success_code: '204'
 
       include_examples 'not found'
       context do
@@ -141,7 +141,7 @@ describe 'Time bookings API', type: :request do
 
       let(:'time_bookings[]') { time_booking_ids }
 
-      include_examples 'access rights', :hourglass_edit_booked_time, :hourglass_edit_own_booked_time, extra_permission: :hourglass_view_booked_time
+      include_examples 'access rights', :hourglass_edit_booked_time, :hourglass_edit_own_booked_time
 
       response '200', 'time bookings found' do
         run_test!
@@ -165,7 +165,7 @@ describe 'Time bookings API', type: :request do
 
       let(:time_bookings) { {time_bookings: {time_booking_ids[0] => {comments: 'test3'}, time_booking_ids[1] => {comments: 'test4'}}} }
 
-      include_examples 'access rights', :hourglass_book_time, :hourglass_book_own_time, :hourglass_edit_booked_time, :hourglass_edit_own_booked_time, error_code: '403', extra_permission: :hourglass_view_booked_time
+      include_examples 'access rights', :hourglass_book_time, :hourglass_book_own_time, :hourglass_edit_booked_time, :hourglass_edit_own_booked_time
 
       response '200', 'time bookings found' do
         run_test!
