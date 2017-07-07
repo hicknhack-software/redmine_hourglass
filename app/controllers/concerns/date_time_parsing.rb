@@ -19,7 +19,7 @@ module DateTimeParsing
 
   def utc_offset
     user_time_zone = User.current.time_zone
-    return user_time_zone.formatted_offset if user_time_zone
+    return user_time_zone.now.formatted_offset if user_time_zone
     time = Time.now
     return time.localtime.formatted_offset if time.utc?
     time.formatted_offset
