@@ -69,7 +69,7 @@ module Hourglass
     end
 
     def current_time_tracker
-      User.current.hourglass_time_tracker
+      User.current.hourglass_time_tracker or raise ActiveRecord::RecordNotFound
     end
 
     def time_tracker_from_id(id = params[:id])
