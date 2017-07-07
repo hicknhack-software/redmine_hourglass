@@ -28,7 +28,7 @@ class Hourglass::RedmineTimeTrackerImport
             comments: time_booking.time_log.comments,
             user_id: time_booking.time_log.user_id
         }
-        time_log_attributes[:id] = new_time_booking.time_log_id if new_time_booking.persisted?
+        # time_log_attributes[:id] = new_time_booking.time_log_id if new_time_booking.persisted?
         new_time_booking.attributes = {
             start: time_booking.started_on,
             stop: time_booking.stopped_at,
@@ -65,7 +65,7 @@ class Hourglass::RedmineTimeTrackerImport
       puts "There was a problem while importing #{old.class.name} #{old.id}:"
       puts "Attributes: #{old.attributes.to_json}"
       puts "Errors: #{new.errors.full_messages.to_sentence}."
-      if new.errors.count == 1 && new.errors.added?(:base, :overlaps)
+      if new.errors.count == 1 && (new.respond_to?(:time_log) ? new.time_log.errors.added?(:base, :overlaps) : new.errors.added?(:base, :overlaps))
         new.save validate: false
         puts 'It was added nevertheless, delete it yourself if you want it removed.'
         puts "New record: #{new.attributes.to_json}"
