@@ -62,7 +62,15 @@ class Hourglass::RedmineTimeTrackerImport
     end
 
     def log_errors(old, new)
-      puts "[#{old.class.name} #{old.id}] #{new.errors.full_messages}"
+      puts "There was a problem while importing #{old.class.name} #{old.id}:"
+      puts "Attributes: #{old.attributes.to_json}"
+      puts "Errors: #{new.errors.full_messages.to_sentence}."
+      if new.errors.count == 1 && new.errors.added?(:base, :overlaps)
+        new.save validate: false
+        puts 'It was added nevertheless, delete it yourself if you want it removed.'
+        puts "New record: #{new.attributes.to_json}"
+      end
+      puts '-------------------'
     end
 
     def find_gaps(bookings, start, stop)
