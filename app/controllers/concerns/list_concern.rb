@@ -3,12 +3,6 @@ module ListConcern
   extend ActiveSupport::Concern
 
   private
-  def init_sort(query = @query)
-    sort_init query.sort_criteria.empty? ? [%w(date asc)] : query.sort_criteria
-    sort_update query.sortable_columns
-    query.sort_criteria = @sort_criteria.to_a
-  end
-
   def list_arguments(query = @query, options = {})
     list_arguments = {query: query, action_name: action_name, sort_criteria: @sort_criteria}
     if query.valid?
