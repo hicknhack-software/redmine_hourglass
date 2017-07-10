@@ -24,7 +24,7 @@ module Hourglass
     end
 
     def base_scope
-      super.eager_load(:time_booking).includes(:user)
+      super.eager_load(:user, time_booking: :project)
     end
 
     def sql_for_booked_field(field, operator, value)

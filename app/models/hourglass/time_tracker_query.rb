@@ -31,7 +31,7 @@ module Hourglass
     end
 
     def base_scope
-      super.includes(:user, :project, :activity, :issue)
+      super.eager_load(:user, :project, :activity, :issue)
     end
   end
 end
