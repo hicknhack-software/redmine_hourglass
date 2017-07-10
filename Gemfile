@@ -25,6 +25,6 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'zonebie'
   gem 'timecop'
-  gem 'faker'
+  gem 'faker', require: false
   gem 'database_cleaner'
 end
