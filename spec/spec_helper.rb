@@ -17,9 +17,6 @@ require 'factory_girl_rails'
 FactoryGirl.definition_file_paths << File.join(File.dirname(__FILE__), 'factories')
 FactoryGirl.reload
 
-require 'faker'
-I18n.reload!
-
 #ENV['ZONEBIE_TZ'] = 'Pacific/Pago_Pago' #possibility to set a specific timezone
 Zonebie.set_random_timezone
 
