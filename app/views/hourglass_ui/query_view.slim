@@ -1,5 +1,5 @@
 - content_for :sidebar do
-  = render_sidebar_queries
+  = render_sidebar_queries query_class, @project
 
 = render layout: 'hourglass_ui/layouts/hourglass' do
   - if content_for? :contextual

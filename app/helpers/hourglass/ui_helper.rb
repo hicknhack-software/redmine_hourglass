@@ -17,8 +17,14 @@ module Hourglass
       super
     end
 
-    def sidebar_queries
-      @sidebar_queries ||= query_class.visible.where(project: [nil, @project]).order(name: :asc)
+    unless Redmine::VERSION::MAJOR >= 3 && Redmine::VERSION::MINOR >= 4
+      def render_sidebar_queries(_klass, _project)
+        super()
+      end
+
+      def sidebar_queries
+        @sidebar_queries ||= query_class.visible.where(project: [nil, @project]).order(name: :asc)
+      end
     end
 
     def column_content(column, entry, use_html = true)
