@@ -2,24 +2,8 @@ module Hourglass
   class TimeLogsController < ApiBaseController
     accept_api_auth :index, :show, :update, :create, :bulk_create, :bulk_update, :split, :join, :book, :bulk_book, :destroy, :bulk_destroy
 
-    # removed to have consistency with other api controller
-    # rescue_from Query::StatementInvalid, :with => :query_statement_invalid
-    # def index
-    #   params.merge! user_id: 'me' unless allowed_to?('index_foreign')
-    #   @query = Hourglass::TimeLogQuery.build_from_params params, name: '_'
-    #   scope = @query.results_scope
-    #   offset, limit = api_offset_and_limit
-    #   respond_with_success(
-    #       count: scope.count,
-    #       offset: offset,
-    #       limit: limit,
-    #       time_logs: scope.offset(offset).limit(limit).to_a
-    #   )
-    # end
-
     def index
-      authorize Hourglass::TimeLog
-      respond_with_success policy_scope(Hourglass::TimeLog)
+      list_records Hourglass::TimeLog
     end
 
     def show
@@ -143,7 +127,7 @@ module Hourglass
     end
 
     def time_log_from_id(id = params[:id])
-      policy_scope(Hourglass::TimeLog).find id
+      Hourglass::TimeLog.find id
     end
   end
 end

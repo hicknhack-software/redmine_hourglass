@@ -1,5 +1,7 @@
 module Hourglass
   class ApiBaseController < ApplicationController
+    include QueryConcern
+    include SortConcern
     include BooleanParsing
     include DateTimeParsing
     around_action :catch_halt
@@ -10,6 +12,7 @@ module Hourglass
     rescue_from StandardError, with: :internal_server_error
     rescue_from ActionController::ParameterMissing, with: :missing_parameters
     rescue_from(ActiveRecord::RecordNotFound) { render_404 no_halt: true }
+    rescue_from Query::StatementInvalid, with: :query_statement_invalid
 
     include ::AuthorizationConcern
 
@@ -61,6 +64,21 @@ module Hourglass
       else
         respond_with_error :bad_request, record.errors.full_messages, array_mode: :sentence
       end
+    end
+
+    def list_records(klass)
+      authorize klass
+      @query_identifier = klass.name.demodulize.tableize
+      retrieve_query force_new: true
+      init_sort
+      scope = @query.results_scope order: sort_clause
+      offset, limit = api_offset_and_limit
+      respond_with_success(
+          count: scope.count,
+          offset: offset,
+          limit: limit,
+          records: scope.offset(offset).limit(limit).to_a
+      )
     end
 
     def bulk(params_key = controller_name, &block)

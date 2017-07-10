@@ -3,8 +3,7 @@ module Hourglass
     accept_api_auth :index, :show, :create, :bulk_create, :update, :bulk_update, :destroy, :bulk_destroy
 
     def index
-      authorize Hourglass::TimeBooking
-      respond_with_success policy_scope(Hourglass::TimeBooking)
+      list_records Hourglass::TimeBooking
     end
 
     def show
@@ -76,7 +75,7 @@ module Hourglass
     end
 
     def time_booking_from_id(id = params[:id])
-      policy_scope(Hourglass::TimeBooking).find id
+      Hourglass::TimeBooking.find id
     end
   end
 end

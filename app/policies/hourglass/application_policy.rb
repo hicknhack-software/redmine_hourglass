@@ -2,30 +2,6 @@ module Hourglass
   class ApplicationPolicy
     include RedmineAuthorization
 
-    class Scope
-      include RedmineAuthorization
-
-      attr_reader :user, :scope
-
-      def initialize(user, scope)
-        @user = user
-        @scope = scope
-      end
-
-      def resolve
-        scope.where(user: user)
-      end
-
-      private
-      def project
-        nil
-      end
-
-      def record_user
-        nil
-      end
-    end
-
     attr_reader :user, :record, :record_user, :project, :message
 
     def initialize(user, record)

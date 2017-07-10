@@ -10,7 +10,7 @@ module DateTimeParsing
   def parse_date_time(params = self.params)
     params.each do |k, v|
       parse_date_time(v) if v.is_a? Hash
-      v.each { parse_date_time(v) } if v.is_a? Array
+      v.each { parse_date_time(v) } if v.is_a?(Array) && v.all? { |vv| vv.is_a? Hash }
       if %w(start stop).include?(k) && !iso_string?(v)
         params[k] = DateTime.strptime(detranslate(v) + " #{utc_offset}", date_time_format + ' %:z')
       end

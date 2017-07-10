@@ -3,8 +3,7 @@ module Hourglass
     accept_api_auth :index, :show, :start, :update, :bulk_update, :stop, :destroy, :bulk_destroy
 
     def index
-      authorize Hourglass::TimeTracker
-      respond_with_success policy_scope(Hourglass::TimeTracker)
+      list_records Hourglass::TimeTracker
     end
 
     def show
@@ -73,7 +72,7 @@ module Hourglass
     end
 
     def time_tracker_from_id(id = params[:id])
-      policy_scope(Hourglass::TimeTracker).find id
+      Hourglass::TimeTracker.find id
     end
   end
 end

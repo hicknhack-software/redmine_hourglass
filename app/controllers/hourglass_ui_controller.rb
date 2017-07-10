@@ -11,7 +11,7 @@ class HourglassUiController < ApplicationController
   helper_method :date_time_format, :utc_offset, :date_time_strings_map
 
   include AuthorizationConcern
-  include SortHelper
+  include SortConcern
   include QueryConcern
   include ListConcern
   include DateTimeParsing

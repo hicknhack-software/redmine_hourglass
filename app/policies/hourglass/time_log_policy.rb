@@ -1,12 +1,5 @@
 module Hourglass
   class TimeLogPolicy < ApplicationPolicy
-    class Scope < Scope
-      def resolve
-        return scope.all if foreign_authorized? :view
-        super
-      end
-    end
-
     def book?
       @message = I18n.t('hourglass.api.time_logs.errors.already_booked') and return false if record.respond_to?(:booked?) && record.booked?
       booking_allowed?
