@@ -14,9 +14,11 @@ env:
 
   matrix:
   - REDMINE_VERSION=3.0.4 TRACE=--trace
+  - REDMINE_VERSION=3.0.7 TRACE=--trace
   - REDMINE_VERSION=3.1.7 TRACE=--trace
-  - REDMINE_VERSION=3.2.6 TRACE=--trace
-  - REDMINE_VERSION=3.3.3 TRACE=--trace
+  - REDMINE_VERSION=3.2.7 TRACE=--trace
+  - REDMINE_VERSION=3.3.4 TRACE=--trace
+  - REDMINE_VERSION=3.4.1 TRACE=--trace
 
 before_install:
 - . .travis/clone_redmine.sh
