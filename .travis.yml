@@ -13,7 +13,6 @@ env:
   - REDMINE=test_redmine
 
   matrix:
-  - REDMINE_VERSION=3.1.7 TRACE=--trace
   - REDMINE_VERSION=3.2.7 TRACE=--trace
   - REDMINE_VERSION=3.3.4 TRACE=--trace
   - REDMINE_VERSION=3.4.1 TRACE=--trace
