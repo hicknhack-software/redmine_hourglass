@@ -28,7 +28,7 @@ module Hourglass
     def stop
       stop = Time.now.change(sec: 0) + 1.minute
       time_log = nil
-      ActiveRecord::Base.transaction do
+      transaction(requires_new: true) do
         if start < stop
           time_log = TimeLog.create time_log_params.merge stop: stop
           raise ActiveRecord::Rollback unless time_log.persisted?
