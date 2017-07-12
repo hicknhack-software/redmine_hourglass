@@ -1,8 +1,5 @@
 - content_for :header_tags do
-  - if Hourglass.redmine_has_advanced_queries?
-    = context_menu
-  - else
-    = context_menu hourglass_ui_context_menu_path
+  = context_menu if Hourglass.redmine_has_advanced_queries?
   = javascript_include_tag 'application', plugin: Hourglass::PLUGIN_NAME
   javascript:
     if (window.hourglass === null) {
@@ -21,3 +18,6 @@
     = link_to t(:button_delete), hourglass_query_path(@query), confirm: t(:text_are_you_sure), method: :delete, class: 'icon icon-del'
 
 = yield
+
+= context_menu hourglass_ui_context_menu_path unless Hourglass.redmine_has_advanced_queries?
+
