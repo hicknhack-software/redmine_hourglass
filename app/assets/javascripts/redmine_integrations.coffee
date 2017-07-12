@@ -101,12 +101,6 @@ window.toggleOperator = (field) ->
   return enableValues(field, []) if $("#operators_" + field.replace('.', '_')).val() is 'q'
   window.oldToggleOperator field
 
-# this is only needed for redmine > 3.4, but it doesn't hurt to have it in lower version too
-window.oldContextMenuShow = window.contextMenuShow
-window.contextMenuShow = (event) ->
-  event.target = $('<div/>').appendTo $('<form/>', data: {'cm-url': hourglassRoutes.hourglass_ui_context_menu()})
-  window.oldContextMenuShow event
-
 $ ->
   $issueActionList = $('#content .contextual')
   $issueActionsToAdd = $('.js-issue-action')
