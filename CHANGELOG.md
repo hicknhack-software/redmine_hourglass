@@ -5,8 +5,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-
-## [1.0.0] - 2017-07-10
 We are basically in feature parity to the redmine time tracker plugins [latest version](https://github.com/hicknhack-software/redmine_time_tracker). Notable changes to this version are listed below.
 
 ### Added
@@ -23,6 +21,6 @@ We are basically in feature parity to the redmine time tracker plugins [latest v
 
 ### Removed
 - dropped support for redmine below version 3.2
-- dropped support for ruby below 2.0
+- dropped support for ruby below 2.0.0
 - removed the extra report tab, it's now merged in the time bookings tab
 - removed the continue feature for time bookings (if you want this back, consider giving a +1 [here](https://github.com/hicknhack-software/redmine_hourglass/issues/3))
