@@ -17,7 +17,7 @@ module Hourglass
       super
     end
 
-    unless Redmine::VERSION::MAJOR >= 3 && Redmine::VERSION::MINOR >= 4
+    unless Hourglass.redmine_has_advanced_queries?
       def render_sidebar_queries(_klass, _project)
         super()
       end

@@ -8,7 +8,7 @@ Redmine::Plugin.register Hourglass::PLUGIN_NAME do
   author_url 'http://www.hicknhack-software.com'
   version Hourglass::VERSION
 
-  requires_redmine version_or_higher: '3.0.0'
+  requires_redmine version_or_higher: '3.2.0'
 
   settings default: Hourglass::Settings.defaults, :partial => "settings/#{Hourglass::PLUGIN_NAME}"
 

@@ -1,7 +1,7 @@
 module Hourglass
   module ListHelper
     def column_header(_query, column, options={})
-      return super if Redmine::VERSION::MAJOR >= 3 && Redmine::VERSION::MINOR >= 4
+      return super if Hourglass.redmine_has_advanced_queries?
       
       if column.sortable && options[:sort_param].present?
         params[:sort] = params.delete options[:sort_param]
