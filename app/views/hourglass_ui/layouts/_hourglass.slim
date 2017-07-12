@@ -1,4 +1,8 @@
 - content_for :header_tags do
+  - if Redmine::VERSION::MAJOR >= 3 && Redmine::VERSION::MINOR >= 4
+    = context_menu
+  - else
+    = context_menu hourglass_ui_context_menu_path
   = javascript_include_tag 'application', plugin: Hourglass::PLUGIN_NAME
   javascript:
     if (window.hourglass === null) {
@@ -17,8 +21,3 @@
     = link_to t(:button_delete), hourglass_query_path(@query), confirm: t(:text_are_you_sure), method: :delete, class: 'icon icon-del'
 
 = yield
-
-- if Redmine::VERSION::MAJOR >= 3 && Redmine::VERSION::MINOR >= 4
-  = context_menu
-- else
-  = context_menu hourglass_ui_context_menu_path
