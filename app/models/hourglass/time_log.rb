@@ -94,7 +94,7 @@ module Hourglass
     end
 
     def joinable?(other)
-      stop == other.start && bookable? && other.bookable?
+      user_id == other.user_id && stop == other.start && bookable? && other.bookable?
     end
 
     def self.joinable?(*ids)
