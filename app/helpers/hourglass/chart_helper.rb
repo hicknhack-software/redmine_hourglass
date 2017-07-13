@@ -20,15 +20,19 @@ module Hourglass
               tooltips[column] += ["#{format_date date.to_time}, #{localized_hours_in_units hours}"]
             end
           end
-          # to get readable labels, we have to blank out some of them if there are to many
-          gap = [(date_range.count / 8.to_f).ceil, 1].max
-          ticks = date_range.each_with_index.map { |date, i| i % gap == 0 ? format_date(date.to_time) : '' }
+          ticks = calculate_ticks date_range
         end
       end
       [data.values, ticks, tooltips.values]
     end
 
     private
+    # to get readable labels, we have to blank out some of them if there are to many
+    def calculate_ticks(date_range)
+      gap = [(date_range.count / 8.to_f).ceil, 1].max
+      date_range.each_with_index.map { |date, i| i % gap == 0 ? format_date(date.to_time) : '' }
+    end
+
     def hours_per_date(query)
       query.total_by_group_for(:hours).transform_values do |totals_by_column|
         totals_by_column = {default: totals_by_column} unless query.main_query.group_by_statement
