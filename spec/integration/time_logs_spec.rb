@@ -208,11 +208,11 @@ describe 'Time logs API', type: :request do
       let(:time_log2) { create :time_log, user: user, start: time_log.stop, stop: time_log.stop + 10.minutes }
       let(:'ids[]') { [time_log.id, time_log2.id] }
 
-      # include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
-      # response '404', 'nothing found' do
-      #   let(:'ids[]') { ['invalid'] }
-      #   run_test!
-      # end
+      include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
+      response '404', 'nothing found' do
+        let(:'ids[]') { ['invalid'] }
+        run_test!
+      end
 
       response '200', 'time logs found' do
         schema type: 'object',
@@ -223,15 +223,16 @@ describe 'Time logs API', type: :request do
                    }
                }                 
 
-        # include_examples 'has a valid response'
-        #
-        # it 'returns correct data' do
-        #   data = JSON.parse(response.body, symbolize_names: true)
-        #   expect(Time.parse(data[:start])).to eq time_log.start.change(sec: 0)
-        #   expect(Time.parse(data[:stop])).to eq time_log2.stop.change(sec: 0)
-        # end
+        include_examples 'has a valid response'
+
+        it 'returns correct data' do
+          data = JSON.parse(response.body, symbolize_names: true)
+          expect(Time.parse(data[:start])).to eq time_log.start.change(sec: 0)
+          expect(Time.parse(data[:stop])).to eq time_log2.stop.change(sec: 0)
+        end
+        
         context do
-          let(:time_log2) { create :time_log, user: create(:user) }
+          let(:time_log2) { create :time_log, user: user, start: time_log.stop + 10.minutes, stop: time_log.stop + 20.minutes }
           include_examples 'error message', 'time logs not joined'
         end
       end
