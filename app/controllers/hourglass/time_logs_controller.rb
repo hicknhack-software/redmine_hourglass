@@ -51,7 +51,9 @@ module Hourglass
 
     def join
       authorize Hourglass::TimeLog
-      time_logs = Hourglass::TimeLog.find(id: params[:ids].uniq).order start: :asc
+      ids = params[:ids].uniq
+      time_logs = Hourglass::TimeLog.where(id: ids).order start: :asc
+      raise ActiveRecord::RecordNotFound if time_logs.length != ids.length
       time_log = time_logs.transaction do
         time_logs.reduce do |joined, tl|
           authorize tl

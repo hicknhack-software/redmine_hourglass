@@ -98,6 +98,12 @@ addStartStopLimitMoments = ->
   unless moment.isMoment($field.data('mLimit'))
     $field.data 'mLimit', moment(hourglass.Utils.detranslateDateTime($field.val()), window.hourglass.DateTimeFormat)
 
+# this is only needed for redmine > 3.4, but it doesn't hurt to have it in lower version too
+window.oldContextMenuShow = window.contextMenuShow
+window.contextMenuShow = (event) ->
+  event.target = $('<div/>').appendTo $('<form/>', data: {'cm-url': hourglassRoutes.hourglass_ui_context_menu()})
+  window.oldContextMenuShow event
+
 $ ->
   $list = $('.hourglass-list')
   $list

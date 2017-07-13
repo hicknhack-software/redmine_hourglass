@@ -1,4 +1,5 @@
 - content_for :header_tags do
+  = context_menu if Hourglass.redmine_has_advanced_queries?
   = javascript_include_tag 'application', plugin: Hourglass::PLUGIN_NAME
   javascript:
     if (window.hourglass === null) {
@@ -18,4 +19,5 @@
 
 = yield
 
-= context_menu hourglass_ui_context_menu_path
+= context_menu hourglass_ui_context_menu_path unless Hourglass.redmine_has_advanced_queries?
+

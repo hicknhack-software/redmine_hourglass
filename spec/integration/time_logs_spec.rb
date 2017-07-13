@@ -197,6 +197,48 @@ describe 'Time logs API', type: :request do
     end
   end
 
+  path '/time_logs/join.json' do
+    post 'Joins multiple time logs' do
+      produces 'application/json'
+      tags 'Time logs'
+      parameter name: :'ids[]', in: :query, type: :array, items: {type: :integer}, collectionFormat: :multi
+
+      let(:user) { create :user, :as_member, permissions: [:hourglass_track_time] }
+      let(:time_log) { create :time_log, user: user }
+      let(:time_log2) { create :time_log, user: user, start: time_log.stop, stop: time_log.stop + 10.minutes }
+      let(:'ids[]') { [time_log.id, time_log2.id] }
+
+      include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
+      response '404', 'nothing found' do
+        let(:'ids[]') { ['invalid'] }
+        run_test!
+      end
+
+      response '200', 'time logs found' do
+        schema type: 'object',
+               properties: {
+                   time_log: {
+                       '$ref' => '#/definitions/time_log',
+                       required: %w(id start stop user_id created_at updated_at)
+                   }
+               }                 
+
+        include_examples 'has a valid response'
+
+        it 'returns correct data' do
+          data = JSON.parse(response.body, symbolize_names: true)
+          expect(Time.parse(data[:start])).to eq time_log.start.change(sec: 0)
+          expect(Time.parse(data[:stop])).to eq time_log2.stop.change(sec: 0)
+        end
+        
+        context do
+          let(:time_log2) { create :time_log, user: user, start: time_log.stop + 10.minutes, stop: time_log.stop + 20.minutes }
+          include_examples 'error message', 'time logs not joined'
+        end
+      end
+    end
+  end
+
   path '/time_logs/bulk_destroy.json' do
     delete 'Deletes multiple time logs at once' do
       tags 'Time logs'
