@@ -1,11 +1,13 @@
 module Hourglass
   module ListHelper
-    def column_header(column, sort_param_name)
-      if column.sortable && sort_param_name.present?
-        params[:sort] = params.delete sort_param_name
+    def column_header(_query, column, options={})
+      return super if Hourglass.redmine_has_advanced_queries?
+      
+      if column.sortable && options[:sort_param].present?
+        params[:sort] = params.delete options[:sort_param]
         result = super column
-        result.gsub! /(?<!_)sort(?==)/, sort_param_name
-        params[sort_param_name] = params.delete :sort
+        result.gsub! /(?<!_)sort(?==)/, options[:sort_param]
+        params[options[:sort_param]] = params.delete :sort
         result.html_safe
       else
         super column

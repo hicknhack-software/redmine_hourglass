@@ -10,7 +10,7 @@
             = link_to image_tag('toggle_check.png'), {}, title: "#{t(:button_check_all)} / #{t(:button_uncheck_all)}"
           - @sort_criteria = sort_criteria
           - query.columns.each do |column|
-            = column_header column, list_arguments[:sort_param_name]
+            = column_header query, column, sort_param: list_arguments[:sort_param_name]
           th.actions
       tbody
         tr.create-form
