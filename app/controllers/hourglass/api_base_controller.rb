@@ -117,13 +117,14 @@ module Hourglass
       e.policy.message || t('hourglass.api.errors.forbidden')
     end
 
-    def missing_parameters(e)
+    def missing_parameters(_e)
       respond_with_error :bad_request, t('hourglass.api.errors.missing_parameters'), no_halt: true
     end
 
     def internal_server_error(e)
-      Rails.logger.error ([e.message] + e.backtrace).join("\n")
-      respond_with_error :internal_server_error, Rails.env.production? ? t('hourglass.api.errors.internal_server_error') : [e.message] + e.backtrace, no_halt: true
+      messages = [e.message] + e.backtrace
+      Rails.logger.error messages.join("\n")
+      respond_with_error :internal_server_error, Rails.env.production? ? t('hourglass.api.errors.internal_server_error') : messages, no_halt: true
     end
 
     def flash_array(type, messages)

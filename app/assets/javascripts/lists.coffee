@@ -119,7 +119,7 @@ $ ->
   .on 'ajax:error', '.js-show-inline-form-multi, .js-create-record', processErrorPageResponse
   .on 'ajax:before', '.disabled[data-remote]', ->
     window.contextMenuHide()
-    return false;
+    return false
 
   $list.find '.group'
   .on 'click', '.expander', (event) ->
