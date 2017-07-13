@@ -82,30 +82,33 @@ module Hourglass
     end
 
     def bulk(params_key = controller_name, &block)
-      success = []
-      errors = []
+      @bulk_success = []
+      @bulk_errors = []
       params[params_key].each_with_index do |(id, params), index|
         id, params = "new#{index}", id if id.is_a?(Hash)
-        is_new = id.start_with?('new')
-        error_preface = "[#{t("hourglass.api.#{controller_name}.errors.bulk_#{'create_' if is_new}error_preface", id: is_new ? index : id)}:]"
-        entry = bulk_entry id, params, &block
-        if entry
-          if entry.is_a? String
-            errors.push "#{error_preface} #{entry}"
-          elsif entry.errors.empty?
-            success.push entry
-          else
-            errors.push "#{error_preface} #{entry.errors.full_messages.to_sentence}"
-          end
-        else
-          errors.push "#{error_preface} #{t("hourglass.api.#{controller_name}.errors.not_found")}"
-        end
+        error_preface = id.start_with?('new') ? bulk_error_preface(index, mode: :create) : bulk_error_preface(id)
+        evaluate_entry bulk_entry(id, params, &block), error_preface
       end
-      if success.length > 0
-        flash_array :error, errors if errors.length > 0 && !api_request?
-        respond_with_success success: success, errors: errors
+
+      if @bulk_success.length > 0
+        flash_array :error, @bulk_errors if @bulk_errors.length > 0 && !api_request?
+        respond_with_success success: @bulk_success, errors: @bulk_errors
       else
-        respond_with_error :bad_request, errors
+        respond_with_error :bad_request, @bulk_errors
+      end
+    end
+
+    def evaluate_entry(entry, error_preface)
+      if entry
+        if entry.is_a? String
+          @bulk_errors.push "#{error_preface} #{entry}"
+        elsif entry.errors.empty?
+          @bulk_success.push entry
+        else
+          @bulk_errors.push "#{error_preface} #{entry.errors.full_messages.to_sentence}"
+        end
+      else
+        @bulk_errors.push "#{error_preface} #{t("hourglass.api.#{controller_name}.errors.not_found")}"
       end
     end
 
@@ -117,13 +120,18 @@ module Hourglass
       e.policy.message || t('hourglass.api.errors.forbidden')
     end
 
-    def missing_parameters(e)
+    def bulk_error_preface(id, mode: nil)
+      "[#{t("hourglass.api.#{controller_name}.errors.bulk_#{'create_' if mode == :create}error_preface", id: id)}:]"
+    end
+
+    def missing_parameters(_e)
       respond_with_error :bad_request, t('hourglass.api.errors.missing_parameters'), no_halt: true
     end
 
     def internal_server_error(e)
-      Rails.logger.error ([e.message] + e.backtrace).join("\n")
-      respond_with_error :internal_server_error, Rails.env.production? ? t('hourglass.api.errors.internal_server_error') : [e.message] + e.backtrace, no_halt: true
+      messages = [e.message] + e.backtrace
+      Rails.logger.error messages.join("\n")
+      respond_with_error :internal_server_error, Rails.env.production? ? t('hourglass.api.errors.internal_server_error') : messages, no_halt: true
     end
 
     def flash_array(type, messages)

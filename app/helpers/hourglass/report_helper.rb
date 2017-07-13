@@ -9,7 +9,7 @@ module Hourglass
     end
 
     def combined_column_names(column)
-      report_column_map.select { |key, array| array.include? column.name }.keys
+      report_column_map.select { |_key, array| array.include? column.name }.keys
     end
 
     def combined_columns
@@ -34,18 +34,21 @@ module Hourglass
       else
         output.concat [entry.activity, entry.comments].compact.join(': ')
       end
-      output.concat (content_tag :div, class: 'project' do
+      
+      version = content_tag :div, class: 'project' do
         [entry.project, entry.fixed_version].compact.join(' / ')
-      end)
+      end
+      output.concat version
       output
     end
 
     def duration_content(entry)
       output = ActiveSupport::SafeBuffer.new
       output.concat localized_hours_in_units entry.hours
-      output.concat (content_tag :div, class: 'start-stop' do
+      time = content_tag :div, class: 'start-stop' do
         [format_time(entry.start, false), format_time(entry.stop, false)].compact.join(' - ')
-      end)
+      end
+      output.concat time
       output
     end
   end

@@ -4,11 +4,11 @@ module Hourglass
       title @query.persisted? ? h(@query.name) : t("hourglass.ui.#{action_name}.title")
     end
 
-    def render_main_menu(project)
+    def render_main_menu(_project)
       render_menu :hourglass_menu
     end
 
-    def display_main_menu?(project)
+    def display_main_menu?(_project)
       Redmine::MenuManager.items(:hourglass_menu).children.present?
     end
 

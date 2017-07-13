@@ -56,7 +56,7 @@ module Hourglass
       #   Set one project setting
       #     Hourglass::Settings[:setting, project: 1] = 1
       def []=(*args)
-        project, new_settings = parse_assign_params *args.reverse
+        project, new_settings = parse_assign_params(*args.reverse)
 
         settings = get.call
         if project

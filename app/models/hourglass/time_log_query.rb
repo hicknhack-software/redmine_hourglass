@@ -27,7 +27,7 @@ module Hourglass
       super.eager_load(:user, time_booking: :project)
     end
 
-    def sql_for_booked_field(field, operator, value)
+    def sql_for_booked_field(field, operator, _value)
       operator_to_use = operator == '=' ? '*' : '!*'
       sql_for_field(field, operator_to_use, nil, TimeBooking.table_name, 'id')
     end

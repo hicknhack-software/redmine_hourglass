@@ -15,11 +15,11 @@ module Hourglass
     end
 
     def javascript_include_tag(*sources)
-      super *hourglass_asset_paths(:javascript, sources)
+      super(*hourglass_asset_paths(:javascript, sources))
     end
 
     def stylesheet_link_tag(*sources)
-      super *hourglass_asset_paths(:stylesheet, sources)
+      super(*hourglass_asset_paths(:stylesheet, sources))
     end
 
     def form_field(field, form, object, options = {})
@@ -31,7 +31,7 @@ module Hourglass
     end
 
     def projects_for_project_select(selected = nil)
-      projects = User.current.projects.allowed_to_one_of *(Hourglass::AccessControl.permissions_from_action(controller: 'hourglass/time_logs', action: 'book') + Hourglass::AccessControl.permissions_from_action(controller: 'hourglass/time_bookings', action: 'change')).flatten
+      projects = User.current.projects.allowed_to_one_of(*(Hourglass::AccessControl.permissions_from_action(controller: 'hourglass/time_logs', action: 'book') + Hourglass::AccessControl.permissions_from_action(controller: 'hourglass/time_bookings', action: 'change')).flatten)
       project_tree_options_for_select projects, selected: selected do |project|
         {data: {
             round_default: Hourglass::Settings[:round_default, project: project],

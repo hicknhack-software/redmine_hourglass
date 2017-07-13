@@ -30,6 +30,7 @@ de:
   field_start: Beginn
   field_stop: Ende
   label_this_quarter: aktuelles Quartal
+  label_last_quarter: letztes Quartal
   permission_hourglass_book_own_time: Eigene Zeit buchen
   permission_hourglass_book_time: Zeit buchen
   permission_hourglass_edit_booked_time: Gebuchte Zeit bearbeiten

@@ -48,8 +48,7 @@ module Hourglass::DateTimeCalculations
     end
 
     def booking_process(user, options)
-      round = (options[:round].nil? ? Hourglass::Settings[:round_default, project: options[:project_id]] : options[:round]) &&
-          !Hourglass::Settings[:round_sums_only, project: options[:project_id]]
+      round = round?(options)
       if round
         previous_time_log = closest_booked_time_log user, options[:project_id], options[:start], after_current: false
         options[:start], options[:stop] = calculate_bookable_time options[:start], options[:stop], previous_time_log && previous_time_log.time_booking && previous_time_log.time_booking.rounding_carry_over, project: options[:project_id]
@@ -86,6 +85,12 @@ module Hourglass::DateTimeCalculations
                               .with_start_in_interval(*interval)
                               .order(:start)
       after_current ? closest_time_logs.first : closest_time_logs.last
+    end
+
+    private
+    def round?(options)
+      (options[:round].nil? ? Hourglass::Settings[:round_default, project: options[:project_id]] : options[:round]) &&
+          !Hourglass::Settings[:round_sums_only, project: options[:project_id]]
     end
   end
 end

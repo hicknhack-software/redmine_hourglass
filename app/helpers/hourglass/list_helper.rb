@@ -6,7 +6,7 @@ module Hourglass
       if column.sortable && options[:sort_param].present?
         params[:sort] = params.delete options[:sort_param]
         result = super column
-        result.gsub! /(?<!_)sort(?==)/, options[:sort_param]
+        result.gsub!(/(?<!_)sort(?==)/, options[:sort_param])
         params[options[:sort_param]] = params.delete :sort
         result.html_safe
       else

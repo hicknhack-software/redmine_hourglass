@@ -55,7 +55,7 @@ module Hourglass
     end
 
     private
-    def self.visible_condition(user, options = {})
+    def self.visible_condition(user, _options = {})
       project_ids = Project.allowed_to(user, :hourglass_view_booked_time).pluck :id
       project_ids += Project.allowed_to(user, :hourglass_view_own_booked_time).pluck :id
       project_ids.uniq
