@@ -121,6 +121,10 @@ module Hourglass::QueryBase
         # = current quarter
         date = User.current.today
         sql = date_clause(db_table, db_field, date.beginning_of_quarter, date.end_of_quarter, is_custom_filter)
+      when 'lq'
+        # = last quarter
+        date = User.current.today - 3.months
+        sql = date_clause(db_table, db_field, date.beginning_of_quarter, date.end_of_quarter, is_custom_filter)
       else
         sql = super
     end

@@ -13,13 +13,7 @@ class HourglassQueriesController < ApplicationController
 
   def create
     update_query_from_params
-
-    if @query.save
-      flash[:notice] = l(:notice_successful_create)
-      redirect_to redirect_path query_id: @query.id
-    else
-      render action: 'new'
-    end
+    save
   end
 
   def edit
@@ -29,13 +23,7 @@ class HourglassQueriesController < ApplicationController
     @query.attributes = params[:query]
     @query.build_from_params params
     update_query_from_params
-
-    if @query.save
-      flash[:notice] = l(:notice_successful_update)
-      redirect_to redirect_path query_id: @query.id
-    else
-      render action: 'edit'
-    end
+    save action: :update
   end
 
   def destroy
@@ -44,6 +32,15 @@ class HourglassQueriesController < ApplicationController
   end
 
   private
+  def save(action: :create)
+    if @query.save
+      flash[:notice] = l(:"notice_successful_#{action}")
+      redirect_to redirect_path query_id: @query.id
+    else
+      render action: action == :create ? 'new' : 'edit'
+    end
+  end
+
   def build_query
     @query = query_class.build_from_params params, params[:query]
     @query.user = User.current

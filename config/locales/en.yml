@@ -26,6 +26,7 @@ en:
   field_start: Start
   field_stop: Stop
   label_this_quarter: current quarter
+  label_last_quarter: last quarter
   permission_hourglass_book_own_time: Book own time
   permission_hourglass_book_time: Book time
   permission_hourglass_edit_booked_time: Edit booked time
