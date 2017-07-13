@@ -99,7 +99,7 @@ showStopDialog = (e) ->
 window.oldToggleOperator = window.toggleOperator
 window.toggleOperator = (field) ->
   operator = $("#operators_" + field.replace('.', '_')).val()
-  return enableValues(field, []) if operator is 'q' or operator is 'lq
+  return enableValues(field, []) if operator is 'q' or operator is 'lq'
   window.oldToggleOperator field
 
 $ ->
