@@ -51,8 +51,8 @@ updateUserField = ($userField, $projectField) ->
       hourglass.FormValidator.validateField $userField
 
 updateDurationField = ($startField, $stopField) ->
-  start = moment(hourglass.Utils.detranslateDateTime($startField.val()), window.hourglass.DateTimeFormat)
-  stop = moment(hourglass.Utils.detranslateDateTime($stopField.val()), window.hourglass.DateTimeFormat)
+  start = moment $startField.val(), moment.ISO_8601
+  stop = moment $stopField.val(), moment.ISO_8601
   $startField.closest('form').find('.js-duration').val hourglass.Utils.formatDuration moment.duration stop.diff(start)
 
 formFieldChanged = (event) ->
@@ -81,9 +81,7 @@ durationFieldChanged = (event) ->
   return if $durationField.hasClass('invalid')
   $startField = $durationField.closest('form').find('[name*=start]')
   $stopField = $durationField.closest('form').find('[name*=stop]')
-  start = moment hourglass.Utils.detranslateDateTime($startField.val()), window.hourglass.DateTimeFormat
-  duration = hourglass.Utils.parseDuration $durationField.val()
-  $stopField.val start.add(duration).format(window.hourglass.DateTimeFormat)
+  hourglass.timeField.setValue $stopField, moment($startField.val()).add(hourglass.Utils.parseDuration $durationField.val())
   hourglass.FormValidator.validateField $stopField
 
 projectFieldChanged = (event) ->
@@ -144,8 +142,8 @@ checkSplitting = ->
   timeLogId = $form.data('timeLogId')
   $startField = $form.find('[name*=start]')
   $stopField = $form.find('[name*=stop]')
-  mStart = moment hourglass.Utils.detranslateDateTime($startField.val()), window.hourglass.DateTimeFormat
-  mStop = moment hourglass.Utils.detranslateDateTime($stopField.val()), window.hourglass.DateTimeFormat
+  mStart = moment $startField.val(), moment.ISO_8601
+  mStop = moment $stopField.val(), moment.ISO_8601
   round = $form.find('[type=checkbox][name*=round]').prop('checked')
   stopJqXhr = if mStop.isBefore $stopField.data('mLimit')
     split timeLogId, mStop, false, round

@@ -95,8 +95,7 @@ processErrorPageResponse = (event, {responseText}) ->
 
 addStartStopLimitMoments = ->
   $field = $(@)
-  unless moment.isMoment($field.data('mLimit'))
-    $field.data 'mLimit', moment(hourglass.Utils.detranslateDateTime($field.val()), window.hourglass.DateTimeFormat)
+  $field.data 'mLimit', moment $field.val(), moment.ISO_8601 unless moment.isMoment($field.data('mLimit'))
 
 # this is only needed for redmine > 3.4, but it doesn't hurt to have it in lower version too
 window.oldContextMenuShow = window.contextMenuShow

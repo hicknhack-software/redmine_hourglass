@@ -5,7 +5,7 @@ isNotEmpty = ($field) ->
   not isEmpty $field
 
 isValidTimeField = ($field, limitConditionCallback, additionalConditionCallback) ->
-  mTime = moment(hourglass.Utils.detranslateDateTime($field.val()), window.hourglass.DateTimeFormat)
+  mTime = moment $field.val(), moment.ISO_8601
   mTime.isValid() and
     (not $field.hasClass('js-validate-limit') or limitConditionCallback(mTime)) and
     additionalConditionCallback(mTime)
@@ -23,9 +23,9 @@ isFieldValid = ($field, $form) ->
         (mStart) ->
           not mStart.isBefore $field.data('mLimit')
         (mStart) ->
-          stopField = $form.find('[name*=stop]')
-          return true if stopField.length is 0
-          mStop = moment(hourglass.Utils.detranslateDateTime(stopField.val()), window.hourglass.DateTimeFormat)
+          $stopField = $form.find('[name*=stop]')
+          return true if $stopField.length is 0
+          mStop = moment $stopField.val(), moment.ISO_8601
           if $field.hasClass('js-allow-zero-duration')
             mStart.isSameOrBefore mStop
           else
@@ -35,9 +35,9 @@ isFieldValid = ($field, $form) ->
         (mStop) ->
           not mStop.isAfter $field.data('mLimit')
         (mStop) ->
-          startField = $form.find('[name*=start]')
-          return true if startField.length is 0
-          mStart = moment(hourglass.Utils.detranslateDateTime(startField.val()), window.hourglass.DateTimeFormat)
+          $startField = $form.find('[name*=start]')
+          return true if $startField.length is 0
+          mStart = moment $startField.val(), moment.ISO_8601
           if $field.hasClass('js-allow-zero-duration')
             mStop.isSameOrAfter mStart
           else

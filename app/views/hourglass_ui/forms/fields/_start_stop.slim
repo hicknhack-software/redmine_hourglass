@@ -2,6 +2,11 @@
   .label
     = form.label field
   .input
-    - options = {value: entry[field] && format_time(entry[field]), disabled: local_assigns[:disabled], class: css_classes(local_assigns[:css_classes], ('js-validate-limit' if local_assigns[:validate_limit].present?), ('js-allow-zero-duration' if local_assigns[:allow_zero_duration].present?), ('js-not-in-multi' if local_assigns[:not_in_multi].present?))}
+    - options = {disabled: local_assigns[:disabled], class: css_classes(local_assigns[:css_classes],
+            ('js-validate-limit' if local_assigns[:validate_limit].present?),
+            ('js-allow-zero-duration' if local_assigns[:allow_zero_duration].present?),
+            ('js-not-in-multi' if local_assigns[:not_in_multi].present?))}
     - options[:id] = local_assigns[:id] if local_assigns[:id].present?
-    = form.text_field field, options
+    = form.text_field field, name: nil, id: nil, value: entry[field] && format_time(entry[field]),
+            disabled: local_assigns[:disabled], class: 'js-linked-with-hidden js-time-field'
+    = form.hidden_field field, options.merge(value: entry[field].iso8601)
