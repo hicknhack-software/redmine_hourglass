@@ -1,6 +1,7 @@
 - content_for :header_tags do
   = context_menu if Hourglass.redmine_has_advanced_queries?
   = javascript_include_tag 'application', plugin: Hourglass::PLUGIN_NAME
+  - am_pm = I18n.t([:am, :pm], scope: :time)
   javascript:
     if (window.hourglass === null) {
         window.hourglass = {};
@@ -8,7 +9,22 @@
 
     window.hourglass.DateTimeFormat = "#{format_identifier_to_js date_time_format}";
     window.hourglass.UtcOffset = "#{utc_offset}";
-    window.hourglass.DateTimeStrings = #{date_time_strings_map.to_json.html_safe};
+
+    moment.locale('redmine-settings', {
+      months: #{date_strings_lookup :month_names},
+      monthsShort: #{date_strings_lookup :abbr_month_names},
+      weekdays: #{date_strings_lookup :day_names},
+      weekdaysShort: #{date_strings_lookup :abbr_day_names},
+      meridiemParse : new RegExp(/#{am_pm[0]}|#{am_pm[1]}/, 'i'),
+      isPM: function (input) {
+          return input.toLowerCase() === "#{am_pm[1]}";
+      },
+      meridiem: function (hour, _minute, isLowercase) {
+          var result = hour < 12 ? "#{am_pm[0]}" : "#{am_pm[1]}";
+          return isLowercase ? result.toLowerCase() : result.toUpperCase()
+      }
+
+    });
 
   = stylesheet_link_tag 'application', plugin: Hourglass::PLUGIN_NAME
 

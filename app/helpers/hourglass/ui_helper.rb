@@ -42,5 +42,23 @@ module Hourglass
       return nil unless time
       super in_user_time_zone(time).to_date
     end
+
+    def date_time_format
+      date = Setting.date_format.blank? ? I18n.t('date.formats.default') : Setting.date_format
+      time = Setting.time_format.blank? ? I18n.t('time.formats.time') : Setting.time_format
+      "#{date} #{time}"
+    end
+
+    def utc_offset
+      user_time_zone = User.current.time_zone
+      return user_time_zone.now.formatted_offset if user_time_zone
+      time = Time.now
+      return time.localtime.formatted_offset if time.utc?
+      time.formatted_offset
+    end
+
+    def date_strings_lookup(key)
+      I18n.t(key, scope: :date).compact.to_json.html_safe
+    end
   end
 end

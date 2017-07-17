@@ -3,11 +3,8 @@ module Hourglass
     include QueryConcern
     include SortConcern
     include BooleanParsing
-    include DateTimeParsing
     around_action :catch_halt
     before_action :require_login
-
-    before_action :parse_date_time
 
     rescue_from StandardError, with: :internal_server_error
     rescue_from ActionController::ParameterMissing, with: :missing_parameters
