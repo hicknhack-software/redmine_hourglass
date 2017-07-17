@@ -145,6 +145,7 @@ de:
         headings:
           time_logs: Letzte Zeiterfassungen (letzten 2 Wochen)
           time_bookings: Letzte Zeitbuchungen (letzten 2 Wochen)
+        qr_code_link: Verbinde die Hourglass App
       lists:
         button_book: Buchen
         button_book_all: Alle buchen

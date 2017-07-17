@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-#asset pipeline
+# asset pipeline
 gem 'uglifier'
 gem 'coffee-script'
 gem 'sass'
@@ -12,12 +12,14 @@ gem 'pundit'
 # if you are on windows and this makes problems, simply remove the line
 gem 'therubyracer', :platform => :ruby
 
-#views
+# views
 gem 'slim'
 gem 'js-routes', '~> 1.3'
 gem 'momentjs-rails', '>= 2.10.7'
 
 gem 'rswag' # api docs
+
+gem 'rqrcode'
 
 group :development, :test do
   gem 'rubycritic', require: false

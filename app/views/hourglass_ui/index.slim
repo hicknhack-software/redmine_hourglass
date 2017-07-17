@@ -12,3 +12,8 @@
   - if policy(Hourglass::TimeBooking).view?
     h3 = t('hourglass.ui.index.headings.time_bookings')
     = render partial: 'hourglass_ui/lists/list', locals: {list_arguments: @time_booking_list_arguments}
+
+  div
+    a.js-toggle href='javascript:;' data-target='.js-qr-code' = t('hourglass.ui.index.qr_code_link')
+    .js-qr-code.hidden
+      = raw RQRCode::QRCode.new("#{request.original_url}|#{User.current.api_key}|#{User.current.login}").as_svg

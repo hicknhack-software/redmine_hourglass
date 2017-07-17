@@ -140,6 +140,7 @@ en:
         headings:
           time_logs: Recent time logs (last 2 weeks)
           time_bookings: Recent time bookings (last 2 weeks)
+        qr_code_link: Connect with Hourglass App
       lists:
         button_book: Book
         button_book_all: Book all
