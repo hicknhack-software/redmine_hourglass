@@ -71,3 +71,5 @@ $ ->
     location.reload()
   .on 'ajax:error', '.js-hourglass-remote', (event, {responseJSON}) ->
     hourglass.Utils.showErrorMessage responseJSON.message
+  .on 'click', '.js-toggle', ->
+    $($(@).data('target')).toggleClass 'hidden'
