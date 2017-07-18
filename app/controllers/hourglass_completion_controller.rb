@@ -21,8 +21,12 @@ class HourglassCompletionController < Hourglass::ApiBaseController
   end
 
   def activities
-    activities = activity_collection User.current.projects.find_by id: params[:project_id]
-    respond_with_success activities.map { |activity| {id: activity.id, name: activity.name} }
+    activities = activity_collection(User.current.projects.find_by id: params[:project_id])
+    default_activity = activities.find_by(name: User.current.pref.default_activity) || TimeEntryActivity.default
+    activities_result = activities.map do |activity|
+      {id: activity.id, name: activity.name, isDefault: default_activity && activity.name == default_activity.name}
+    end
+    respond_with_success activities_result
   end
 
   def users

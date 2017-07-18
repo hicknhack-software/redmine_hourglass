@@ -19,6 +19,7 @@ en:
 
 ################### redmine specific stuff #####################
   field_date: Date
+  field_default_activity: Default activity
   field_duration: Duration
   field_booked?: Booked
   field_issue_subject: Issue subject
@@ -42,6 +43,8 @@ en:
 ################################################################
 
   hourglass:
+    user_settings:
+      title: Hourglass Settings
     project_settings:
       global_value: "(Global Value: %{value})"
       override_hint_html: "Leave empty to use <a href='%{url}'>global settings</a>"

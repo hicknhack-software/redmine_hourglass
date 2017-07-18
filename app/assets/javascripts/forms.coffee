@@ -23,17 +23,20 @@ initIssueAutoCompletion = ->
       .next().val(ui.item.issue_id)
 
 updateActivityField = ($activityField, $projectField) ->
-  selected_activity = $activityField.find("option:selected").text()
+  $selected_activity = $activityField.find("option:selected")
   $.ajax
     url: hourglassRoutes.hourglass_completion_activities()
     data:
       project_id: $projectField.val()
     success: (activities) ->
       $activityField.find('option[value!=""]').remove()
-      for {id, name} in activities
+      for {id, name, isDefault} in activities
         do ->
           $activityField.append $('<option/>', value: id).text(name)
-          $activityField.val id if selected_activity is name
+          if $projectField.val() is ''
+            $activityField.val null
+          else if $selected_activity.text() is name or ($selected_activity.val() is '' and isDefault)
+            $activityField.val id
       hourglass.FormValidator.validateField $activityField
 
 updateUserField = ($userField, $projectField) ->
