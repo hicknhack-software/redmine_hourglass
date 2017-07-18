@@ -13,7 +13,7 @@ timeTrackerAjax = (args) ->
 stopDialogApplyHandler = (args) ->
   $stopDialog = $(@)
   $activityField = $stopDialog.find('[name*=activity_id]')
-  return unless hourglass.FormValidator.validateField $activityField
+  return unless hourglass.FormValidator.isFieldValid $activityField
   $stopDialog.dialog 'close'
   timeTrackerAjax
     url: hourglassRoutes.hourglass_time_tracker 'current'
