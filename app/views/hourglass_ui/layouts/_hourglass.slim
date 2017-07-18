@@ -1,14 +1,18 @@
 - content_for :header_tags do
   = context_menu if Hourglass.redmine_has_advanced_queries?
   = javascript_include_tag 'application', plugin: Hourglass::PLUGIN_NAME
-  - am_pm = I18n.t([:am, :pm], scope: :time)
+  - am_pm = t([:am, :pm], scope: :time)
   javascript:
-    if (window.hourglass === null) {
-        window.hourglass = {};
-    }
+    window.hourglass = window.hourglass || {};
 
     window.hourglass.DateTimeFormat = "#{format_identifier_to_js date_time_format}";
     window.hourglass.UtcOffset = "#{utc_offset}";
+    window.hourglass.errorMessages = {
+        empty: "#{t('hourglass.ui.forms.errors.empty')}",
+        invalid: "#{t('hourglass.ui.forms.errors.invalid')}",
+        exceedsLimit: "#{t('hourglass.ui.forms.errors.exceedsLimit')}",
+        invalidDuration: "#{t('hourglass.ui.forms.errors.invalidDuration')}"
+    };
 
     moment.locale('redmine-settings', {
       months: #{date_strings_lookup :month_names},
@@ -36,4 +40,3 @@
 = yield
 
 = context_menu hourglass_ui_context_menu_path unless Hourglass.redmine_has_advanced_queries?
-

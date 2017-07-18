@@ -149,6 +149,12 @@ de:
           time_logs: Letzte Zeiterfassungen (letzten 2 Wochen)
           time_bookings: Letzte Zeitbuchungen (letzten 2 Wochen)
         qr_code_link: Verbinde die Hourglass App
+      forms:
+        errors:
+          empty: Dieses Feld muss augefüllt werden.
+          invalid: Der Wert dieses Feldes ist ungültig.
+          exceedsLimit: Der Wert dieses Feldes überschreitet sein Limit.
+          invalidDuration: Ihre Start und Stop Zeiten bilden einen ungültigen Zeitraum.
       lists:
         button_book: Buchen
         button_book_all: Alle buchen

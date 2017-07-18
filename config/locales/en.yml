@@ -144,6 +144,12 @@ en:
           time_logs: Recent time logs (last 2 weeks)
           time_bookings: Recent time bookings (last 2 weeks)
         qr_code_link: Connect with Hourglass App
+      forms:
+        errors:
+          empty: This field is required.
+          invalid: This fields value is invalid.
+          exceedsLimit: This fields value exceeds it's limit.
+          invalidDuration: Your start and stop times form an invalid duration.
       lists:
         button_book: Book
         button_book_all: Book all

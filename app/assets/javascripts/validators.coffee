@@ -1,6 +1,6 @@
 addError = ($field, msg) ->
   errors = getErrors $field
-  errors.push window.hourglass.errorMessages[msg] || msg
+  errors.push "[#{$field.closest('.form-field').find('label').text()}]: #{window.hourglass.errorMessages[msg] || msg}"
   $field.data 'errors', errors
 
 getErrors = ($field) ->
