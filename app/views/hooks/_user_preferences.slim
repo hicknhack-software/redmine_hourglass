@@ -1,0 +1,5 @@
+/ this is used by my account and by users edit, so only use the user variable here instead of User.current
+h3 = t('hourglass.user_settings.title')
+= labelled_fields_for :pref, user.pref do |pref_fields|
+  p = pref_fields.select :default_activity, TimeEntryActivity.shared.active.map{ |activity| activity.name }, include_blank: true
+

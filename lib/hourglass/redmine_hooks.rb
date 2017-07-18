@@ -19,6 +19,16 @@ class Hourglass::RedmineHooks < Redmine::Hook::ViewListener
     load_hourglass_helper context[:hook_caller]
     context[:controller].render_to_string partial: 'hooks/account_menu_link'
   end
+  
+  def view_my_account_preferences(context = {})
+    load_hourglass_helper context[:hook_caller]
+    context[:controller].render_to_string partial: 'hooks/user_preferences', locals: context.slice(:form, :user)
+  end
+
+  def view_users_form_preferences(context = {})
+    load_hourglass_helper context[:hook_caller]
+    context[:controller].render_to_string partial: 'hooks/user_preferences', locals: context.slice(:form, :user)
+  end
 
   def self.load!
     #load hook specific stuff
