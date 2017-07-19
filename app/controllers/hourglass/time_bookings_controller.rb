@@ -15,7 +15,7 @@ module Hourglass
       ActiveRecord::Base.transaction do
         time_log = Hourglass::TimeLog.create create_time_log_params
         raise ActiveRecord::Rollback unless time_log.persisted?
-        time_booking = authorize time_log.book time_booking_params
+        time_booking = authorize time_log.book time_entry_params
         raise ActiveRecord::Rollback unless time_booking.persisted?
         respond_with_success time_log: time_log, time_booking: time_booking
       end
@@ -30,7 +30,7 @@ module Hourglass
         ActiveRecord::Base.transaction do
           result = Hourglass::TimeLog.create create_time_log_params params
           raise ActiveRecord::Rollback unless result.persisted?
-          result = authorize result.book time_booking_params(params).except(:user_id)
+          result = authorize result.book time_entry_params(params).except(:user_id)
           raise ActiveRecord::Rollback unless result.persisted?
           result.include_time_log!
         end
@@ -39,7 +39,7 @@ module Hourglass
     end
 
     def update
-      attributes = {time_entry_attributes: time_booking_params}
+      attributes = {time_entry_attributes: time_entry_params}
       attributes[:time_log_attributes] = attributes[:time_entry_attributes].slice(:user_id) if attributes[:time_entry_attributes][:user_id]
       do_update time_booking_from_id, attributes
     end
@@ -47,7 +47,7 @@ module Hourglass
     def bulk_update
       authorize Hourglass::TimeBooking
       bulk do |id, params|
-        attributes = {time_entry_attributes: time_booking_params(params)}
+        attributes = {time_entry_attributes: time_entry_params(params)}
         attributes[:time_log_attributes] = attributes[:time_entry_attributes].slice(:user_id) if attributes[:time_entry_attributes][:user_id]
         authorize_update time_booking_from_id(id), attributes
       end
@@ -70,12 +70,18 @@ module Hourglass
       params_hash.permit(:start, :stop, :comments, :user_id)
     end
 
-    def time_booking_params(params_hash = params.require(:time_booking))
-      params_hash.permit(:comments, :project_id, :issue_id, :activity_id, :user_id)
+    def time_entry_params(params_hash = params.require(:time_booking))
+      params_hash.permit(:comments, :project_id, :issue_id, :activity_id, :user_id,
+                         custom_field_values: custom_field_keys(params_hash))
     end
 
     def time_booking_from_id(id = params[:id])
       Hourglass::TimeBooking.find id
+    end
+
+    def custom_field_keys(params_hash)
+      return {} unless params_hash[:custom_field_values]
+      params_hash[:custom_field_values].keys
     end
   end
 end

@@ -16,6 +16,7 @@ module Hourglass
 
     after_initialize :fix_nil_hours
     after_validation :filter_time_entry_invalid_error
+    after_save :save_custom_field_values
 
     validates_presence_of :time_log, :time_entry, :start, :stop
     validate :stop_is_valid
@@ -25,7 +26,7 @@ module Hourglass
     delegate :id, to: :activity, prefix: true, allow_nil: true
     delegate :id, to: :project, prefix: true, allow_nil: true
     delegate :id, to: :user, prefix: true, allow_nil: true
-    delegate :comments, :comments=, :hours, :project_id=, to: :time_entry, allow_nil: true
+    delegate :comments, :comments=, :hours, :project_id=, :save_custom_field_values, to: :time_entry, allow_nil: true
 
     scope :visible, lambda { |*args| joins(:project).where(projects: {id: visible_condition(args.shift || User.current, *args)})
     }
