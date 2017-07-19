@@ -20,6 +20,14 @@ module Hourglass
       add_associations_custom_fields_filters :user
     end
 
+    def available_columns
+      @available_columns ||= self.class.available_columns.dup.tap do |available_columns|
+        UserCustomField.visible.each do |custom_field|
+          available_columns << QueryAssociationCustomFieldColumn.new(:user, custom_field)
+        end
+      end
+    end
+
     def default_columns_names
       @default_columns_names ||= [:booked?, :date, :start, :stop, :hours, :comments]
     end
@@ -38,6 +46,7 @@ module Hourglass
           scope.sum db_datetime_diff "#{queried_class.table_name}.start", "#{queried_class.table_name}.stop"
       ) { |t| Hourglass::DateTimeCalculations.in_hours(t).round(2) }
     end
+
     private
     def db_datetime_diff(datetime1, datetime2)
       case ActiveRecord::Base.connection.adapter_name.downcase.to_sym
@@ -46,7 +55,7 @@ module Hourglass
         when :sqlite
           "(strftime('%s', #{datetime2}) - strftime('%s', #{datetime1}))"
         when :postgresql
-           "EXTRACT(EPOCH FROM (#{datetime2} - #{datetime1}))"
+          "EXTRACT(EPOCH FROM (#{datetime2} - #{datetime1}))"
         else
           "(#{datetime2} - #{datetime1})"
       end

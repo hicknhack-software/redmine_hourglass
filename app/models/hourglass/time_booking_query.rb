@@ -27,13 +27,30 @@ module Hourglass
       add_activity_filter
       add_fixed_version_filter
       add_comments_filter
-      add_associations_custom_fields_filters :user, :issue, :project, :activity, :fixed_version
+      add_associations_custom_fields_filters :user, :project, :activity, :fixed_version
+      add_custom_fields_filters issue_custom_fields, :issue
       add_custom_fields_filters TimeEntryCustomField, :time_entry
       # we need fix the last added filters cause redmine fucks up the name
       available_filters.select { |k, _| k.start_with? 'time_entry' }.each do |_, v|
         v[:name] = v[:field].name
       end
+    end
 
+    def available_columns
+      @available_columns ||= self.class.available_columns.dup.tap do |available_columns|
+        {
+            time_entry: TimeEntryCustomField,
+            issue: issue_custom_fields,
+            project: ProjectCustomField,
+            user: UserCustomField,
+            fixed_version: VersionCustomField
+
+        }.each do |association, custom_field_scope|
+          custom_field_scope.visible.each do |custom_field|
+            available_columns << QueryAssociationCustomFieldColumn.new(association, custom_field)
+          end
+        end
+      end
     end
 
     def default_columns_names

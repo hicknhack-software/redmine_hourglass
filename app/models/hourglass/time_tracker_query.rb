@@ -20,13 +20,31 @@ module Hourglass
       add_issue_filter
       if project
         add_sub_project_filter unless project.leaf?
-      else
-        add_project_filter if all_projects.any?
+      elsif all_projects.any?
+        add_project_filter
       end
       add_activity_filter
       add_fixed_version_filter
       add_comments_filter
-      add_associations_custom_fields_filters :user, :issue, :project, :activity, :fixed_version
+      add_associations_custom_fields_filters :user, :project, :activity, :fixed_version
+      add_custom_fields_filters issue_custom_fields, :issue
+    end
+
+    def available_columns
+      @available_columns ||= self.class.available_columns.dup.tap do |available_columns|
+        {
+            time_entry: TimeEntryCustomField,
+            issue: issue_custom_fields,
+            project: ProjectCustomField,
+            user: UserCustomField,
+            fixed_version: VersionCustomField
+
+        }.each do |association, custom_field_scope|
+          custom_field_scope.visible.each do |custom_field|
+            available_columns << QueryAssociationCustomFieldColumn.new(association, custom_field)
+          end
+        end
+      end
     end
 
     def default_columns_names
