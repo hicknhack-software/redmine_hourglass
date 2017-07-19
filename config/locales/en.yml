@@ -26,6 +26,7 @@ en:
   field_round: Round
   field_start: Start
   field_stop: Stop
+  field_time_entry: Spent time
   label_this_quarter: current quarter
   label_last_quarter: last quarter
   permission_hourglass_book_own_time: Book own time

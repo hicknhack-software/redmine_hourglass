@@ -206,8 +206,8 @@ module Hourglass::QueryBase
 
   def sql_for_custom_field(*args)
     result = super
-    result.gsub! /#{queried_table_name}\.(#{has_through_associations.join('|')})_id/ do
-      groupable_columns.select { |c| c.name === $1.to_sym }.first.groupable
+    result.gsub!(/#{queried_table_name}\.(#{has_through_associations.join('|')})_id/) do
+      groupable_columns.select { |c| c.name == Regexp.last_match[1].to_sym }.first.groupable
     end
     result
   end
