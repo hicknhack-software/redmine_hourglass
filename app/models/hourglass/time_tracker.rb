@@ -7,6 +7,7 @@ module Hourglass
     belongs_to :project
     belongs_to :issue
     belongs_to :activity, class_name: 'TimeEntryActivity', foreign_key: 'activity_id'
+    has_one :fixed_version, through: :issue
 
     after_initialize :init
     before_update if: :project_id_changed? do

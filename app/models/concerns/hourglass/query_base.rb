@@ -199,4 +199,16 @@ module Hourglass::QueryBase
     values = versions.uniq.sort.collect { |s| ["#{s.project.name} - #{s.name}", s.id.to_s] }
     add_available_filter 'fixed_version_id', type: :list_optional, values: values
   end
+
+  def has_through_associations
+    []
+  end
+
+  def sql_for_custom_field(*args)
+    result = super
+    result.gsub! /#{queried_table_name}\.(#{has_through_associations.join('|')})_id/ do
+      groupable_columns.select { |c| c.name === $1.to_sym }.first.groupable
+    end
+    result
+  end
 end

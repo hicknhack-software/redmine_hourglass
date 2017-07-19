@@ -3,16 +3,16 @@ module Hourglass
     include QueryBase
 
     set_available_columns(
-      date: {sortable: "#{queried_class.table_name}.start", groupable: "DATE(#{queried_class.table_name}.start)"},
-      start: {},
-      stop: {},
-      hours: {totalable: true},
-      comments: {},
-      user: {sortable: lambda { User.fields_for_order_statement }, groupable: "#{User.table_name}.id"},
-      project: {sortable: "#{Project.table_name}.name", groupable: "#{Project.table_name}.id"},
-      activity: {sortable: "#{TimeEntryActivity.table_name}.position", groupable: "#{TimeEntryActivity.table_name}.id"},
-      issue: {sortable: "#{Issue.table_name}.subject", groupable: "#{Issue.table_name}.id"},
-      fixed_version: {sortable: lambda { Version.fields_for_order_statement }, groupable: "#{Issue.table_name}.fixed_version_id"}
+        date: {sortable: "#{queried_class.table_name}.start", groupable: "DATE(#{queried_class.table_name}.start)"},
+        start: {},
+        stop: {},
+        hours: {totalable: true},
+        comments: {},
+        user: {sortable: lambda { User.fields_for_order_statement }, groupable: "#{User.table_name}.id"},
+        project: {sortable: "#{Project.table_name}.name", groupable: "#{Project.table_name}.id"},
+        activity: {sortable: "#{TimeEntryActivity.table_name}.position", groupable: "#{TimeEntryActivity.table_name}.id"},
+        issue: {sortable: "#{Issue.table_name}.subject", groupable: "#{Issue.table_name}.id"},
+        fixed_version: {sortable: lambda { Version.fields_for_order_statement }, groupable: "#{Issue.table_name}.fixed_version_id"}
     )
 
     def initialize_available_filters
@@ -27,6 +27,7 @@ module Hourglass
       add_activity_filter
       add_fixed_version_filter
       add_comments_filter
+      add_associations_custom_fields_filters :user, :issue, :project, :activity, :fixed_version
     end
 
     def default_columns_names
@@ -76,6 +77,10 @@ module Hourglass
           totals[column] = total
         end
       end
+    end
+
+    def has_through_associations
+      %i(user issue project activity fixed_version)
     end
   end
 end
