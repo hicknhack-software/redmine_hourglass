@@ -104,6 +104,7 @@ de:
           already_booked: Diese Zeiterfassung wurde bereits gebucht.
           bulk_error_preface: Fehler für Zeiterfassung mit ID %{id}
           bulk_create_error_preface: Fehler für neue Zeiterfassung %{id}
+          delete_booked: Gebuchte Zeiterfassungen können nicht gelöscht werden, löschen sie zuerst die Zeitbuchung.
           join_failed: Die zusammen zu fügenden Zeiterfassungen wurden entweder bereits gebucht oder ihre Beginne und Enden passen nicht zusammen.
           not_found: Diese Zeiterfassung existiert nicht.
           split_failed: Der übermittelte Zeitpunkt zum Aufteilen befindet sich außerhalb der Grenzen der Zeiterfassung.

@@ -99,6 +99,7 @@ en:
           already_booked: This time log was already booked
           bulk_error_preface: Errors for time log with id %{id}
           bulk_create_error_preface: Errors for the new time log %{id}
+          delete_booked: Booked time logs can't be deleted, delete the time booking first.
           join_failed: There are either bookings defined on the submitted time logs or the time logs start and stop doesn't match
           not_found: This time log doesn't exist
           split_failed: Submitted split_at is not within the bounds of the time log
