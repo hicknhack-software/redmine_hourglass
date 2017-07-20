@@ -14,6 +14,8 @@
       = form_field :activity, f, time_booking, disabled: !policy(time_log).book?, required: true
       = form_field :issue, f, time_booking, disabled: !policy(time_log).book?
       = form_field :comments, f, time_booking, disabled: !policy(time_log).change?
+      - time_booking.build_time_entry.custom_field_values.each do |value|
+        .form-field = custom_field_tag_with_label :'time_booking', value
       .form-field
         .input
           = f.submit t('hourglass.ui.lists.button_book')
