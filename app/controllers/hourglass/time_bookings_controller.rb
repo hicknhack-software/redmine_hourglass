@@ -78,10 +78,5 @@ module Hourglass
     def time_booking_from_id(id = params[:id])
       Hourglass::TimeBooking.find id
     end
-
-    def custom_field_keys(params_hash)
-      return {} unless params_hash[:custom_field_values]
-      params_hash[:custom_field_values].keys
-    end
   end
 end

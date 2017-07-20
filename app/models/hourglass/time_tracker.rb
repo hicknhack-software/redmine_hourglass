@@ -9,6 +9,8 @@ module Hourglass
     belongs_to :activity, class_name: 'TimeEntryActivity', foreign_key: 'activity_id'
     has_one :fixed_version, through: :issue
 
+    acts_as_customizable
+
     after_initialize :init
     before_update if: :project_id_changed? do
       update_round project
@@ -45,6 +47,14 @@ module Hourglass
       DateTimeCalculations.time_diff_in_hours start, Time.now.change(sec: 0) + 1.minute
     end
 
+    def available_custom_fields
+      CustomField.where("type = 'TimeEntryCustomField'").sorted.to_a
+    end
+
+    def validate_custom_field_values
+      super unless new_record?
+    end
+
     private
     def init
       current_user = User.current
@@ -61,7 +71,8 @@ module Hourglass
     end
 
     def time_booking_params
-      attributes.with_indifferent_access.slice :project_id, :issue_id, :activity_id, :round
+      attributes.with_indifferent_access.slice(:project_id, :issue_id, :activity_id, :round)
+          .merge custom_field_values: custom_field_values.inject({}) { |h, v| h[v.custom_field_id.to_s] = v.value; h }
     end
 
     def bookable?

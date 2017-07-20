@@ -134,5 +134,10 @@ module Hourglass
     def flash_array(type, messages)
       flash[type] = render_to_string partial: 'hourglass_ui/flash_array', locals: {messages: messages}
     end
+
+    def custom_field_keys(params_hash)
+      return {} unless params_hash[:custom_field_values]
+      params_hash[:custom_field_values].keys
+    end
   end
 end

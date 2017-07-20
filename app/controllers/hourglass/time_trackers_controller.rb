@@ -60,7 +60,8 @@ module Hourglass
 
     private
     def time_tracker_params(params_hash = params.require(:time_tracker))
-      params_hash.permit(:start, :comments, :round, :project_id, :issue_id, :activity_id, :user_id)
+      params_hash.permit(:start, :comments, :round, :project_id, :issue_id, :activity_id, :user_id,
+                         custom_field_values: custom_field_keys(params_hash))
     end
 
     def get_time_tracker

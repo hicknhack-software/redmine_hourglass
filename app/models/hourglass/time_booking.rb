@@ -67,7 +67,8 @@ module Hourglass
     end
 
     def filter_time_entry_invalid_error
-      self.errors.delete :time_entry
+      self.errors.delete(:time_entry)
+      self.errors.delete(:'time_entry.base')
     end
 
     def stop_is_valid

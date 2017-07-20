@@ -35,8 +35,10 @@ updateActivityField = ($activityField, $projectField) ->
           $activityField.append $('<option/>', value: id).text(name)
           if $projectField.val() is ''
             $activityField.val null
+            $activityField.trigger('change')
           else if $selected_activity.text() is name or ($selected_activity.val() is '' and isDefault)
             $activityField.val id
+            $activityField.trigger('change')
       hourglass.FormValidator.validateField $activityField
 
 updateUserField = ($userField, $projectField) ->

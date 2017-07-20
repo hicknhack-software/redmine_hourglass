@@ -37,3 +37,6 @@
             - if policy(@time_tracker).destroy?
               = link_to hourglass_time_tracker_path(@time_tracker), class: 'js-hourglass-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)} do
                 input type='button' value=t(:button_delete)
+      .form-row
+        - @time_tracker.custom_field_values.each do |value|
+          .form-field = custom_field_tag_with_label :'time_tracker', value
