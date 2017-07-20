@@ -16,6 +16,8 @@ de:
               blank: existiert nicht
             user_id:
               taken: hat bereits eine laufende Zeitmessung
+            base:
+              overlaps: Es existiert bereits eine sich überschneidende Zeiterfassung
         hourglass/time_log:
           attributes:
             base:

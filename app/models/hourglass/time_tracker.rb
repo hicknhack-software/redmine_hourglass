@@ -23,6 +23,7 @@ module Hourglass
     validates_presence_of :issue, if: Proc.new { |tt| tt.issue_id.present? }
     validates_presence_of :activity, if: Proc.new { |tt| tt.activity_id.present? }
     validates_length_of :comments, maximum: 255, allow_blank: true
+    validate :does_not_overlap_with_other, if: [:user, :start?], on: :update
 
     class << self
       alias_method :start, :create
@@ -80,7 +81,12 @@ module Hourglass
     end
 
     def update_round(project = nil)
-      self.round = !Hourglass::Settings[:round_sums_only, project: project] && Hourglass::Settings[:round_default, project: project]
+      self.round = !Hourglass::Settings[:round_sums_only, project: project] &&
+          Hourglass::Settings[:round_default, project: project]
+    end
+
+    def does_not_overlap_with_other
+      errors.add :base, :overlaps unless user.hourglass_time_logs.overlaps_with(start, Time.now).empty?
     end
   end
 end

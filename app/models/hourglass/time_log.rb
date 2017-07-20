@@ -127,8 +127,7 @@ module Hourglass
     end
 
     def does_not_overlap_with_other
-      overlapping_time_logs = user.hourglass_time_logs.where.not(id: id).overlaps_with start, stop
-      errors.add :base, :overlaps unless overlapping_time_logs.empty?
+      errors.add :base, :overlaps unless user.hourglass_time_logs.where.not(id: id).overlaps_with(start, stop).empty?
     end
 
     def remove_seconds

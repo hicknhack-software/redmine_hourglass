@@ -12,6 +12,8 @@ en:
               blank: doesn't exist
             user_id:
               taken: already has a running time tracker
+            base:
+              overlaps: There is a overlapping time log
         hourglass/time_log:
           attributes:
             base:
