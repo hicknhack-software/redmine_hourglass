@@ -2,13 +2,19 @@ module Hourglass
   class ApplicationPolicy
     include RedmineAuthorization
 
-    attr_reader :user, :record, :record_user, :project, :message
+    attr_reader :user, :record, :message
 
     def initialize(user, record)
       @user = user
       @record = record
-      @record_user = record.user if record.respond_to? :user
-      @project = record.project if record.respond_to? :project
+    end
+
+    def project
+      record.project if record.respond_to? :project
+    end
+
+    def record_user
+      record.user if record.respond_to? :user
     end
 
     def view?
