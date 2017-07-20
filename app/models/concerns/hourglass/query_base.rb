@@ -211,4 +211,10 @@ module Hourglass::QueryBase
     end
     result
   end
+
+  # this is a fix for redmine 3.2.7
+  def issue_custom_fields
+    return super if defined? super
+    IssueCustomField.all
+  end
 end
