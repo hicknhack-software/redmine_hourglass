@@ -8,7 +8,7 @@ describe 'Time trackers API', type: :request do
       produces 'application/json'
       tags 'Time trackers'
 
-      include_examples 'access rights', :hourglass_view_tracked_time, :hourglass_view_own_tracked_time
+      include_examples 'access rights', :hourglass_view_tracked_time, :hourglass_view_own_tracked_time, :hourglass_track_time
 
       response '200', 'time trackers found' do
         schema '$ref' => '#/definitions/index_response'
@@ -100,7 +100,7 @@ describe 'Time trackers API', type: :request do
       end
       let(:id) { time_tracker.id }
 
-      include_examples 'access rights', :hourglass_view_tracked_time, :hourglass_view_own_tracked_time
+      include_examples 'access rights', :hourglass_view_tracked_time, :hourglass_view_own_tracked_time, :hourglass_track_time
       include_examples 'not found'
 
       response '200', 'time tracker found' do
