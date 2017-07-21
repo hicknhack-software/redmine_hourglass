@@ -126,7 +126,7 @@ describe 'Time logs API', type: :request do
       tags 'Time logs'
       parameter name: :id, in: :path, type: :string
       parameter name: :time_booking, in: :body, schema: {
-          '$ref' => '#/definitions/time_booking_create'
+          '$ref' => '#/definitions/time_booking_params'
       }
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_book_time] }

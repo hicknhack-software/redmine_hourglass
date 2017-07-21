@@ -90,7 +90,7 @@ describe 'Time bookings API', type: :request do
       tags 'Time bookings'
       parameter name: :id, in: :path, type: :string
       parameter name: :time_booking, in: :body, schema: {
-          '$ref' => '#/definitions/time_booking_update'
+          '$ref' => '#/definitions/time_booking_params'
       }
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_booked_time, :hourglass_view_booked_time] }
