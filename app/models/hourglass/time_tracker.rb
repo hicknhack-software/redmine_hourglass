@@ -58,13 +58,15 @@ module Hourglass
 
     private
     def init
-      current_user = User.current
       now = Time.now.change sec: 0
-      previous_time_log = current_user.hourglass_time_logs.find_by(stop: now + 1.minute)
-      self.user ||= current_user
-      update_round project_id || issue && issue.project_id unless round.present?
+      self.user ||= User.current
+      previous_time_log = user.hourglass_time_logs.find_by(stop: now + 1.minute)
+      project_id = self.project_id || issue && issue.project_id
+      update_round project_id unless round.present?
 
       self.start ||= previous_time_log && previous_time_log.stop || now
+
+      self.activity ||= user.default_activity(TimeEntryActivity.applicable(user.projects.find_by id: project_id)) if project_id
     end
 
     def time_log_params

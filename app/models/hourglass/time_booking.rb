@@ -68,7 +68,7 @@ module Hourglass
 
     def filter_time_entry_invalid_error
       self.errors.delete(:time_entry)
-      self.errors.delete(:'time_entry.base')
+      self.errors.messages.transform_keys! {|k| k == :'time_entry.base' ? :base : k}
     end
 
     def stop_is_valid
