@@ -153,7 +153,7 @@ describe 'Time bookings API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time bookings'
-      parameter name: :time_bookings, in: :body, type: :object, additionalProperties: {'$ref' => '#/definitions/time_booking'}, description: 'takes an object of time bookings'
+      parameter name: :time_bookings, in: :body, schema: {type: :object, additionalProperties: {'$ref' => '#/definitions/time_booking'}}, description: 'takes an object of time bookings'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_booked_time, :hourglass_view_booked_time] }
       let(:time_booking_ids) do
@@ -182,7 +182,7 @@ describe 'Time bookings API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time bookings'
-      parameter name: :time_bookings, in: :body, type: :array, items: {'$ref' => '#/definitions/time_booking'}, description: 'takes an array of time bookings'
+      parameter name: :time_bookings, in: :body, schema: {type: :array, items: {'$ref' => '#/definitions/time_booking'}}, description: 'takes an array of time bookings'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_booked_time] }
 

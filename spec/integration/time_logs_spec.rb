@@ -162,7 +162,7 @@ describe 'Time logs API', type: :request do
       produces 'application/json'
       tags 'Time logs'
       parameter name: :id, in: :path, type: :string
-      parameter name: :split_at, in: :query, type: :dateTime, required: true
+      parameter name: :split_at, in: :query, type: :string, format: :'date-time', required: true
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_track_time] }
       let(:time_log) { create :time_log, user: user }
@@ -221,7 +221,7 @@ describe 'Time logs API', type: :request do
                        '$ref' => '#/definitions/time_log',
                        required: %w(id start stop user_id created_at updated_at)
                    }
-               }                 
+               }
 
         include_examples 'has a valid response'
 
@@ -230,7 +230,7 @@ describe 'Time logs API', type: :request do
           expect(Time.parse(data[:start])).to eq time_log.start.change(sec: 0)
           expect(Time.parse(data[:stop])).to eq time_log2.stop.change(sec: 0)
         end
-        
+
         context do
           let(:time_log2) { create :time_log, user: user, start: time_log.stop + 10.minutes, stop: time_log.stop + 20.minutes }
           include_examples 'error message', 'time logs not joined'
@@ -266,7 +266,7 @@ describe 'Time logs API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time logs'
-      parameter name: :time_logs, in: :body, type: :object, additionalProperties: {'$ref' => '#/definitions/time_log'}, description: 'takes an object of time logs'
+      parameter name: :time_logs, in: :body, schema: {type: :object, additionalProperties: {'$ref' => '#/definitions/time_log'}}, description: 'takes an object of time logs'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time, :hourglass_view_tracked_time] }
       let(:time_log_ids) do
@@ -295,7 +295,7 @@ describe 'Time logs API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time logs'
-      parameter name: :time_bookings, in: :body, type: :object, additionalProperties: {'$ref' => '#/definitions/time_booking'}, description: 'takes an object of time bookings'
+      parameter name: :time_bookings, in: :body, schema: {type: :object, additionalProperties: {'$ref' => '#/definitions/time_booking'}}, description: 'takes an object of time bookings'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_book_time, :hourglass_view_tracked_time] }
       let(:time_logs) do
@@ -330,7 +330,7 @@ describe 'Time logs API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time logs'
-      parameter name: :time_logs, in: :body, type: :array, items: {'$ref' => '#/definitions/time_log'}, description: 'takes an array of time logs'
+      parameter name: :time_logs, in: :body, schema: {type: :array, items: {'$ref' => '#/definitions/time_log'}}, description: 'takes an array of time logs'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
 

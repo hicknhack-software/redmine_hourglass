@@ -136,4 +136,5 @@ definitions:
         type: integer
       records:
         type: array
-
+        items:
+          type: object
