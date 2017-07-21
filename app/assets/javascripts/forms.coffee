@@ -60,6 +60,11 @@ updateDurationField = ($startField, $stopField) ->
   stop = moment $stopField.val(), moment.ISO_8601
   $startField.closest('form').find('.js-duration').val hourglass.Utils.formatDuration moment.duration stop.diff(start)
 
+updateLink = ($field) ->
+  $link = $field.closest('.form-field').find('label + a')
+  $link.toggleClass 'hidden', $field.val() is ''
+  $link.attr('href', $link.attr('href').replace(/\/([^/]*)$/, "/#{$field.val()}"))
+
 formFieldChanged = (event) ->
   $target = $(event.target)
   $target = $target.next() if $target.hasClass('js-linked-with-hidden')
@@ -108,10 +113,13 @@ projectFieldChanged = (event) ->
   hourglass.FormValidator.validateField $projectField if event.type is 'changefromissue'
   updateActivityField $activityField, $projectField
   updateUserField $userField, $projectField if $userField.length > 0
+  updateLink $projectField
 
 issueFieldChanged = ->
   $issueTextField = $(@)
-  $issueTextField.next().val('') if $issueTextField.val() is ''
+  $issueField = $issueTextField.next()
+  $issueField.val('') if $issueTextField.val() is ''
+  updateLink $issueField
 
 split = (timeLogId, mSplitAt, insertNewBefore, round) ->
   $.ajax

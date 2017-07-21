@@ -1,6 +1,8 @@
 .form-field
   .label
     = form.label :issue_id, for: 'issue_text'
+    - if local_assigns[:with_link]
+      = link_to '', issue_path(id: entry.issue_id || ''), class: css_classes('icon icon-link', ('hidden' unless entry.issue))
   .input
     = text_field_tag nil, issue_label_for(entry.issue), id: 'issue_text', size: '15', disabled: local_assigns[:disabled], class: 'js-issue-autocompletion js-linked-with-hidden'
     = form.hidden_field :issue_id

@@ -13,6 +13,7 @@ The first enhancement release which adds plenty of new feature which were long t
 - there is now version filter for time trackers
 - a qr code on the overview page intended to help integrating the upcoming companion app
 - error messages for client side validations
+- direct links from running time tracker to issue and project
 
 ### Changed
 - we improved the timezone handling cause there was a synchronisation problem between client and server

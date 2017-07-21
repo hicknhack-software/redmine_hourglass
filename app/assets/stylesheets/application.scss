@@ -206,4 +206,12 @@
       }
     }
   }
+
+  label + a.icon {
+    margin-left: 5px;
+
+  }
+  .icon-link {
+    background: url(/images/link.png) no-repeat 0% 70%;
+  }
 }
