@@ -1,0 +1,1530 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Hourglass API",
+    "description": "This API allows you to do everything you can do in the UI.",
+    "version": "1.0.0",
+    "x-docsVersion": "ceddb5281b87f25447fac02e16c8a968"
+  },
+  "basePath": "/hourglass",
+  "securityDefinitions": {
+    "api_key": {
+      "type": "apiKey",
+      "description": "Available on the \"my account\" page in redmine",
+      "name": "key",
+      "in": "query"
+    }
+  },
+  "security": [
+    {
+      "api_key": [
+
+      ]
+    }
+  ],
+  "definitions": {
+    "time_tracker_start": {
+      "title": "Time tracker",
+      "type": "object",
+      "properties": {
+        "issue_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "comments": {
+          "type": "string"
+        }
+      }
+    },
+    "time_tracker": {
+      "title": "Time tracker",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "user_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "project_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "activity_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "issue_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "comments": {
+          "type": "string"
+        }
+      }
+    },
+    "time_tracker_update": {
+      "title": "Time tracker",
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "user_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "project_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "activity_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "issue_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "comments": {
+          "type": "string"
+        }
+      }
+    },
+    "time_log": {
+      "title": "Time log",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "user_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "comments": {
+          "type": "string"
+        }
+      }
+    },
+    "time_log_update": {
+      "title": "Time log",
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "comments": {
+          "type": "string"
+        }
+      }
+    },
+    "time_booking": {
+      "title": "Time booking",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "time_booking_params": {
+      "title": "Time booking",
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stop": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "user_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "project_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "activity_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "issue_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "comments": {
+          "type": "string"
+        }
+      }
+    },
+    "error_msg": {
+      "title": "Error",
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "index_response": {
+      "title": "Records",
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "offset": {
+          "type": "integer"
+        },
+        "limit": {
+          "type": "integer"
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/time_bookings.json": {
+      "get": {
+        "summary": "Lists all visible time bookings",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Time bookings"
+        ],
+        "responses": {
+          "200": {
+            "description": "time bookings found",
+            "schema": {
+              "$ref": "#/definitions/index_response"
+            },
+            "examples": {
+              "application/json": {
+                "count": 2,
+                "offset": 0,
+                "limit": 25,
+                "records": [
+                  {
+                    "id": 2,
+                    "start": "2017-07-01T11:17:17.000+02:00",
+                    "stop": "2017-07-01T14:30:37.000+02:00",
+                    "time_log_id": 2,
+                    "time_entry_id": 2,
+                    "created_at": "2017-07-01T10:00:03.406+02:00",
+                    "updated_at": "2017-07-01T10:00:03.406+02:00",
+                    "time_entry": {
+                      "id": 2,
+                      "project_id": 3,
+                      "user_id": 2,
+                      "issue_id": null,
+                      "hours": 3.22,
+                      "comments": null,
+                      "activity_id": 2,
+                      "spent_on": "2017-07-01",
+                      "tyear": 2017,
+                      "tmonth": 7,
+                      "tweek": 26,
+                      "created_on": "2017-07-01T10:00:03.392+02:00",
+                      "updated_on": "2017-07-01T10:00:03.392+02:00"
+                    }
+                  },
+                  {
+                    "id": 1,
+                    "start": "2017-07-01T11:35:55.000+02:00",
+                    "stop": "2017-07-01T17:07:27.000+02:00",
+                    "time_log_id": 1,
+                    "time_entry_id": 1,
+                    "created_at": "2017-07-01T10:00:03.318+02:00",
+                    "updated_at": "2017-07-01T10:00:03.318+02:00",
+                    "time_entry": {
+                      "id": 1,
+                      "project_id": 1,
+                      "user_id": 1,
+                      "issue_id": null,
+                      "hours": 5.53,
+                      "comments": null,
+                      "activity_id": 1,
+                      "spent_on": "2017-07-01",
+                      "tyear": 2017,
+                      "tmonth": 7,
+                      "tweek": 26,
+                      "created_on": "2017-07-01T10:00:03.309+02:00",
+                      "updated_on": "2017-07-01T10:00:03.313+02:00"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          }
+        }
+      }
+    },
+    "/time_bookings/{id}.json": {
+      "get": {
+        "summary": "Find time booking by ID",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Time bookings"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "time booking found",
+            "schema": {
+              "$ref": "#/definitions/time_booking",
+              "required": [
+                "id",
+                "start",
+                "stop",
+                "created_at",
+                "updated_at"
+              ]
+            },
+            "examples": {
+              "application/json": {
+                "id": 1,
+                "start": "2017-07-01T11:16:09.000+02:00",
+                "stop": "2017-07-01T12:03:05.000+02:00",
+                "time_log_id": 1,
+                "time_entry_id": 1,
+                "created_at": "2017-07-01T10:00:06.557+02:00",
+                "updated_at": "2017-07-01T10:00:06.557+02:00",
+                "time_entry": {
+                  "id": 1,
+                  "project_id": 1,
+                  "user_id": 1,
+                  "issue_id": null,
+                  "hours": 0.78,
+                  "comments": null,
+                  "activity_id": 1,
+                  "spent_on": "2017-07-01",
+                  "tyear": 2017,
+                  "tmonth": 7,
+                  "tweek": 26,
+                  "created_on": "2017-07-01T10:00:06.548+02:00",
+                  "updated_on": "2017-07-01T10:00:06.552+02:00"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          },
+          "404": {
+            "description": "nothing found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a time booking",
+        "tags": [
+          "Time bookings"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "time booking deleted"
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          },
+          "404": {
+            "description": "nothing found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an existing time booking",
+        "consumes": [
+          "application/json"
+        ],
+        "tags": [
+          "Time bookings"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "time_booking",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/time_booking_params"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "time booking found"
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          },
+          "404": {
+            "description": "nothing found"
+          },
+          "400": {
+            "description": "time booking not updated",
+            "schema": {
+              "$ref": "#/definitions/error_msg"
+            }
+          }
+        }
+      }
+    },
+    "/time_bookings/bulk_destroy.json": {
+      "delete": {
+        "summary": "Deletes multiple time bookings at once",
+        "tags": [
+          "Time bookings"
+        ],
+        "parameters": [
+          {
+            "name": "time_bookings[]",
+            "in": "query",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "time bookings found"
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          }
+        }
+      }
+    },
+    "/time_bookings/bulk_update.json": {
+      "post": {
+        "summary": "Updates multiple time bookings at once",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Time bookings"
+        ],
+        "parameters": [
+          {
+            "name": "time_bookings",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/time_booking"
+              }
+            },
+            "description": "takes an object of time bookings"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "time bookings found"
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          }
+        }
+      }
+    },
+    "/time_bookings/bulk_create.json": {
+      "post": {
+        "summary": "Create multiple time bookings at once",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Time bookings"
+        ],
+        "parameters": [
+          {
+            "name": "time_bookings",
+            "in": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/time_booking"
+              }
+            },
+            "description": "takes an array of time bookings"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "time bookings found"
+          },
+          "400": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          }
+        }
+      }
+    },
+    "/time_logs.json": {
+      "get": {
+        "summary": "Lists all visible time logs",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Time logs"
+        ],
+        "responses": {
+          "200": {
+            "description": "time logs found",
+            "schema": {
+              "$ref": "#/definitions/index_response"
+            },
+            "examples": {
+              "application/json": {
+                "count": 2,
+                "offset": 0,
+                "limit": 25,
+                "records": [
+                  {
+                    "id": 2,
+                    "start": "2017-07-01T06:24:00.000+02:00",
+                    "stop": "2017-07-01T17:21:00.000+02:00",
+                    "comments": "Use the virtual CSS sensor, then you can calculate the neural card!",
+                    "user_id": 2,
+                    "created_at": "2017-07-01T10:00:01.923+02:00",
+                    "updated_at": "2017-07-01T10:00:01.923+02:00",
+                    "hours": 10.95
+                  },
+                  {
+                    "id": 1,
+                    "start": "2017-07-01T07:23:00.000+02:00",
+                    "stop": "2017-07-01T16:20:00.000+02:00",
+                    "user_id": 1,
+                    "created_at": "2017-07-01T10:00:01.906+02:00",
+                    "updated_at": "2017-07-01T10:00:01.906+02:00",
+                    "hours": 8.95
+                  }
+                ]
+              }
+            }
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          }
+        }
+      }
+    },
+    "/time_logs/{id}.json": {
+      "get": {
+        "summary": "Find time log by ID",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Time logs"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "time log found",
+            "schema": {
+              "$ref": "#/definitions/time_log",
+              "required": [
+                "id",
+                "start",
+                "stop",
+                "user_id",
+                "created_at",
+                "updated_at"
+              ]
+            },
+            "examples": {
+              "application/json": {
+                "id": 1,
+                "start": "2017-07-01T10:06:00.000+02:00",
+                "stop": "2017-07-01T13:08:00.000+02:00",
+                "user_id": 1,
+                "created_at": "2017-07-01T10:00:03.747+02:00",
+                "updated_at": "2017-07-01T10:00:03.747+02:00",
+                "hours": 3.033333333333333
+              }
+            }
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          },
+          "404": {
+            "description": "nothing found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a time log",
+        "tags": [
+          "Time logs"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "time log deleted"
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          },
+          "404": {
+            "description": "nothing found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an existing time log",
+        "consumes": [
+          "application/json"
+        ],
+        "tags": [
+          "Time logs"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "time_log",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/time_log_update"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "time log found"
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          },
+          "404": {
+            "description": "nothing found"
+          },
+          "400": {
+            "description": "time log not updated",
+            "schema": {
+              "$ref": "#/definitions/error_msg"
+            }
+          }
+        }
+      }
+    },
+    "/time_logs/{id}/book.json": {
+      "post": {
+        "summary": "Book a time log",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Time logs"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "time_booking",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/time_booking_params"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "time log found",
+            "schema": {
+              "$ref": "#/definitions/time_booking",
+              "required": [
+                "id",
+                "start",
+                "stop",
+                "created_at",
+                "updated_at"
+              ]
+            },
+            "examples": {
+              "application/json": {
+                "id": 1,
+                "start": "2017-07-01T06:18:00.000+02:00",
+                "stop": "2017-07-01T12:34:00.000+02:00",
+                "time_log_id": 1,
+                "time_entry_id": 1,
+                "created_at": "2017-07-01T10:00:09.994+02:00",
+                "updated_at": "2017-07-01T10:00:09.994+02:00",
+                "time_entry": {
+                  "id": 1,
+                  "project_id": 1,
+                  "user_id": 1,
+                  "issue_id": null,
+                  "hours": 6.27,
+                  "comments": null,
+                  "activity_id": 1,
+                  "spent_on": "2017-07-01",
+                  "tyear": 2017,
+                  "tmonth": 7,
+                  "tweek": 26,
+                  "created_on": "2017-07-01T10:00:09.991+02:00",
+                  "updated_on": "2017-07-01T10:00:09.991+02:00"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          },
+          "404": {
+            "description": "nothing found"
+          }
+        }
+      }
+    },
+    "/time_logs/{id}/split.json": {
+      "post": {
+        "summary": "Split a time log",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Time logs"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "split_at",
+            "in": "query",
+            "type": "string",
+            "format": "date-time",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "time log found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "time_log": {
+                  "$ref": "#/definitions/time_log",
+                  "required": [
+                    "id",
+                    "start",
+                    "stop",
+                    "user_id",
+                    "created_at",
+                    "updated_at"
+                  ]
+                },
+                "new_time_log": {
+                  "$ref": "#/definitions/time_log",
+                  "required": [
+                    "id",
+                    "start",
+                    "stop",
+                    "user_id",
+                    "created_at",
+                    "updated_at"
+                  ]
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "time_log": {
+                  "id": 1,
+                  "start": "2017-07-01T11:10:00.000+02:00",
+                  "stop": "2017-07-01T11:20:00.000+02:00",
+                  "user_id": 1,
+                  "created_at": "2017-07-01T10:00:11.697+02:00",
+                  "updated_at": "2017-07-01T10:00:11.724+02:00",
+                  "hours": 0.16666666666666666
+                },
+                "new_time_log": {
+                  "id": 2,
+                  "start": "2017-07-01T11:20:00.000+02:00",
+                  "stop": "2017-07-01T17:54:00.000+02:00",
+                  "user_id": 1,
+                  "created_at": "2017-07-01T10:00:11.727+02:00",
+                  "updated_at": "2017-07-01T10:00:11.727+02:00",
+                  "hours": 6.566666666666666
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          },
+          "404": {
+            "description": "nothing found"
+          }
+        }
+      }
+    },
+    "/time_logs/join.json": {
+      "post": {
+        "summary": "Joins multiple time logs",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Time logs"
+        ],
+        "parameters": [
+          {
+            "name": "ids[]",
+            "in": "query",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "time logs found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "time_log": {
+                  "$ref": "#/definitions/time_log",
+                  "required": [
+                    "id",
+                    "start",
+                    "stop",
+                    "user_id",
+                    "created_at",
+                    "updated_at"
+                  ]
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "id": 1,
+                "start": "2017-07-01T10:09:00.000+02:00",
+                "stop": "2017-07-01T17:31:00.000+02:00",
+                "user_id": 1,
+                "created_at": "2017-07-01T10:00:13.601+02:00",
+                "updated_at": "2017-07-01T10:00:13.636+02:00",
+                "hours": 7.366666666666666
+              }
+            }
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          },
+          "404": {
+            "description": "nothing found"
+          },
+          "400": {
+            "description": "time logs not joined",
+            "schema": {
+              "$ref": "#/definitions/error_msg"
+            },
+            "examples": {
+              "application/json": {
+                "message": "There are either bookings defined on the submitted time logs or the time logs start and stop doesn't match",
+                "status": 400
+              }
+            }
+          }
+        }
+      }
+    },
+    "/time_logs/bulk_destroy.json": {
+      "delete": {
+        "summary": "Deletes multiple time logs at once",
+        "tags": [
+          "Time logs"
+        ],
+        "parameters": [
+          {
+            "name": "time_logs[]",
+            "in": "query",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "time logs found"
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          }
+        }
+      }
+    },
+    "/time_logs/bulk_update.json": {
+      "post": {
+        "summary": "Updates multiple time logs at once",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Time logs"
+        ],
+        "parameters": [
+          {
+            "name": "time_logs",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/time_log"
+              }
+            },
+            "description": "takes an object of time logs"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "time logs found"
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          }
+        }
+      }
+    },
+    "/time_logs/bulk_book.json": {
+      "post": {
+        "summary": "Books multiple time logs at once",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Time logs"
+        ],
+        "parameters": [
+          {
+            "name": "time_bookings",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/time_booking"
+              }
+            },
+            "description": "takes an object of time bookings"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "time logs found"
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          }
+        }
+      }
+    },
+    "/time_logs/bulk_create.json": {
+      "post": {
+        "summary": "Create multiple time logs at once",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Time logs"
+        ],
+        "parameters": [
+          {
+            "name": "time_logs",
+            "in": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/time_log"
+              }
+            },
+            "description": "takes an array of time logs"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "time logs found"
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          }
+        }
+      }
+    },
+    "/time_trackers.json": {
+      "get": {
+        "summary": "Lists all visible running time trackers",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Time trackers"
+        ],
+        "responses": {
+          "200": {
+            "description": "time trackers found",
+            "schema": {
+              "$ref": "#/definitions/index_response"
+            },
+            "examples": {
+              "application/json": {
+                "count": 2,
+                "offset": 0,
+                "limit": 25,
+                "records": [
+                  {
+                    "id": 1,
+                    "start": "2017-07-01T10:00:00.000+02:00",
+                    "user_id": 1,
+                    "created_at": "2017-07-01T10:00:01.692+02:00",
+                    "updated_at": "2017-07-01T10:00:01.692+02:00"
+                  },
+                  {
+                    "id": 2,
+                    "start": "2017-07-01T10:00:00.000+02:00",
+                    "comments": "test",
+                    "user_id": 2,
+                    "project_id": 2,
+                    "activity_id": 1,
+                    "created_at": "2017-07-01T10:00:01.744+02:00",
+                    "updated_at": "2017-07-01T10:00:01.744+02:00"
+                  }
+                ]
+              }
+            }
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          }
+        }
+      }
+    },
+    "/time_trackers/start.json": {
+      "post": {
+        "summary": "Starts a new time tracker",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Time trackers"
+        ],
+        "parameters": [
+          {
+            "name": "time_tracker",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/time_tracker_start"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "time tracker created",
+            "schema": {
+              "$ref": "#/definitions/time_tracker",
+              "required": [
+                "id",
+                "start",
+                "user_id",
+                "created_at",
+                "updated_at"
+              ]
+            },
+            "examples": {
+              "application/json": {
+                "id": 1,
+                "start": "2017-07-01T10:00:00.000+02:00",
+                "comments": "test",
+                "user_id": 1,
+                "project_id": 1,
+                "created_at": "2017-07-01T10:00:03.757+02:00",
+                "updated_at": "2017-07-01T10:00:03.757+02:00"
+              }
+            }
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          },
+          "400": {
+            "description": "time tracker not created",
+            "schema": {
+              "$ref": "#/definitions/error_msg"
+            }
+          }
+        }
+      }
+    },
+    "/time_trackers/{id}.json": {
+      "get": {
+        "summary": "Find time tracker by ID",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Time trackers"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "time tracker found",
+            "schema": {
+              "$ref": "#/definitions/time_tracker",
+              "required": [
+                "id",
+                "start",
+                "user_id",
+                "created_at",
+                "updated_at"
+              ]
+            },
+            "examples": {
+              "application/json": {
+                "id": 1,
+                "start": "2017-07-01T10:00:00.000+02:00",
+                "comments": "test",
+                "user_id": 1,
+                "created_at": "2017-07-01T10:00:05.765+02:00",
+                "updated_at": "2017-07-01T10:00:05.765+02:00"
+              }
+            }
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          },
+          "404": {
+            "description": "nothing found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a time tracker",
+        "tags": [
+          "Time trackers"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "time tracker deleted"
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          },
+          "404": {
+            "description": "nothing found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an existing time tracker",
+        "consumes": [
+          "application/json"
+        ],
+        "tags": [
+          "Time trackers"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "time_tracker",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/time_tracker_update"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "time tracker found"
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          },
+          "404": {
+            "description": "nothing found"
+          },
+          "400": {
+            "description": "time tracker not updated",
+            "schema": {
+              "$ref": "#/definitions/error_msg"
+            }
+          }
+        }
+      }
+    },
+    "/time_trackers/{id}/stop.json": {
+      "delete": {
+        "summary": "Stops a time tracker and create time records from it",
+        "tags": [
+          "Time trackers"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "time log created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "time_log": {
+                  "$ref": "#/definitions/time_log",
+                  "required": [
+                    "id",
+                    "start",
+                    "stop",
+                    "user_id",
+                    "created_at",
+                    "updated_at"
+                  ]
+                },
+                "time_booking": {
+                  "$ref": "#/definitions/time_booking",
+                  "required": [
+                    "id",
+                    "user_id",
+                    "created_at",
+                    "updated_at"
+                  ]
+                }
+              },
+              "required": [
+                "time_log"
+              ]
+            },
+            "examples": {
+              "application/json": {
+                "time_log": {
+                  "id": 1,
+                  "start": "2017-07-01T10:00:00.000+02:00",
+                  "stop": "2017-07-01T10:01:00.000+02:00",
+                  "comments": "test",
+                  "user_id": 1,
+                  "created_at": "2017-07-01T10:00:11.523+02:00",
+                  "updated_at": "2017-07-01T10:00:11.523+02:00",
+                  "hours": 0.016666666666666666
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          },
+          "404": {
+            "description": "nothing found"
+          },
+          "400": {
+            "description": "time tracker not stopped",
+            "schema": {
+              "$ref": "#/definitions/error_msg"
+            }
+          }
+        }
+      }
+    },
+    "/time_trackers/bulk_destroy.json": {
+      "delete": {
+        "summary": "Deletes multiple time trackers at once",
+        "tags": [
+          "Time trackers"
+        ],
+        "parameters": [
+          {
+            "name": "time_trackers[]",
+            "in": "query",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "time trackers found"
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          }
+        }
+      }
+    },
+    "/time_trackers/bulk_update.json": {
+      "post": {
+        "summary": "Updates multiple time trackers at once",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Time trackers"
+        ],
+        "parameters": [
+          {
+            "name": "time_trackers",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/time_tracker"
+              }
+            },
+            "description": "takes an object of time trackers"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "time trackers found"
+          },
+          "403": {
+            "description": "insufficient permissions"
+          },
+          "401": {
+            "description": "missing or wrong api key"
+          }
+        }
+      }
+    }
+  }
+}

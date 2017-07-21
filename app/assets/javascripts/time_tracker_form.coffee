@@ -28,7 +28,7 @@ $ ->
   $timeTrackerNewForm = $timeTrackerControl.find('.new-time-tracker-form')
   hourglass.FormValidator.validateForm $timeTrackerEditForm
 
-  $timeTrackerEditForm.on 'formfieldchanged', hourglass.Utils.debounce(formFieldChanged, 500)
+  $timeTrackerEditForm.on 'formfieldchanged', formFieldChanged
   .find('#time_tracker_start')
   .on 'change', ->
     hourglass.Timer.start()

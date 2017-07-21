@@ -100,7 +100,7 @@ definitions:
         <<: *date_time
       stop:
         <<: *date_time
-  time_booking_update:
+  time_booking_params:
     title: Time booking
     type: object
     properties:
@@ -136,4 +136,5 @@ definitions:
         type: integer
       records:
         type: array
-
+        items:
+          type: object

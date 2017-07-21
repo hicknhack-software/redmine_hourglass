@@ -43,7 +43,6 @@ See [.travis.yml](.travis.yml) for details about supported version. If a newer v
 1. Run `rake redmine:plugins:assets RAILS_ENV=production`. (If you redmine is deployed in a subfolder like `www.example.com/redmine` you need to add `RAILS_RELATIVE_URL_ROOT=/redmine` to that task like this `rake redmine:plugins:assets RAILS_ENV=production RAILS_RELATIVE_URL_ROOT=/redmine`)
 1. (Re)start your redmine
 1. The plugin is now installed and can be used.
-1. __(Optional, not needed for normal use)__ If you want to use the API documentation run `rake redmine:plugins:hourglass:api_docs`. If this doesn't work out of the box execute the migrations for the test database: `rake db:migrate RAILS_ENV=test` and `rake redmine:plugins:migrate RAILS_ENV=test`. Call the `api_docs` rake task again afterwards (without any `RAILS_ENV`). __WARNING: Be careful with this, if you use only one single database url for your production server, then executing migrate with another RAILS_ENV than production will wipe out your data! We are aware of that problem and thinking about a good fix.__
 
 ## Update
 
