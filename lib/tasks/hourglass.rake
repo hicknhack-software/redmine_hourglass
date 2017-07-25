@@ -1,6 +1,6 @@
 require 'rspec/core/rake_task'
 
-spec_path = File.join File.expand_path('../..',  File.dirname(__FILE__)), 'spec'
+spec_path = File.join File.expand_path('../..', File.dirname(__FILE__)), 'spec'
 
 namespace :redmine do
   namespace :plugins do
