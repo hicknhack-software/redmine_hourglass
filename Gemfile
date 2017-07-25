@@ -17,6 +17,8 @@ gem 'slim'
 gem 'js-routes', '~> 1.3'
 gem 'momentjs-rails', '>= 2.10.7'
 
+gem 'rswag' # api docs
+gem 'rspec-core'
 gem 'rqrcode'
 
 group :development, :test do
