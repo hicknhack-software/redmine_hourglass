@@ -168,6 +168,9 @@
           &:last-child {
             padding-right: 1em;
           }
+          &.description {
+            white-space: normal;
+          }
           .project {
             position: relative;
             overflow: hidden;
