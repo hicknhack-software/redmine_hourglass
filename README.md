@@ -14,8 +14,14 @@ _Note: This is a complete rewrite of the [Redmine Time Tracker Plugin](https://g
 
 _We already did some additions to the existing version, see [CHANGELOG.md](CHANGELOG.md) for details._
 
+## Migrate
 ___To ease migrating we added a function to import time entries from the redmine_time_tracker. You can find this in the plugin settings and as a rake task. For more information about migrating from the old time tracker take a look on the [Migration Guide](https://github.com/hicknhack-software/redmine_hourglass/wiki/Migration-Guide)___
- 
+
+## Companion App
+We made an app to ease use of the time tracker on mobile (android only for now), check it out:
+
+- [Hourglass for Android](https://play.google.com/store/apps/details?id=hnh.software.hourglass)
+
 ## Features
 - Per user time tracking
 - Integrates well with redmine by reusing time entries

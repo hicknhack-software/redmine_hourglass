@@ -1,0 +1,174 @@
+ru:
+  activerecord:
+    errors:
+      models:
+        hourglass/time_tracker:
+          attributes:
+            project:
+              blank: не существует
+            issue:
+              blank: не существует
+            activity:
+              blank: не существует
+            user_id:
+              taken: уже есть трекер учета времени
+        hourglass/time_log:
+          attributes:
+            base:
+              overlaps: Учет времени перекрывает существующую запись
+
+################### redmine specific stuff #####################
+  field_date: Дата
+  field_duration: Продолжительность
+  field_booked?: Зарегистрировано
+  field_issue_subject: Тема задачи
+  field_round: Round
+  field_start: Начало
+  field_stop: Окончание
+  label_this_quarter: текущий квартал
+  label_last_quarter: последний квартал
+  permission_hourglass_book_own_time: Регистрирование собственного времени
+  permission_hourglass_book_time: Регистрирование времени
+  permission_hourglass_edit_booked_time: Изменение зарегистрированного времени
+  permission_hourglass_edit_own_booked_time: Изменение собственного зарегистрированного времени
+  permission_hourglass_edit_own_tracked_time: Изменение собственного отслеживаемого времени
+  permission_hourglass_edit_tracked_time: Изменение отслеживаемого времени
+  permission_hourglass_track_time: Отслеживание времени
+  permission_hourglass_view_booked_time: Просмотр зарегистрированного времени
+  permission_hourglass_view_own_booked_time: Просмотр собсвенного зарегистрированного времени
+  permission_hourglass_view_own_tracked_time: Просмотр собственного отслеживаемого времени
+  permission_hourglass_view_tracked_time: Просмотр отслеживаемого времени
+  project_module_redmine_hourglass: Redmine Hourglass (Учёт времени)
+################################################################
+
+  hourglass:
+    project_settings:
+      global_value: "(Общее значение: %{value})"
+      override_hint_html: "Оставьте пустым, чтобы использовать <a href='%{url}'>общие настройки</a>"
+      title: Настройки модуля Hourglass
+      use_global: Использовать общее
+    settings:
+      import:
+        error:
+          redmine_time_tracker: Произошла ошибка, данные Redmine Time Tracker не могут быть импортированы, возможно вы уже импортировали эти данные.
+        fields:
+          redmine_time_tracker: Из плагина Redmine Time Tracker
+        label_start: Начать сейчас
+        success:
+          redmine_time_tracker: Данные Redmine Time Tracker были успешно импортированы в Redmine Hourglass.
+        title: Импорт
+      misc:
+        fields:
+          global_tracker: Показать глобальное меню "начать/завершить" учет времени?
+          api_docs_link: Документация Hourglass API
+        title: Разное
+      report:
+        fields:
+          logo_url: URL логотипа
+          logo_width: Ширина логотипа
+          title: Заголовок
+        title: Отчет
+      rounding:
+        fields:
+          default: Округлять по умолчанию
+          limit: Округлять вниз если менее
+          minimum: Минимальный интервал времени
+          carry_over_due: Отменить перенос округления после
+          sums_only: Округлять только суммарное время
+        title: Поведение округления
+    api:
+      errors:
+        change_others_forbidden: Вы не авторизованы для выполнения этого действия для другого пользователя
+        forbidden: У вас нет прав на выполнение этого действия
+        internal_server_error: Произошла ошибка, пожалуйста, повторите попытку позже.
+        missing_parameters: Не все параметры указаны
+        not_found: Запрашиваемый объект не существует
+        update_all_forbidden: У вас нет права изменять все атрибуты, которые вы изменили
+      time_trackers:
+        errors:
+          bulk_error_preface: Ошибка отслеживания времени, id %{id}
+          not_found: Этот трекер времени не существует
+      time_logs:
+        errors:
+          already_booked: Эта запись уже зарегистрирована
+          bulk_error_preface: Ошибки для журнала времени с id %{id}
+          bulk_create_error_preface: Ошибки для нового журнала времени %{id}
+          join_failed: Либо указанные записи времени уже зарегистрированы, либо начало и окончание учета времени не соответствуют
+          not_found: Этот журнал учета времени не существует
+          split_failed: Указанный split_at не входит в рамки журнала времени
+      time_bookings:
+        errors:
+          bulk_error_preface: Ошибка регистрации времени, id %{id}
+          bulk_create_error_preface: Ошибка новой регистрации времени %{id}
+          not_found: Эта регистрация времени не существует
+    ui:
+      api_docs:
+        title: Документация Hourglass API
+        description: В этой документации описаны доступные методы Hourglass API. Он доступен только на английском языке. Ваш ключ API уже настроен, поэтому вы можете начать прямо сейчас, но будьте осторожны, потому что нет тестовой системы, вы всегда будете работать с данными в реальном времени. Если вы хотите протестировать API с другим пользователем, нажмите кнопку «Авторизовать» и введите соответствующий ключ API.
+        error_api_disabled: В настоящее время API отключен. Вы можете включить его здесь
+        error_json_missing: Спецификация API отсутствует или недействительна. Пожалуйста, запустите задачу rake `%{task}` или попросите администратора сделать это. Повторите попытку позже.
+        error_outdated: Вы смотрите устаревшую версию документации API. Пожалуйста, запустите задачу rake `%{task}` или попросите администратора сделать это.
+        api_settings: Настройки API
+        swagger_note: Эта документация была построена с помощью
+      menu:
+        main: Учёт времени
+        overview: Обзор
+        time_bookings: Регистрация времени
+        time_logs: Журнал учета времени
+        time_trackers: Отслеживание времени
+      issues:
+        start: Начать учёт времени
+        stop: Завершить учёт времени
+        start_dialog:
+          description: Уже отслеживается время по задаче (%{time_tracker}). Пожалуйста, выберите что с этим делать.
+          title: Отслеживание времени
+          options:
+            discard: Остановить таймер и отменить измеренное время
+            log: Остановить таймер и записать время
+            takeover: Перенести измеренное время на эту задачу
+        stop_dialog:
+          description: У вас установлен проект, но не указан вид деятельности для вашего трекера. Пожалуйста, выберите его из списка ниже.
+          title: Не указана деятельность
+      index:
+        title: Учёт времени
+        time_tracker_control:
+          button_stop: Остановить
+          button_stop_new: Остановить и запустить новый
+          button_start: Запустить
+          heading: Укажите свою задачу
+          label_running_time: Текущее время
+        headings:
+          time_logs: Последний учет времени (за 2 недели)
+          time_bookings: Последняя регистрация времени (за 2 недели)
+      lists:
+        button_book: Зарегистрировать
+        button_book_all: Зарегистрировать все
+        button_update_all: Обновить все
+        button_create_all: Создать все
+        button_delete_booking: Удалить регистрацию
+      chart:
+        hour_sign: ч
+        minute_sign: мин
+      time_logs:
+        title: Журнал учета времени
+        button_join: Объединить записи
+        button_create: Новая запись времени
+        no_data: Нет записей учета времени
+        round_hint: Включение этого означает также, что зарегистрированное время после регистрации времени этой записи будет пересчитано
+      time_bookings:
+        title: Регистрация затраченного времени
+        button_create: Новая регистрация времени
+        no_data: Нет записей регистрации времени
+        heading_report: Отчет
+        label_print: Печать
+        round_hint: Включение этого означает также, что зарегистрированное время после этого времени будет пересчитано
+      time_trackers:
+        title: Отслеживание времени
+        no_data: Нет активного отслеживания времени
+    queries:
+      time_logs:
+        title_new: Новый запрос журнала времени
+      time_bookings:
+        title_new: Новый запрос регистрирования времени
+      time_trackers:
+        title_new: Новый запрос отслеживания времени
