@@ -1,0 +1,9 @@
+*.swp
+*.user
+*~
+~*
+
+.idea/*
+Gemfile.lock
+
+tmp/rubycritic/
