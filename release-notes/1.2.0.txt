@@ -1,0 +1,3 @@
+ * New Daily Time Sum feature - displays total log time of today in tracker and for all projects
+ * Quick switching between services in menu bar
+ * Correctly display sub-projects
