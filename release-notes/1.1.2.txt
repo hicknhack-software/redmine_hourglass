@@ -1,0 +1,2 @@
+* Better usability for the tracking-details-sheet
+* Fixes problems with font rendering
