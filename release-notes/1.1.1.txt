@@ -1,1 +1,1 @@
-- Fixes font rendering issues.
+* Fixes font rendering issues.

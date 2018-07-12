@@ -1,1 +1,1 @@
-- Enhanced display in time-tracking-view. Details are hidden and only shown when necessary.
+* Enhanced display in time-tracking-view. Details are hidden and only shown when necessary.
