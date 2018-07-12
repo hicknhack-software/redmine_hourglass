@@ -1,0 +1,2 @@
+* Hourglass now has a shiny new icon.
+* This version fixes display problems of project names when a user is assigned to more than 10 projects.
