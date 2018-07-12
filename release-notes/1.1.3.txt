@@ -1,0 +1,1 @@
+* Fixes problems with font rendering on certain devices
