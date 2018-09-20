@@ -22,6 +22,8 @@ We made an app to ease use of the time tracker on mobile (android only for now),
 
 - [Hourglass for Android](https://play.google.com/store/apps/details?id=hnh.software.hourglass)
 
+The Binaries are made available as downloads in the [Releases](https://github.com/hicknhack-software/redmine_hourglass/releases) section
+
 ## Features
 - Per user time tracking
 - Integrates well with redmine by reusing time entries
