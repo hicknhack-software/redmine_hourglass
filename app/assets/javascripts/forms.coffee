@@ -98,6 +98,7 @@ durationFieldChanged = (event) ->
 projectFieldChanged = (event) ->
   $projectField = $(@)
   $form = $projectField.closest('form')
+  return if $form.attr('id') == 'query_form'
   $issueTextField = $form.find('.js-issue-autocompletion')
   $activityField = $form.find('[name*=activity_id]')
   $userField = $form.find('[name*=user_id]')
