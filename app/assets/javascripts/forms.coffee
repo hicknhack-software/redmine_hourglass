@@ -177,7 +177,7 @@ $ ->
   $(document)
   .on 'focus', '.js-issue-autocompletion:not(.ui-autocomplete-input)', initIssueAutoCompletion
   .on 'change', '.js-validate-form', formFieldChanged
-  .on 'change changefromissue', '[name*=project_id]', projectFieldChanged
+  .on 'change changefromissue', '[name*=\\[project_id\\]]', projectFieldChanged
   .on 'change', '.js-issue-autocompletion', issueFieldChanged
   .on 'formfieldchanged', '[name*=start]', startFieldChanged
   .on 'formfieldchanged', '[name*=stop]', stopFieldChanged
