@@ -173,11 +173,6 @@ checkSplitting = ->
 
   return not (startJqXhr or stopJqXhr)
 
-###
-TODO: The event handlers get fired for changes in stock redmine forms so we'll need to check for them
-in every function or we need to update the event handler to work only with our forms!
-### 
-
 $ ->
   $(document)
   .on 'focus', '.js-issue-autocompletion:not(.ui-autocomplete-input)', initIssueAutoCompletion
