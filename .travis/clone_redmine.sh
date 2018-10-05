@@ -36,7 +36,7 @@ if [ -n "${REDMINE_GIT_TAG}" ]; then
     git checkout $REDMINE_GIT_TAG
 else
     mkdir -p $PATH_TO_REDMINE
-    wget $REDMINE_TARBALL -O- | tar -C $PATH_TO_REDMINE -xz --strip=1 --show-transformed -f -
+    wget $REDMINE_TARBALL -qO- | tar -C $PATH_TO_REDMINE -xz --strip=1 --show-transformed -f -
 fi
 
 # prepare plugin for tests

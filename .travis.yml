@@ -19,11 +19,11 @@ env:
   - REDMINE_VERSION=3.4.2 TRACE=--trace
 
 before_install:
-- . .travis/clone_redmine.sh
+- source .travis/clone_redmine.sh
 - gem install bundler
 
-gemfile: test_redmine/Gemfile
 install:
+- export BUNDLE_GEMFILE=$PATH_TO_REDMINE/Gemfile
 - cd $PATH_TO_REDMINE
 - bundle install --jobs=3 --retry=3 --path=$PATH_TO_PLUGIN/vendor/bundle
 - bundle exec rake $TRACE db:migrate
