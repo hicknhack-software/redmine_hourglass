@@ -25,7 +25,7 @@ before_install:
 #gemfile: test_redmine/Gemfile
 install:
 - cd $PATH_TO_REDMINE
-#- export BUNDLE_GEMFILE=test_redmine/Gemfile
+- export BUNDLE_GEMFILE=$REDMINE/Gemfile
 - bundle install --jobs=3 --retry=3 --path=$PATH_TO_PLUGIN/vendor/bundle
 - bundle exec rake $TRACE db:migrate
 - bundle exec rake $TRACE redmine:load_default_data REDMINE_LANG=en
