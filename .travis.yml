@@ -19,7 +19,8 @@ env:
   - REDMINE_VERSION=3.4.2 TRACE=--trace
 
 before_install:
-- . .travis/clone_redmine.sh
+- export PATH_TO_REDMINE=$(pwd)/$REDMINE
+- bash .travis/clone_redmine.sh
 - gem install bundler
 
 #gemfile: test_redmine/Gemfile

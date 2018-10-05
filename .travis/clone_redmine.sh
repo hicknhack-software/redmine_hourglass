@@ -2,7 +2,6 @@
 set -e
 
 export PATH_TO_PLUGIN=$(pwd)
-export PATH_TO_REDMINE=$(pwd)/$REDMINE
 
 case $REDMINE_VERSION in
   1.4.*)  export PATH_TO_PLUGINS=./vendor/plugins # for redmine < 2.0
