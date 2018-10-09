@@ -81,6 +81,10 @@ module Hourglass
       sql_for_field(field, operator, value, Issue.table_name, 'fixed_version_id')
     end
 
+    def sql_for_comments_field(field, operator, value)
+      sql_for_field(field, operator, value, TimeEntry.table_name, 'comments')
+    end
+
     def sql_for_activity_id_field(field, operator, value)
       condition_on_id = sql_for_field(field, operator, value, Enumeration.table_name, 'id')
       condition_on_parent_id = sql_for_field(field, operator, value, Enumeration.table_name, 'parent_id')
