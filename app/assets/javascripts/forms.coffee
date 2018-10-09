@@ -14,13 +14,13 @@ initIssueAutoCompletion = ->
       $(event.target).next().val('')
     select: (event, ui) ->
       event.preventDefault()
-      $issueField.trigger('change')
-      $projectField.val(ui.item.project_id).trigger('changefromissue') if $projectField.val() isnt ui.item.project_id
-    focus: (event, ui) ->
-      event.preventDefault()
       $issueField
       .val(ui.item.label)
       .next().val(ui.item.issue_id)
+      .trigger('change')
+      $projectField.val(ui.item.project_id).trigger('changefromissue') if $projectField.val() isnt ui.item.project_id
+    focus: (event, ui) ->
+      event.preventDefault()
 
 updateActivityField = ($activityField, $projectField) ->
   $selected_activity = $activityField.find("option:selected")
