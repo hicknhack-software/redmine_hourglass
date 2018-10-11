@@ -62,8 +62,9 @@ updateDurationField = ($startField, $stopField) ->
 
 updateLink = ($field) ->
   $link = $field.closest('.form-field').find('label + a')
-  $link.toggleClass 'hidden', $field.val() is ''
-  $link.attr('href', $link.attr('href').replace(/\/([^/]*)$/, "/#{$field.val()}"))
+  if $link.length
+    $link.toggleClass 'hidden', $field.val() is ''
+    $link.attr('href', $link.attr('href').replace(/\/([^/]*)$/, "/#{$field.val()}"))
 
 formFieldChanged = (event) ->
   $target = $(event.target)
