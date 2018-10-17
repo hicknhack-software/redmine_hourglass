@@ -1,3 +1,14 @@
+def sql_timezone
+  tz = Rails.configuration.active_record.default_timezone
+  case tz
+    when :local
+      'utc'
+    when :utc
+      'localtime'
+    else raise "Invalid Rails.config.active_record.default_timezone=#{tz}"
+  end
+end
+
 module Hourglass
   class TimeLogQuery < Query
     include QueryBase
@@ -5,7 +16,7 @@ module Hourglass
     set_available_columns(
         comments: {},
         user: {sortable: lambda { User.fields_for_order_statement }, groupable: true},
-        date: {sortable: "#{queried_class.table_name}.start", groupable: "DATE(#{queried_class.table_name}.start)"},
+        date: {sortable: "#{queried_class.table_name}.start", groupable: "DATE(#{queried_class.table_name}.start, '#{sql_timezone}')"},
         start: {},
         stop: {},
         hours: {totalable: true},
