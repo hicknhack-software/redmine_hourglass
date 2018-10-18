@@ -36,6 +36,18 @@ module Hourglass::QueryBase
         QueryColumn.new name, options
       end
     end
+
+    def sql_timezoned_date(column_name)
+      tz = Rails.configuration.active_record.default_timezone
+      arg = case tz
+        when :local
+          'utc'
+        when :utc
+          'localtime'
+        else raise "Invalid Rails.config.active_record.default_timezone=#{tz}"
+      end
+      "DATE(#{column_name}, '#{arg}')"
+    end
   end
 
   def initialize(attributes = nil)
