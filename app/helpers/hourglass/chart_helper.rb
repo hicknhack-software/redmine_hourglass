@@ -43,7 +43,7 @@ module Hourglass
 
     def unrounded_total(total)
       total.reduce(0.0) do |sum, total_by_project|
-        sum + total_by_project.sum.to_f.round(2)
+        sum + total_by_project[1].to_f.round(2)
       end
     end
 
