@@ -5,9 +5,11 @@ class HourglassCompletionController < Hourglass::ApiBaseController
 
   def issues
     issue_arel = Issue.arel_table
+
+    id_as_text = Arel::Nodes::NamedFunction.new("CAST", [ issue_arel[:id].as("VARCHAR") ])
     issues = Issue.visible.joins(:project).where(Project.allowed_to_one_of_condition User.current, Hourglass::AccessControl.permissions_from_action(controller: 'hourglass/time_logs', action: 'book')).where(
         issue_arel[:id].eq(params[:term].to_i)
-            .or(issue_arel[:id].matches("%#{params[:term]}%"))
+            .or(id_as_text.matches("%#{params[:term]}%"))
             .or(issue_arel[:subject].matches("%#{params[:term]}%"))
     )
     issues = issues.where(project_id: params[:project_id]) if params[:project_id].present?
