@@ -3,7 +3,7 @@ module Hourglass
     include QueryBase
 
     set_available_columns(
-        date: {sortable: "#{queried_class.table_name}.start", groupable: "DATE(#{queried_class.table_name}.start)"},
+        date: {sortable: "#{queried_class.table_name}.start", groupable: sql_timezoned_date("#{queried_class.table_name}.start")},
         start: {},
         stop: {},
         hours: {totalable: true},
