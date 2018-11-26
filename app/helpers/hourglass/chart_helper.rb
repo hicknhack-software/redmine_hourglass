@@ -37,7 +37,13 @@ module Hourglass
       query.total_by_group_for(:hours).transform_values do |totals_by_column|
         totals_by_column = {default: totals_by_column} unless query.main_query.group_by_statement
         totals_by_column.transform_keys! { |_| :default } if query.main_query.group_by == 'date'
-        Hash[totals_by_column.map { |column, total| [column, time_booking_total(total)] }]
+        Hash[totals_by_column.map { |column, total| [column, unrounded_total(total)] }]
+      end
+    end
+
+    def unrounded_total(total)
+      total.reduce(0.0) do |sum, total_by_project|
+        sum + total_by_project[1].to_f.round(2)
       end
     end
 
