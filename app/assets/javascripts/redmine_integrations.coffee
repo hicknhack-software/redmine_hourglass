@@ -1,5 +1,5 @@
-startNewTracker = ->
-  $('.js-start-tracker').addClass('js-skip-dialog').first().click()
+startNewTracker = (link) ->
+  $(link).addClass('js-skip-dialog').first().click()
 
 timeTrackerAjax = (args) ->
   $.ajax
@@ -24,7 +24,7 @@ stopDialogApplyHandler = (args) ->
     success: ->
       $('.js-stop-tracker').addClass('js-skip-dialog').first().click()
 
-startDialogApplyHandler = ->
+startDialogApplyHandler = (link) ->
   $startDialog = $(@)
   $startDialog.dialog 'close'
   switch $startDialog.find('input[type=radio]:checked').val()
@@ -32,17 +32,17 @@ startDialogApplyHandler = ->
       timeTrackerAjax
         url: hourglassRoutes.stop_hourglass_time_tracker 'current'
         method: 'delete'
-        success: startNewTracker
+        success: -> startNewTracker link
     when 'discard'
       timeTrackerAjax
         url: hourglassRoutes.hourglass_time_tracker 'current'
         method: 'delete'
-        success: startNewTracker
+        success: -> startNewTracker link
     when 'takeover'
       timeTrackerAjax
         url: hourglassRoutes.hourglass_time_tracker 'current'
         type: 'put'
-        data: $('.js-start-tracker').data('params')
+        data: $(link).data('params')
         success: ->
           location.reload()
 
@@ -57,12 +57,11 @@ showStartDialog = (e) ->
       hourglass.Utils.showDialog 'js-start-dialog', $startDialogContent, [
         {
           text: $startDialogContent.data('button-ok-text')
-          click: startDialogApplyHandler
+          click: -> startDialogApplyHandler.call(@, e.target)
         }
         {
           text: $startDialogContent.data('button-cancel-text')
-          click: ->
-            $(this).dialog 'close'
+          click: -> $(@).dialog 'close'
         }
       ]
   else
