@@ -1,5 +1,4 @@
 # Redmine Hourglass Plugin
-[![Dependency Status](https://gemnasium.com/hicknhack-software/redmine_hourglass.png)](https://gemnasium.com/hicknhack-software/redmine_hourglass)
 [![Code Climate](https://codeclimate.com/github/hicknhack-software/redmine_hourglass.png)](https://codeclimate.com/github/hicknhack-software/redmine_hourglass)
 [![Build Status](https://travis-ci.org/hicknhack-software/redmine_hourglass.png)](https://travis-ci.org/hicknhack-software/redmine_hourglass)
 [![Join the chat at https://gitter.im/hicknhack-software/redmine_hourglass](https://badges.gitter.im/hicknhack-software/redmine_hourglass.svg)](https://gitter.im/hicknhack-software/redmine_hourglass?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
