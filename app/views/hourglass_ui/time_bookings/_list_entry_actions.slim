@@ -4,8 +4,8 @@
   = render partial: 'hooks/time_tracker/start_dialog_content', locals: {time_tracker: time_tracker}
   - @once = (not nil)
 
-- booking_params = {:params=>{:time_tracker=>{:issue_id=>time_booking.issue.id,
-    :activity_id => time_booking.activity.id,
+- booking_params = {:params=>{:time_tracker=>{:issue_id=>time_booking.issue&.id,
+    :activity_id => time_booking.activity&.id,
     :comments => time_booking.comments}}}
 = link_to '', start_hourglass_time_trackers_path, class: 'icon-hourglass-continue js-hourglass-remote js-start-tracker', title: t(:button_continue), remote: true, method: 'post', data: booking_params
 
