@@ -23,7 +23,7 @@ gem 'rspec-core'
 group :development, :test do
   gem 'rubycritic', require: false
   gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'zonebie'
   gem 'timecop'
   gem 'faker', '1.7.3'
