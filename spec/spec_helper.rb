@@ -12,10 +12,10 @@ require File.expand_path File.dirname(__FILE__) + '/../lib/hourglass'
 
 require 'rspec/rails'
 require 'rake'
-require 'factory_girl_rails'
+require 'factory_bot_rails'
 
-FactoryGirl.definition_file_paths << File.join(File.dirname(__FILE__), 'factories')
-FactoryGirl.reload
+FactoryBot.definition_file_paths << File.join(File.dirname(__FILE__), 'factories')
+FactoryBot.reload
 
 #ENV['ZONEBIE_TZ'] = 'Pacific/Pago_Pago' #possibility to set a specific timezone
 Zonebie.set_random_timezone
@@ -41,8 +41,8 @@ RSpec.configure do |config|
   # config.mock_with :flexmock
   # config.mock_with :rr
 
-  # use FactoryGirl for setting up test data
-  config.include FactoryGirl::Syntax::Methods
+  # use FactoryBot for setting up test data
+  config.include FactoryBot::Syntax::Methods
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false

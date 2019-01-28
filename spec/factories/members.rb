@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :member do
     user
     project
@@ -8,7 +8,7 @@ FactoryGirl.define do
     end
     
     before(:create) do |member, evaluator|
-      member.roles << FactoryGirl.create(:role, permissions: evaluator.permissions)
+      member.roles << FactoryBot.create(:role, permissions: evaluator.permissions)
     end
   end
 end

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :user do
     firstname { Faker::Name.first_name }
     lastname { Faker::Name.last_name }
@@ -16,7 +16,7 @@ FactoryGirl.define do
         permissions []
       end
       after(:create) do |user, evaluator|
-        user.memberships << FactoryGirl.create(:member, user: user, permissions: evaluator.permissions)
+        user.memberships << FactoryBot.create(:member, user: user, permissions: evaluator.permissions)
       end
     end
   end

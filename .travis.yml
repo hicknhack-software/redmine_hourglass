@@ -1,11 +1,15 @@
 language: ruby
-sudo: false
+cache:
+  bundler: true
+  directories:
+    - vendor/bundle
+    - workspace/redmine/vendor/bundle
 
 rvm:
-   - 2.0.0
-   - 2.1.10
-   - 2.2.7
-   - 2.3.4
+- 2.0.0
+- 2.1.10
+- 2.2.7
+- 2.3.4
 
 env:
   global:
@@ -20,7 +24,6 @@ env:
 
 before_install:
 - source .travis/clone_redmine.sh
-- gem install bundler
 
 install:
 - export BUNDLE_GEMFILE=$PATH_TO_REDMINE/Gemfile
@@ -36,7 +39,3 @@ script:
 - if [ "$TRACE" == "--trace" ]; then export BACKTRACE=--backtrace; fi
 - if [ -z "$TRACE" ]; then unset BACKTRACE; fi
 - bundle exec rspec $BACKTRACE --pattern $PATH_TO_PLUGIN/spec/**/*_spec.rb
-
-cache:
-  directories:
-  - vendor/bundle
