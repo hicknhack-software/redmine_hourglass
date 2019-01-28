@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :time_entry do
     project
     user

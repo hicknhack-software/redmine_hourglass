@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :time_booking, class: 'Hourglass::TimeBooking' do
     transient do
       user { create :user }

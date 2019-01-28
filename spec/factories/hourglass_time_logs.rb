@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :time_log, class: 'Hourglass::TimeLog' do
     user
     start { Faker::Time.between Date.today, Date.today, :morning }
