@@ -17,12 +17,11 @@ gem 'slim'
 gem 'js-routes', '~> 1.3'
 gem 'momentjs-rails', '>= 2.10.7'
 
-gem 'rswag' # api docs
+gem 'rswag', '<2.0' # api docs
 gem 'rspec-core'
 gem 'rqrcode'
 
 group :development, :test do
-  gem 'rswag' # api docs
   gem 'rubycritic', require: false
   gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
   gem 'factory_bot_rails'
