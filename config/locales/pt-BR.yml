@@ -1,4 +1,4 @@
-en:
+pt-BR:
   activerecord:
     errors:
       models:
@@ -11,7 +11,7 @@ en:
             activity:
               blank: não existe
             user_id:
-              taken: já existe um medidor de tempo em execução
+              taken: já existe um registrador de tempo em execução
         hourglass/time_log:
           attributes:
             base:
