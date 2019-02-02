@@ -24,7 +24,7 @@ gem 'rqrcode', '~> 0.10.1'
 group :development, :test do
   gem 'rubycritic', require: false
   gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
-  gem 'factory_bot_rails'
+  gem 'factory_bot_rails', '< 5.0'
   gem 'zonebie'
   gem 'timecop'
   gem 'faker', '1.7.3'
