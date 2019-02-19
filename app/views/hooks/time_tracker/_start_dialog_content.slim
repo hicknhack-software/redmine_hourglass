@@ -4,6 +4,8 @@
   p
     = radio_button_tag 'running_time', 'log', true
     = label_tag 'running_time_log', t('hourglass.ui.issues.start_dialog.options.log')
+    - if time_tracker.activity.blank?
+      = collection_select :time_tracker, :activity_id, activity_collection(time_tracker.project), :id, :name, {required: true, include_blank: t('hourglass.ui.issues.stop_dialog.title')}
     - if Pundit.policy!(User.current, time_tracker).destroy?
     p
       = radio_button_tag 'running_time', 'discard', false
