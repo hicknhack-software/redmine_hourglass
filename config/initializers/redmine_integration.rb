@@ -3,7 +3,11 @@ def add_patch(module_to_patch, method: :include)
   module_to_patch.send method, patch unless module_to_patch.ancestors.include? patch
 end
 
-ActionDispatch::Callbacks.to_prepare do
+if Rails::VERSION::MAJOR >= 5
+  ActiveSupport::Reloader
+else
+  ActionDispatch::Callbacks
+end.to_prepare do
   [Project, TimeEntry, User, ProjectsHelper, SettingsController, UserPreference, TimeEntryActivity].each { |module_to_patch| add_patch module_to_patch }
   [Query].each { |module_to_patch| add_patch module_to_patch, method: :prepend }
 
