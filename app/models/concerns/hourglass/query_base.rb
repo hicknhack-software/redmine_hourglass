@@ -38,11 +38,6 @@ module Hourglass::QueryBase
     end
   end
 
-  def initialize(attributes = nil)
-    super
-    self.filters ||= {}
-  end
-
   def build_from_params(params)
     super
     self.totalable_names = self.default_totalable_names unless params[:t] || (params[:query] && params[:query][:totalable_names])
