@@ -5,11 +5,11 @@ module Hourglass::DateTimeCalculations
     end
 
     def round_minimum(project: nil)
-      Hourglass::Settings[:round_minimum, project: project].to_f.hours.to_i
+      [1, Hourglass::Settings[:round_minimum, project: project].to_f.hours.to_i].max
     end
 
     def round_carry_over_due(project: nil)
-      Hourglass::Settings[:round_carry_over_due, project: project].to_f.hours.to_i
+      [0, Hourglass::Settings[:round_carry_over_due, project: project].to_f.hours.to_i].max
     end
 
     def time_diff(time1, time2)
