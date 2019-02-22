@@ -55,6 +55,8 @@ matrix:
 
 before_install:
 - source .travis/clone_redmine.sh
+- gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
+- gem install bundler -v '< 2'
 
 install:
 - export BUNDLE_GEMFILE=$PATH_TO_REDMINE/Gemfile
