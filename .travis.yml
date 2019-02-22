@@ -6,21 +6,52 @@ cache:
     - workspace/redmine/vendor/bundle
 
 rvm:
-- 2.0.0
-- 2.1.10
-- 2.2.7
-- 2.3.4
-
 env:
   global:
-  - PLUGIN=redmine_hourglass
-  - REDMINE=test_redmine
+    - PLUGIN=redmine_hourglass
+    - REDMINE=test_redmine
+    - TRACE=--trace
 
-  matrix:
-  - REDMINE_VERSION=3.2.7 TRACE=--trace
-  - REDMINE_VERSION=3.3.4 TRACE=--trace
-  - REDMINE_VERSION=3.4.1 TRACE=--trace
-  - REDMINE_VERSION=3.4.2 TRACE=--trace
+matrix:
+  include:
+    - name: Ruby 2.0 / Redmine 3.2
+      rvm: 2.0.0
+      env: REDMINE_VERSION=3.2.9
+    - name: Ruby 2.0 / Redmine 3.3
+      rvm: 2.0.0
+      env: REDMINE_VERSION=3.3.9
+
+    - name: Ruby 2.1 / Redmine 3.3
+      rvm: 2.1.10
+      env: REDMINE_VERSION=3.3.9
+    - name: Ruby 2.1 / Redmine 3.4
+      rvm: 2.1.10
+      env: REDMINE_VERSION=3.4.9
+
+    - name: Ruby 2.2 / Redmine 3.3
+      rvm: 2.2.10
+      env: REDMINE_VERSION=3.3.9
+    - name: Ruby 2.2 / Redmine 3.4
+      rvm: 2.2.10
+      env: REDMINE_VERSION=3.4.9
+
+    - name: Ruby 2.3 / Redmine 3.4.1
+      rvm: 2.3.8
+      env: REDMINE_VERSION=3.4.1
+    - name: Ruby 2.3 / Redmine 3.4.9
+      rvm: 2.3.8
+      env: REDMINE_VERSION=3.4.9
+
+    - name: Ruby 2.5 / Redmine 4
+      rvm: 2.5.3
+      env: REDMINE_VERSION=4.0.2
+
+    - name: Ruby 2.6 / Redmine 4
+      rvm: 2.6.1
+      env: REDMINE_VERSION=4.0.2
+
+  allow_failures:
+    - env: REDMINE_VERSION=4.0.2
 
 before_install:
 - source .travis/clone_redmine.sh
