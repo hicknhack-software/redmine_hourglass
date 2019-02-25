@@ -26,38 +26,36 @@ stopDialogApplyHandler = (args) ->
 
 startDialogApplyHandler = (link) ->
   $startDialog = $(@)
-  $startDialog.dialog 'close'
-
-  saveLog = () ->
-    timeTrackerAjax
-      url: hourglassRoutes.stop_hourglass_time_tracker 'current'
-      method: 'delete'
-      success: -> startNewTracker link
-
   switch $startDialog.find('input[type=radio]:checked').val()
     when 'log'
-      $activitySelect = $startDialog.find('#time_tracker_activity_id')
+      $activityField = $startDialog.find('[name*=activity_id]')
+      saveLog = () ->
+        timeTrackerAjax
+          url: hourglassRoutes.stop_hourglass_time_tracker 'current'
+          method: 'delete'
+          success: -> startNewTracker link
 
-      if !$activitySelect.length
-        saveLog()
-
-      if $activitySelect.length
-        if $activitySelect.val()
-          timeTrackerAjax
-            url: hourglassRoutes.hourglass_time_tracker 'current'
-            method: 'put'
-            data: { 'time_tracker[activity_id]': $activitySelect.val() }
-            success: saveLog
-        else
-          hourglass.Utils.showErrorMessage $activitySelect.find("option").eq(0).text()
+      if $activityField.length
+        return unless hourglass.FormValidator.isFieldValid $activityField
+        $startDialog.dialog 'close'
+        timeTrackerAjax
+          url: hourglassRoutes.hourglass_time_tracker 'current'
+          method: 'put'
+          data:
+            time_tracker:
+              activity_id: $activityField.val()
+          success: saveLog
       else
+        $startDialog.dialog 'close'
         saveLog()
     when 'discard'
+      $startDialog.dialog 'close'
       timeTrackerAjax
         url: hourglassRoutes.hourglass_time_tracker 'current'
         method: 'delete'
         success: -> startNewTracker link
     when 'takeover'
+      $startDialog.dialog 'close'
       timeTrackerAjax
         url: hourglassRoutes.hourglass_time_tracker 'current'
         type: 'put'

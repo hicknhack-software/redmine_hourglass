@@ -132,6 +132,7 @@ en:
           options:
             discard: Stop timer and discard measured time
             log: Stop timer and log time
+            log_activity: "Stop timer and log time with activity:"
             takeover: Takeover time to this issue
         stop_dialog:
           description: You have set a project but no activity for your time tracker. Please choose one from the list below.
