@@ -136,7 +136,8 @@ de:
           title: Laufende Zeitmessung
           options:
             discard: Zeitmessung verwerfen
-            log: Zeitmessung stoppen
+            log: Zeit buchen
+            log_activity: "Zeit mit Aktivität buchen:"
             takeover: Zeitmessung für dieses Ticket übernehmen
         stop_dialog:
           description: Sie haben für den aktiven Zeitmesser ein Projekt, aber keine Aktivität gesetzt. Bitte wählen sie eine aus der untenstehenden Liste.

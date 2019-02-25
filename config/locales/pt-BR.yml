@@ -125,6 +125,7 @@ pt-BR:
           options:
             discard: Parar registrador e descartar o tempo
             log: Parar o registrador e salvar o tempo
+            #log_activity:
             takeover: Transferir tempo registrado para essa tarefa
         stop_dialog:
           description: Você vinculou um projeto mas nenhuma atividade para o seu registro de tempo. Por favor escolha uma da lista abaixo.
