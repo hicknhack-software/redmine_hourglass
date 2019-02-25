@@ -61,7 +61,7 @@ module Hourglass
       now = Time.now.change sec: 0
       self.user ||= User.current
       previous_time_log = user.hourglass_time_logs.find_by(stop: now + 1.minute)
-      project_id = self.project_id || issue && issue.project_id
+      self.project_id ||= issue && issue.project_id
       update_round project_id unless round.present?
 
       self.start ||= previous_time_log && previous_time_log.stop || now
