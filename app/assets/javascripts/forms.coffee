@@ -1,5 +1,4 @@
-initIssueAutoCompletion = ->
-  $issueField = $(@)
+initIssueAutoCompletion = ($issueField)->
   $projectField = $issueField.closest('form').find('[name*=project_id]')
   $issueField.autocomplete
     source: (request, response) ->
@@ -176,7 +175,6 @@ checkSplitting = ->
 
 $ ->
   $(document)
-  .on 'focus', '.js-issue-autocompletion:not(.ui-autocomplete-input)', initIssueAutoCompletion
   .on 'change', '.js-validate-form', formFieldChanged
   .on 'change changefromissue', '[name*=\\[project_id\\]]', projectFieldChanged
   .on 'change', '.js-issue-autocompletion', issueFieldChanged
@@ -190,3 +188,4 @@ $ ->
       event.stopPropagation()
     return isFormValid
   .on 'ajax:before', '.js-check-splitting', checkSplitting
+  initIssueAutoCompletion $('.js-issue-autocompletion:not(.ui-autocomplete-input)')
