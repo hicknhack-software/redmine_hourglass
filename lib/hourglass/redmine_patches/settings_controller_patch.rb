@@ -18,8 +18,10 @@ module Hourglass
 
       private
       def hourglass_settings_params
-        boolean_keys = [:round_default, :round_sums_only, :global_tracker]
-        parse_boolean boolean_keys, params[:settings].transform_values(&:presence).select { |key, value| boolean_keys.include?(key) || !value.nil? }
+        p = params[:settings].transform_values(&:presence)
+        p = parse_boolean [:round_default, :round_sums_only, :global_tracker], p
+        p = parse_float [:round_minimum, :round_carry_over_due], p
+        parse_int [:round_limit, :report_logo_width], p
       end
     end
   end

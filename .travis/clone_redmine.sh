@@ -10,7 +10,7 @@ case $REDMINE_VERSION in
           export MIGRATE_PLUGINS=db:migrate_plugins
           export REDMINE_TARBALL=https://github.com/redmine/redmine/archive/$REDMINE_VERSION.tar.gz
           ;;
-  2.*|3.*)
+  2.*|3.*|4.*)
           export PATH_TO_PLUGINS=./plugins # for redmine >= 2.0
           export GENERATE_SECRET=generate_secret_token
           export MIGRATE_PLUGINS=redmine:plugins:migrate

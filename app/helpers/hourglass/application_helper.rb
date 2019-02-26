@@ -40,10 +40,6 @@ module Hourglass
       end
     end
 
-    def activity_collection(project = nil)
-      project.present? ? project.activities : TimeEntryActivity.shared.active
-    end
-
     def user_collection(project = nil)
       project.present? ? project.users : User.active
     end

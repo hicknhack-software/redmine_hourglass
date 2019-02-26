@@ -1,13 +1,19 @@
+valueTarget = ($target) ->
+  if $target.get(0).type is 'checkbox' and not $target.prop('checked')
+    $target.prev()
+  else
+    $target
+
 formFieldChanged = (event) ->
   data = {}
   $target = $(event.target)
   attribute = $target.attr('name')
-  data[attribute] = $target.val()
-  if attribute.indexOf 'project_id' > -1
+  data[attribute] = valueTarget($target).val()
+  if attribute.indexOf('project_id') > -1
     $issueField = $(@).find('.js-issue-autocompletion').next()
     data[$issueField.attr('name')] = $issueField.val()
-  hourglass.Utils.clearFlash()
   unless $target.hasClass('invalid')
+    hourglass.Utils.clearFlash()
     $.ajax
       url: hourglassRoutes.hourglass_time_tracker('current')
       type: 'put'

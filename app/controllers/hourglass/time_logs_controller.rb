@@ -125,7 +125,8 @@ module Hourglass
     end
 
     def time_booking_params(params_hash = params.require(:time_booking))
-      parse_boolean :round, params_hash.permit(:comments, :project_id, :issue_id, :activity_id, :round)
+      parse_boolean :round, params_hash.permit(:comments, :project_id, :issue_id, :activity_id, :round,
+                                               custom_field_values: custom_field_keys(params_hash))
     end
 
     def time_log_from_id(id = params[:id])

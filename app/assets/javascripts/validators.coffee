@@ -1,75 +1,82 @@
+addError = ($field, msg) ->
+  errors = getErrors $field
+  errors.push "[#{$field.closest('.form-field').find('label').text()}]: #{window.hourglass.errorMessages[msg] || msg}"
+  $field.data 'errors', errors
+
+getErrors = ($field) ->
+  $field.data('errors') || []
+
+clearErrors = ($field) ->
+  $field.data 'errors', null
+
 isEmpty = ($field) ->
   $field.val() is ''
 
-isNotEmpty = ($field) ->
-  not isEmpty $field
+validatePresence = ($field) ->
+  addError $field, 'empty' if isEmpty $field
 
-isValidTimeField = ($field, limitConditionCallback, additionalConditionCallback) ->
-  mTime = moment(hourglass.Utils.detranslateDateTime($field.val()), window.hourglass.DateTimeFormat)
-  mTime.isValid() and
-    (not $field.hasClass('js-validate-limit') or limitConditionCallback(mTime)) and
-    additionalConditionCallback(mTime)
-
-isFieldValid = ($field, $form) ->
-  name = $field.attr('name')
-  type = name.replace(/[a-z_]*\[([a-z_]*)]/, '$1') if name?
-  isRequired = $field.prop('required')
-
-  condition = switch type
-    when 'activity_id' then isEmpty($form.find('[name*=project_id]')) or isNotEmpty($field)
-    when 'issue_id' then isEmpty($form.find('#issue_text')) or isNotEmpty($field)
+validateByType = (type, $field, $form) ->
+  switch type
+    when 'activity_id'
+      validatePresence $field unless isEmpty $form.find('[name*=project_id]')
+    when 'issue_id'
+      validatePresence $field unless isEmpty $form.find('#issue_text')
     when 'start'
-      isValidTimeField $field,
-        (mStart) ->
-          not mStart.isBefore $field.data('mLimit')
-        (mStart) ->
-          stopField = $form.find('[name*=stop]')
-          return true if stopField.length is 0
-          mStop = moment(hourglass.Utils.detranslateDateTime(stopField.val()), window.hourglass.DateTimeFormat)
-          if $field.hasClass('js-allow-zero-duration')
-            mStart.isSameOrBefore mStop
-          else
-            mStart.isBefore mStop
+      mStart = moment $field.val(), moment.ISO_8601
+      addError $field, 'invalid' unless mStart.isValid()
+      addError $field, 'exceedsLimit' if $field.hasClass('js-validate-limit') and mStart.isBefore $field.data('mLimit')
+      $stopField = $form.find('[name*=stop]')
+      break if $stopField.length is 0
+      mStop = moment $stopField.val(), moment.ISO_8601
+      if $field.hasClass('js-allow-zero-duration')
+        addError $field, 'invalidDuration' if mStart.isAfter mStop
+      else
+        addError $field, 'invalidDuration' if mStart.isSameOrAfter mStop
     when 'stop'
-      isValidTimeField $field,
-        (mStop) ->
-          not mStop.isAfter $field.data('mLimit')
-        (mStop) ->
-          startField = $form.find('[name*=start]')
-          return true if startField.length is 0
-          mStart = moment(hourglass.Utils.detranslateDateTime(startField.val()), window.hourglass.DateTimeFormat)
-          if $field.hasClass('js-allow-zero-duration')
-            mStop.isSameOrAfter mStart
-          else
-            mStop.isAfter mStart
-    else
-      true
+      mStop = moment $field.val(), moment.ISO_8601
+      addError $field, 'invalid' unless mStop.isValid()
+      addError $field, 'exceedsLimit' if $field.hasClass('js-validate-limit') and mStop.isAfter $field.data('mLimit')
+      $startField = $form.find('[name*=start]')
+      break if $startField.length is 0
+      mStart = moment $startField.val(), moment.ISO_8601
+      if $field.hasClass('js-allow-zero-duration')
+        addError $field, 'invalidDuration' if mStart.isAfter mStop
+      else
+        addError $field, 'invalidDuration' if mStart.isSameOrAfter mStop
 
-  condition and (not isRequired or isNotEmpty($field))
+validateField = ($field, $form) ->
+  clearErrors $field
+  validatePresence $field if $field.prop('required')
+  name = $field.attr('name')
+  validateByType name.replace(/[a-z_]*\[([a-z_]*)]/, '$1'), $field, $form if name?
 
-toggle_submit = ($form, valid) ->
-  $form.find(':submit').attr('disabled', not valid)
+  hasErrors = getErrors($field).length > 0
+  $field.toggleClass('invalid', hasErrors)
+  $field.prev().toggleClass('invalid', hasErrors) if $field.attr('type') is 'hidden'
 
 all_form_fields = ($form, filter = null) ->
   $fields = $form.find('input, select, textarea')
   if filter? then $fields.filter filter else $fields
 
-validateField = ($field, $form = $field.closest('form')) ->
-  valid = isFieldValid $field, $form
+processValidation = ($form) ->
+  hourglass.Utils.clearFlash()
+  $invalidFields = all_form_fields $form, '.invalid'
+  hourglass.Utils.showErrorMessage $invalidFields.map( -> getErrors $(@)).get() if $invalidFields.length > 0
+  $form.find(':submit').attr('disabled', $invalidFields.length > 0)
 
-  $field.toggleClass('invalid', not valid)
-  $field.prev().toggleClass('invalid', not valid) if $field.attr('type') is 'hidden'
-  toggle_submit $form, all_form_fields($form, '.invalid').length is 0
-  valid
+validateSingleField = ($field, $form = $field.closest('form')) ->
+  validateField $field, $form
+  processValidation $form
 
 validateForm = ($form) ->
-  valid = true
   all_form_fields($form, '[name]').each ->
-    valid = valid and validateField $(@), $form
-  toggle_submit $form, valid
-  valid
+    validateField $(@), $form
+  processValidation $form
 
 @hourglass ?= {}
 @hourglass.FormValidator =
-  validateField: validateField
+  validateField: validateSingleField
+  isFieldValid: ($field, args...) ->
+    validateSingleField $field, args...
+    getErrors($field).length is 0
   validateForm: validateForm

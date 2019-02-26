@@ -1,0 +1,10 @@
+* text=auto
+*.rb text eol=lf
+*.sh text eol=lf
+*.yml text eol=lf
+*.slim text eol=lf
+*.coffee text eol=lf
+*.scss text eol=lf
+*.rake text eol=lf
+*.json text eol=lf
+Gemfile text eol=lf

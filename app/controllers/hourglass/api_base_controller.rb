@@ -3,11 +3,8 @@ module Hourglass
     include QueryConcern
     include SortConcern
     include BooleanParsing
-    include DateTimeParsing
     around_action :catch_halt
     before_action :require_login
-
-    before_action :parse_date_time
 
     rescue_from StandardError, with: :internal_server_error
     rescue_from ActionController::ParameterMissing, with: :missing_parameters
@@ -136,6 +133,11 @@ module Hourglass
 
     def flash_array(type, messages)
       flash[type] = render_to_string partial: 'hourglass_ui/flash_array', locals: {messages: messages}
+    end
+
+    def custom_field_keys(params_hash)
+      return {} unless params_hash[:custom_field_values]
+      params_hash[:custom_field_values].keys
     end
   end
 end

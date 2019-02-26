@@ -38,11 +38,6 @@ module Hourglass::QueryBase
     end
   end
 
-  def initialize(attributes = nil)
-    super
-    self.filters ||= {}
-  end
-
   def build_from_params(params)
     super
     self.totalable_names = self.default_totalable_names unless params[:t] || (params[:query] && params[:query][:totalable_names])
@@ -194,9 +189,27 @@ module Hourglass::QueryBase
     versions = if project
                  project.shared_versions.to_a
                else
-                 Version.visible.where(sharing: 'system').to_a
+                 Version.visible.to_a
                end
     values = versions.uniq.sort.collect { |s| ["#{s.project.name} - #{s.name}", s.id.to_s] }
     add_available_filter 'fixed_version_id', type: :list_optional, values: values
+  end
+
+  def has_through_associations
+    []
+  end
+
+  def sql_for_custom_field(*args)
+    result = super
+    result.gsub!(/#{queried_table_name}\.(#{has_through_associations.join('|')})_id/) do
+      groupable_columns.select { |c| c.name == Regexp.last_match[1].to_sym }.first.groupable
+    end
+    result
+  end
+
+  # this is a fix for redmine 3.2.7
+  def issue_custom_fields
+    return super if defined? super
+    IssueCustomField.all
   end
 end

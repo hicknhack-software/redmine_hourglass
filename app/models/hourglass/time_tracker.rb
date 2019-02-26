@@ -7,6 +7,9 @@ module Hourglass
     belongs_to :project
     belongs_to :issue
     belongs_to :activity, class_name: 'TimeEntryActivity', foreign_key: 'activity_id'
+    has_one :fixed_version, through: :issue
+
+    acts_as_customizable
 
     after_initialize :init
     before_update if: :project_id_changed? do
@@ -20,6 +23,7 @@ module Hourglass
     validates_presence_of :issue, if: Proc.new { |tt| tt.issue_id.present? }
     validates_presence_of :activity, if: Proc.new { |tt| tt.activity_id.present? }
     validates_length_of :comments, maximum: 255, allow_blank: true
+    validate :does_not_overlap_with_other, if: [:user, :start?], on: :update
 
     class << self
       alias_method :start, :create
@@ -44,15 +48,25 @@ module Hourglass
       DateTimeCalculations.time_diff_in_hours start, Time.now.change(sec: 0) + 1.minute
     end
 
+    def available_custom_fields
+      CustomField.where("type = 'TimeEntryCustomField'").sorted.to_a
+    end
+
+    def validate_custom_field_values
+      super unless new_record?
+    end
+
     private
     def init
-      current_user = User.current
       now = Time.now.change sec: 0
-      previous_time_log = current_user.hourglass_time_logs.find_by(stop: now + 1.minute)
-      self.user ||= current_user
-      update_round project_id || issue && issue.project_id unless round.present?
+      self.user ||= User.current
+      previous_time_log = user.hourglass_time_logs.find_by(stop: now + 1.minute)
+      self.project_id ||= issue && issue.project_id
+      update_round project_id unless round.present?
 
       self.start ||= previous_time_log && previous_time_log.stop || now
+
+      self.activity ||= user.default_activity(TimeEntryActivity.applicable(user.projects.find_by id: project_id)) if project_id
     end
 
     def time_log_params
@@ -60,7 +74,8 @@ module Hourglass
     end
 
     def time_booking_params
-      attributes.with_indifferent_access.slice :project_id, :issue_id, :activity_id, :round
+      attributes.with_indifferent_access.slice(:project_id, :issue_id, :activity_id, :round)
+          .merge custom_field_values: custom_field_values.inject({}) { |h, v| h[v.custom_field_id.to_s] = v.value; h }
     end
 
     def bookable?
@@ -68,7 +83,12 @@ module Hourglass
     end
 
     def update_round(project = nil)
-      self.round = !Hourglass::Settings[:round_sums_only, project: project] && Hourglass::Settings[:round_default, project: project]
+      self.round = !Hourglass::Settings[:round_sums_only, project: project] &&
+          Hourglass::Settings[:round_default, project: project]
+    end
+
+    def does_not_overlap_with_other
+      errors.add :base, :overlaps unless user.hourglass_time_logs.overlaps_with(start, Time.now).empty?
     end
   end
 end

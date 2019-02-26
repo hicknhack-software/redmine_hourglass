@@ -35,16 +35,9 @@ parseDuration = (durationString) ->
   [hours, minutes] = durationString.split(':')
   moment.duration(hours: hours, minutes: minutes)
 
-detranslateDateTime = (dateTimeString) ->
-  return unless dateTimeString
-  window.hourglass.DateTimeStrings.reduce (a, [pattern, replace]) ->
-    a.replace pattern, replace
-  , dateTimeString
-
 @hourglass ?= {}
 @hourglass.Utils =
   clearFlash: clearFlash
-  detranslateDateTime: detranslateDateTime
   formatDuration: formatDuration
   parseDuration: parseDuration
   showDialog: showDialog
@@ -57,3 +50,5 @@ $ ->
     location.reload()
   .on 'ajax:error', '.js-hourglass-remote', (event, {responseJSON}) ->
     hourglass.Utils.showErrorMessage responseJSON.message
+  .on 'click', '.js-toggle', ->
+    $($(@).data('target')).toggleClass 'hidden'

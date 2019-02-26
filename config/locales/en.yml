@@ -12,6 +12,8 @@ en:
               blank: doesn't exist
             user_id:
               taken: already has a running time tracker
+            base:
+              overlaps: There is a overlapping time log
         hourglass/time_log:
           attributes:
             base:
@@ -19,12 +21,14 @@ en:
 
 ################### redmine specific stuff #####################
   field_date: Date
+  field_default_activity: Default activity
   field_duration: Duration
   field_booked?: Booked
   field_issue_subject: Issue subject
   field_round: Round
   field_start: Start
   field_stop: Stop
+  field_time_entry: Spent time
   label_this_quarter: current quarter
   label_last_quarter: last quarter
   permission_hourglass_book_own_time: Book own time
@@ -42,6 +46,8 @@ en:
 ################################################################
 
   hourglass:
+    user_settings:
+      title: Hourglass Settings
     project_settings:
       global_value: "(Global Value: %{value})"
       override_hint_html: "Leave empty to use <a href='%{url}'>global settings</a>"
@@ -93,6 +99,7 @@ en:
           already_booked: This time log was already booked
           bulk_error_preface: Errors for time log with id %{id}
           bulk_create_error_preface: Errors for the new time log %{id}
+          delete_booked: Booked time logs can't be deleted, delete the time booking first.
           join_failed: There are either bookings defined on the submitted time logs or the time logs start and stop doesn't match
           not_found: This time log doesn't exist
           split_failed: Submitted split_at is not within the bounds of the time log
@@ -125,6 +132,7 @@ en:
           options:
             discard: Stop timer and discard measured time
             log: Stop timer and log time
+            log_activity: "Stop timer and log time with activity:"
             takeover: Takeover time to this issue
         stop_dialog:
           description: You have set a project but no activity for your time tracker. Please choose one from the list below.
@@ -140,6 +148,13 @@ en:
         headings:
           time_logs: Recent time logs (last 2 weeks)
           time_bookings: Recent time bookings (last 2 weeks)
+        qr_code_link: Connect with Hourglass App
+      forms:
+        errors:
+          empty: This field is required.
+          invalid: This fields value is invalid.
+          exceedsLimit: This fields value exceeds it's limit.
+          invalidDuration: Your start and stop times form an invalid duration.
       lists:
         button_book: Book
         button_book_all: Book all

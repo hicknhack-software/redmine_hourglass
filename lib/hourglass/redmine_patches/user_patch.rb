@@ -15,6 +15,11 @@ module Hourglass
         Hourglass::TimeLog.update_all ['user_id = ?', substitute.id], ['user_id = ?', id]
         Hourglass::TimeTracker.update_all ['user_id = ?', substitute.id], ['user_id = ?', id]
       end
+
+      def default_activity(scope = TimeEntryActivity.shared.active)
+        system_wide_default = TimeEntryActivity.default
+        scope.find_by(name: [pref.default_activity, system_wide_default && system_wide_default.name])
+      end
     end
   end
 end

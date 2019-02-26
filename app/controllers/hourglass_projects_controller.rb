@@ -12,7 +12,9 @@ class HourglassProjectsController < ApplicationController
 
   private
   def settings_params
-    boolean_keys = [:round_default, :round_sums_only]
-    parse_boolean boolean_keys, params[:settings].transform_values(&:presence)
+    p = params[:settings].transform_values(&:presence)
+    p = parse_boolean [:round_default, :round_sums_only], p
+    p = parse_float [:round_minimum, :round_carry_over_due], p
+    parse_int [:round_limit], p
   end
 end

@@ -546,9 +546,12 @@
                         else {
                             shim = -t.getWidth()/2;
                         }
-                        var val = this.u2p(t.value) + shim + 'px';
-                        t._elem.css('left', val);
-                        t.pack();
+
+                        if (shim != 0) { // Don't invalidate layout for invisible ticks
+                            var val = this.u2p(t.value) + shim + 'px';
+                            t._elem.css('left', val);
+                            t.pack();
+                        }
                     }
                 }
                 

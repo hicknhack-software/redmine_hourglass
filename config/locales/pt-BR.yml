@@ -1,0 +1,175 @@
+pt-BR:
+  activerecord:
+    errors:
+      models:
+        hourglass/time_tracker:
+          attributes:
+            project:
+              blank: não existe
+            issue:
+              blank: não existe
+            activity:
+              blank: não existe
+            user_id:
+              taken: já existe um registrador de tempo em execução
+        hourglass/time_log:
+          attributes:
+            base:
+              overlaps: Já existe um registro nesse horário
+
+################### redmine specific stuff #####################
+  field_date: Data
+  field_duration: Duração
+  field_booked?: Reservado
+  field_issue_subject: Título
+  field_round: Arredondar
+  field_start: Iniciar
+  field_stop: Parar
+  label_this_quarter: trimestre atual
+  label_last_quarter: último trimestre
+  permission_hourglass_book_own_time: Reservar próprio tempo
+  permission_hourglass_book_time: Reservar tempo
+  permission_hourglass_edit_booked_time: Editar tempo reservado
+  permission_hourglass_edit_own_booked_time: Editar próprio tempo reservado
+  permission_hourglass_edit_own_tracked_time: Editar próprio tempo registrado
+  permission_hourglass_edit_tracked_time: Editar tempo registrado
+  permission_hourglass_track_time: Registrar tempo
+  permission_hourglass_view_booked_time: Ver tempo reservado
+  permission_hourglass_view_own_booked_time: Ver próprio tempo reservado
+  permission_hourglass_view_own_tracked_time: Ver próprio tempo registrado
+  permission_hourglass_view_tracked_time: Ver tempo registrado
+  project_module_redmine_hourglass: Redmine Hourglass (Registro de Tempo)
+################################################################
+
+  hourglass:
+    project_settings:
+      global_value: "(Valor Global: %{value})"
+      override_hint_html: "Deixe em branco para usar as <a href='%{url}'>configurações globais</a>"
+      title: Configurações do Plugin Hourglass
+      use_global: Use global
+    settings:
+      import:
+        error:
+          redmine_time_tracker: Houve um erro, os dados do Redmine Time Tracker não puderam ser importados, você pode já ter importado o banco de dados.
+        fields:
+          redmine_time_tracker: Do plugin Redmine Time Tracker
+        label_start: Iniciar agora
+        success:
+          redmine_time_tracker: Os dados do Redmine Time Tracker forma importados com sucesso para o Redmine Hourglass.
+        title: Importar
+      misc:
+        fields:
+          global_tracker: Mostrar de forma global o menu iniciar/parar?
+          api_docs_link: Hourglass API-Dokumentation
+        title: Diversos
+      report:
+        fields:
+          logo_url: URL da logo
+          logo_width: Largura da logo
+          title: Título
+        title: Relatório
+      rounding:
+        fields:
+          default: Arredondar por padrão?
+          limit: Arrenondar para baixo se menor que
+          minimum: Mínimo intervalo de tempo
+          carry_over_due: Desconsiderar acúmulo de arredondamentos acima de
+          sums_only: Somente arrendondar somas?
+        title: Configuração de Arredondamento
+    api:
+      errors:
+        change_others_forbidden: Você não é autorizado a executar essa ação por outro usuário
+        forbidden: Você não está autorizado a realizar essa ação
+        internal_server_error: Ocorreu um erro, por favor tente novamente
+        missing_parameters: Foram enviados um número insuficiente de parâmetros
+        not_found: O objeto requisitado não existe
+        update_all_forbidden: Você não está autorizado a mudar todos os atributos que você modificou
+      time_trackers:
+        errors:
+          bulk_error_preface: Erros do registro de tempo id %{id}
+          not_found: Esse registro de tempo não existe
+      time_logs:
+        errors:
+          already_booked: Esse horário já foi reservado
+          bulk_error_preface: Erros para o registro de horário id %{id}
+          bulk_create_error_preface: Erros para o novo registro de horário %{id}
+          join_failed: Existem reservas definidas nos registros de tempo enviados ou os registros de tempo iniciados e parados não correspondem
+          not_found: Este registro de horário não existe
+          split_failed: O valor de "separado em" não está dentro dos limites dos registros de tempo
+      time_bookings:
+        errors:
+          bulk_error_preface: Erros para a reserva de tempo id %{id}
+          bulk_create_error_preface: Erros para a nova reserva %{id}
+          not_found: Essa reserva não existe
+    ui:
+      api_docs:
+        title: Documentação da API Hourglass
+        description: Essa documentação descreve os endpoints disponíveis para consulta na API do hourglass. Atualmente está disponível somente em inglês. A sua chave de api já está configurada, você pode começar agora mesmo. Por favor tenha curidado, porque não existe nenhum teste atualmente, as operações sempre serão realizadas em dados de produção. Se quiser testar a API com outro usuário clique no botão 'Autorizar' e entre a respectiva chave de API.
+        error_api_disabled: Essa API está atualmente desabilitada. Habilite para fazer uso dela
+        error_json_missing: A especificação da API está faltando ou está inválida. Por favor execute rake task `%{task}` ou peça o administrador para executar por você. Logo após tente novamente.
+        error_outdated: Você está vendo uma versão desatualizada da documentação da API. Por favor execute rake task `%{task}` para atualizar ou peça para o administrador executar por você.
+        api_settings: Configurações da API
+        swagger_note: Essa configuração foi construída com
+      menu:
+        main: Registro de tempo
+        overview: Visão Global
+        time_bookings: Reservas de tempo
+        time_logs: Registro de tempo
+        time_trackers: Registradores em execução
+      issues:
+        start: Iniciar registro de tempo
+        stop: Parar registro de tempo
+        start_dialog:
+          description: Existe um registrador de tempo em execução (%{time_tracker}). Por favor escolha o que fazer com ele.
+          title: Registrador em execução
+          options:
+            discard: Parar registrador e descartar o tempo
+            log: Parar o registrador e salvar o tempo
+            #log_activity:
+            takeover: Transferir tempo registrado para essa tarefa
+        stop_dialog:
+          description: Você vinculou um projeto mas nenhuma atividade para o seu registro de tempo. Por favor escolha uma da lista abaixo.
+          title: Escolha uma atividade
+      index:
+        title: Registro de tempo
+        time_tracker_control:
+          button_stop: Parar
+          button_stop_new: Parar & Novo
+          button_start: Iniciar
+          heading: Especifique sua tarefa
+          label_running_time: Hora atual
+        headings:
+          time_logs: Registros de tempo recentes (últimas 2 semanas)
+          time_bookings: Reservas de tempo recentes (últimas 2 semanas)
+      lists:
+        button_book: Reservar
+        button_book_all: Reservar todos
+        button_update_all: Atualizar todos
+        button_create_all: Criar todos
+        button_delete_booking: Deletar reserva
+      chart:
+        hour_sign: h
+        minute_sign: min
+      time_logs:
+        title: Registro de tempo
+        button_join: Juntar registros de tempo
+        button_create: Novo registro de tempo
+        no_data: Nenhum registro de tempo disponível
+        round_hint: Ativando isso significa também que reservas de tempo depois dessa reserva serão recalculadas
+      time_bookings:
+        title: Reservas de tempo
+        button_create: Nova reserva de tempo
+        no_data: Nenhuma reserva de tempo disponível
+        heading_report: Relatório
+        label_print: Imprimir
+        round_hint: Ativando isso também significa, que reservas de tempo depois dessa serão recalculadas
+      time_trackers:
+        title: Registrados de tempo em execução
+        no_data: Nenhum registrador de tempo em execução
+    queries:
+      time_logs:
+        title_new: Consulta novo registro de tempo
+      time_bookings:
+        title_new: Consulta nova reserva de tempo
+      time_trackers:
+        title_new: Consulta novo registrador de tempo

@@ -15,6 +15,8 @@
       = form_field :issue, f, time_booking, disabled: !policy(time_booking).change?
       = form_field :comments, f, time_booking, disabled: !policy(time_booking).change?
       = form_field :user_id, f, time_booking, required: true, disabled: !policy(time_booking).change?(:user_id)
+      - time_booking.time_entry.custom_field_values.each do |value|
+        .form-field = custom_field_tag_with_label :'time_booking', value
       .form-field
         .input
           = f.submit t(:button_update)

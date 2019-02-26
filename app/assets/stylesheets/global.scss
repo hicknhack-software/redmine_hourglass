@@ -8,6 +8,12 @@
   }
   .center {
     text-align: center;
+
+    .invalid {
+      border: 2px solid #D00;
+      background-color: #FFE3E3;
+      color: #800;
+    }
   }
 }
 
@@ -17,6 +23,10 @@
 
 .icon-hourglass-stop {
   background-image: image-url('icons/time_stop.png');
+}
+
+.icon-hourglass-continue {
+  background-image: image-url('icons/time_continue.png');
 }
 
 .icon-hourglass-join {

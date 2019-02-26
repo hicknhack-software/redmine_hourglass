@@ -118,7 +118,7 @@ module Hourglass
 
     def time_entry_arguments(options)
       options
-          .slice(:project_id, :issue_id, :comments, :activity_id, :user)
+          .slice(:project_id, :issue_id, :comments, :activity_id, :user, :custom_field_values)
           .merge spent_on: User.current.time_to_date(options[:start]), hours: DateTimeCalculations.time_diff_in_hours(options[:start], options[:stop])
     end
 
@@ -127,8 +127,7 @@ module Hourglass
     end
 
     def does_not_overlap_with_other
-      overlapping_time_logs = user.hourglass_time_logs.where.not(id: id).overlaps_with start, stop
-      errors.add :base, :overlaps unless overlapping_time_logs.empty?
+      errors.add :base, :overlaps unless user.hourglass_time_logs.where.not(id: id).overlaps_with(start, stop).empty?
     end
 
     def remove_seconds

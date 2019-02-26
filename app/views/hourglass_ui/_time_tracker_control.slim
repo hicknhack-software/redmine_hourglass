@@ -12,7 +12,7 @@
   - else
     = form_for @time_tracker, url: stop_hourglass_time_tracker_path(@time_tracker), method: :delete, as: 'time_tracker', remote: true, html: {class: 'edit-time-tracker-form js-validate-form js-hourglass-remote'} do |f|
       .form-row
-        = form_field :issue, f, @time_tracker, disabled: !policy(Hourglass::TimeLog).book?
+        = form_field :issue, f, @time_tracker, disabled: !policy(Hourglass::TimeLog).book?, with_link: true
         = form_field :comments, f, @time_tracker
 
         - rounding_disabled = !@time_tracker.project || Hourglass::Settings[:round_sums_only, project: @time_tracker.project]
@@ -26,7 +26,7 @@
             = t('hourglass.ui.index.time_tracker_control.label_running_time')
           .input.js-running-time
       .form-row
-        = form_field :project, f, @time_tracker, disabled: !policy(Hourglass::TimeLog).book?
+        = form_field :project, f, @time_tracker, disabled: !policy(Hourglass::TimeLog).book?, with_link: true
         = form_field :activity, f, @time_tracker, disabled: !policy(Hourglass::TimeLog).book?
         = form_field :start, f, @time_tracker, disabled: !policy(@time_tracker).change?(:start)
         .form-field
@@ -37,3 +37,6 @@
             - if policy(@time_tracker).destroy?
               = link_to hourglass_time_tracker_path(@time_tracker), class: 'js-hourglass-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)} do
                 input type='button' value=t(:button_delete)
+      .form-row
+        - @time_tracker.custom_field_values.each do |value|
+          .form-field = custom_field_tag_with_label :'time_tracker', value

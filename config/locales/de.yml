@@ -16,6 +16,8 @@ de:
               blank: existiert nicht
             user_id:
               taken: hat bereits eine laufende Zeitmessung
+            base:
+              overlaps: Es existiert bereits eine sich überschneidende Zeiterfassung
         hourglass/time_log:
           attributes:
             base:
@@ -23,12 +25,14 @@ de:
 
 ################### redmine specific stuff #####################
   field_date: Datum
+  field_default_activity: Standardaktivität
   field_duration: Dauer
   field_booked?: Gebucht
   field_issue_subject: Ticketthema
   field_round: Runden
   field_start: Beginn
   field_stop: Ende
+  field_time_entry: Aufgewendete Zeit
   label_this_quarter: aktuelles Quartal
   label_last_quarter: letztes Quartal
   permission_hourglass_book_own_time: Eigene Zeit buchen
@@ -46,6 +50,8 @@ de:
 ################################################################
 
   hourglass:
+    user_settings:
+        title: Hourglass Einstellungen
     project_settings:
       global_value: "(Globaler Wert: %{value})"
       override_hint_html: "Leerlassen um <a href='%{url}'>globale Einstellungen</a> zu verwenden"
@@ -98,6 +104,7 @@ de:
           already_booked: Diese Zeiterfassung wurde bereits gebucht.
           bulk_error_preface: Fehler für Zeiterfassung mit ID %{id}
           bulk_create_error_preface: Fehler für neue Zeiterfassung %{id}
+          delete_booked: Gebuchte Zeiterfassungen können nicht gelöscht werden, löschen sie zuerst die Zeitbuchung.
           join_failed: Die zusammen zu fügenden Zeiterfassungen wurden entweder bereits gebucht oder ihre Beginne und Enden passen nicht zusammen.
           not_found: Diese Zeiterfassung existiert nicht.
           split_failed: Der übermittelte Zeitpunkt zum Aufteilen befindet sich außerhalb der Grenzen der Zeiterfassung.
@@ -129,7 +136,8 @@ de:
           title: Laufende Zeitmessung
           options:
             discard: Zeitmessung verwerfen
-            log: Zeitmessung stoppen
+            log: Zeit buchen
+            log_activity: "Zeit mit Aktivität buchen:"
             takeover: Zeitmessung für dieses Ticket übernehmen
         stop_dialog:
           description: Sie haben für den aktiven Zeitmesser ein Projekt, aber keine Aktivität gesetzt. Bitte wählen sie eine aus der untenstehenden Liste.
@@ -145,6 +153,13 @@ de:
         headings:
           time_logs: Letzte Zeiterfassungen (letzten 2 Wochen)
           time_bookings: Letzte Zeitbuchungen (letzten 2 Wochen)
+        qr_code_link: Verbinde die Hourglass App
+      forms:
+        errors:
+          empty: Dieses Feld muss augefüllt werden.
+          invalid: Der Wert dieses Feldes ist ungültig.
+          exceedsLimit: Der Wert dieses Feldes überschreitet sein Limit.
+          invalidDuration: Ihre Start und Stop Zeiten bilden einen ungültigen Zeitraum.
       lists:
         button_book: Buchen
         button_book_all: Alle buchen
