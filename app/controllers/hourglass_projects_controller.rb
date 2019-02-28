@@ -5,6 +5,7 @@ class HourglassProjectsController < ApplicationController
 
     settings = params[:settings].transform_values(&:presence)
     settingsValidation = Hourglass::SettingsValidation.new settings
+    settingsValidation.is_project_settings = true
     if settingsValidation.valid?
       Hourglass::Settings[project: @project] = settings
       flash[:notice] = l(:notice_successful_update)

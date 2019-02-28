@@ -12,7 +12,6 @@ module Hourglass
 
         settings = params[:settings].transform_values(&:presence)
         settingsValidation = Hourglass::SettingsValidation.new settings
-        settingsValidation.global_settings = true
         if settingsValidation.valid?
           Hourglass::Settings[] = settings
           flash[:notice] = l(:notice_successful_update)
