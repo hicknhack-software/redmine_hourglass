@@ -8,7 +8,7 @@ p
 
 p
   = f.label :round_minimum, t('hourglass.settings.rounding.fields.minimum')
-  = f.text_field :round_minimum, {min: 0, max: 24, step: :any}
+  = f.number_field :round_minimum, {min: 0, max: 24, step: :any}
   = " (#{t(:field_hours)})"
 p
   = f.label :round_limit, t('hourglass.settings.rounding.fields.limit')

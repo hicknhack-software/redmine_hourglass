@@ -8,7 +8,7 @@
 
     p
       = render partial: 'hourglass_projects/label_with_global_value_tag', locals: {name: 'settings[round_minimum]', label_text: t('hourglass.settings.rounding.fields.minimum'), global_value: Hourglass::SettingsStorage[:round_minimum]}
-      = f.text_field :round_minimum, {min: 0, max: 24, step: :any}
+      = f.number_field :round_minimum, {min: 0, max: 24, step: :any}
       = " (#{t(:field_hours)})"
     p
       = render partial: 'hourglass_projects/label_with_global_value_tag', locals: {name: 'settings[round_limit]', label_text: t('hourglass.settings.rounding.fields.limit'), global_value: Hourglass::SettingsStorage[:round_limit]}
