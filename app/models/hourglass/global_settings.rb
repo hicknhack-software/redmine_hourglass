@@ -17,7 +17,7 @@ module Hourglass
     validates :round_limit, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
     validates :round_default, inclusion: { in: [ 'true', 'false', '1', '0', true, false ] }
     validates :round_carry_over_due, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 24 }
-    validates :report_title, length: { maximum: 23 }
+    validates :report_title, length: { maximum: 23 }, presence: true
     validates :report_logo_url, length: { maximum: 23 }
     validates :report_logo_width, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 9999 }
     validates :global_tracker, inclusion: { in: [ 'true', 'false', '1', '0', true, false ] }

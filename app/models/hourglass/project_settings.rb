@@ -8,11 +8,11 @@ module Hourglass
                   :round_default,
                   :round_carry_over_due
 
-    validates :round_sums_only, inclusion: { in: [ 'true', 'false', '', true, false, nil ] }
-    validates :round_minimum, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 24 }
-    validates :round_limit, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
-    validates :round_default, inclusion: { in: [ 'true', 'false', '', true, false, nil ] }
-    validates :round_carry_over_due, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 24 }
+    validates :round_sums_only, inclusion: { in: [ 'true', 'false', true, false ] }, allow_blank: true
+    validates :round_minimum, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 24 }, allow_blank: true
+    validates :round_limit, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_blank: true
+    validates :round_default, inclusion: { in: [ 'true', 'false', true, false ] }, allow_blank: true
+    validates :round_carry_over_due, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 24 }, allow_blank: true
 
     def initialize(project = nil)
       @project = project
