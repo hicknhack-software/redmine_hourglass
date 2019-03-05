@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gem 'uglifier'
 gem 'coffee-script', '~> 2.4.1'
 gem 'sass', '~> 3.5.1'
+gem 'rb-inotify', '<0.10' # required for ruby 2.0 support
 
 # access control
 gem 'pundit', '~> 1.1.0'
@@ -22,7 +23,8 @@ gem 'rspec-core'
 gem 'rqrcode', '~> 0.10.1'
 
 group :development, :test do
-  gem 'rubycritic', require: false
+  gem 'rubycritic', '<4.0.0', require: false
+  gem 'rainbow', '<3.0.0' # required for ruby 2.0 support
   gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
   gem 'factory_bot_rails', '< 5.0'
   gem 'zonebie'
