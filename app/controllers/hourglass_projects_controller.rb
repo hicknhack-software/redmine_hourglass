@@ -1,18 +1,23 @@
 class HourglassProjectsController < ApplicationController
+  helper :application
+
   def settings
     find_project
     deny_access unless User.current.allowed_to? :select_project_modules, @project
 
-    settings = params[:settings].transform_values(&:presence)
-    settingsValidation = Hourglass::SettingsValidation.new settings
-    settingsValidation.is_project_settings = true
-    if settingsValidation.valid?
-      Hourglass::Settings[project: @project] = settings
-      flash[:notice] = l(:notice_successful_update)
-      redirect_to settings_project_path @project, tab: Hourglass::PLUGIN_NAME
-    else
-      flash[:error] = settingsValidation.errors.full_messages.to_sentence
-      redirect_to settings_project_path @project, tab: Hourglass::PLUGIN_NAME
+    @settings = Hourglass::ProjectSettings.load(@project)
+    if request.post?
+      if @settings.update(hourglass_settings_params)
+        flash[:notice] = l(:notice_successful_update)
+        render js: "window.location='#{settings_project_path @project, tab: Hourglass::PLUGIN_NAME}'"
+        return
+      end
     end
+  end
+
+  private
+  def hourglass_settings_params
+    params.require(:hourglass_project_settings).permit(:round_sums_only, :round_minimum, :round_limit,
+                                                      :round_default, :round_carry_over_due)
   end
 end

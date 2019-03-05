@@ -2,7 +2,7 @@ module Hourglass
   class ApiBaseController < ApplicationController
     include QueryConcern
     include SortConcern
-    include TypeParsing
+    include BooleanParsing
     around_action :catch_halt
     before_action :require_login
 

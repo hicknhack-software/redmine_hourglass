@@ -6,8 +6,8 @@ describe Hourglass::TimeBooking do
   end
 
   before :each do
-    Hourglass::Settings[:round_limit] = '50'
-    Hourglass::Settings[:round_minimum] = '0.25'
+    Hourglass::SettingsStorage[:round_limit] = '50'
+    Hourglass::SettingsStorage[:round_minimum] = '0.25'
   end
 
   it 'has a valid factory' do
