@@ -102,7 +102,7 @@ module Hourglass
     end
 
     def rounded_total(project_id, total)
-      return total unless Hourglass::Settings[:round_sums_only, project: project_id]
+      return total unless Hourglass::SettingsStorage[:round_sums_only, project: project_id]
       Hourglass::DateTimeCalculations.in_hours(Hourglass::DateTimeCalculations.round_interval total.hours, project: project_id)
     end
   end

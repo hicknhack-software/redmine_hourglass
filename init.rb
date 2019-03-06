@@ -10,7 +10,7 @@ Redmine::Plugin.register Hourglass::PLUGIN_NAME do
 
   requires_redmine version_or_higher: '3.2.0'
 
-  settings default: Hourglass::Settings.defaults, :partial => "settings/#{Hourglass::PLUGIN_NAME}"
+  settings default: Hourglass::SettingsStorage.defaults, :partial => "settings/#{Hourglass::PLUGIN_NAME}"
 
   project_module Hourglass::PLUGIN_NAME do
     def with_foreign(*permissions)

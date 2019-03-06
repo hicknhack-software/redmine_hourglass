@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-describe Hourglass::Settings do
+describe Hourglass::SettingsStorage do
 
   before :each do
     Setting.plugin_redmine_hourglass = {

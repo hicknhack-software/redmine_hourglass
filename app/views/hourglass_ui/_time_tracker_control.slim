@@ -15,7 +15,7 @@
         = form_field :issue, f, @time_tracker, disabled: !policy(Hourglass::TimeLog).book?, with_link: true
         = form_field :comments, f, @time_tracker
 
-        - rounding_disabled = !@time_tracker.project || Hourglass::Settings[:round_sums_only, project: @time_tracker.project]
+        - rounding_disabled = !@time_tracker.project || Hourglass::SettingsStorage[:round_sums_only, project: @time_tracker.project]
         .form-field class=('hidden' if rounding_disabled)
           .label
             = f.label :round
