@@ -24,6 +24,7 @@ module Hourglass
       end
 
       private
+
       def hourglass_settings_params
         params.require(:hourglass_global_settings).permit(:round_sums_only, :round_minimum, :round_limit,
                                                           :round_default, :round_carry_over_due, :report_title,

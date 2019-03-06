@@ -8,11 +8,14 @@ module Hourglass
                   :round_default,
                   :round_carry_over_due
 
-    validates :round_sums_only, inclusion: { in: [ 'true', 'false', true, false ] }, allow_blank: true
-    validates :round_minimum, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 24 }, allow_blank: true
-    validates :round_limit, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_blank: true
-    validates :round_default, inclusion: { in: [ 'true', 'false', true, false ] }, allow_blank: true
-    validates :round_carry_over_due, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 24 }, allow_blank: true
+    validates :round_sums_only, inclusion: { in: ['true', 'false', true, false] }, allow_blank: true
+    validates :round_minimum, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 24 },
+                              allow_blank: true
+    validates :round_limit, numericality: { only_integer: true, greater_than_or_equal_to: 0,
+                                            less_than_or_equal_to: 100 }, allow_blank: true
+    validates :round_default, inclusion: { in: ['true', 'false', true, false] }, allow_blank: true
+    validates :round_carry_over_due, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 24 },
+                                     allow_blank: true
 
     def initialize(project = nil)
       @project = project
@@ -43,11 +46,11 @@ module Hourglass
 
     def to_hash
       {
-          round_sums_only: round_sums_only,
-          round_minimum: round_minimum,
-          round_limit: round_limit,
-          round_default: round_default,
-          round_carry_over_due: round_carry_over_due
+        round_sums_only: round_sums_only,
+        round_minimum: round_minimum,
+        round_limit: round_limit,
+        round_default: round_default,
+        round_carry_over_due: round_carry_over_due
       }
     end
 
@@ -56,7 +59,7 @@ module Hourglass
       self.round_minimum = parse_type :float, @round_minimum
       self.round_limit = parse_type :integer, @round_limit
       self.round_default = parse_type :boolean, @round_default
-      self.round_carry_over_due= parse_type :float, @round_carry_over_due
+      self.round_carry_over_due = parse_type :float, @round_carry_over_due
     end
 
     def parse_type(type, attribute)
