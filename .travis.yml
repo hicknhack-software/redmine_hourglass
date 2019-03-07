@@ -75,21 +75,21 @@ matrix:
     - env: REDMINE_VERSION=4.0.2
 
 before_install:
-- source .travis/clone_redmine.sh
-- gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
-- gem install bundler -v '< 2'
+  - source .travis/clone_redmine.sh
+  - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
+  - gem install bundler -v '< 2'
 
 install:
-- export BUNDLE_GEMFILE=$PATH_TO_REDMINE/Gemfile
-- cd $PATH_TO_REDMINE
-- bundle install --without rmagick --jobs=3 --retry=3 --path=$PATH_TO_PLUGIN/vendor/bundle
-- bundle exec rake $TRACE db:migrate
-- bundle exec rake $TRACE redmine:load_default_data REDMINE_LANG=en
-- bundle exec rake $TRACE $GENERATE_SECRET
-- bundle exec rake $TRACE $MIGRATE_PLUGINS
+  - export BUNDLE_GEMFILE=$PATH_TO_REDMINE/Gemfile
+  - cd $PATH_TO_REDMINE
+  - bundle install --without rmagick --jobs=3 --retry=3 --path=$PATH_TO_PLUGIN/vendor/bundle
+  - bundle exec rake $TRACE db:migrate
+  - bundle exec rake $TRACE redmine:load_default_data REDMINE_LANG=en
+  - bundle exec rake $TRACE $GENERATE_SECRET
+  - bundle exec rake $TRACE $MIGRATE_PLUGINS
 
 script:
-- cd $PATH_TO_REDMINE
-- if [ "$TRACE" == "--trace" ]; then export BACKTRACE=--backtrace; fi
-- if [ -z "$TRACE" ]; then unset BACKTRACE; fi
-- bundle exec rspec $BACKTRACE --pattern $PATH_TO_PLUGIN/spec/**/*_spec.rb
+  - cd $PATH_TO_REDMINE
+  - if [ "$TRACE" == "--trace" ]; then export BACKTRACE=--backtrace; fi
+  - if [ -z "$TRACE" ]; then unset BACKTRACE; fi
+  - bundle exec rspec $BACKTRACE --pattern $PATH_TO_PLUGIN/spec/**/*_spec.rb
