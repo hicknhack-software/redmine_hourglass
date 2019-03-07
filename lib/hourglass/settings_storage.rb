@@ -1,5 +1,5 @@
 module Hourglass
-  module Settings
+  module SettingsStorage
     class << self
       def defaults
         {
@@ -26,16 +26,16 @@ module Hourglass
 
       # Use it like this:
       #   Get multiple global settings
-      #     Hourglass::Settings[]
+      #     Hourglass::SettingsStorage[]
       #
       #   Get one global setting
-      #     Hourglass::Settings[:setting]
+      #     Hourglass::SettingsStorage[:setting]
       #
       #   Get multiple project settings
-      #     Hourglass::Settings[project: 1]
+      #     Hourglass::SettingsStorage[project: 1]
       #
       #   Get one project setting
-      #     Hourglass::Settings[:setting, project: 1]
+      #     Hourglass::SettingsStorage[:setting, project: 1]
       def [](key = nil, project: nil)
         settings = get.call.except(:projects)
         settings = settings.merge project project if project
@@ -45,16 +45,16 @@ module Hourglass
 
       # Use it like this:
       #   Set multiple global settings
-      #     Hourglass::Settings[] = {setting: 1, setting2: 2}
+      #     Hourglass::SettingsStorage[] = {setting: 1, setting2: 2}
       #
       #   Set one global setting
-      #     Hourglass::Settings[:setting] = 1
+      #     Hourglass::SettingsStorage[:setting] = 1
       #
       #   Set multiple project settings
-      #     Hourglass::Settings[project: 1] = {setting: 1, setting2: 2}
+      #     Hourglass::SettingsStorage[project: 1] = {setting: 1, setting2: 2}
       #
       #   Set one project setting
-      #     Hourglass::Settings[:setting, project: 1] = 1
+      #     Hourglass::SettingsStorage[:setting, project: 1] = 1
       def []=(*args)
         project, new_settings = parse_assign_params(*args.reverse)
 

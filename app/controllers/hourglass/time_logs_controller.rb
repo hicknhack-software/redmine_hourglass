@@ -116,17 +116,17 @@ module Hourglass
     end
 
     def split_params
-      parse_boolean [:round, :insert_new_before]
-      {
-          split_at: Time.parse(params[:split_at]),
-          insert_new_before: params[:insert_new_before],
-          round: params[:round]
-      }
+      parse_boolean [:round, :insert_new_before],
+                 {
+                     split_at: Time.parse(params[:split_at]),
+                     insert_new_before: params[:insert_new_before],
+                     round: params[:round]
+                 }
     end
 
     def time_booking_params(params_hash = params.require(:time_booking))
       parse_boolean :round, params_hash.permit(:comments, :project_id, :issue_id, :activity_id, :round,
-                                               custom_field_values: custom_field_keys(params_hash))
+                                                      custom_field_values: custom_field_keys(params_hash))
     end
 
     def time_log_from_id(id = params[:id])
