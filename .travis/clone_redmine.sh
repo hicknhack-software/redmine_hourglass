@@ -51,11 +51,8 @@ case $DATABASE in
   SQLITE3)  cp $PATH_TO_PLUGINS/$PLUGIN/.travis/sqlite3_database.yml config/database.yml
             ;;
   MYSQL)    cp $PATH_TO_PLUGINS/$PLUGIN/.travis/mysql_database.yml config/database.yml
-            mysql.server start
-            rake db:create
             ;;
   POSTGRESQL)
             cp $PATH_TO_PLUGINS/$PLUGIN/.travis/postgresql_database.yml config/database.yml
-            rake db:create
             ;;
 esac
