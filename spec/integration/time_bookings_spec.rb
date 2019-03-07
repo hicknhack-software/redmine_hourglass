@@ -116,12 +116,6 @@ describe 'Time bookings API', type: :request do
             expect(Hourglass::TimeBooking.find(id).comments).to eq time_booking[:time_booking][:comments]
           end
         end
-
-        include_examples 'error message', 'time booking not updated', proc { |example|
-          tt = Hourglass::TimeBooking.find id
-          tt.comments = (0..500).map(&:to_s).join('')
-          tt.save validate: false
-        }
       end
     end
   end
