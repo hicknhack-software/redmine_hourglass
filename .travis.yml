@@ -16,59 +16,87 @@ matrix:
   include:
     - name: Ruby 2.0 / Redmine 3.2
       rvm: 2.0.0
-      env: REDMINE_VERSION=3.2.9
+      env:
+        - REDMINE_VERSION=3.2.9
+        - DATABASE=SQLITE3
     - name: Ruby 2.0 / Redmine 3.3
       rvm: 2.0.0
-      env: REDMINE_VERSION=3.3.9
+      env:
+        - REDMINE_VERSION=3.3.9
+        - DATABASE=SQLITE3
 
     - name: Ruby 2.1 / Redmine 3.3
       rvm: 2.1.10
-      env: REDMINE_VERSION=3.3.9
+      env:
+        - REDMINE_VERSION=3.3.9
+        - DATABASE=MYSQL
     - name: Ruby 2.1 / Redmine 3.4
       rvm: 2.1.10
-      env: REDMINE_VERSION=3.4.9
+      env:
+        - REDMINE_VERSION=3.4.9
+        - DATABASE=MYSQL
 
     - name: Ruby 2.2 / Redmine 3.3
       rvm: 2.2.10
-      env: REDMINE_VERSION=3.3.9
+      env:
+        - REDMINE_VERSION=3.3.9
+        - DATABASE=POSTGRESQL
     - name: Ruby 2.2 / Redmine 3.4
       rvm: 2.2.10
-      env: REDMINE_VERSION=3.4.9
+      env:
+        - REDMINE_VERSION=3.4.9
+        - DATABASE=POSTGRESQL
 
     - name: Ruby 2.3 / Redmine 3.4.1
       rvm: 2.3.8
-      env: REDMINE_VERSION=3.4.1
+      env:
+        - REDMINE_VERSION=3.4.1
+        - DATABASE=SQLITE3
     - name: Ruby 2.3 / Redmine 3.4.9
       rvm: 2.3.8
-      env: REDMINE_VERSION=3.4.9
+      env:
+        - REDMINE_VERSION=3.4.9
+        - DATABASE=SQLITE3
+
 
     - name: Ruby 2.5 / Redmine 4
       rvm: 2.5.3
-      env: REDMINE_VERSION=4.0.2
+      env:
+        - REDMINE_VERSION=4.0.2
+        - DATABASE=SQLITE3
 
     - name: Ruby 2.6 / Redmine 4
       rvm: 2.6.1
-      env: REDMINE_VERSION=4.0.2
+      env:
+        - REDMINE_VERSION=4.0.2
+        - DATABASE=SQLITE3
 
   allow_failures:
-    - env: REDMINE_VERSION=4.0.2
-
+    - env:
+        - REDMINE_VERSION=4.0.2
+        - DATABASE=SQLITE3
+        
 before_install:
-- source .travis/clone_redmine.sh
-- gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
-- gem install bundler -v '< 2'
+  - source .travis/clone_redmine.sh
+  - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
+  - gem install bundler -v '< 2'
+
+services:
+  - mysql
+  - postgresql
 
 install:
-- export BUNDLE_GEMFILE=$PATH_TO_REDMINE/Gemfile
-- cd $PATH_TO_REDMINE
-- bundle install --without rmagick --jobs=3 --retry=3 --path=$PATH_TO_PLUGIN/vendor/bundle
-- bundle exec rake $TRACE db:migrate
-- bundle exec rake $TRACE redmine:load_default_data REDMINE_LANG=en
-- bundle exec rake $TRACE $GENERATE_SECRET
-- bundle exec rake $TRACE $MIGRATE_PLUGINS
+  - export BUNDLE_GEMFILE=$PATH_TO_REDMINE/Gemfile
+  - cd $PATH_TO_REDMINE
+  - bundle install --without rmagick --jobs=3 --retry=3 --path=$PATH_TO_PLUGIN/vendor/bundle
+  - bundle exec rake $TRACE db:create
+  - bundle exec rake $TRACE db:migrate
+  - bundle exec rake $TRACE redmine:load_default_data REDMINE_LANG=en
+  - bundle exec rake $TRACE $GENERATE_SECRET
+  - bundle exec rake $TRACE $MIGRATE_PLUGINS
 
 script:
-- cd $PATH_TO_REDMINE
-- if [ "$TRACE" == "--trace" ]; then export BACKTRACE=--backtrace; fi
-- if [ -z "$TRACE" ]; then unset BACKTRACE; fi
-- bundle exec rspec $BACKTRACE --pattern $PATH_TO_PLUGIN/spec/**/*_spec.rb
+  - cd $PATH_TO_REDMINE
+  - if [ "$TRACE" == "--trace" ]; then export BACKTRACE=--backtrace; fi
+  - if [ -z "$TRACE" ]; then unset BACKTRACE; fi
+  - bundle exec rspec $BACKTRACE --pattern $PATH_TO_PLUGIN/spec/**/*_spec.rb
