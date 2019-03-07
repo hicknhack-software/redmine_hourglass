@@ -4,7 +4,8 @@ source 'https://rubygems.org'
 gem 'uglifier'
 gem 'coffee-script', '~> 2.4.1'
 gem 'sass', '~> 3.5.1'
-gem 'rb-inotify', '<0.10' # required for ruby 2.0 support
+
+gem 'rb-inotify', '<0.10', require: RUBY_PLATFORM.include?('linux') # required for ruby 2.0 support
 
 # access control
 gem 'pundit', '~> 1.1.0'
