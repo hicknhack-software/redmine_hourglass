@@ -48,11 +48,11 @@ fi
 ln -s "$PATH_TO_PLUGIN" "$PATH_TO_PLUGINS/$PLUGIN"
 
 case $DATABASE in
-  SQLITE3)  cp $PATH_TO_PLUGINS/$PLUGIN/.travis/sqlite3_database.yml config/database.yml
-            ;;
   MYSQL)    cp $PATH_TO_PLUGINS/$PLUGIN/.travis/mysql_database.yml config/database.yml
             ;;
   POSTGRESQL)
             cp $PATH_TO_PLUGINS/$PLUGIN/.travis/postgresql_database.yml config/database.yml
+            ;;
+  *)  cp $PATH_TO_PLUGINS/$PLUGIN/.travis/sqlite3_database.yml config/database.yml
             ;;
 esac
