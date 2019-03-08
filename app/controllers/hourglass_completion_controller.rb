@@ -9,7 +9,7 @@ class HourglassCompletionController < Hourglass::ApiBaseController
                  when 'PostgreSQL', 'SQLite'
                    Arel::Nodes::NamedFunction.new("CAST", [ issue_arel[:id].as("VARCHAR") ])
                  when 'Mysql2', 'MySQL'
-                   issue_arel[:id]
+                   Arel::Nodes::NamedFunction.new("CAST", [ issue_arel[:id].as("CHAR(50)") ])
                  else
                    issue_arel[:id] # unknown
                  end

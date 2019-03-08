@@ -61,7 +61,7 @@ module Hourglass
       now = Time.now.change sec: 0
       self.user ||= User.current
       previous_time_log = user.hourglass_time_logs.find_by(stop: now + 1.minute)
-      project_id = self.project_id || issue && issue.project_id
+      self.project_id ||= issue && issue.project_id
       update_round project_id unless round.present?
 
       self.start ||= previous_time_log && previous_time_log.stop || now
@@ -83,8 +83,8 @@ module Hourglass
     end
 
     def update_round(project = nil)
-      self.round = !Hourglass::Settings[:round_sums_only, project: project] &&
-          Hourglass::Settings[:round_default, project: project]
+      self.round = !Hourglass::SettingsStorage[:round_sums_only, project: project] &&
+          Hourglass::SettingsStorage[:round_default, project: project]
     end
 
     def does_not_overlap_with_other

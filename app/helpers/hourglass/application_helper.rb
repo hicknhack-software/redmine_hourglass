@@ -34,8 +34,8 @@ module Hourglass
       projects = User.current.projects.allowed_to_one_of(*(Hourglass::AccessControl.permissions_from_action(controller: 'hourglass/time_logs', action: 'book') + Hourglass::AccessControl.permissions_from_action(controller: 'hourglass/time_bookings', action: 'change')).flatten)
       project_tree_options_for_select projects, selected: selected do |project|
         {data: {
-            round_default: Hourglass::Settings[:round_default, project: project],
-            round_sums_only: Hourglass::Settings[:round_sums_only, project: project]
+            round_default: Hourglass::SettingsStorage[:round_default, project: project],
+            round_sums_only: Hourglass::SettingsStorage[:round_sums_only, project: project]
         }}
       end
     end

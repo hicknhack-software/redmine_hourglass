@@ -14,6 +14,11 @@ module Hourglass
         booked?: {}
     )
 
+    def initialize(attributes=nil, *args)
+      super attributes
+      self.filters ||= {'date' => {:operator => "m", :values => [""]}}
+    end
+
     def initialize_available_filters
       add_user_filter
       add_date_filter

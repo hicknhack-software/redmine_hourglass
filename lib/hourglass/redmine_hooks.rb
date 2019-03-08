@@ -1,11 +1,17 @@
 class Hourglass::RedmineHooks < Redmine::Hook::ViewListener
   def view_issues_show_description_bottom(context = {})
     load_hourglass_helper context[:hook_caller]
+    context[:hook_caller].content_for :header_tags do
+      context[:controller].render_to_string partial: 'hooks/javascript_setup'
+    end
     context[:controller].render_to_string partial: 'hooks/issue_actions'
   end
 
   def view_issues_context_menu_start(context = {})
     load_hourglass_helper context[:hook_caller]
+    context[:hook_caller].content_for :header_tags do
+      context[:controller].render_to_string partial: 'hooks/javascript_setup'
+    end
     context[:controller].render_to_string partial: 'hooks/issue_actions'
   end
 

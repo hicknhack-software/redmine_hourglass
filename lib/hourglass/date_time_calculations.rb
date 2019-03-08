@@ -1,15 +1,16 @@
 module Hourglass::DateTimeCalculations
   class << self
     def round_limit_in_seconds(project: nil)
-      ((Hourglass::Settings[:round_limit, project: project].to_f / 100) * round_minimum(project: project)).to_i
+      l = [0, [(Hourglass::SettingsStorage[:round_limit, project: project].to_f / 100), 1].min].max
+      (l * round_minimum(project: project)).to_i
     end
 
     def round_minimum(project: nil)
-      [1, Hourglass::Settings[:round_minimum, project: project].to_f.hours.to_i].max
+      [1, Hourglass::SettingsStorage[:round_minimum, project: project].to_f.hours.to_i].max
     end
 
     def round_carry_over_due(project: nil)
-      [0, Hourglass::Settings[:round_carry_over_due, project: project].to_f.hours.to_i].max
+      [0, Hourglass::SettingsStorage[:round_carry_over_due, project: project].to_f.hours.to_i].max
     end
 
     def time_diff(time1, time2)
@@ -89,8 +90,8 @@ module Hourglass::DateTimeCalculations
 
     private
     def round?(options)
-      (options[:round].nil? ? Hourglass::Settings[:round_default, project: options[:project_id]] : options[:round]) &&
-          !Hourglass::Settings[:round_sums_only, project: options[:project_id]]
+      (options[:round].nil? ? Hourglass::SettingsStorage[:round_default, project: options[:project_id]] : options[:round]) &&
+          !Hourglass::SettingsStorage[:round_sums_only, project: options[:project_id]]
     end
   end
 end

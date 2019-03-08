@@ -190,3 +190,4 @@ $ ->
       event.stopPropagation()
     return isFormValid
   .on 'ajax:before', '.js-check-splitting', checkSplitting
+  $('.js-issue-autocompletion:focus:not(.ui-autocomplete-input)').each(initIssueAutoCompletion)

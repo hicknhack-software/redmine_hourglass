@@ -4,12 +4,12 @@
       = form_field :start, f, time_log, disabled: !policy(time_log).change?(:start)
       = form_field :stop, f, time_log, disabled: !policy(time_log).change?(:stop)
       = form_field :duration, f, time_log, disabled: !policy(time_log).change?(:stop)
-      - if time_log.booked? && !Hourglass::Settings[:round_sums_only, project: time_log.time_booking.project]
+      - if time_log.booked? && !Hourglass::SettingsStorage[:round_sums_only, project: time_log.time_booking.project]
         .form-field
           .label
             = label :time_log, :round, t(:field_round), title: t('hourglass.ui.time_logs.round_hint')
           .input
-            = check_box :time_log, :round, checked: Hourglass::Settings[:round_default, project: time_log.time_booking.project]
+            = check_box :time_log, :round, checked: Hourglass::SettingsStorage[:round_default, project: time_log.time_booking.project]
       = form_field :comments, f, time_log, disabled: !policy(time_log).change?
       = form_field :user_id, f, time_log, required: true, disabled: !policy(time_log).change?(:user_id)
       .form-field

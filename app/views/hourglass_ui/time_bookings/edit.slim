@@ -4,12 +4,12 @@
       = form_field :start, f, time_booking, disabled: !policy(time_booking).change?(:start), validate_limit: true, allow_zero_duration: true, not_in_multi: true
       = form_field :stop, f, time_booking, disabled: !policy(time_booking).change?(:stop), validate_limit: true, allow_zero_duration: true, not_in_multi: true
       = form_field :duration, f, time_booking, disabled: !policy(time_booking).change?(:stop), not_in_multi: true
-      - rounding_disabled = Hourglass::Settings[:round_sums_only, project: time_booking.project]
+      - rounding_disabled = Hourglass::SettingsStorage[:round_sums_only, project: time_booking.project]
       .form-field class=('hidden' if rounding_disabled)
         .label
           = label :time_booking, :round, t(:field_round), title: t('hourglass.ui.time_bookings.round_hint')
         .input
-          = check_box :time_booking, :round, checked: Hourglass::Settings[:round_default, project: time_booking.project], disabled: rounding_disabled
+          = check_box :time_booking, :round, checked: Hourglass::SettingsStorage[:round_default, project: time_booking.project], disabled: rounding_disabled
       = form_field :project, f, time_booking, disabled: !policy(time_booking).change?, required: true
       = form_field :activity, f, time_booking, disabled: !policy(time_booking).change?, required: true
       = form_field :issue, f, time_booking, disabled: !policy(time_booking).change?

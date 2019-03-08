@@ -15,6 +15,11 @@ module Hourglass
         fixed_version: {sortable: lambda { Version.fields_for_order_statement }, groupable: "#{Issue.table_name}.fixed_version_id"}
     )
 
+    def initialize(attributes=nil, *args)
+      super attributes
+      self.filters ||= {'date' => {:operator => "m", :values => [""]}}
+    end
+
     def initialize_available_filters
       add_user_filter
       add_date_filter

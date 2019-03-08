@@ -1,0 +1,3 @@
+test:
+  adapter: mysql2
+  database: redmine_test

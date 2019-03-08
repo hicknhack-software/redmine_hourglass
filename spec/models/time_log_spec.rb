@@ -6,10 +6,10 @@ describe Hourglass::TimeLog do
   end
 
   before :each do
-    Hourglass::Settings[:round_minimum] = '0.25'
-    Hourglass::Settings[:round_limit] = '50'
-    Hourglass::Settings[:round_carry_over_due] = '12'
-    Hourglass::Settings[:round_sums_only] = false
+    Hourglass::SettingsStorage[:round_minimum] = '0.25'
+    Hourglass::SettingsStorage[:round_limit] = '50'
+    Hourglass::SettingsStorage[:round_carry_over_due] = '12'
+    Hourglass::SettingsStorage[:round_sums_only] = false
   end
 
   it 'has a valid factory' do
@@ -427,7 +427,7 @@ describe Hourglass::TimeLog do
     describe 'with project specific settings' do
       before :each do
         @project = create(:project)
-        Hourglass::Settings[project: @project] = {round_minimum: '0.15', round_limit: '75', round_carry_over_due: '8'}
+        Hourglass::SettingsStorage[project: @project] = {round_minimum: '0.15', round_limit: '75', round_carry_over_due: '8'}
       end
 
       context 'without pauses' do

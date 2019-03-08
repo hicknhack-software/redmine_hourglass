@@ -3,8 +3,13 @@
   p = raw t('hourglass.ui.issues.start_dialog.description', time_tracker: description)
   p
     = radio_button_tag 'running_time', 'log', true
-    = label_tag 'running_time_log', t('hourglass.ui.issues.start_dialog.options.log')
-    - if Pundit.policy!(User.current, time_tracker).destroy?
+    - unless time_tracker.activity.blank?
+      = label_tag 'running_time_log', t('hourglass.ui.issues.start_dialog.options.log')
+    - else
+      = label_tag 'running_time_log', t('hourglass.ui.issues.start_dialog.options.log_activity')
+      .center
+        = collection_select :time_tracker, :activity_id, TimeEntryActivity.applicable(time_tracker.project), :id, :name, {required: true, include_blank: true}
+  - if Pundit.policy!(User.current, time_tracker).destroy?
     p
       = radio_button_tag 'running_time', 'discard', false
       = label_tag 'running_time_discard', t('hourglass.ui.issues.start_dialog.options.discard')

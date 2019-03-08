@@ -109,12 +109,6 @@ describe 'Time logs API', type: :request do
             expect(Hourglass::TimeLog.find(id).stop).to eq time_log[:time_log][:stop].change(sec: 0)
           end
         end
-
-        include_examples 'error message', 'time log not updated', proc { |example|
-          tt = Hourglass::TimeLog.find id
-          tt.comments = (0..500).map(&:to_s).join('')
-          tt.save validate: false
-        }
       end
     end
   end
