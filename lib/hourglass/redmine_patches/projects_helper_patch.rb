@@ -4,7 +4,8 @@ module Hourglass
       extend ActiveSupport::Concern
 
       included do
-        alias_method_chain :project_settings_tabs, :hourglass
+        alias_method :project_settings_tabs_without_hourglass, :project_settings_tabs
+        alias_method :project_settings_tabs, :project_settings_tabs_with_hourglass
       end
 
       def project_settings_tabs_with_hourglass

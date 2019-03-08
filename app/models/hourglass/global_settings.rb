@@ -1,5 +1,6 @@
 module Hourglass
   class GlobalSettings
+    include TypeParsing
     include ActiveModel::Model
 
     attr_accessor :round_sums_only,
@@ -14,8 +15,7 @@ module Hourglass
 
     validates :round_sums_only, inclusion: { in: ['true', 'false', '1', '0', true, false] }
     validates :round_minimum, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 24 }
-    validates :round_limit, numericality: { only_integer: true, greater_than_or_equal_to: 0,
-                                            less_than_or_equal_to: 100 }
+    validates :round_limit, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
     validates :round_default, inclusion: { in: ['true', 'false', '1', '0', true, false] }
     validates :round_carry_over_due, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 24 }
     validates :report_title, length: { maximum: 23 }, presence: true
@@ -67,17 +67,6 @@ module Hourglass
       self.round_carry_over_due = parse_type :float, @round_carry_over_due
       self.report_logo_width = parse_type :integer, @report_logo_width
       self.global_tracker = parse_type :boolean, @global_tracker
-    end
-
-    def parse_type(type, attribute)
-      case type
-      when :boolean
-        ActiveRecord::Type::Boolean.new.type_cast_from_user(attribute)
-      when :integer
-        ActiveRecord::Type::Integer.new.type_cast_from_user(attribute)
-      when :float
-        ActiveRecord::Type::Float.new.type_cast_from_user(attribute)
-      end
     end
   end
 end
