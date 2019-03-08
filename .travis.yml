@@ -97,6 +97,4 @@ install:
 
 script:
   - cd $PATH_TO_REDMINE
-  - if [ "$TRACE" == "--trace" ]; then export BACKTRACE=--backtrace; fi
-  - if [ -z "$TRACE" ]; then unset BACKTRACE; fi
-  - bundle exec rspec $BACKTRACE --pattern $PATH_TO_PLUGIN/spec/**/*_spec.rb
+  - bundle exec rake $TRACE redmine:plugins:hourglass:spec $BACKTRACE
