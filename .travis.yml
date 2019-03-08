@@ -71,11 +71,12 @@ matrix:
         - REDMINE_VERSION=4.0.2
         - DATABASE=SQLITE3
 
+  fast_finish: true
   allow_failures:
     - env:
         - REDMINE_VERSION=4.0.2
         - DATABASE=SQLITE3
-        
+
 before_install:
   - source .travis/clone_redmine.sh
   - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
