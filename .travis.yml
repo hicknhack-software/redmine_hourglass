@@ -86,7 +86,7 @@ install:
   - bundle exec rake $TRACE db:migrate RAILS_ENV=test
   - bundle exec rake $TRACE redmine:load_default_data REDMINE_LANG=en
   - bundle exec rake $TRACE $GENERATE_SECRET
-  - bundle exec rake $TRACE $MIGRATE_PLUGINS
+  - bundle exec rake $TRACE $MIGRATE_PLUGINS RAILS_ENV=test
 
 script:
   - cd $PATH_TO_REDMINE
