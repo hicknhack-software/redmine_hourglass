@@ -11,6 +11,7 @@ env:
     - PLUGIN=redmine_hourglass
     - REDMINE=test_redmine
     - TRACE=--trace
+    - RAILS_ENV=test
 
 matrix:
   include:
@@ -83,10 +84,10 @@ install:
   - cd $PATH_TO_REDMINE
   - bundle install --without rmagick --jobs=3 --retry=3 --path=$PATH_TO_PLUGIN/vendor/bundle
   - bundle exec rake $TRACE db:create
-  - bundle exec rake $TRACE db:migrate RAILS_ENV=test
+  - bundle exec rake $TRACE db:migrate
   - bundle exec rake $TRACE redmine:load_default_data REDMINE_LANG=en
   - bundle exec rake $TRACE $GENERATE_SECRET
-  - bundle exec rake $TRACE $MIGRATE_PLUGINS RAILS_ENV=test
+  - bundle exec rake $TRACE $MIGRATE_PLUGINS
 
 script:
   - cd $PATH_TO_REDMINE
