@@ -1,4 +1,4 @@
-module TypeParsing
+module Hourglass::TypeParsing
   def parse_type(type, attribute)
     if Rails::VERSION::MAJOR <= 4
       case type
