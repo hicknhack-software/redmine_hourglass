@@ -83,7 +83,7 @@ module Hourglass
       @bulk_success = []
       @bulk_errors = []
       entries = params[params_key]
-      entries = entries.to_unsafe_h if entries.instance_of?(ActionController::Parameters)
+      entries = entries.to_unsafe_h if Rails::VERSION::MAJOR >= 5 && entries.instance_of?(ActionController::Parameters)
       entries.each_with_index do |(id, params), index|
         if Rails::VERSION::MAJOR <= 4
           id, params = "new#{index}", id if id.is_a?(Hash)
