@@ -87,7 +87,7 @@ module Hourglass
     end
 
     def sql_for_comments_field(field, operator, value)
-      sql_for_field(field, operator, value, TimeEntry.table_name, 'comments')
+      sql_for_field(field, operator, value, TimeEntry.table_name, 'comments', true)
     end
 
     def sql_for_activity_id_field(field, operator, value)
