@@ -89,19 +89,19 @@ describe 'Time logs API', type: :request do
       tags 'Time logs'
       parameter name: :id, in: :path, type: :string
       parameter name: :time_log, in: :body, schema: {
-          '$ref' => '#/definitions/time_log_update'
+        '$ref' => '#/definitions/time_log_update'
       }
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
       let(:existing_time_log) { create :time_log, user: user }
       let(:id) { existing_time_log.id }
-      let(:time_log) { {time_log: {comments: 'test2'}} }
+      let(:time_log) { { time_log: { comments: 'test2' } } }
 
       include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time, success_code: '204'
 
       include_examples 'not found'
       context do
-        let(:time_log) { {time_log: {stop: existing_time_log.stop + 1.hour}} }
+        let(:time_log) { { time_log: { stop: existing_time_log.stop + 1.hour } } }
         response '204', 'time log found' do
           run_test!
 
@@ -120,15 +120,15 @@ describe 'Time logs API', type: :request do
       tags 'Time logs'
       parameter name: :id, in: :path, type: :string
       parameter name: :time_booking, in: :body, schema: {
-          '$ref' => '#/definitions/time_booking_params'
+        '$ref' => '#/definitions/time_booking_params'
       }
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_book_time] }
       let(:time_log) { create :time_log, user: user }
       let(:id) { time_log.id }
-      let(:time_booking) { {time_booking: {
-          project_id: user.projects.first.id, activity_id: create(:time_entry_activity).id
-      }} }
+      let(:time_booking) { { time_booking: {
+        project_id: user.projects.first.id, activity_id: create(:time_entry_activity).id
+      } } }
 
       include_examples 'access rights', :hourglass_book_time, :hourglass_book_own_time
       include_examples 'not found'
@@ -169,14 +169,14 @@ describe 'Time logs API', type: :request do
       response '200', 'time log found' do
         schema type: 'object',
                properties: {
-                   time_log: {
-                       '$ref' => '#/definitions/time_log',
-                       required: %w(id start stop user_id created_at updated_at)
-                   },
-                   new_time_log: {
-                       '$ref' => '#/definitions/time_log',
-                       required: %w(id start stop user_id created_at updated_at)
-                   }
+                 time_log: {
+                   '$ref' => '#/definitions/time_log',
+                   required: %w(id start stop user_id created_at updated_at)
+                 },
+                 new_time_log: {
+                   '$ref' => '#/definitions/time_log',
+                   required: %w(id start stop user_id created_at updated_at)
+                 }
                }
 
         include_examples 'has a valid response'
@@ -195,7 +195,7 @@ describe 'Time logs API', type: :request do
     post 'Joins multiple time logs' do
       produces 'application/json'
       tags 'Time logs'
-      parameter name: :'ids[]', in: :query, type: :array, items: {type: :integer}, collectionFormat: :multi
+      parameter name: :'ids[]', in: :query, type: :array, items: { type: :integer }, collectionFormat: :multi
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_track_time] }
       let(:time_log) { create :time_log, user: user }
@@ -211,10 +211,10 @@ describe 'Time logs API', type: :request do
       response '200', 'time logs found' do
         schema type: 'object',
                properties: {
-                   time_log: {
-                       '$ref' => '#/definitions/time_log',
-                       required: %w(id start stop user_id created_at updated_at)
-                   }
+                 time_log: {
+                   '$ref' => '#/definitions/time_log',
+                   required: %w(id start stop user_id created_at updated_at)
+                 }
                }
 
         include_examples 'has a valid response'
@@ -236,7 +236,7 @@ describe 'Time logs API', type: :request do
   path '/time_logs/bulk_destroy.json' do
     delete 'Deletes multiple time logs at once' do
       tags 'Time logs'
-      parameter name: :'time_logs[]', in: :query, type: :array, items: {type: :string}, collectionFormat: :multi
+      parameter name: :'time_logs[]', in: :query, type: :array, items: { type: :string }, collectionFormat: :multi
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
       let(:time_log_ids) do
@@ -260,7 +260,7 @@ describe 'Time logs API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time logs'
-      parameter name: :time_logs, in: :body, schema: {type: :object, additionalProperties: {'$ref' => '#/definitions/time_log'}}, description: 'takes an object of time logs'
+      parameter name: :time_logs, in: :body, schema: { type: :object, additionalProperties: { '$ref' => '#/definitions/time_log' } }, description: 'takes an object of time logs'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time, :hourglass_view_tracked_time] }
       let(:time_log_ids) do
@@ -269,7 +269,7 @@ describe 'Time logs API', type: :request do
         [tt1.id, tt2.id]
       end
 
-      let(:time_logs) { {time_logs: {time_log_ids[0] => {comments: 'test3'}, time_log_ids[1] => {comments: 'test4'}}} }
+      let(:time_logs) { { time_logs: { time_log_ids[0] => { comments: 'test3' }, time_log_ids[1] => { comments: 'test4' } } } }
 
       include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
 
@@ -289,7 +289,7 @@ describe 'Time logs API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time logs'
-      parameter name: :time_bookings, in: :body, schema: {type: :object, additionalProperties: {'$ref' => '#/definitions/time_booking'}}, description: 'takes an object of time bookings'
+      parameter name: :time_bookings, in: :body, schema: { type: :object, additionalProperties: { '$ref' => '#/definitions/time_booking' } }, description: 'takes an object of time bookings'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_book_time, :hourglass_view_tracked_time] }
       let(:time_logs) do
@@ -300,9 +300,9 @@ describe 'Time logs API', type: :request do
 
       let(:time_bookings) do
         tl1, tl2 = time_logs
-        {time_bookings: {
-            tl1.id => {project_id: tl1.user.projects.first.id, activity_id: create(:time_entry_activity).id},
-            tl2.id => {}
+        { time_bookings: {
+          tl1.id => { project_id: tl1.user.projects.first.id, activity_id: create(:time_entry_activity).id },
+          tl2.id => {}
         }
         }
       end
@@ -324,15 +324,15 @@ describe 'Time logs API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time logs'
-      parameter name: :time_logs, in: :body, schema: {type: :array, items: {'$ref' => '#/definitions/time_log'}}, description: 'takes an array of time logs'
+      parameter name: :time_logs, in: :body, schema: { type: :array, items: { '$ref' => '#/definitions/time_log' } }, description: 'takes an array of time logs'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
 
       let(:time_logs) do
-        {time_logs: [
-            build(:time_log, user: user),
-            build(:time_log),
-            build(:time_log)
+        { time_logs: [
+          build(:time_log, user: user),
+          build(:time_log),
+          build(:time_log)
         ]
         }
       end

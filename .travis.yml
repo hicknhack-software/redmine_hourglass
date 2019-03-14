@@ -11,6 +11,7 @@ env:
     - PLUGIN=redmine_hourglass
     - REDMINE=test_redmine
     - TRACE=--trace
+    - RAILS_ENV=test
 
 matrix:
   include:
@@ -18,12 +19,10 @@ matrix:
       rvm: 2.0.0
       env:
         - REDMINE_VERSION=3.2.9
-        - DATABASE=SQLITE3
     - name: Ruby 2.0 / Redmine 3.3
       rvm: 2.0.0
       env:
         - REDMINE_VERSION=3.3.9
-        - DATABASE=SQLITE3
 
     - name: Ruby 2.1 / Redmine 3.3
       rvm: 2.1.10
@@ -51,31 +50,29 @@ matrix:
       rvm: 2.3.8
       env:
         - REDMINE_VERSION=3.4.1
-        - DATABASE=SQLITE3
     - name: Ruby 2.3 / Redmine 3.4.9
       rvm: 2.3.8
       env:
         - REDMINE_VERSION=3.4.9
-        - DATABASE=SQLITE3
 
+    - name: Ruby 2.3 / Redmine 4
+      rvm: 2.3.8
+      env:
+        - REDMINE_VERSION=4.0.2
 
     - name: Ruby 2.5 / Redmine 4
       rvm: 2.5.3
       env:
         - REDMINE_VERSION=4.0.2
-        - DATABASE=SQLITE3
 
     - name: Ruby 2.6 / Redmine 4
       rvm: 2.6.1
       env:
         - REDMINE_VERSION=4.0.2
-        - DATABASE=SQLITE3
 
   fast_finish: true
   allow_failures:
-    - env:
-        - REDMINE_VERSION=4.0.2
-        - DATABASE=SQLITE3
+    - rvm: 2.6.1
 
 before_install:
   - source .travis/clone_redmine.sh

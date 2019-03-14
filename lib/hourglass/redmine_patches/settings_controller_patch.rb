@@ -4,7 +4,8 @@ module Hourglass
       extend ActiveSupport::Concern
 
       included do
-        alias_method_chain :plugin, :hourglass
+        alias_method :plugin_without_hourglass, :plugin
+        alias_method :plugin, :plugin_with_hourglass
       end
 
       def plugin_with_hourglass
