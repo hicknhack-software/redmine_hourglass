@@ -53,6 +53,10 @@ case $DATABASE in
   POSTGRESQL)
             cp $PATH_TO_PLUGINS/$PLUGIN/.travis/postgresql_database.yml config/database.yml
             ;;
-  *)  cp $PATH_TO_PLUGINS/$PLUGIN/.travis/sqlite3_database.yml config/database.yml
+  *)        cp $PATH_TO_PLUGINS/$PLUGIN/.travis/sqlite3_database.yml config/database.yml
             ;;
 esac
+
+if [ "$UPDATE_DEFAULT_GEMS" = "1" ]; then
+    gem update --system
+fi
