@@ -48,6 +48,10 @@ module Hourglass
       sql_for_field(field, operator_to_use, nil, TimeBooking.table_name, 'id')
     end
 
+    def sql_for_comments_field(field, operator, value)
+      sql_for_field(field, operator, value, TimeLog.table_name, 'comments', true)
+    end
+
     def total_for_hours(scope)
       map_total(
           scope.sum db_datetime_diff "#{queried_class.table_name}.start", "#{queried_class.table_name}.stop"
