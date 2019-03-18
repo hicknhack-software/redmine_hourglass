@@ -10,15 +10,7 @@
         months: #{date_strings_lookup :month_names},
         monthsShort: #{date_strings_lookup :abbr_month_names},
         weekdays: #{date_strings_lookup :day_names},
-        weekdaysShort: #{date_strings_lookup :abbr_day_names},
-        meridiemParse: new RegExp(/#{am_pm[0]}|#{am_pm[1]}/, 'i'),
-        isPM: function (input) {
-            return input.toLowerCase() === "#{am_pm[1]}";
-        },
-        meridiem: function (hour, _minute, isLowercase) {
-            var result = hour < 12 ? "#{am_pm[0]}" : "#{am_pm[1]}";
-            return isLowercase ? result.toLowerCase() : result.toUpperCase()
-        }
+        weekdaysShort: #{date_strings_lookup :abbr_day_names}
     });
 
   = stylesheet_link_tag 'application', plugin: Hourglass::PLUGIN_NAME
