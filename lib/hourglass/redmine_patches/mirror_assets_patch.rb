@@ -2,7 +2,6 @@
 module Hourglass
   module RedminePatches
     module MirrorAssetsPatch
-      extend ActiveSupport::Concern
 
       def mirror_assets
         super

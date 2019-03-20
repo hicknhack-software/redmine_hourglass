@@ -8,9 +8,21 @@ module Hourglass
         alias_method :plugin, :plugin_with_hourglass
       end
 
-      def plugin_with_hourglass
-        return plugin_without_hourglass unless params[:id] == Hourglass::PLUGIN_NAME.to_s
+      if Rails.version < "5"
+        def plugin_with_hourglass
+          return plugin_without_hourglass unless params[:id] == Hourglass::PLUGIN_NAME.to_s
+          hourglass_edit_update
+        end
+      else
+        def plugin
+          return super unless params[:id] == Hourglass::PLUGIN_NAME.to_s
+          hourglass_edit_update
+        end
+      end
 
+      private
+
+      def hourglass_edit_update
         @plugin = Redmine::Plugin.find(params[:id])
         @partial = @plugin.settings[:partial]
         @settings = Hourglass::GlobalSettings.new
@@ -23,8 +35,6 @@ module Hourglass
         end
         render 'settings/global_settings'
       end
-
-      private
 
       def hourglass_settings_params
         params.require(:hourglass_global_settings).permit(:round_sums_only, :round_minimum, :round_limit,
