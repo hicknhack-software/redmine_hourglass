@@ -26,10 +26,10 @@ p
 h3 = t('hourglass.settings.report.title')
 p
   = f.label :report_title, t('hourglass.settings.report.fields.title')
-  = f.text_field :report_title, {size: 23, required: true}
+  = f.text_field :report_title, {maxlength: 255, size: 23, required: true}
 p
   = f.label :report_logo_url, t('hourglass.settings.report.fields.logo_url')
-  = f.text_field :report_logo_url, {size: 23}
+  = f.text_field :report_logo_url, {maxlength: 4096, size: 23}
 p
   = f.label :report_logo_width, t('hourglass.settings.report.fields.logo_width')
   = f.number_field :report_logo_width, {min: 0, max: 9999, required: true}
