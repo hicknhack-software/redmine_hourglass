@@ -3,7 +3,7 @@ module Hourglass
 
     attr_accessor :main_query
     
-    def initialize(attributes = nil)
+    def initialize(attributes = nil, *args)
       self.main_query = attributes.delete :main_query
       super
     end
