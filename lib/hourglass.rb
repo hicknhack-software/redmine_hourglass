@@ -11,3 +11,7 @@ module Hourglass
 end
 
 Dir.glob File.join(Hourglass::PLUGIN_ROOT, 'config', 'initializers', '*'), &method(:require)
+
+if Rails.version >= "5" and Rails.configuration.eager_load
+  Dir.glob(File.join(Hourglass::PLUGIN_ROOT, 'lib', 'hourglass', "**/*.rb")).sort.each(&method(:require))
+end
