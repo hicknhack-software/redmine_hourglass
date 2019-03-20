@@ -119,7 +119,7 @@ window.toggleOperator = (field) ->
   window.oldToggleOperator field
 
 $ ->
-  $issueActionList = $('#content .contextual')
+  $issueActionList = $('#content > .contextual')
   $issueActionsToAdd = $('.js-issue-action')
   $issueActionList.first().add($issueActionList.last())
     .find(':nth-child(2)').after $issueActionsToAdd.removeClass('hidden')
