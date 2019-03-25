@@ -45,8 +45,7 @@ The Binaries are made available as downloads in the [Releases](https://github.co
 ## Requirements
 
 * Ruby 2.0.0 - 2.3.x
-* Redmine 3.2.0 - 3.4.x
-* Redmine 4.0.x support is in the works
+* Redmine 3.2.0 - 4.0.x
 * An [ExecJS](https://github.com/sstephenson/execjs) compatible runtime, the gemfile includes [therubyracer](https://github.com/cowboyd/therubyracer) for unix based systems and windows ships with a default js interpreter (from Win 7 upwards), so most people should be set. If you happen to have problems like for example [#29](https://github.com/hicknhack-software/redmine_hourglass/issues/29), take a look on the linked ExecJS and install one of the mentioned runtimes.
 
 See [.travis.yml](.travis.yml) for details about supported versions.
