@@ -47,4 +47,16 @@ if [ -L "$PATH_TO_PLUGINS/$PLUGIN" ]; then
 fi
 ln -s "$PATH_TO_PLUGIN" "$PATH_TO_PLUGINS/$PLUGIN"
 
-cp $PATH_TO_PLUGINS/$PLUGIN/.travis/database.yml config/database.yml
+case $DATABASE in
+  MYSQL)    cp $PATH_TO_PLUGINS/$PLUGIN/.travis/mysql_database.yml config/database.yml
+            ;;
+  POSTGRESQL)
+            cp $PATH_TO_PLUGINS/$PLUGIN/.travis/postgresql_database.yml config/database.yml
+            ;;
+  *)        cp $PATH_TO_PLUGINS/$PLUGIN/.travis/sqlite3_database.yml config/database.yml
+            ;;
+esac
+
+if [ "$UPDATE_DEFAULT_GEMS" = "1" ]; then
+    gem update --system
+fi

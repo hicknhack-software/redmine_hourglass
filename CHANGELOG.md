@@ -5,20 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.1.0] - TBA
-The first enhancement release aims to enhance the user experience even further.
+## [1.1.0] - 2019-03-25
+
+First release with Redmine 4.0 support.
+Redmine versions 3.x are still supported, but will be removed in future releases.
 
 ### Added
-- [please add new features]
+- support for Redmine version 4.0.0 and above
+- backend and frontend validation of settings
 
 ### Changed
-- [please add noteworthy changes]
+- improved testing of multiple databases
 
-### Removed
-- [please add dropped features]
+### Fixed
+- removal of database specific tests that led to errors
+- enhanced datetime parsing
+- enhanced filters of time logs
 
 
-## [1.0.0] - 2019.02.26
+## [1.0.0] - 2019-02-26
 
 This is the first mature release after a long beta testing period.
 We added plenty of new features which were long time overdue.

@@ -2,4 +2,4 @@
   .label
     = form.label :activity_id
   .input
-    = form.collection_select :activity_id, TimeEntryActivity.applicable(entry.project), :id, :name, {include_blank: !local_assigns[:required]}, disabled: local_assigns[:disabled], required: local_assigns[:required]
+    = form.collection_select :activity_id, TimeEntryActivity.applicable(entry.project), :id, :name, { include_blank: true }, disabled: local_assigns[:disabled], required: local_assigns[:required]

@@ -1,0 +1,31 @@
+= form_for @settings, url: { controller: 'hourglass_projects', action: 'settings', id: @project }, remote: true, method: :post do |f|
+  = hidden_field_tag :tab, Hourglass::PLUGIN_NAME
+  fieldset.box.tabular
+    legend = t('hourglass.project_settings.override_hint_html', url: plugin_settings_path(Hourglass::PLUGIN_NAME))
+    h3 = t('hourglass.settings.rounding.title')
+
+    = error_messages_for @settings
+
+    p
+      = render partial: 'hourglass_projects/label_with_global_value_tag', locals: {name: 'settings[round_minimum]', label_text: t('hourglass.settings.rounding.fields.minimum'), global_value: Hourglass::SettingsStorage[:round_minimum]}
+      = f.number_field :round_minimum, {min: 0, max: 24, step: :any}
+      = " (#{t(:field_hours)})"
+    p
+      = render partial: 'hourglass_projects/label_with_global_value_tag', locals: {name: 'settings[round_limit]', label_text: t('hourglass.settings.rounding.fields.limit'), global_value: Hourglass::SettingsStorage[:round_limit]}
+      = f.number_field :round_limit, {min: 0, max: 100}
+      |  (%)
+    p
+      = render partial: 'hourglass_projects/label_with_global_value_tag', locals: {name: 'settings[round_carry_over_due]', label_text: t('hourglass.settings.rounding.fields.carry_over_due'), global_value: Hourglass::SettingsStorage[:round_carry_over_due]}
+      = f.number_field :round_carry_over_due, {min: 0, max: 24, step: :any}
+      = " (#{t(:field_hours)})"
+
+    p
+      = render partial: 'hourglass_projects/label_with_global_value_tag', locals: {name: 'settings[round_default]', label_text: t('hourglass.settings.rounding.fields.default'), global_value: Hourglass::SettingsStorage[:round_default] ? t(:general_text_yes) : t(:general_text_no)}
+      - p @settings.round_default
+      = f.select :round_default, [[t('hourglass.project_settings.use_global'), nil], [t(:general_text_Yes), true], [t(:general_text_no), false]]
+
+    p
+      = render partial: 'hourglass_projects/label_with_global_value_tag', locals: {name: 'settings[round_sums_only]', label_text: t('hourglass.settings.rounding.fields.sums_only'), global_value: Hourglass::SettingsStorage[:round_sums_only] ? t(:general_text_yes) : t(:general_text_no)}
+      = f.select :round_sums_only, [[t('hourglass.project_settings.use_global'), nil], [t(:general_text_Yes), true], [t(:general_text_no), false]]
+
+  = submit_tag l(:button_save)

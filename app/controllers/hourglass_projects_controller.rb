@@ -1,20 +1,24 @@
 class HourglassProjectsController < ApplicationController
-  include BooleanParsing
+  helper :application
 
   def settings
     find_project
     deny_access unless User.current.allowed_to? :select_project_modules, @project
 
-    Hourglass::Settings[project: @project] = settings_params
-    flash[:notice] = l(:notice_successful_update)
-    redirect_to settings_project_path @project, tab: Hourglass::PLUGIN_NAME
+    @settings = Hourglass::ProjectSettings.load(@project)
+    if request.post?
+      if @settings.update(hourglass_settings_params)
+        flash[:notice] = l(:notice_successful_update)
+        render js: "window.location='#{settings_project_path @project, tab: Hourglass::PLUGIN_NAME}'"
+        return
+      end
+    end
   end
 
   private
-  def settings_params
-    p = params[:settings].transform_values(&:presence)
-    p = parse_boolean [:round_default, :round_sums_only], p
-    p = parse_float [:round_minimum, :round_carry_over_due], p
-    parse_int [:round_limit], p
+
+  def hourglass_settings_params
+    params.require(:hourglass_project_settings).permit(:round_sums_only, :round_minimum, :round_limit,
+                                                       :round_default, :round_carry_over_due)
   end
 end

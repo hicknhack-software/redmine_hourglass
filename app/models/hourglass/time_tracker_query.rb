@@ -72,6 +72,10 @@ module Hourglass
       result
     end
 
+    def sql_for_comments_field(field, operator, value)
+      sql_for_field(field, operator, value, TimeTracker.table_name, 'comments', true)
+    end
+
     def has_through_associations
       %i(fixed_version)
     end

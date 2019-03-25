@@ -83,8 +83,8 @@ module Hourglass
     end
 
     def update_round(project = nil)
-      self.round = !Hourglass::Settings[:round_sums_only, project: project] &&
-          Hourglass::Settings[:round_default, project: project]
+      self.round = !Hourglass::SettingsStorage[:round_sums_only, project: project] &&
+          Hourglass::SettingsStorage[:round_default, project: project]
     end
 
     def does_not_overlap_with_other

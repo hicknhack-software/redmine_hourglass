@@ -14,6 +14,7 @@ module Hourglass
     include ::AuthorizationConcern
 
     private
+
     # use only these codes:
     # :ok (200)
     # :not_modified (304)
@@ -24,8 +25,8 @@ module Hourglass
     # :internal_server_error (500)
     def respond_with_error(status, message, **options)
       render json: {
-          message: message.is_a?(Array) && options[:array_mode] == :sentence ? message.to_sentence : message,
-          status: Rack::Utils.status_code(status)
+        message: message.is_a?(Array) && options[:array_mode] == :sentence ? message.to_sentence : message,
+        status: Rack::Utils.status_code(status)
       },
              status: status
       throw :halt unless options[:no_halt]
@@ -71,18 +72,25 @@ module Hourglass
       scope = @query.results_scope order: sort_clause
       offset, limit = api_offset_and_limit
       respond_with_success(
-          count: scope.count,
-          offset: offset,
-          limit: limit,
-          records: scope.offset(offset).limit(limit).to_a
+        count: scope.count,
+        offset: offset,
+        limit: limit,
+        records: scope.offset(offset).limit(limit).to_a
       )
     end
 
     def bulk(params_key = controller_name, &block)
       @bulk_success = []
       @bulk_errors = []
-      params[params_key].each_with_index do |(id, params), index|
-        id, params = "new#{index}", id if id.is_a?(Hash)
+      entries = params[params_key]
+      entries = entries.to_unsafe_h if Rails::VERSION::MAJOR >= 5 && entries.instance_of?(ActionController::Parameters)
+      entries.each_with_index do |(id, params), index|
+        if Rails::VERSION::MAJOR <= 4
+          id, params = "new#{index}", id if id.is_a?(Hash)
+        else
+          id, params = "new#{index}", id if id.instance_of?(ActionController::Parameters)
+          params = ActionController::Parameters.new(params) if params.is_a?(Hash)
+        end
         error_preface = id.start_with?('new') ? bulk_error_preface(index, mode: :create) : bulk_error_preface(id)
         evaluate_entry bulk_entry(id, params, &block), error_preface
       end
@@ -132,7 +140,7 @@ module Hourglass
     end
 
     def flash_array(type, messages)
-      flash[type] = render_to_string partial: 'hourglass_ui/flash_array', locals: {messages: messages}
+      flash[type] = render_to_string partial: 'hourglass_ui/flash_array', locals: { messages: messages }
     end
 
     def custom_field_keys(params_hash)

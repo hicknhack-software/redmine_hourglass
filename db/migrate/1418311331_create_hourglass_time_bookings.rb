@@ -1,4 +1,6 @@
-class CreateHourglassTimeBookings < ActiveRecord::Migration
+require 'hourglass/hourglass_migration'
+
+class CreateHourglassTimeBookings < HourglassMigration
   def change
     create_table :hourglass_time_bookings do |t|
       t.datetime :start, null: false

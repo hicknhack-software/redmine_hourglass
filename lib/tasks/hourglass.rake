@@ -15,6 +15,12 @@ namespace :redmine do
         t.pattern = "#{spec_path}/integration/**/*_spec.rb"
         t.rspec_opts = ["-I#{spec_path}", '--format Rswag::Specs::SwaggerFormatter', '--order defined']
       end
+
+      desc 'Run the specs'
+      RSpec::Core::RakeTask.new(:spec) do |t|
+        t.pattern = "#{spec_path}/**/*_spec.rb"
+        t.rspec_opts = ["-I#{spec_path}"]
+      end
     end
   end
 end

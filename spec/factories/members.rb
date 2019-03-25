@@ -4,7 +4,7 @@ FactoryBot.define do
     project
     
     transient do
-      permissions []
+      permissions { [] }
     end
     
     before(:create) do |member, evaluator|

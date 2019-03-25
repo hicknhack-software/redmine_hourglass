@@ -90,7 +90,7 @@ describe 'Time bookings API', type: :request do
       tags 'Time bookings'
       parameter name: :id, in: :path, type: :string
       parameter name: :time_booking, in: :body, schema: {
-          '$ref' => '#/definitions/time_booking_params'
+        '$ref' => '#/definitions/time_booking_params'
       }
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_booked_time, :hourglass_view_booked_time] }
@@ -98,7 +98,7 @@ describe 'Time bookings API', type: :request do
         time_booking = create :time_booking, project: user.projects.first, user: user
         time_booking.id
       end
-      let(:time_booking) { {time_booking: {comments: 'test2'}} }
+      let(:time_booking) { { time_booking: { comments: 'test2' } } }
 
       include_examples 'access rights', :hourglass_book_time, :hourglass_book_own_time, :hourglass_edit_booked_time, :hourglass_edit_own_booked_time, success_code: '204'
 
@@ -107,7 +107,7 @@ describe 'Time bookings API', type: :request do
         let(:time_booking) do
           project = create :project
           create :member, project: project, user: user, permissions: [:hourglass_edit_booked_time, :hourglass_view_booked_time]
-          {time_booking: {project_id: project.id}}
+          { time_booking: { project_id: project.id } }
         end
         response '204', 'time booking found' do
           run_test!
@@ -116,12 +116,6 @@ describe 'Time bookings API', type: :request do
             expect(Hourglass::TimeBooking.find(id).comments).to eq time_booking[:time_booking][:comments]
           end
         end
-
-        include_examples 'error message', 'time booking not updated', proc { |example|
-          tt = Hourglass::TimeBooking.find id
-          tt.comments = (0..500).map(&:to_s).join('')
-          tt.save validate: false
-        }
       end
     end
   end
@@ -129,7 +123,7 @@ describe 'Time bookings API', type: :request do
   path '/time_bookings/bulk_destroy.json' do
     delete 'Deletes multiple time bookings at once' do
       tags 'Time bookings'
-      parameter name: :'time_bookings[]', in: :query, type: :array, items: {type: :string}, collectionFormat: :multi
+      parameter name: :'time_bookings[]', in: :query, type: :array, items: { type: :string }, collectionFormat: :multi
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_booked_time, :hourglass_view_booked_time] }
       let(:time_booking_ids) do
@@ -153,7 +147,7 @@ describe 'Time bookings API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time bookings'
-      parameter name: :time_bookings, in: :body, schema: {type: :object, additionalProperties: {'$ref' => '#/definitions/time_booking'}}, description: 'takes an object of time bookings'
+      parameter name: :time_bookings, in: :body, schema: { type: :object, additionalProperties: { '$ref' => '#/definitions/time_booking' } }, description: 'takes an object of time bookings'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_booked_time, :hourglass_view_booked_time] }
       let(:time_booking_ids) do
@@ -162,7 +156,7 @@ describe 'Time bookings API', type: :request do
         [tt1.id, tt2.id]
       end
 
-      let(:time_bookings) { {time_bookings: {time_booking_ids[0] => {comments: 'test3'}, time_booking_ids[1] => {comments: 'test4'}}} }
+      let(:time_bookings) { { time_bookings: { time_booking_ids[0] => { comments: 'test3' }, time_booking_ids[1] => { comments: 'test4' } } } }
 
       include_examples 'access rights', :hourglass_book_time, :hourglass_book_own_time, :hourglass_edit_booked_time, :hourglass_edit_own_booked_time
 
@@ -182,17 +176,17 @@ describe 'Time bookings API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time bookings'
-      parameter name: :time_bookings, in: :body, schema: {type: :array, items: {'$ref' => '#/definitions/time_booking'}}, description: 'takes an array of time bookings'
+      parameter name: :time_bookings, in: :body, schema: { type: :array, items: { '$ref' => '#/definitions/time_booking' } }, description: 'takes an array of time bookings'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_booked_time] }
 
       let(:time_bookings) do
         {
-            time_bookings: [
-                {user_id: user.id, project_id: user.projects.first.id, activity_id: create(:time_entry_activity).id,
-                 start: Faker::Time.between(Date.today, Date.today, :morning),
-                 stop: Faker::Time.between(Date.today, Date.today, :afternoon)}
-            ]
+          time_bookings: [
+            { user_id: user.id, project_id: user.projects.first.id, activity_id: create(:time_entry_activity).id,
+              start: Faker::Time.between(Date.today, Date.today, :morning),
+              stop: Faker::Time.between(Date.today, Date.today, :afternoon) }
+          ]
         }
       end
 
@@ -203,17 +197,17 @@ describe 'Time bookings API', type: :request do
           activity = create :time_entry_activity
           project = user.projects.first
           {
-              time_bookings: [
-                  {user_id: user.id, project_id: project.id, activity_id: activity.id,
-                   start: Faker::Time.between(Date.today, Date.today, :morning),
-                   stop: Faker::Time.between(Date.today, Date.today, :afternoon)},
-                  {user_id: create(:user).id, project_id: project.id, activity_id: activity.id,
-                   start: Faker::Time.between(Date.today, Date.today, :morning),
-                   stop: Faker::Time.between(Date.today, Date.today, :afternoon)},
-                  {user_id: create(:user).id, project_id: project.id, activity_id: activity.id,
-                   start: Faker::Time.between(Date.today, Date.today, :morning),
-                   stop: Faker::Time.between(Date.today, Date.today, :afternoon)}
-              ]
+            time_bookings: [
+              { user_id: user.id, project_id: project.id, activity_id: activity.id,
+                start: Faker::Time.between(Date.today, Date.today, :morning),
+                stop: Faker::Time.between(Date.today, Date.today, :afternoon) },
+              { user_id: create(:user).id, project_id: project.id, activity_id: activity.id,
+                start: Faker::Time.between(Date.today, Date.today, :morning),
+                stop: Faker::Time.between(Date.today, Date.today, :afternoon) },
+              { user_id: create(:user).id, project_id: project.id, activity_id: activity.id,
+                start: Faker::Time.between(Date.today, Date.today, :morning),
+                stop: Faker::Time.between(Date.today, Date.today, :afternoon) }
+            ]
           }
         end
         run_test!
