@@ -15,11 +15,6 @@
 
   = stylesheet_link_tag 'application', plugin: Hourglass::PLUGIN_NAME
 
-- if @query && @query.persisted? && @query.editable_by?(User.current)
-  .contextual
-    = link_to t(:button_edit), edit_hourglass_query_path(@query), class: 'icon icon-edit'
-    = link_to t(:button_delete), hourglass_query_path(@query), confirm: t(:text_are_you_sure), method: :delete, class: 'icon icon-del'
-
 = yield
 
 = context_menu hourglass_ui_context_menu_path unless Hourglass.redmine_has_advanced_queries?

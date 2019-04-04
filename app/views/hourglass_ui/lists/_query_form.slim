@@ -27,5 +27,8 @@
     = link_to t(:button_clear), {set_filter: 1}, class: 'icon icon-reload'
     - if query.new_record? && User.current.allowed_to?(:save_queries, @project, global: true)
       = link_to t(:button_save), '#', class: 'icon icon-save js-query-save', data: {url: @project ? new_project_hourglass_query_path(@project) : new_hourglass_query_path, query_class: query_identifier}
+    - if query && query.persisted? && query.editable_by?(User.current)
+      = link_to t(:button_edit), edit_hourglass_query_path(query), class: 'icon icon-edit'
+      = link_to t(:button_delete), hourglass_query_path(query), confirm: t(:text_are_you_sure), method: :delete, class: 'icon icon-del'
 
 = error_messages_for query

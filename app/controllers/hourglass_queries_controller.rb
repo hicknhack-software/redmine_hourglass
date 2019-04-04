@@ -9,6 +9,7 @@ class HourglassQueriesController < ApplicationController
 
   def new
     @query.project = @project
+    @query.build_from_params(params)
   end
 
   def create
@@ -20,8 +21,6 @@ class HourglassQueriesController < ApplicationController
   end
 
   def update
-    @query.attributes = params[:query]
-    @query.build_from_params params
     update_query_from_params
     save action: :update
   end
@@ -42,14 +41,20 @@ class HourglassQueriesController < ApplicationController
   end
 
   def build_query
-    @query = query_class.build_from_params params, params[:query]
+    @query = query_class.new
     @query.user = User.current
   end
 
   def update_query_from_params
     @query.project = params[:query_is_for_all] ? nil : @project
+    @query.build_from_params(params)
     @query.column_names = nil if params[:default_columns]
-    unless User.current.allowed_to?(:manage_public_queries, @query.project) || User.current.admin?
+    @query.sort_criteria = (params[:query] && params[:query][:sort_criteria]) || @query.sort_criteria
+    @query.name = params[:query] && params[:query][:name]
+    if User.current.allowed_to?(:manage_public_queries, @query.project) || User.current.admin?
+      @query.visibility = (params[:query] && params[:query][:visibility]) || Query::VISIBILITY_PRIVATE
+      @query.role_ids = params[:query] && params[:query][:role_ids]
+    else
       @query.visibility = Query::VISIBILITY_PRIVATE
     end
   end
