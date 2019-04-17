@@ -30,6 +30,7 @@ module Hourglass
       output = ActiveSupport::SafeBuffer.new
       if entry.issue.present?
         output.concat entry.activity
+        output.concat ' - ' if not entry.activity.empty?
         output.concat entry.issue
       else
         output.concat [entry.activity, entry.comments].compact.join(': ')
