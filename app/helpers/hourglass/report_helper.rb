@@ -29,8 +29,7 @@ module Hourglass
     def description_content(entry)
       output = ActiveSupport::SafeBuffer.new
       if entry.issue.present?
-        output.concat entry.activity
-        output.concat entry.issue
+        output.concat [entry.activity, entry.issue].compact.join(' - ')
       else
         output.concat [entry.activity, entry.comments].compact.join(': ')
       end
