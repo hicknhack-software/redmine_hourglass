@@ -19,6 +19,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - [please add bug fixes]
 
+## [1.1.2] - 2019-04-18
+
+Bugfix release.
+
+### Fixed
+
+- fixed issue where changes to the project filter in time bookings queries would corrupt activity and user filters
+- enhanced activity display in report by adding a dash
+
 ## [1.1.1] - 2019-04-04
 
 Bugfix release.
