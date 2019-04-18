@@ -1,6 +1,6 @@
 initIssueAutoCompletion = ->
   $issueField = $(@)
-  $projectField = $issueField.closest('form').find('[name*=project_id]')
+  $projectField = $issueField.closest('form').find('[name*=v\\[project_id\\]]')
   $issueField.autocomplete
     source: (request, response) ->
       $.ajax
@@ -100,8 +100,8 @@ projectFieldChanged = (event) ->
   $projectField = $(@)
   $form = $projectField.closest('form')
   $issueTextField = $form.find('.js-issue-autocompletion')
-  $activityField = $form.find('[name*=activity_id]')
-  $userField = $form.find('[name*=user_id]')
+  $activityField = $form.find('[name*=v\\[activity_id\\]]')
+  $userField = $form.find('[name*=v\\[user_id\\]]')
 
   round = $projectField.find(':selected').data('round-default')
   $form.find('[type=checkbox][name*=round]').prop('checked', round) unless round is null
@@ -178,7 +178,8 @@ $ ->
   $(document)
   .on 'focus', '.js-issue-autocompletion:not(.ui-autocomplete-input)', initIssueAutoCompletion
   .on 'change', '.js-validate-form', formFieldChanged
-  .on 'change changefromissue', '[name*=\\[project_id\\]]', projectFieldChanged
+  .on 'change changefromissue', '[name*=project_id]', projectFieldChanged
+  .on 'change changefromissue', '#cb_project_id', projectFieldChanged
   .on 'change', '.js-issue-autocompletion', issueFieldChanged
   .on 'formfieldchanged', '[name*=start]', startFieldChanged
   .on 'formfieldchanged', '[name*=stop]', stopFieldChanged
