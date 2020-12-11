@@ -71,6 +71,12 @@ matrix:
         - REDMINE_VERSION=4.0.2
         - UPDATE_DEFAULT_GEMS=1
 
+    - name: Ruby 2.6.6 / Redmine 4.1.1
+      rvm: 2.6.6
+      env:
+        - REDMINE_VERSION=4.1.1
+        - UPDATE_DEFAULT_GEMS=1
+
 before_install:
   - source .travis/clone_redmine.sh
   - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
