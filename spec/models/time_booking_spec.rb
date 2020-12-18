@@ -27,7 +27,8 @@ describe Hourglass::TimeBooking do
 
   it 'creates a valid time_entry if arguments are given and non is set' do
     time_log = create :time_log
-    time_booking = Hourglass::TimeBooking.create time_log_id: time_log.id, start: time_log.start, stop: time_log.stop, time_entry_attributes: {project: create(:project), activity: create(:time_entry_activity), user: create(:user), spent_on: time_log.start, hours: Hourglass::DateTimeCalculations.time_diff_in_hours(time_log.start, time_log.stop)}
+    user = create :user
+    time_booking = Hourglass::TimeBooking.create time_log_id: time_log.id, start: time_log.start, stop: time_log.stop, time_entry_attributes: {project: create(:project), activity: create(:time_entry_activity), user: user, author: user, spent_on: time_log.start, hours: Hourglass::DateTimeCalculations.time_diff_in_hours(time_log.start, time_log.stop)}
     expect(time_booking).to be_valid
   end
 

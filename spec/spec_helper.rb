@@ -14,6 +14,8 @@ require 'rspec/rails'
 require 'rake'
 require 'factory_bot_rails'
 
+require_relative './faker_patches'
+
 FactoryBot.definition_file_paths << File.join(File.dirname(__FILE__), 'factories')
 FactoryBot.reload
 
