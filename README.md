@@ -1,6 +1,6 @@
 # Redmine Hourglass Plugin
 [![Code Climate](https://codeclimate.com/github/hicknhack-software/redmine_hourglass.png)](https://codeclimate.com/github/hicknhack-software/redmine_hourglass)
-[![Build Status](https://travis-ci.org/hicknhack-software/redmine_hourglass.png)](https://travis-ci.org/hicknhack-software/redmine_hourglass)
+[![Build Status](https://github.com/hicknhack-software/redmine_hourglass/workflows/Specs/badge.svg)](https://github.com/hicknhack-software/redmine_hourglass/actions?query=workflow%3ASpecs)
 [![Join the chat at https://gitter.im/hicknhack-software/redmine_hourglass](https://badges.gitter.im/hicknhack-software/redmine_hourglass.svg)](https://gitter.im/hicknhack-software/redmine_hourglass?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
  
 Hourglass is a Redmine plugin to aid in tracking spent time on projects and issues. It allows users to start / stop a timer with an optional reference to what they are working on.
@@ -44,11 +44,11 @@ The Binaries are made available as downloads in the [Releases](https://github.co
 
 ## Requirements
 
-* Ruby 2.0.0 - 2.3.x
-* Redmine 3.2.0 - 4.0.x
+* Ruby 2.5.x - 2.6.x
+* Redmine 4.1.x
 * An [ExecJS](https://github.com/sstephenson/execjs) compatible runtime, the gemfile includes [therubyracer](https://github.com/cowboyd/therubyracer) for unix based systems and windows ships with a default js interpreter (from Win 7 upwards), so most people should be set. If you happen to have problems like for example [#29](https://github.com/hicknhack-software/redmine_hourglass/issues/29), take a look on the linked ExecJS and install one of the mentioned runtimes.
 
-See [.travis.yml](.travis.yml) for details about supported versions.
+See [.github/workflows/main.yml](.github/workflows/main.yml) for details about supported versions.
 If a newer version doesn't appear in there, feel free to open an issue and report your experience with that Redmine or Ruby version.
 
 
