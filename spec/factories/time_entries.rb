@@ -3,6 +3,7 @@ FactoryBot.define do
   factory :time_entry do
     project
     user
+    author { user }
     activity { create :time_entry_activity }
     hours { 1 }
     spent_on { date }
