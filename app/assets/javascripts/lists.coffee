@@ -54,6 +54,10 @@ checkForMultiForm = ($row, $formRow)->
     $visibleForms.find('.js-not-in-multi').prop('disabled', false)
 
 showInlineForm = (event, response) ->
+  responseText = response
+  if !responseText?
+    [_data, _status, xhr] = event.detail
+    responseText = xhr.responseText
   $row = $(@).closest 'tr'
   $row.addClass('hidden')
   $formRow = $row.clone().removeClass('hidden')
@@ -64,20 +68,21 @@ showInlineForm = (event, response) ->
   .removeClass 'hascontextmenu context-menu-selection'
   .empty()
   .append $('<td/>', class: 'hide-when-print')
-  .append $('<td/>', colspan: tdCount).append response
+  .append $('<td/>', colspan: tdCount).append responseText
   .insertAfter $row
   $formRow.find('.js-validate-limit').each addStartStopLimitMoments
   $durationField = $formRow.find('.js-duration')
   $durationField.val hourglass.Utils.formatDuration parseFloat($durationField.val()), 'hours' if $durationField
   checkForMultiForm $row, $formRow
 
-showInlineFormMulti = (event, response) ->
-  $(response).each ->
+showInlineFormMulti = (event) ->
+  [_data, _status, xhr] = event.detail
+  $(xhr.response).each ->
     showInlineForm.call $("##{$(@).data('id-for-bulk-edit')} .js-show-inline-form").get(), event, @
   window.contextMenuHide()
 
-showInlineFormCreate = (event, response) ->
-  showInlineForm.call $('.js-create-form-anchor').get(), event, response
+showInlineFormCreate = (event) ->
+  showInlineForm.call $('.js-create-form-anchor').get(), event
 
 hideInlineForm = (event) ->
   event.preventDefault()
