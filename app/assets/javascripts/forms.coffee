@@ -100,8 +100,8 @@ projectFieldChanged = (event) ->
   $projectField = $(@)
   $form = $projectField.closest('form')
   $issueTextField = $form.find('.js-issue-autocompletion')
-  $activityField = $form.find('[name*=v\\[activity_id\\]]')
-  $userField = $form.find('[name*=v\\[user_id\\]]')
+  $activityField = $form.find("[name*='[activity_id]']")
+  $userField = $form.find("[name*='[user_id]']")
 
   round = $projectField.find(':selected').data('round-default')
   $form.find('[type=checkbox][name*=round]').prop('checked', round) unless round is null
