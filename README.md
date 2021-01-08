@@ -65,7 +65,7 @@ If a newer version doesn't appear in there, feel free to open an issue and repor
     ```bash
     bundle install
     ```
-1. Update the database schema with:
+1. Update the database schema by running the following command from the root of Redmine:
     ```bash
     bundle exec rake redmine:plugins:migrate RAILS_ENV=production
     ```
