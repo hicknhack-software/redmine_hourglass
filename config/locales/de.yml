@@ -178,6 +178,7 @@ de:
       time_bookings:
         title: Zeitbuchungen
         button_create: Neue Zeitbuchung
+        button_continue: Fortsetzen
         no_data: Keine Zeitbuchungen vorhanden
         heading_report: Report
         label_print: Drucken
