@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gem 'uglifier'
 gem 'coffee-script', '~> 2.4.1'
 gem 'sass', '~> 3.5.1'
+gem 'sprockets', '~> 3.7.2', require: 'sprockets/railtie'
 
 # access control
 gem 'pundit', '~> 1.1.0'
@@ -26,8 +27,8 @@ group :development, :test do
   gem 'factory_bot_rails', '< 5.0'
   gem 'zonebie'
   gem 'timecop'
-  gem 'faker', '1.7.3'
   gem 'database_cleaner'
+  gem 'faker', '~> 2.15', '>= 2.15.1'
 end
 
 if RUBY_VERSION < "2.1"

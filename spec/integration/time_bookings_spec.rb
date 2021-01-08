@@ -184,8 +184,8 @@ describe 'Time bookings API', type: :request do
         {
           time_bookings: [
             { user_id: user.id, project_id: user.projects.first.id, activity_id: create(:time_entry_activity).id,
-              start: Faker::Time.between(Date.today, Date.today, :morning),
-              stop: Faker::Time.between(Date.today, Date.today, :afternoon) }
+              start: faker_between(Date.today, Date.today, :morning),
+              stop: faker_between(Date.today, Date.today, :afternoon) }
           ]
         }
       end
@@ -199,14 +199,14 @@ describe 'Time bookings API', type: :request do
           {
             time_bookings: [
               { user_id: user.id, project_id: project.id, activity_id: activity.id,
-                start: Faker::Time.between(Date.today, Date.today, :morning),
-                stop: Faker::Time.between(Date.today, Date.today, :afternoon) },
+                start: faker_between(Date.today, Date.today, :morning),
+                stop: faker_between(Date.today, Date.today, :afternoon) },
               { user_id: create(:user).id, project_id: project.id, activity_id: activity.id,
-                start: Faker::Time.between(Date.today, Date.today, :morning),
-                stop: Faker::Time.between(Date.today, Date.today, :afternoon) },
+                start: faker_between(Date.today, Date.today, :morning),
+                stop: faker_between(Date.today, Date.today, :afternoon) },
               { user_id: create(:user).id, project_id: project.id, activity_id: activity.id,
-                start: Faker::Time.between(Date.today, Date.today, :morning),
-                stop: Faker::Time.between(Date.today, Date.today, :afternoon) }
+                start: faker_between(Date.today, Date.today, :morning),
+                stop: faker_between(Date.today, Date.today, :afternoon) }
             ]
           }
         end

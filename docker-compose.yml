@@ -1,0 +1,31 @@
+version: '3.1'
+
+services:
+  redmine:
+    build: .
+    ports:
+      - 8080:3000
+    volumes:
+      - redmine-data:/usr/src/redmine/files
+      - .:/usr/src/redmine/plugins/redmine_hourglass
+    environment:
+      RAILS_ENV: development
+      REDMINE_DB_MYSQL: db
+      REDMINE_DB_PASSWORD: example
+      REDMINE_SECRET_KEY_BASE: supersecretkey
+      REDMINE_PLUGINS_MIGRATE: 'true'
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: redmine
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  redmine-data:
+  mysql-data:

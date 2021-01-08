@@ -173,6 +173,7 @@ en:
       time_bookings:
         title: Time bookings
         button_create: New time booking
+        button_continue: Continue
         no_data: No time bookings available
         heading_report: Report
         label_print: Print

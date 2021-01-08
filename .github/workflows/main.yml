@@ -1,0 +1,67 @@
+name: Specs
+
+on: [push, pull_request]
+
+jobs:
+  specs:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        redmine: [ '4.1.1' ]
+        ruby: [ '2.5.8', '2.6.6' ]
+        database: [ 'sqlite3', 'postgresql', 'mysql2' ]
+
+    services:
+      postgresql:
+        image: postgres
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: redmine_test
+          POSTGRES_USER: redmine_hourglass
+          POSTGRES_PASSWORD: redmine_hourglass
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      mysql:
+        image: mysql:5
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_DATABASE: redmine_test
+          MYSQL_ROOT_PASSWORD: redmine_hourglass
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+
+    - name: Install redmine
+      run: wget https://github.com/redmine/redmine/archive/${{ matrix.redmine }}.tar.gz -qO- | tar -C $GITHUB_WORKSPACE -xz --strip=1 --show-transformed -f -
+
+    - uses: actions/checkout@v2
+      with:
+        path: 'plugins/redmine_hourglass'
+
+    - name: Create database config
+      run: cp $GITHUB_WORKSPACE/plugins/redmine_hourglass/.github/data/${{ matrix.database }}_database.yml $GITHUB_WORKSPACE/config/database.yml
+
+    - name: Install dependencies
+      run: |
+        bundle config set --local without 'rmagick'
+        bundle install --jobs=3 --retry=3
+
+    - name: Setup database and plugin
+      run: |
+        bundle exec rake db:create
+        bundle exec rake db:migrate
+        bundle exec rake redmine:load_default_data REDMINE_LANG=en
+        bundle exec rake generate_secret_token
+        bundle exec rake redmine:plugins:migrate
+      env:
+        RAILS_ENV: test
+
+    - name: Run specs
+      run: bundle exec rake --trace redmine:plugins:hourglass:spec
+      env:
+        RAILS_ENV: test
