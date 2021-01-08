@@ -159,6 +159,7 @@ ru:
       time_bookings:
         title: Регистрация затраченного времени
         button_create: Новая регистрация времени
+        button_continue: Продолжить
         no_data: Нет записей регистрации времени
         heading_report: Отчет
         label_print: Печать

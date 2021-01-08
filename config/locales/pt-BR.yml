@@ -159,6 +159,7 @@ pt-BR:
       time_bookings:
         title: Reservas de tempo
         button_create: Nova reserva de tempo
+        button_continue: Continuar
         no_data: Nenhuma reserva de tempo disponível
         heading_report: Relatório
         label_print: Imprimir

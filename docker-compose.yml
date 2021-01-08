@@ -9,6 +9,7 @@ services:
       - redmine-data:/usr/src/redmine/files
       - .:/usr/src/redmine/plugins/redmine_hourglass
     environment:
+      RAILS_ENV: development
       REDMINE_DB_MYSQL: db
       REDMINE_DB_PASSWORD: example
       REDMINE_SECRET_KEY_BASE: supersecretkey
