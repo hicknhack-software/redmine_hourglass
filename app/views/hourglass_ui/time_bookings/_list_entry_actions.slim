@@ -9,6 +9,6 @@
         data: {params: {time_tracker: time_booking.time_tracker_params}.to_param}
 
 - if policy(time_booking).change?
-  = link_to '', hourglass_ui_edit_time_bookings_path(time_booking), class: 'icon-edit js-show-inline-form', title: t(:button_edit), remote: true, data: {type: 'html'}
+  = link_to '', hourglass_ui_edit_time_bookings_path(time_booking), class: 'icon icon-edit js-show-inline-form', title: t(:button_edit), remote: true, data: {type: 'html'}
 - if policy(time_booking).destroy?
-  = link_to '', hourglass_time_booking_path(time_booking), class: 'icon-del js-hourglass-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)}
+  = link_to '', hourglass_time_booking_path(time_booking), class: 'icon icon-del js-hourglass-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)}
