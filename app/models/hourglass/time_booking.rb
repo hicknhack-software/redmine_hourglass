@@ -4,7 +4,7 @@ module Hourglass
     include ProjectIssueSyncing
 
     belongs_to :time_log
-    belongs_to :time_entry, dependent: :delete
+    belongs_to :time_entry, dependent: :destroy
     has_one :user, through: :time_log
     has_one :project, through: :time_entry
     has_one :issue, through: :time_entry
