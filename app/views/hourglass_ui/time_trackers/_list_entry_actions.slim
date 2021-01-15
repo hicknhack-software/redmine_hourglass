@@ -1,4 +1,4 @@
 - if policy(time_tracker).change?
-  = link_to '', hourglass_ui_edit_time_trackers_path(time_tracker), class: 'icon-edit js-show-inline-form', title: t(:button_edit), remote: true, data: {type: 'html'}
+  = link_to '', hourglass_ui_edit_time_trackers_path(time_tracker), class: 'icon icon-edit js-show-inline-form', title: t(:button_edit), remote: true, data: {type: 'html'}
 - if policy(time_tracker).destroy?
-  = link_to '', hourglass_time_tracker_path(time_tracker), class: 'icon-del js-hourglass-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)}
+  = link_to '', hourglass_time_tracker_path(time_tracker), class: 'icon icon-del js-hourglass-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)}
