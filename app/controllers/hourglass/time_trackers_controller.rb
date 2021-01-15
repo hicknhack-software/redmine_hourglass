@@ -11,7 +11,7 @@ module Hourglass
     end
 
     def start
-      time_tracker = authorize Hourglass::TimeTracker.new time_tracker_params.present? ? time_tracker_params.except(:start) : {}
+      time_tracker = authorize Hourglass::TimeTracker.new params[:time_tracker] ? time_tracker_params.except(:start) : {}
       if time_tracker.save
         respond_with_success time_tracker
       else
