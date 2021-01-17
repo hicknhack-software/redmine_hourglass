@@ -38,8 +38,8 @@ module Hourglass
       if time_tracker.destroyed?
         respond_with_success({time_log: time_log, time_booking: time_booking}.compact)
       else
-        error_messages = time_log.errors.full_messages
-        error_messages += time_booking.errors.full_messages if time_booking
+        error_messages = time_log&.errors&.full_messages || []
+        error_messages += time_booking&.errors&.full_messages || []
         respond_with_error :bad_request, error_messages, array_mode: :sentence
       end
     end
@@ -93,7 +93,7 @@ module Hourglass
       time_tracker.transaction do
         time_log = time_tracker.stop
         authorize time_log, :booking_allowed? if time_log && time_tracker.project
-        [time_log, time_log && time_log.time_booking]
+        [time_log, time_log&.time_booking]
       end if time_tracker.valid?
     end
 
@@ -109,8 +109,8 @@ module Hourglass
         if time_tracker.destroyed?
           true
         else
-          error_messages = time_log.errors.full_messages
-          error_messages += time_booking.errors.full_messages if time_booking
+          error_messages = time_log&.errors&.full_messages || []
+          error_messages += time_booking&.errors&.full_messages || []
           respond_with_error :bad_request, error_messages, array_mode: :sentence
           false
         end
