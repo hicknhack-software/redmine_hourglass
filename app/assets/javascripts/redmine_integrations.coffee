@@ -10,56 +10,63 @@ timeTrackerAjax = (args) ->
     error: ({responseJSON}) ->
       hourglass.Utils.showErrorMessage responseJSON.message
 
-stopDialogApplyHandler = (args) ->
+stopDialogApplyHandler = (link) ->
   $stopDialog = $(@)
   $activityField = $stopDialog.find('[name*=activity_id]')
   return unless hourglass.FormValidator.isFieldValid $activityField
   $stopDialog.dialog 'close'
   timeTrackerAjax
-    url: hourglassRoutes.hourglass_time_tracker 'current'
-    type: 'put'
+    url: $(link).attr('href')
+    type: 'delete'
     data:
       time_tracker:
         activity_id: $activityField.val()
-    success: ->
-      $('.js-stop-tracker').addClass('js-skip-dialog').first().click()
+    success: -> location.reload()
 
 startDialogApplyHandler = (link) ->
   $startDialog = $(@)
   switch $startDialog.find('input[type=radio]:checked').val()
     when 'log'
       $activityField = $startDialog.find('[name*=activity_id]')
-      saveLog = () ->
-        timeTrackerAjax
-          url: hourglassRoutes.stop_hourglass_time_tracker 'current'
-          method: 'delete'
-          success: -> startNewTracker link
-
       if $activityField.length
         return unless hourglass.FormValidator.isFieldValid $activityField
         $startDialog.dialog 'close'
         timeTrackerAjax
-          url: hourglassRoutes.hourglass_time_tracker 'current'
-          method: 'put'
+          url: hourglassRoutes.start_hourglass_time_trackers()
+          method: 'post'
           data:
-            time_tracker:
-              activity_id: $activityField.val()
-          success: saveLog
+            $.extend Object.fromEntries(new URLSearchParams($(link).data('params'))),
+              id: 'current'
+              current_action: 'stop'
+              current_update:
+                activity_id: $activityField.val()
+          success: -> location.reload()
       else
         $startDialog.dialog 'close'
-        saveLog()
+        timeTrackerAjax
+          url: hourglassRoutes.start_hourglass_time_trackers()
+          method: 'post'
+          data:
+            $.extend Object.fromEntries(new URLSearchParams($(link).data('params'))),
+              id: 'current'
+              current_action: 'stop'
+          success: -> location.reload()
     when 'discard'
       $startDialog.dialog 'close'
       timeTrackerAjax
-        url: hourglassRoutes.hourglass_time_tracker 'current'
-        method: 'delete'
-        success: -> startNewTracker link
+        url: hourglassRoutes.start_hourglass_time_trackers()
+        method: 'post'
+        data:
+          $.extend Object.fromEntries(new URLSearchParams($(link).data('params'))),
+            id: 'current'
+            current_action: 'destroy'
+        success: -> location.reload()
     when 'takeover'
       $startDialog.dialog 'close'
       timeTrackerAjax
         url: hourglassRoutes.hourglass_time_tracker 'current'
         type: 'put'
-        data: $(link).data('params')
+        data: Object.fromEntries(new URLSearchParams($(link).data('params')))
         success: ->
           location.reload()
 
@@ -97,12 +104,11 @@ showStopDialog = (e) ->
       hourglass.Utils.showDialog 'js-stop-dialog', $stopDialogContent, [
         {
           text: $stopDialogContent.data('button-ok-text')
-          click: stopDialogApplyHandler
+          click: -> stopDialogApplyHandler.call(@, e.target)
         }
         {
           text: $stopDialogContent.data('button-cancel-text')
-          click: ->
-            $(this).dialog 'close'
+          click: -> $(@).dialog 'close'
         }
       ]
       $stopDialogContent.on 'change', '[name*=activity_id]', ->
