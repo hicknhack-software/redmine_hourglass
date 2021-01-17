@@ -55,6 +55,10 @@ module Hourglass
       @include_time_log = true
     end
 
+    def time_tracker_params
+      {issue_id: issue_id, project_id: project_id, activity_id: activity_id, comments: comments}
+    end
+
     private
     def self.visible_condition(user, _options = {})
       project_ids = Project.allowed_to(user, :hourglass_view_booked_time).pluck :id
