@@ -20,7 +20,7 @@ gem 'momentjs-rails', '>= 2.10.7'
 
 gem 'rswag', '<2.0' # api docs
 gem 'rspec-core'
-gem 'rqrcode', '~> 0.10.1'
+gem 'rqrcode' unless dependencies.any? { |d| d.name == 'rqrcode' }
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
