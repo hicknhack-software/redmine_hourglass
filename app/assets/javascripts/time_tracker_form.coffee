@@ -4,22 +4,64 @@ valueTarget = ($target) ->
   else
     $target
 
+formData = {}
+putData = {}
+putTimer = 0
+
+updateLink = ($field) ->
+  $link = $field.closest('.form-field').find('label + a')
+  if $link.length
+    $link.toggleClass 'hidden', $field.val() is ''
+    $link.attr('href', $link.attr('href').replace(/\/([^/]*)$/, "/#{$field.val()}"))
+
+refreshForm = () ->
+  $.ajax
+    url: hourglassRoutes.hourglass_time_tracker('current')
+    type: 'get'
+    success: (data) ->
+      oldData = formData
+      formData = data
+      if oldData.issue_id != data.issue_id
+        $issueField = $('#time_tracker_issue_id')
+        $issueField.val(data.issue_id)
+        updateLink($issueField)
+      if oldData.project_id != data.project_id
+        $projectField = $('#time_tracker_project_id')
+        $projectField.val(data.project_id)
+        updateLink($projectField)
+      if oldData.activity_id != data.activity_id
+        $activityField = $('#time_tracker_activity_id')
+        $activityField.val(data.activity_id)
+      return
+    error: ({responseJSON}) ->
+      hourglass.Utils.showErrorMessage responseJSON.message
+
+putForm = () ->
+  putTimer = 0
+  data = putData
+  putData = {}
+  hourglass.Utils.clearFlash()
+  $.ajax
+    url: hourglassRoutes.hourglass_time_tracker('current')
+    type: 'put'
+    data: data
+    success: () ->
+      refreshForm()
+    error: ({responseJSON}) ->
+      hourglass.Utils.showErrorMessage responseJSON.message
+
 formFieldChanged = (event) ->
-  data = {}
   $target = $(event.target)
   attribute = $target.attr('name')
-  data[attribute] = valueTarget($target).val()
+  key = attribute.replace(/^\w+\[(\w+)\]$/, '$1')
+  value = valueTarget($target).val()
+  return if value == formData[key]?.toString() or value == putData[attribute]
+  putData[attribute] = value
   if attribute.indexOf('project_id') > -1
     $issueField = $(@).find('.js-issue-autocompletion').next()
-    data[$issueField.attr('name')] = $issueField.val()
-  unless $target.hasClass('invalid')
-    hourglass.Utils.clearFlash()
-    $.ajax
-      url: hourglassRoutes.hourglass_time_tracker('current')
-      type: 'put'
-      data: data
-      error: ({responseJSON}) ->
-        hourglass.Utils.showErrorMessage responseJSON.message
+    putData[$issueField.attr('name')] = $issueField.val()
+  unless $target.hasClass('invalid') || putTimer != 0
+    putTimer = setTimeout(putForm, 1);
 
 $ ->
   $timeTrackerControl = $('.time-tracker-control')
