@@ -3,16 +3,17 @@
 module Hourglass
   class TimeLogQuery < Query
     include QueryBase
+    self.queried_class = TimeLog
 
-    set_available_columns(
-        comments: {},
-        user: {sortable: lambda { User.fields_for_order_statement }, groupable: true},
-        date: {sortable: "#{queried_class.table_name}.start", groupable: "DATE(#{queried_class.table_name}.start)"},
-        start: {},
-        stop: {},
-        hours: {totalable: true},
-        booked?: {}
-    )
+    self.available_columns = [
+      QueryColumn.new(:comments),
+      QueryColumn.new(:user, sortable: lambda { User.fields_for_order_statement }, groupable: true),
+      TimestampQueryColumn.new(:date, sortable: "#{TimeLog.table_name}.start", groupable: true),
+      QueryColumn.new(:start),
+      QueryColumn.new(:stop),
+      QueryColumn.new(:hours, totalable: true),
+      QueryColumn.new(:booked?),
+    ]
 
     def initialize(attributes=nil, *args)
       super attributes
