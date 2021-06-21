@@ -2,8 +2,6 @@ module Hourglass::QueryBase
   extend ActiveSupport::Concern
 
   included do
-    self.queried_class = name.gsub('Query', '').constantize
-
     # copied from issue query, without the view_issues right check
     scope :visible, lambda { |*args|
       user = args.shift || User.current
@@ -28,14 +26,6 @@ module Hourglass::QueryBase
         scope.where("#{table_name}.visibility = ?", Query::VISIBILITY_PUBLIC)
       end
     }
-  end
-
-  class_methods do
-    def set_available_columns(columns)
-      self.available_columns = columns.map do |name, options|
-        QueryColumn.new name, options
-      end
-    end
   end
 
   def build_from_params(params)
@@ -96,7 +86,7 @@ module Hourglass::QueryBase
   end
 
   def date_value(entry)
-    entry.start.to_date
+    User.current.time_to_date(entry.start)
   end
 
   def sql_for_date_field(field, operator, value)

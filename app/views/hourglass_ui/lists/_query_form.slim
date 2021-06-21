@@ -2,11 +2,11 @@
 = form_tag url_for, method: 'get', id: 'query_form', class: 'hide-when-print'
   = hidden_field_tag 'set_filter', '1'
   fieldset#filters.collapsible class=('collapsed' if collapse_filters )
-    legend = t(:label_filter_plural)
+    legend.icon class=(collapse_filters ? 'icon-collapsed' : 'icon-expended') = t(:label_filter_plural)
     div style=('display: none;' if collapse_filters)
       = render :partial => 'queries/filters', locals: {query: query}
   fieldset.collapsible.collapsed
-    legend = t(:label_options)
+    legend.icon.icon-collapsed = t(:label_options)
     div style='display: none;'
       table
         tr

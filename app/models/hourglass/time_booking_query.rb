@@ -1,19 +1,20 @@
 module Hourglass
   class TimeBookingQuery < Query
     include QueryBase
+    self.queried_class = TimeBooking
 
-    set_available_columns(
-        date: {sortable: "#{queried_class.table_name}.start", groupable: "DATE(#{queried_class.table_name}.start)"},
-        start: {},
-        stop: {},
-        hours: {totalable: true},
-        comments: {},
-        user: {sortable: lambda { User.fields_for_order_statement }, groupable: "#{User.table_name}.id"},
-        project: {sortable: "#{Project.table_name}.name", groupable: "#{Project.table_name}.id"},
-        activity: {sortable: "#{TimeEntryActivity.table_name}.position", groupable: "#{TimeEntryActivity.table_name}.id"},
-        issue: {sortable: "#{Issue.table_name}.subject", groupable: "#{Issue.table_name}.id"},
-        fixed_version: {sortable: lambda { Version.fields_for_order_statement }, groupable: "#{Issue.table_name}.fixed_version_id"}
-    )
+    self.available_columns = [
+      TimestampQueryColumn.new(:date, sortable: "#{TimeBooking.table_name}.start", groupable: true),
+      QueryColumn.new(:start),
+      QueryColumn.new(:stop),
+      QueryColumn.new(:hours, totalable: true),
+      QueryColumn.new(:comments),
+      QueryColumn.new(:user, sortable: lambda { User.fields_for_order_statement }, groupable: true),
+      QueryColumn.new(:project, sortable: "#{Project.table_name}.name", groupable: true),
+      QueryColumn.new(:activity, sortable: "#{TimeEntryActivity.table_name}.position", groupable: true),
+      QueryColumn.new(:issue, sortable: "#{Issue.table_name}.subject", groupable: true),
+      QueryColumn.new(:fixed_version, sortable: lambda { Version.fields_for_order_statement }, groupable: true),
+    ]
 
     def initialize(attributes=nil, *args)
       super attributes
