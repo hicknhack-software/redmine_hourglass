@@ -86,7 +86,7 @@ module Hourglass::QueryBase
   end
 
   def date_value(entry)
-    entry.start.to_date
+    User.current.time_to_date(entry.start)
   end
 
   def sql_for_date_field(field, operator, value)
