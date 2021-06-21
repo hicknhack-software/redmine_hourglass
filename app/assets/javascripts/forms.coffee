@@ -1,6 +1,6 @@
 initIssueAutoCompletion = ->
   $issueField = $(@)
-  $projectField = $issueField.closest('form').find('[name*=v\\[project_id\\]]')
+  $projectField = $issueField.closest('form').find("[name*='[project_id]']")
   $issueField.autocomplete
     source: (request, response) ->
       $.ajax
