@@ -13,18 +13,21 @@ class HourglassCompletionController < Hourglass::ApiBaseController
                  else
                    issue_arel[:id] # unknown
                  end
-    issues = Issue.visible.joins(:project).where(Project.allowed_to_one_of_condition User.current, Hourglass::AccessControl.permissions_from_action(controller: 'hourglass/time_logs', action: 'book')).where(
+    was_admin = User.current.admin?
+    User.current.admin = false # prevent Redmine from ignoring permissions for admins, like we do later anyways
+    issues = Issue.cross_project_scope(params[:project_id]).visible
+    issues = issues.joins(:project).where(Project.allowed_to_one_of_condition User.current, Hourglass::AccessControl.permissions_from_action(controller: 'hourglass/time_logs', action: 'book')).where(
         issue_arel[:id].eq(params[:term].to_i)
             .or(id_as_text.matches("%#{params[:term]}%"))
             .or(issue_arel[:subject].matches("%#{params[:term]}%"))
     )
-    issues = issues.where(project_id: params[:project_id]) if params[:project_id].present?
     issue_list = issues.map do |issue|
       {
           label: "##{issue.id} #{issue.subject}",
           issue_id: "#{issue.id}",
           project_id: issue.project.id}
     end
+    User.current.admin = was_admin
     respond_with_success issue_list
   end
 
