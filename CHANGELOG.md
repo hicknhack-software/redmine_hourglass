@@ -19,6 +19,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - [please add bug fixes]
 
+## [1.2.0-beta] - 2021-06-27
+
+Upgraded to support Redmine 4.2.1
+
+### Changed
+- resolved blockers for current Redmine versions
+- dropped support for older Redmine versions
+
+### Fixed
+- issue filter for administrators works as expected
+- update for issue, project and activity work normal
+
 ## [1.1.2] - 2019-04-18
 
 Bugfix release.
@@ -62,8 +74,8 @@ We added plenty of new features which were long time overdue.
 Some of the things were requested several years before and were finally possible.
 
 ### Added
-- functionality is available as an API, so desktop and mobile clients are possible 
-- rounding can be configured to only affect sums 
+- functionality is available as an API, so desktop and mobile clients are possible
+- rounding can be configured to only affect sums
 - proper support for grouping entries in list views
 - project specific plugin settings
 - time trackers can now be queried

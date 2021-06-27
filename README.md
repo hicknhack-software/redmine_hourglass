@@ -2,11 +2,11 @@
 [![Code Climate](https://codeclimate.com/github/hicknhack-software/redmine_hourglass.png)](https://codeclimate.com/github/hicknhack-software/redmine_hourglass)
 [![Build Status](https://github.com/hicknhack-software/redmine_hourglass/workflows/Specs/badge.svg)](https://github.com/hicknhack-software/redmine_hourglass/actions?query=workflow%3ASpecs)
 [![Join the chat at https://gitter.im/hicknhack-software/redmine_hourglass](https://badges.gitter.im/hicknhack-software/redmine_hourglass.svg)](https://gitter.im/hicknhack-software/redmine_hourglass?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
- 
+
 Hourglass is a Redmine plugin to aid in tracking spent time on projects and issues. It allows users to start / stop a timer with an optional reference to what they are working on.
-  
+
 It allows various queries for time entries as well as possibilities to update existing entries.
-  
+
 Hourglass can be configured on a global base as well as per project.
 
 See [CHANGELOG.md](CHANGELOG.md) for the latest features.
@@ -44,8 +44,8 @@ The Binaries are made available as downloads in the [Releases](https://github.co
 
 ## Requirements
 
-* Ruby 2.5.x - 2.6.x
-* Redmine 4.1.x
+* Ruby 2.6.x
+* Redmine 4.2.1 (The only version fully tested! - Try older versions of the plugin for older versions of Redmine.)
 * An [ExecJS](https://github.com/sstephenson/execjs) compatible runtime, the gemfile includes [therubyracer](https://github.com/cowboyd/therubyracer) for unix based systems and windows ships with a default js interpreter (from Win 7 upwards), so most people should be set. If you happen to have problems like for example [#29](https://github.com/hicknhack-software/redmine_hourglass/issues/29), take a look on the linked ExecJS and install one of the mentioned runtimes.
 
 See [.github/workflows/main.yml](.github/workflows/main.yml) for details about supported versions.
@@ -54,13 +54,13 @@ If a newer version doesn't appear in there, feel free to open an issue and repor
 
 ## Installation
 
-1. Place the source code of this plugin at the `plugins/redmine_hourglass` folder. 
+1. Place the source code of this plugin at the `plugins/redmine_hourglass` folder.
    Either by:
     - Download a release from [Releases](https://github.com/hicknhack-software/redmine_hourglass/releases) and extract it into your Redmine.
     - Or clone the repository:
         ```bash
         git clone https://github.com/hicknhack-software/redmine_hourglass.git plugins/redmine_hourglass
-        ```  
+        ```
 1. Install required Gems by:
     ```bash
     bundle install
@@ -93,20 +93,20 @@ If you had it installed via git before, the first step is simply doing `git pull
 
 1. Login as an administrator and setup the permissions for your roles
     - developers should have the rights to track time
-    
+
       ![Developer Rights](doc/images/DeveloperRights.png)
-      
+
     - managers should have the rights to fix times
-    
+
       ![Manager Rights](doc/images/ManagerRights.png)
-    
+
 1. Enable the "Hourglass" module for your project
     - works well in combination with the built in `Time tracking`
-     
+
       ![Project Modules](doc/images/ProjectModules.png)
-      
+
 1. You should now see the Time Tracking link in the top menu.
-                    
+
 To track time directly on an issue, you can use the context menu (right click in the issues list) in
 the issue list to start or stop the timer or press the "Start Tracking" button on the top right, next to the default "Book Time" Redmine button.
 
