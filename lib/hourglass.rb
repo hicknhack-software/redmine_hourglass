@@ -3,7 +3,7 @@ module Hourglass
   PLUGIN_NAME = "redmine_#{NAMESPACE}".to_sym
   PLUGIN_ROOT = Pathname.new(File.join File.dirname(__FILE__), '..').cleanpath
 
-  VERSION = '1.2.0-beta1'
+  VERSION = '1.2.0-beta2'
 
   def self.redmine_has_advanced_queries?
     Redmine::VERSION::MAJOR > 3 || (Redmine::VERSION::MAJOR == 3 && Redmine::VERSION::MINOR >= 4)

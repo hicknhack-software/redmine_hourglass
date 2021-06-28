@@ -15,7 +15,8 @@ class HourglassCompletionController < Hourglass::ApiBaseController
                  end
     was_admin = User.current.admin?
     User.current.admin = false # prevent Redmine from ignoring permissions for admins, like we do later anyways
-    issues = Issue.cross_project_scope(params[:project_id]).visible
+    project = params[:project_id].present? ? Project.find(params[:project_id]) : nil
+    issues = Issue.cross_project_scope(project).visible
     issues = issues.joins(:project).where(Project.allowed_to_one_of_condition User.current, Hourglass::AccessControl.permissions_from_action(controller: 'hourglass/time_logs', action: 'book')).where(
         issue_arel[:id].eq(params[:term].to_i)
             .or(id_as_text.matches("%#{params[:term]}%"))
