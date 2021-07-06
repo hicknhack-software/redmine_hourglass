@@ -131,28 +131,15 @@ split = (timeLogId, mSplitAt, insertNewBefore, round) ->
       insert_new_before: insertNewBefore
       round: round
 
-submit_without_split_checking = ($form) ->
-  $form
-  .removeClass('js-check-splitting')
-  .submit()
+submit_without_split_checking = ($form, e) ->
+  $form.removeClass('js-check-splitting')
+  $.rails.handleRemote.call($form[0], e)
 
-addSplittingSuccessfulHandler = ($form, startJqXhr, stopJqXhr) ->
-  if startJqXhr
-    startJqXhr.done ->
-      submit_without_split_checking $form
-  else if stopJqXhr
-    stopJqXhr.done ->
-      submit_without_split_checking $form
+addSplittingFailedHandler = (xhr) ->
+  xhr.fail ({responseJSON}) ->
+    hourglass.Utils.showErrorMessage responseJSON.message
 
-addSplittingFailedHandler = (startJqXhr, stopJqXhr) ->
-  if stopJqXhr
-    stopJqXhr.fail ({responseJSON}) ->
-      hourglass.Utils.showErrorMessage responseJSON.message
-  if startJqXhr
-    startJqXhr.fail ({responseJSON}) ->
-      hourglass.Utils.showErrorMessage responseJSON.message
-
-checkSplitting = ->
+checkSplitting = (e)->
   $form = $(@)
   timeLogId = $form.data('timeLogId')
   $startField = $form.find('[name*=start]')
@@ -160,19 +147,27 @@ checkSplitting = ->
   mStart = moment $startField.val(), moment.ISO_8601
   mStop = moment $stopField.val(), moment.ISO_8601
   round = $form.find('[type=checkbox][name*=round]').prop('checked')
-  stopJqXhr = if mStop.isBefore $stopField.data('mLimit')
-    split timeLogId, mStop, false, round
-  startJqXhr = if mStart.isAfter $startField.data('mLimit')
-    if stopJqXhr
-      stopJqXhr.then ->
-        split timeLogId, mStart, true, round
-    else
-      split timeLogId, mStart, true, round
-
-  addSplittingSuccessfulHandler $form, startJqXhr, stopJqXhr
-  addSplittingFailedHandler startJqXhr, stopJqXhr
-
-  return not (startJqXhr or stopJqXhr)
+  next = ->
+    submit_without_split_checking $form, e
+  any = false
+  if mStart.isAfter $startField.data('mLimit')
+    startNext = next
+    any = true
+    next = ->
+      xhr = split timeLogId, mStart, true, round
+      addSplittingFailedHandler(xhr)
+      xhr.done startNext
+  if mStop.isBefore $stopField.data('mLimit')
+    stopNext = next
+    any = true
+    next = ->
+      xhr = split timeLogId, mStop, false, round
+      addSplittingFailedHandler(xhr)
+      xhr.done stopNext
+  if any
+    next()
+    return false
+  return true
 
 $ ->
   $(document)

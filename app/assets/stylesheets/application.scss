@@ -5,12 +5,15 @@
     .form-field {
       float: left;
       margin-right: 5px;
-      .label {
+      .label, >label {
         float: left;
         overflow: hidden;
         font-size: 9px;
       }
-      .input {
+      >input {
+        display: block;
+      }
+      .input, >input {
         margin-top: 15px;
         input ~ a {
           margin-left: 10px;
