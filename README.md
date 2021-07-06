@@ -54,6 +54,10 @@ If a newer version doesn't appear in there, feel free to open an issue and repor
 
 ## Installation
 
+1. If you use Mysql please make sure you have the timezone details loaded, otherwise you miss a lot of nice features.
+   ```bash
+   sudo mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root -p mysql
+   ```
 1. Place the source code of this plugin at the `plugins/redmine_hourglass` folder.
    Either by:
     - Download a release from [Releases](https://github.com/hicknhack-software/redmine_hourglass/releases) and extract it into your Redmine.
