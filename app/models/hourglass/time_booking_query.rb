@@ -9,11 +9,11 @@ module Hourglass
       QueryColumn.new(:stop),
       QueryColumn.new(:hours, totalable: true),
       QueryColumn.new(:comments),
-      QueryColumn.new(:user, sortable: lambda { User.fields_for_order_statement }, groupable: true),
-      QueryColumn.new(:project, sortable: "#{Project.table_name}.name", groupable: true),
-      QueryColumn.new(:activity, sortable: "#{TimeEntryActivity.table_name}.position", groupable: true),
-      QueryColumn.new(:issue, sortable: "#{Issue.table_name}.subject", groupable: true),
-      QueryColumn.new(:fixed_version, sortable: lambda { Version.fields_for_order_statement }, groupable: true),
+      NestedGroupableQueryColumn.new(:user, sortable: lambda { User.fields_for_order_statement }, groupable: "#{User.table_name}.id"),
+      NestedGroupableQueryColumn.new(:project, sortable: "#{Project.table_name}.name", groupable: "#{Project.table_name}.id"),
+      NestedGroupableQueryColumn.new(:activity, sortable: "#{TimeEntryActivity.table_name}.position", groupable: "#{TimeEntryActivity.table_name}.id"),
+      NestedGroupableQueryColumn.new(:issue, sortable: "#{Issue.table_name}.subject", groupable: "#{Issue.table_name}.id"),
+      NestedGroupableQueryColumn.new(:fixed_version, sortable: lambda { Version.fields_for_order_statement }, groupable: "#{Issue.table_name}.fixed_version_id"),
     ]
 
     def initialize(attributes=nil, *args)

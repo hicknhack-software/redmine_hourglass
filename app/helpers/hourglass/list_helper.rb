@@ -60,10 +60,11 @@ module Hourglass
     end
 
     def extract_group_value(group, values_by_group)
-      values_by_group[group] || values_by_group[group.to_s] || (group.respond_to?(:id) && values_by_group[group.id])
+      values_by_group[group] || values_by_group[group.to_s] || (group.respond_to?(:id) && values_by_group[group.id]) || nil
     end
 
     def transform_totals(totals)
+      return {} if totals.nil?
       Hash[totals.map do |column, total|
         [
             column,

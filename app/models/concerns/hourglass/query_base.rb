@@ -1,6 +1,16 @@
 module Hourglass::QueryBase
   extend ActiveSupport::Concern
 
+  class NestedGroupableQueryColumn < QueryColumn
+    def groupable?
+      not @groupable.nil?
+    end
+
+    def group_by_statement
+      @groupable
+    end
+  end
+
   included do
     # copied from issue query, without the view_issues right check
     scope :visible, lambda { |*args|
