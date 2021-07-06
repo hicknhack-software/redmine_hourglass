@@ -10,6 +10,7 @@ module Hourglass
     has_one :issue, through: :time_entry
     has_one :activity, through: :time_entry
     has_one :fixed_version, through: :issue
+    has_many :custom_values, through: :time_entry
 
     accepts_nested_attributes_for :time_entry
     accepts_nested_attributes_for :time_log

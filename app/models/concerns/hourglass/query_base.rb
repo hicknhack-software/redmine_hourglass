@@ -197,16 +197,21 @@ module Hourglass::QueryBase
     add_available_filter 'fixed_version_id', type: :list_optional, values: values
   end
 
+  def associated_custom_field_columns(association, custom_fields, options = {})
+    custom_fields.visible.map do |custom_field|
+      QueryAssociationCustomFieldColumn.new(association, custom_field, options)
+    end
+  end
+
   def has_through_associations
     []
   end
 
   def sql_for_custom_field(*args)
     result = super
-    result.gsub!(/#{queried_table_name}\.(#{has_through_associations.join('|')})_id/) do
-      groupable_columns.select { |c| c.name == Regexp.last_match[1].to_sym }.first.groupable
+    result.gsub(/#{queried_table_name}\.(#{has_through_associations.join('|')})_id/) do
+      groupable_columns.select { |c| c.name == Regexp.last_match[1].to_sym }.first.group_by_statement
     end
-    result
   end
 
   # this is a fix for redmine 3.2.7

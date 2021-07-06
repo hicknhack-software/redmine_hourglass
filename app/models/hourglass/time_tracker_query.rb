@@ -38,18 +38,11 @@ module Hourglass
 
     def available_columns
       @available_columns ||= self.class.available_columns.dup.tap do |available_columns|
-        {
-            time_entry: TimeEntryCustomField,
-            issue: issue_custom_fields,
-            project: ProjectCustomField,
-            user: UserCustomField,
-            fixed_version: VersionCustomField
-
-        }.each do |association, custom_field_scope|
-          custom_field_scope.visible.each do |custom_field|
-            available_columns << QueryAssociationCustomFieldColumn.new(association, custom_field)
-          end
-        end
+        available_columns.push *associated_custom_field_columns(:issue, issue_custom_fields, totalable: false)
+        available_columns.push *associated_custom_field_columns(:project, project_custom_fields, totalable: false)
+        # 2021-07-06 arBmind: custom fields for users cannot be properly authorized
+        # available_columns.push *associated_custom_field_columns(:user, UserCustomField, totalable: false)
+        available_columns.push *associated_custom_field_columns(:fixed_version, VersionCustomField, totalable: false)
       end
     end
 

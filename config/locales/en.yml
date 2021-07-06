@@ -20,6 +20,7 @@ en:
               overlaps: There is a overlapping time log
 
 ################### redmine specific stuff #####################
+  label_attribute_of_time_entry: "%{name}"
   field_date: Date
   field_default_activity: Default activity
   field_duration: Duration

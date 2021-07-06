@@ -18,6 +18,7 @@ ru:
               overlaps: Учет времени перекрывает существующую запись
 
 ################### redmine specific stuff #####################
+  label_attribute_of_time_entry: "%{name}"
   field_date: Дата
   field_duration: Продолжительность
   field_booked?: Зарегистрировано

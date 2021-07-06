@@ -30,9 +30,8 @@ module Hourglass
 
     def available_columns
       @available_columns ||= self.class.available_columns.dup.tap do |available_columns|
-        UserCustomField.visible.each do |custom_field|
-          available_columns << QueryAssociationCustomFieldColumn.new(:user, custom_field)
-        end
+        # 2021-07-06 arBmind: custom fields for users cannot be properly authorized
+        # available_columns.push *associated_custom_field_columns(:user, UserCustomField, totalable: false)
       end
     end
 

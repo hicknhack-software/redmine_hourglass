@@ -24,6 +24,7 @@ de:
               overlaps: Es existiert bereits eine sich überschneidende Zeiterfassung
 
 ################### redmine specific stuff #####################
+  label_attribute_of_time_entry: "%{name}"
   field_date: Datum
   field_default_activity: Standardaktivität
   field_duration: Dauer

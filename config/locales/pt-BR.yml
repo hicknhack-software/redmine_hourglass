@@ -18,6 +18,7 @@ pt-BR:
               overlaps: Já existe um registro nesse horário
 
 ################### redmine specific stuff #####################
+  label_attribute_of_time_entry: "%{name}"
   field_date: Data
   field_duration: Duração
   field_booked?: Reservado
