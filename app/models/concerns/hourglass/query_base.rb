@@ -1,3 +1,5 @@
+Query # workaround: loading Query loads QueryColumn
+
 module Hourglass::QueryBase
   extend ActiveSupport::Concern
 
