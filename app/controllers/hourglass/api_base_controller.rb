@@ -10,6 +10,7 @@ module Hourglass
     rescue_from ActionController::ParameterMissing, with: :missing_parameters
     rescue_from(ActiveRecord::RecordNotFound) { render_404 no_halt: true }
     rescue_from Query::StatementInvalid, with: :query_statement_invalid
+    rescue_from Hourglass::AlreadyBookedException, with: :already_booked
 
     include ::AuthorizationConcern
 
@@ -137,6 +138,10 @@ module Hourglass
       messages = [e.message] + e.backtrace
       Rails.logger.error messages.join("\n")
       respond_with_error :internal_server_error, Rails.env.production? ? t('hourglass.api.errors.internal_server_error') : messages, no_halt: true
+    end
+
+    def already_booked(_e)
+      respond_with_error :bad_request, t('hourglass.api.time_logs.errors.already_booked'), no_halt: true
     end
 
     def flash_array(type, messages)
