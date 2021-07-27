@@ -40,6 +40,7 @@ module Hourglass
       else
         error_messages = time_log&.errors&.full_messages || []
         error_messages += time_booking&.errors&.full_messages || []
+        error_messages = [t('hourglass.api.errors.internal_server_error')] if error_messages.empty?
         respond_with_error :bad_request, error_messages, array_mode: :sentence
       end
     end
