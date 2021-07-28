@@ -40,6 +40,7 @@ module Hourglass
       else
         error_messages = time_log&.errors&.full_messages || []
         error_messages += time_booking&.errors&.full_messages || []
+        error_messages += time_tracker&.errors&.full_messages || []
         respond_with_error :bad_request, error_messages, array_mode: :sentence
       end
     end
@@ -111,6 +112,7 @@ module Hourglass
         else
           error_messages = time_log&.errors&.full_messages || []
           error_messages += time_booking&.errors&.full_messages || []
+          error_messages += time_tracker&.errors&.full_messages || []
           respond_with_error :bad_request, error_messages, array_mode: :sentence
           false
         end

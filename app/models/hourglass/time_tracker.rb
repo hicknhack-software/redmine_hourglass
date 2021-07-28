@@ -88,7 +88,7 @@ module Hourglass
     end
 
     def does_not_overlap_with_other
-      errors.add :base, :overlaps unless user.hourglass_time_logs.overlaps_with(start, Time.now).empty?
+      errors.add :base, :overlaps if user.hourglass_time_logs.overlaps_with(start, Time.now).any?
     end
   end
 end
