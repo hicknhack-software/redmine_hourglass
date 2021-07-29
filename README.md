@@ -44,7 +44,7 @@ The Binaries are made available as downloads in the [Releases](https://github.co
 
 ## Requirements
 
-* Ruby 2.6.x
+* Ruby 2.6.8
 * Redmine 4.2.1 (The only version fully tested! - Try older versions of the plugin for older versions of Redmine.)
 * An [ExecJS](https://github.com/sstephenson/execjs) compatible runtime, the gemfile includes [therubyracer](https://github.com/cowboyd/therubyracer) for unix based systems and windows ships with a default js interpreter (from Win 7 upwards), so most people should be set. If you happen to have problems like for example [#29](https://github.com/hicknhack-software/redmine_hourglass/issues/29), take a look on the linked ExecJS and install one of the mentioned runtimes.
 

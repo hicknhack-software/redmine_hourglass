@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         redmine: [ '4.1.3', '4.2.1' ]
-        ruby: [ '2.5.8', '2.6.7' ]
+        ruby: [ '2.5.9', '2.6.8' ]
         database: [ 'sqlite3', 'postgresql', 'mysql2' ]
 
     services:
