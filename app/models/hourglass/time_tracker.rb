@@ -30,7 +30,7 @@ module Hourglass
     end
 
     def stop
-      stop = Time.now.change(sec: 0) + 1.minute
+      stop = DateTimeCalculations.calculate_stoppable_time start, project: project
       time_log = nil
       transaction(requires_new: true) do
         if start < stop
@@ -54,6 +54,10 @@ module Hourglass
 
     def validate_custom_field_values
       super unless new_record?
+    end
+
+    def clamp?
+      DateTimeCalculations.clamp? start, project: project
     end
 
     private

@@ -88,6 +88,10 @@ de:
           carry_over_due: Rundungsübertrag verwerfen nach
           sums_only: Nur Summen runden?
         title: Rundungsverhalten
+      clamping:
+        fields:
+          limit: Maximal gemessene Zeit
+        title: Begrenzungsverhalten
     api:
       errors:
         change_others_forbidden: Sie sind nicht berechtigt diese Aktion für deinen anderen Nutzers durchzuführen.
@@ -161,6 +165,8 @@ de:
           invalid: Der Wert dieses Feldes ist ungültig.
           exceedsLimit: Der Wert dieses Feldes überschreitet sein Limit.
           invalidDuration: Ihre Start und Stop Zeiten bilden einen ungültigen Zeitraum.
+        confirmations:
+          stop_clamping: Die Zeiterfassung wird begrenzt. Sind sie sicher?
       lists:
         button_book: Buchen
         button_book_all: Alle buchen
