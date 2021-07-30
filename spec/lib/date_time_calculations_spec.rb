@@ -74,16 +74,15 @@ describe Hourglass::DateTimeCalculations do
   end
 
   describe 'calculate stoppable time function' do
-
     before :each do
       Hourglass::SettingsStorage[:clamp_limit] = '12'
     end
 
     it 'gives correct result if time will not be clamped' do
-      expect(Hourglass::DateTimeCalculations.calculate_stoppable_time 1.hour.ago).to be_between(Time.now - 1.minute, Time.now + 1.minute)
+      expect(Hourglass::DateTimeCalculations.calculate_stoppable_time 1.hours.ago).to eql Time.now.change(sec: 0) + 1.minute
     end
     it 'gives correct result if time will be clamped' do
-      expect(Hourglass::DateTimeCalculations.calculate_stoppable_time 13.hours.ago).to be_between(Time.now - 1.hour - 1.minute, Time.now - 1.hour + 1.minute)
+      expect(Hourglass::DateTimeCalculations.calculate_stoppable_time 13.hours.ago).to eql 1.hour.ago.change(sec: 0) + 1.minute
     end
   end
 end
