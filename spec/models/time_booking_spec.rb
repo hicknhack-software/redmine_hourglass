@@ -2,7 +2,11 @@ require_relative '../spec_helper'
 describe Hourglass::TimeBooking do
 
   before :all do
-    Timecop.travel Time.new 2015, 2, 2, 15
+    travel_to Time.new 2015, 2, 2, 15
+  end
+
+  after :all do
+    travel_back
   end
 
   before :each do

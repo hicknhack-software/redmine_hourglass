@@ -26,7 +26,6 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
   gem 'factory_bot_rails', '< 5.0'
   gem 'zonebie'
-  gem 'timecop'
   gem 'database_cleaner'
   gem 'faker', '~> 2.15', '>= 2.15.1'
 end
