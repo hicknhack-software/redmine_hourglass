@@ -83,6 +83,10 @@ en:
           carry_over_due: Dismiss round carry-over after
           sums_only: Only round sums?
         title: Rounding behavior
+      clamping:
+        fields:
+          limit: Maximum tracked time
+        title: Clamping behavior
     api:
       errors:
         change_others_forbidden: You are not authorized to execute this action for another user
@@ -156,6 +160,8 @@ en:
           invalid: This fields value is invalid.
           exceedsLimit: This fields value exceeds it's limit.
           invalidDuration: Your start and stop times form an invalid duration.
+        confirmations:
+          stop_clamping: The time log will be clamped. Are you sure?
       lists:
         button_book: Book
         button_book_all: Book all

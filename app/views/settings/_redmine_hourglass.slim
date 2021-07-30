@@ -23,6 +23,12 @@ p
   = f.number_field :round_carry_over_due, {min: 0, max: 24, step: :any, required: true}
   = " (#{t(:field_hours)})"
 
+h3 = t('hourglass.settings.clamping.title')
+p
+  = f.label :clamp_limit, t('hourglass.settings.clamping.fields.limit')
+  = f.number_field :clamp_limit, {min: 0, max: 24, step: :any, required: true}
+  = " (#{t(:field_hours)})"
+
 h3 = t('hourglass.settings.report.title')
 p
   = f.label :report_title, t('hourglass.settings.report.fields.title')
