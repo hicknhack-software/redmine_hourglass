@@ -1,14 +1,6 @@
 require_relative '../spec_helper'
 describe Hourglass::TimeLog do
 
-  before :all do
-    travel_to Time.new 2015, 2, 2, 15
-  end
-
-  after :all do
-    travel_back
-  end
-
   before :each do
     Hourglass::SettingsStorage[:round_minimum] = '0.25'
     Hourglass::SettingsStorage[:round_limit] = '50'

@@ -5,12 +5,11 @@ AVAILABLE_PERMISSIONS = Redmine::AccessControl.permissions.select { |p| p.projec
 RSpec.configure do |config|
   config.before :all, type: :request do
     Setting.rest_api_enabled = '1'
-    travel_to Time.new 2017, 7, 1, 10
+    freeze_time
   end
 
   config.after :all, type: :request do
     Setting.rest_api_enabled = '0'
-    travel_back
   end
 
   config.swagger_root = File.join Hourglass::PLUGIN_ROOT, 'swagger'
