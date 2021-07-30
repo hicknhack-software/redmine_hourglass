@@ -1,14 +1,6 @@
 require_relative '../spec_helper'
 describe Hourglass::DateTimeCalculations do
 
-  before :all do
-    travel_to Time.new 2015, 2, 2, 15
-  end
-
-  after :all do
-    travel_back
-  end
-
   it 'gives the round minimum in seconds' do
     Hourglass::SettingsStorage[:round_minimum] = '0.4'
     expect(Hourglass::DateTimeCalculations.round_minimum).to eql 1440
@@ -79,10 +71,14 @@ describe Hourglass::DateTimeCalculations do
     end
 
     it 'gives correct result if time will not be clamped' do
-      expect(Hourglass::DateTimeCalculations.calculate_stoppable_time 1.hours.ago).to eql Time.now.change(sec: 0) + 1.minute
+      freeze_time do
+        expect(Hourglass::DateTimeCalculations.calculate_stoppable_time 1.hours.ago).to eql Time.now.change(sec: 0) + 1.minute
+      end
     end
     it 'gives correct result if time will be clamped' do
-      expect(Hourglass::DateTimeCalculations.calculate_stoppable_time 13.hours.ago).to eql 1.hour.ago.change(sec: 0) + 1.minute
+      freeze_time do
+        expect(Hourglass::DateTimeCalculations.calculate_stoppable_time 13.hours.ago).to eql 1.hour.ago.change(sec: 0) + 1.minute
+      end
     end
   end
 end

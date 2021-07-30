@@ -1,14 +1,6 @@
 require_relative '../spec_helper'
 describe Hourglass::TimeTracker do
 
-  before :all do
-    travel_to Time.new 2015, 2, 2, 15
-  end
-
-  after :all do
-    travel_back
-  end
-
   before :each do
     Hourglass::SettingsStorage[:round_minimum] = '0.25'
     Hourglass::SettingsStorage[:round_limit] = '50'
@@ -56,17 +48,21 @@ describe Hourglass::TimeTracker do
     end
 
     it 'will not be clamped if the time does not exceed the limit' do
-      time_tracker = Hourglass::TimeTracker.start
-      time_tracker.start = Time.now - 10.minutes
-      expect { time_tracker.stop }.to change { Hourglass::TimeLog.count }.from(0).to(1)
-      expect(Hourglass::TimeLog.first.stop).to eql Time.now.change(sec: 0) + 1.minute
+      freeze_time do
+        time_tracker = Hourglass::TimeTracker.start
+        time_tracker.start = Time.now - 10.minutes
+        expect { time_tracker.stop }.to change { Hourglass::TimeLog.count }.from(0).to(1)
+        expect(Hourglass::TimeLog.first.stop).to eql Time.now.change(sec: 0) + 1.minute
+      end
     end
 
     it 'will be clamped if the time does exceed the limit' do
-      time_tracker = Hourglass::TimeTracker.start
-      time_tracker.start = Time.now - 13.hours
-      expect { time_tracker.stop }.to change { Hourglass::TimeLog.count }.from(0).to(1)
-      expect(Hourglass::TimeLog.first.stop).to eql 1.hour.ago.change(sec: 0) + 1.minute
+      freeze_time do
+        time_tracker = Hourglass::TimeTracker.start
+        time_tracker.start = Time.now - 13.hours
+        expect { time_tracker.stop }.to change { Hourglass::TimeLog.count }.from(0).to(1)
+        expect(Hourglass::TimeLog.first.stop).to eql 1.hour.ago.change(sec: 0) + 1.minute
+      end
     end
   end
 end
