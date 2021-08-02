@@ -48,19 +48,17 @@ module Hourglass::DateTimeCalculations
 
     def clamp?(start, project: nil)
       clamp_limit = clamp_limit project: project
-      stop = Time.now
-      if clamp_limit == 0
-        false
-      else
-        start + clamp_limit < stop
-      end
+      stop = Time.now.change(sec: 0) + 1.minute
+      clamping_time = (start + clamp_limit).change(sec: 0)
+      clamp_limit == 0 ? false : clamping_time < stop
     end
 
     def calculate_stoppable_time(start, project: nil)
       clamp_limit = clamp_limit project: project
-      stop = Time.now
-      stop = [start + clamp_limit, stop].min if clamp_limit != 0
-      stop.change(sec: 0) + 1.minute
+      clamping_time = (start + clamp_limit).change(sec: 0)
+      stop = Time.now.change(sec: 0) + 1.minute
+      stop = [clamping_time, stop].min if clamp_limit != 0
+      stop
     end
 
     def calculate_bookable_time(start, stop, round_carry_over = 0, project: nil)

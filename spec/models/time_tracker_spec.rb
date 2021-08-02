@@ -61,7 +61,7 @@ describe Hourglass::TimeTracker do
         time_tracker = Hourglass::TimeTracker.start
         time_tracker.start = Time.now - 13.hours
         expect { time_tracker.stop }.to change { Hourglass::TimeLog.count }.from(0).to(1)
-        expect(Hourglass::TimeLog.first.stop).to eql 1.hour.ago.change(sec: 0) + 1.minute
+        expect(Hourglass::TimeLog.first.stop).to eql 1.hour.ago.change(sec: 0)
       end
     end
   end

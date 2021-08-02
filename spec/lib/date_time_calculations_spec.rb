@@ -77,7 +77,7 @@ describe Hourglass::DateTimeCalculations do
     end
     it 'gives correct result if time will be clamped' do
       freeze_time do
-        expect(Hourglass::DateTimeCalculations.calculate_stoppable_time 13.hours.ago).to eql 1.hour.ago.change(sec: 0) + 1.minute
+        expect(Hourglass::DateTimeCalculations.calculate_stoppable_time 13.hours.ago).to eql 1.hour.ago.change(sec: 0)
       end
     end
   end
