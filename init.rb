@@ -21,8 +21,7 @@ Redmine::Plugin.register Hourglass::PLUGIN_NAME do
                {
                    :'hourglass/time_trackers' => [:create, :change, :destroy, :view],
                    :'hourglass/time_logs' => [:change]
-               },
-               require: :loggedin
+               }, require: :loggedin
 
     permission :hourglass_view_tracked_time,
                {

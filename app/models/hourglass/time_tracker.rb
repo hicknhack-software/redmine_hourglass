@@ -23,6 +23,7 @@ module Hourglass
     validates_presence_of :issue, if: Proc.new { |tt| tt.issue_id.present? }
     validates_presence_of :activity, if: Proc.new { |tt| tt.activity_id.present? }
     validates_length_of :comments, maximum: 255, allow_blank: true
+    validates_length_of :hints, maximum: 65536, allow_blank: true
     validate :does_not_overlap_with_other, if: [:user, :start?], on: :update
 
     class << self
@@ -42,6 +43,15 @@ module Hourglass
         destroy
       end
       time_log
+    end
+
+    def add_hint(hint)
+      hints = JSON.parse(self.hints)
+      hints = Hash.new unless hints.kind_of?(Hash)
+      if !hints[hint].present? || hints[hint] < 5.minutes.ago
+        hints[hint] = Time.now.iso8601
+        self.update(hints: hints.to_json)
+      end
     end
 
     def hours
@@ -65,16 +75,15 @@ module Hourglass
       now = Time.now.change sec: 0
       self.user ||= User.current
       previous_time_log = user.hourglass_time_logs.find_by(stop: now + 1.minute)
-      self.project_id ||= issue && issue.project_id
+      self.project_id ||= issue&.project_id
       update_round project_id unless round.present?
-
-      self.start ||= previous_time_log && previous_time_log.stop || now
-
+      self.start ||= previous_time_log&.stop || now
       self.activity ||= user.default_activity(TimeEntryActivity.applicable(user.projects.find_by id: project_id)) if project_id
+      self.hints ||= Hash.new.to_json
     end
 
     def time_log_params
-      attributes.with_indifferent_access.slice :start, :user_id, :comments
+      attributes.with_indifferent_access.slice :start, :user_id, :comments, :hints
     end
 
     def time_booking_params

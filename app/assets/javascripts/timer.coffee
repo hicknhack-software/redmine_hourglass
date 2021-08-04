@@ -27,3 +27,13 @@ startTimeTrackerTimer = ->
 @hourglass.Timer = {
   start: startTimeTrackerTimer
 }
+
+$ ->
+  $(window).on 'beforeunload', () ->
+    $.ajax
+      url: hourglassRoutes.add_hint_hourglass_time_trackers(),
+      type: 'PUT'
+      data:
+        id: 'current'
+        hint: 'onbeforeunload'
+    return undefined

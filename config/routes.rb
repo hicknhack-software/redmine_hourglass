@@ -53,6 +53,7 @@ namespace :hourglass do
       post 'bulk_update'
       delete 'bulk_destroy'
       post 'start'
+      put 'add_hint'
     end
     delete 'stop', on: :member
   end

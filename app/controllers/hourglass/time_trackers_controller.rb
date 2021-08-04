@@ -36,7 +36,7 @@ module Hourglass
       time_tracker.assign_attributes time_tracker_params if time_tracker_params?
       time_log, time_booking = stop_time_tracker(time_tracker)
       if time_tracker.destroyed?
-        respond_with_success({time_log: time_log, time_booking: time_booking}.compact)
+        respond_with_success({ time_log: time_log, time_booking: time_booking }.compact)
       else
         error_messages = time_log&.errors&.full_messages || []
         error_messages += time_booking&.errors&.full_messages || []
@@ -57,25 +57,42 @@ module Hourglass
       end
     end
 
+    def add_hint
+      if time_tracker_present? && params[:hint].present?
+        time_tracker = authorize get_time_tracker
+        time_tracker.add_hint params[:hint]
+      end
+    end
+
     private
+
     def time_tracker_params?
       params[:time_tracker].present?
     end
+
     def time_tracker_params
       time_tracker_permit params.require(:time_tracker)
     end
+
     def current_action_param
       params[:current_action]
     end
+
     def current_update_params?
       params[:current_update].present?
     end
+
     def current_update_params
       time_tracker_permit params.require(:current_update)
     end
+
     def time_tracker_permit(hash)
-      hash.permit(:start, :comments, :round, :project_id, :issue_id, :activity_id, :user_id,
-                   custom_field_values: custom_field_keys(hash))
+      hash.permit(:start, :comments, :round, :project_id, :issue_id, :activity_id, :user_id, :hints,
+                  custom_field_values: custom_field_keys(hash))
+    end
+
+    def time_tracker_present?
+      User.current.hourglass_time_tracker
     end
 
     def get_time_tracker(id = params[:id])

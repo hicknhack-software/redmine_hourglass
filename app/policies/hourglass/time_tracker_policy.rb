@@ -10,6 +10,10 @@ module Hourglass
       super
     end
 
+    def add_hint?
+      authorized? :add_hint
+    end
+
     alias_method :start?, :create?
     alias_method :stop?, :create? # it's easy, if you are able to start it, you should be able to stop it
 

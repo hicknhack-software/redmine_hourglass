@@ -169,8 +169,19 @@ checkSplitting = (e)->
     return false
   return true
 
+timeFieldFocus = (event) ->
+  $timeField = $(@)
+  $form = $timeField.closest('form')
+  timeLogHints = $form.data('timeLogHints')
+  if (timeLogHints)
+    timeLogHints = Object.values(timeLogHints)
+    timeLogHints = timeLogHints.map (timeLog) -> moment(timeLog, moment.ISO_8601).format('DD.MM.YYYY HH:mm')
+    $timeField.autocomplete
+      source: timeLogHints
+
 $ ->
   $(document)
+  .on 'focus', '.js-time-field', timeFieldFocus
   .on 'focus', '.js-issue-autocompletion:not(.ui-autocomplete-input)', initIssueAutoCompletion
   .on 'change', '.js-validate-form', formFieldChanged
   .on 'change changefromissue', '[name*=project_id]', projectFieldChanged
