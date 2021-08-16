@@ -92,7 +92,8 @@ hideInlineForm = (event) ->
   $row.removeClass('hidden')
   checkForMultiForm $row, $formRow
 
-processErrorPageResponse = (event, {responseText}) ->
+processErrorPageResponse = (event) ->
+  [responseText, status, xhr] = event.detail
   if responseText
     $response = $(responseText)
     message = "#{$response.filter('h2').text()} - #{$response.filter('#errorExplanation').text()}"
