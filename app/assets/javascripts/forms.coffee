@@ -174,8 +174,6 @@ timeFieldFocus = (event) ->
   $form = $timeField.closest('form')
   timeLogHints = $form.data('timeLogHints')
   if (timeLogHints)
-    timeLogHints = Object.values(timeLogHints)
-    timeLogHints = timeLogHints.map (timeLog) -> moment(timeLog, moment.ISO_8601).format('DD.MM.YYYY HH:mm')
     $timeField.autocomplete
       source: timeLogHints
 

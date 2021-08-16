@@ -81,6 +81,15 @@ module Hourglass
       DateTimeCalculations.time_diff_in_hours start, stop
     end
 
+    def hints_array
+      hints_array = []
+      hints_json = self.hints ? JSON.parse(self.hints) : Hash.new
+      hints_json.each_value do |hint|
+        hints_array.push format_time(hint)
+      end
+      hints_array
+    end
+
     def booked?
       time_booking.present? && time_booking.persisted?
     end

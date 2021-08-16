@@ -1,6 +1,6 @@
 - time_logs.each do |time_log|
   - time_booking = time_log.build_time_booking
-  = form_for time_booking, url: book_hourglass_time_log_path(time_log), as: 'time_booking', remote: true, html: {id: "new_time_booking_for_#{time_log.id}", class: 'add-time-booking-form js-hourglass-remote js-validate-form js-check-splitting', data: {time_log_id: time_log.id, form_type: 'add-time-booking', id_for_bulk_edit: time_log.id, time_log_hints: time_log.hints}} do |f|
+  = form_for time_booking, url: book_hourglass_time_log_path(time_log), as: 'time_booking', remote: true, html: {id: "new_time_booking_for_#{time_log.id}", class: 'add-time-booking-form js-hourglass-remote js-validate-form js-check-splitting', data: {time_log_id: time_log.id, form_type: 'add-time-booking', id_for_bulk_edit: time_log.id, time_log_hints: time_log.hints_array}} do |f|
     .form-row
       = form_field :start, f, time_booking, disabled: !policy(time_log).book?, validate_limit: true, not_in_multi: true
       = form_field :stop, f, time_booking, disabled: !policy(time_log).book?, validate_limit: true, not_in_multi: true
