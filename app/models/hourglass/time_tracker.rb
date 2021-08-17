@@ -46,11 +46,14 @@ module Hourglass
     end
 
     def add_hint(hint)
-      hints = JSON.parse(self.hints)
-      hints = Hash.new unless hints.kind_of?(Hash)
-      if !hints[hint].present? || hints[hint] < 5.minutes.ago
-        hints[hint] = Time.now.iso8601
-        self.update(hints: hints.to_json)
+      hints_hash = JSON.parse(self.hints)
+      hints_hash = Hash.new unless hints_hash.kind_of?(Hash)
+      hint_array = hints_hash[hint].present? ? hints_hash[hint] : Array.new
+      hint_array = Array.new unless hint_array.kind_of?(Array)
+      if hint_array.empty? || hint_array.last < 10.minutes.ago
+        hint_array.push Time.now.iso8601
+        hints_hash[hint] = hint_array
+        self.update(hints: hints_hash.to_json)
       end
     end
 

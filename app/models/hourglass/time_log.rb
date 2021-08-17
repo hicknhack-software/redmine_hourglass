@@ -19,7 +19,7 @@ module Hourglass
     delegate :project, to: :time_booking, allow_nil: true
 
     scope :booked_on_project, lambda { |project_id|
-      joins(:time_entry).where(time_entries: {project_id: project_id})
+      joins(:time_entry).where(time_entries: { project_id: project_id })
     }
     scope :with_start_in_interval, lambda { |floor, ceiling|
       where(arel_table[:start].gt(floor).and(arel_table[:start].lt(ceiling)))
@@ -39,7 +39,7 @@ module Hourglass
         result = super attributes
         if booked?
           DateTimeCalculations.booking_process user, start: start, stop: stop, project_id: time_booking.project_id, round: round do |options|
-            time_booking.update start: options[:start], stop: options[:stop], time_entry_attributes: {hours: DateTimeCalculations.time_diff_in_hours(options[:start], options[:stop])}
+            time_booking.update start: options[:start], stop: options[:stop], time_entry_attributes: { hours: DateTimeCalculations.time_diff_in_hours(options[:start], options[:stop]) }
             time_booking
           end
           raise ActiveRecord::Rollback unless time_booking.persisted?
@@ -61,8 +61,8 @@ module Hourglass
       return if start >= split_at || split_at >= stop
       old_time = insert_new_before ? start : stop
       ActiveRecord::Base.transaction do
-        update insert_new_before ? {start: split_at, round: round} : {stop: split_at, round: round}
-        new_time_log_args = insert_new_before ? {start: old_time, stop: split_at} : {start: split_at, stop: old_time}
+        update insert_new_before ? { start: split_at, round: round } : { stop: split_at, round: round }
+        new_time_log_args = insert_new_before ? { start: old_time, stop: split_at } : { start: split_at, stop: old_time }
         self.class.create new_time_log_args.merge user: user, comments: comments
       end
     end
@@ -84,8 +84,9 @@ module Hourglass
     def hints_array
       hints_array = []
       hints_json = self.hints ? JSON.parse(self.hints) : Hash.new
-      hints_json.each_value do |hint|
-        hints_array.push format_time(hint)
+      hints_json.each_value do |hint_array|
+        hint_array = hint_array.map { |hint| format_time(hint) }
+        hints_array.concat hint_array
       end
       hints_array
     end
@@ -115,20 +116,21 @@ module Hourglass
     end
 
     private
+
     def default_booking_arguments
-      {start: start, stop: stop, comments: comments, time_log_id: id, user: user}.with_indifferent_access
+      { start: start, stop: stop, comments: comments, time_log_id: id, user: user }.with_indifferent_access
     end
 
     def time_booking_arguments(options)
       options
-          .slice(:start, :stop, :time_log_id)
-          .merge time_entry_attributes: time_entry_arguments(options)
+        .slice(:start, :stop, :time_log_id)
+        .merge time_entry_attributes: time_entry_arguments(options)
     end
 
     def time_entry_arguments(options)
       options
-          .slice(:project_id, :issue_id, :comments, :activity_id, :user, :custom_field_values)
-          .merge spent_on: User.current.time_to_date(options[:start]), hours: DateTimeCalculations.time_diff_in_hours(options[:start], options[:stop]), author: options[:user]
+        .slice(:project_id, :issue_id, :comments, :activity_id, :user, :custom_field_values)
+        .merge spent_on: User.current.time_to_date(options[:start]), hours: DateTimeCalculations.time_diff_in_hours(options[:start], options[:stop]), author: options[:user]
     end
 
     def stop_is_valid
