@@ -63,7 +63,7 @@ module Hourglass
       ActiveRecord::Base.transaction do
         update insert_new_before ? { start: split_at, round: round } : { stop: split_at, round: round }
         new_time_log_args = insert_new_before ? { start: old_time, stop: split_at } : { start: split_at, stop: old_time }
-        self.class.create new_time_log_args.merge user: user, comments: comments
+        self.class.create new_time_log_args.merge user: user, comments: comments, hints: hints
       end
     end
 
