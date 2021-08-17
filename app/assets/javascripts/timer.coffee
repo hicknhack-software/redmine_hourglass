@@ -30,10 +30,16 @@ startTimeTrackerTimer = ->
 
 $ ->
   $(window).on 'beforeunload', () ->
-    $.ajax
-      url: hourglassRoutes.add_hint_hourglass_time_trackers(),
-      type: 'PUT'
-      data:
-        id: 'current'
-        hint: 'onbeforeunload'
+    wait = 60000
+    previous = hourglass.Utils.getCookie('previousBeforeUnload') ? 0
+    now = Date.now()
+    remaining = wait - (now - previous)
+    if remaining <= 0 || remaining > wait
+      hourglass.Utils.setCookie('previousBeforeUnload', now, wait)
+      $.ajax
+        url: hourglassRoutes.add_hint_hourglass_time_trackers(),
+        type: 'PUT'
+        data:
+          id: 'current'
+          hint: 'onbeforeunload'
     return undefined

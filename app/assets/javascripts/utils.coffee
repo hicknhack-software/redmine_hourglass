@@ -35,6 +35,22 @@ parseDuration = (durationString) ->
   [hours, minutes] = durationString.split(':')
   moment.duration(hours: hours, minutes: minutes)
 
+getCookie = (name) ->
+  if name
+    match = document.cookie.match new RegExp("#{name}=(.*?)(?:;|$)")
+    if match
+      return unescape match[1].replace(/\+/g, '%20')
+
+setCookie = (name, value, timeout) ->
+  if name
+    if timeout
+      date = new Date()
+      date.setTime date.getTime() + timeout
+      expires = "; expires=#{date.toGMTString()}"
+    else
+      expires = ''
+    document.cookie = "#{name}=#{escape(value)}#{expires}; path=/"
+
 @hourglass ?= {}
 @hourglass.Utils =
   clearFlash: clearFlash
@@ -43,6 +59,8 @@ parseDuration = (durationString) ->
   showDialog: showDialog
   showErrorMessage: showErrorMessage
   showNotice: showNotice
+  getCookie: getCookie
+  setCookie: setCookie
 
 $ ->
   $(document)
