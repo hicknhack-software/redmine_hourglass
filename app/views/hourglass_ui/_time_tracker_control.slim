@@ -31,8 +31,8 @@
         = form_field :start, f, @time_tracker, disabled: !policy(@time_tracker).change?(:start)
         .form-field
           .input
-            = f.submit t('hourglass.ui.index.time_tracker_control.button_stop'), data: @time_tracker.clamp? ? {confirm: t('hourglass.ui.forms.confirmations.stop_clamping')} : nil
-            = f.submit t('hourglass.ui.index.time_tracker_control.button_stop_new'), class: 'js-stop-new', data: @time_tracker.clamp? ? {confirm: t('hourglass.ui.forms.confirmations.stop_clamping')} : nil
+            = f.submit t('hourglass.ui.index.time_tracker_control.button_stop'), data: @time_tracker.clamp? ? {confirm: t('hourglass.ui.forms.confirmations.stop_clamping', 'duration': localized_hours_in_units(Hourglass::DateTimeCalculations.in_hours(Hourglass::DateTimeCalculations.clamp_limit(project: @time_tracker.project))))} : nil
+            = f.submit t('hourglass.ui.index.time_tracker_control.button_stop_new'), class: 'js-stop-new', data: @time_tracker.clamp? ? {confirm: t('hourglass.ui.forms.confirmations.stop_clamping', 'duration': localized_hours_in_units(Hourglass::DateTimeCalculations.in_hours(Hourglass::DateTimeCalculations.clamp_limit(project: @time_tracker.project))))} : nil
             - if policy(@time_tracker).destroy?
               = link_to hourglass_time_tracker_path(@time_tracker), class: 'js-hourglass-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)} do
                 input type='button' value=t(:button_delete)
