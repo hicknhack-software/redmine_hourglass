@@ -166,7 +166,7 @@ de:
           exceedsLimit: Der Wert dieses Feldes überschreitet sein Limit.
           invalidDuration: Ihre Start und Stop Zeiten bilden einen ungültigen Zeitraum.
         confirmations:
-          stop_clamping: Die Zeiterfassung wird begrenzt. Sind sie sicher?
+          stop_clamping: Die Zeiterfassung wird auf %{duration} begrenzt. Sind sie sicher?
       lists:
         button_book: Buchen
         button_book_all: Alle buchen
