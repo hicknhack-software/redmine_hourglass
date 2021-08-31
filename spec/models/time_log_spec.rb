@@ -98,7 +98,7 @@ describe Hourglass::TimeLog do
 
       it 'throws the correct exception' do
         time_log.book booking_arguments
-        expect { book! }.to raise_exception Hourglass::AlreadyBookedException
+        expect { book! }.to raise_exception Hourglass::TimeLog::AlreadyBookedException
       end
     end
   end

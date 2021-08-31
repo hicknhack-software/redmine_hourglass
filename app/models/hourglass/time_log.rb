@@ -1,9 +1,9 @@
 module Hourglass
-  class AlreadyBookedException < StandardError
-  end
-
   class TimeLog < ApplicationRecord
     include Namespace
+
+    class AlreadyBookedException < StandardError
+    end
 
     belongs_to :user
     has_one :time_booking, dependent: :destroy

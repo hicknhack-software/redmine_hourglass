@@ -10,7 +10,7 @@ module Hourglass
     rescue_from ActionController::ParameterMissing, with: :missing_parameters
     rescue_from(ActiveRecord::RecordNotFound) { render_404 no_halt: true }
     rescue_from Query::StatementInvalid, with: :query_statement_invalid
-    rescue_from Hourglass::AlreadyBookedException, with: :already_booked
+    rescue_from Hourglass::TimeLog::AlreadyBookedException, with: :already_booked
 
     include ::AuthorizationConcern
 
