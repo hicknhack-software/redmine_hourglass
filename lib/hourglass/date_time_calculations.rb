@@ -13,6 +13,10 @@ module Hourglass::DateTimeCalculations
       [0, Hourglass::SettingsStorage[:round_carry_over_due, project: project].to_f.hours.to_i].max
     end
 
+    def clamp_limit(project: nil)
+      [0, Hourglass::SettingsStorage[:clamp_limit, project: project].to_f.hours.to_i].max
+    end
+
     def time_diff(time1, time2)
       (time1 - time2).abs.to_i
     end
@@ -40,6 +44,21 @@ module Hourglass::DateTimeCalculations
       else
         time_interval
       end
+    end
+
+    def clamp?(start, project: nil)
+      clamp_limit = clamp_limit project: project
+      stop = Time.now.change(sec: 0) + 1.minute
+      clamping_time = (start + clamp_limit).change(sec: 0)
+      clamp_limit == 0 ? false : clamping_time < stop
+    end
+
+    def calculate_stoppable_time(start, project: nil)
+      clamp_limit = clamp_limit project: project
+      clamping_time = (start + clamp_limit).change(sec: 0)
+      stop = Time.now.change(sec: 0) + 1.minute
+      stop = [clamping_time, stop].min if clamp_limit != 0
+      stop
     end
 
     def calculate_bookable_time(start, stop, round_carry_over = 0, project: nil)

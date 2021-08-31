@@ -39,7 +39,8 @@ module Hourglass
       def hourglass_settings_params
         params.require(:hourglass_global_settings).permit(:round_sums_only, :round_minimum, :round_limit,
                                                           :round_default, :round_carry_over_due, :report_title,
-                                                          :report_logo_url, :report_logo_width, :global_tracker)
+                                                          :report_logo_url, :report_logo_width, :global_tracker,
+                                                          :clamp_limit)
       end
     end
   end

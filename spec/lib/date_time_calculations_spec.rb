@@ -1,5 +1,6 @@
 require_relative '../spec_helper'
 describe Hourglass::DateTimeCalculations do
+
   it 'gives the round minimum in seconds' do
     Hourglass::SettingsStorage[:round_minimum] = '0.4'
     expect(Hourglass::DateTimeCalculations.round_minimum).to eql 1440
@@ -14,6 +15,11 @@ describe Hourglass::DateTimeCalculations do
   it 'gives the round carry over due in seconds' do
     Hourglass::SettingsStorage[:round_carry_over_due] = '12.5'
     expect(Hourglass::DateTimeCalculations.round_carry_over_due).to eql 45000
+  end
+
+  it 'gives the clamp limit in seconds' do
+    Hourglass::SettingsStorage[:clamp_limit] = '5'
+    expect(Hourglass::DateTimeCalculations.clamp_limit).to eql 18000
   end
 
   describe 'time_diff function' do
@@ -56,6 +62,23 @@ describe Hourglass::DateTimeCalculations do
 
     it 'does nothing if interval is on par with the minimum' do
       expect(Hourglass::DateTimeCalculations.round_interval round_minimum_in_seconds).to be round_minimum_in_seconds
+    end
+  end
+
+  describe 'calculate stoppable time function' do
+    before :each do
+      Hourglass::SettingsStorage[:clamp_limit] = '12'
+    end
+
+    it 'gives correct result if time will not be clamped' do
+      freeze_time do
+        expect(Hourglass::DateTimeCalculations.calculate_stoppable_time 1.hours.ago).to eql Time.now.change(sec: 0) + 1.minute
+      end
+    end
+    it 'gives correct result if time will be clamped' do
+      freeze_time do
+        expect(Hourglass::DateTimeCalculations.calculate_stoppable_time 13.hours.ago).to eql 1.hour.ago.change(sec: 0)
+      end
     end
   end
 end

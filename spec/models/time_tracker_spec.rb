@@ -1,13 +1,10 @@
 require_relative '../spec_helper'
 describe Hourglass::TimeTracker do
 
-  before :all do
-    Timecop.travel Time.new 2015, 2, 2, 15
-  end
-
   before :each do
     Hourglass::SettingsStorage[:round_minimum] = '0.25'
     Hourglass::SettingsStorage[:round_limit] = '50'
+    Hourglass::SettingsStorage[:clamp_limit] = '12'
     User.current = create :user
   end
 
@@ -48,6 +45,24 @@ describe Hourglass::TimeTracker do
     it 'will not be removed if the time_booking is invalid' do
       time_tracker = Hourglass::TimeTracker.start project: create(:project)
       expect { time_tracker.stop }.not_to change { Hourglass::TimeTracker.count }.from(1)
+    end
+
+    it 'will not be clamped if the time does not exceed the limit' do
+      freeze_time do
+        time_tracker = Hourglass::TimeTracker.start
+        time_tracker.start = Time.now - 10.minutes
+        expect { time_tracker.stop }.to change { Hourglass::TimeLog.count }.from(0).to(1)
+        expect(Hourglass::TimeLog.first.stop).to eql Time.now.change(sec: 0) + 1.minute
+      end
+    end
+
+    it 'will be clamped if the time does exceed the limit' do
+      freeze_time do
+        time_tracker = Hourglass::TimeTracker.start
+        time_tracker.start = Time.now - 13.hours
+        expect { time_tracker.stop }.to change { Hourglass::TimeLog.count }.from(0).to(1)
+        expect(Hourglass::TimeLog.first.stop).to eql 1.hour.ago.change(sec: 0)
+      end
     end
   end
 end

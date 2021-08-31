@@ -19,6 +19,6 @@ class HourglassProjectsController < ApplicationController
 
   def hourglass_settings_params
     params.require(:hourglass_project_settings).permit(:round_sums_only, :round_minimum, :round_limit,
-                                                       :round_default, :round_carry_over_due)
+                                                       :round_default, :round_carry_over_due, :clamp_limit)
   end
 end

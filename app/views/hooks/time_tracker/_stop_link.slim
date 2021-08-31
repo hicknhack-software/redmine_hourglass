@@ -1,3 +1,3 @@
 = link_to t('hourglass.ui.issues.stop'), stop_hourglass_time_tracker_path(time_tracker),
         class: "icon icon-hourglass-stop js-stop-tracker js-hourglass-remote hidden #{issue.present? ? 'js-issue-action' : 'js-account-menu-link'}",
-        remote: true, method: 'delete'
+        remote: true, method: 'delete', data: time_tracker.clamp? ? {confirm: t('hourglass.ui.forms.confirmations.stop_clamping', 'duration': localized_hours_in_units(Hourglass::DateTimeCalculations.in_hours(Hourglass::DateTimeCalculations.clamp_limit(project: time_tracker.project))))} : nil

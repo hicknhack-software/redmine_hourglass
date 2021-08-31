@@ -3,15 +3,16 @@ module Hourglass
     class << self
       def defaults
         {
-            global_tracker: true,
-            report_title: 'Report',
-            report_logo_url: '',
-            report_logo_width: '150',
-            round_minimum: '0.25',
-            round_limit: '50',
-            round_carry_over_due: '12',
-            round_default: false,
-            round_sums_only: true
+          clamp_limit: '12',
+          global_tracker: true,
+          report_title: 'Report',
+          report_logo_url: '',
+          report_logo_width: '150',
+          round_minimum: '0.25',
+          round_limit: '50',
+          round_carry_over_due: '12',
+          round_default: false,
+          round_sums_only: true
         }
       end
 
