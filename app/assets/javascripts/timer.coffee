@@ -1,7 +1,8 @@
 timeTrackerTimerInterval = null
 
 startTimeTrackerTimer = ->
-  duration = moment.duration moment() - moment $('.time-tracker-control [name*=start]').val(), moment.ISO_8601
+  startTimestamp = moment $('.time-tracker-control [name*=start]').val(), moment.ISO_8601
+  duration = moment.duration moment() - startTimestamp
 
   numberToString = (number)->
     result = (Math.floor Math.abs number).toString()
@@ -19,7 +20,7 @@ startTimeTrackerTimer = ->
   displayTime()
   clearInterval timeTrackerTimerInterval if timeTrackerTimerInterval?
   timeTrackerTimerInterval = setInterval ->
-    duration = moment.duration(duration.asSeconds() + 1, 'seconds')
+    duration = moment.duration moment() - startTimestamp
     displayTime()
   , 1000
 
