@@ -125,10 +125,7 @@ window.toggleOperator = (field) ->
   window.oldToggleOperator field
 
 $ ->
-  $issueActionList = $('#content > .contextual')
-  $issueActionsToAdd = $('.js-issue-action')
-  $issueActionList.first().add($issueActionList.last())
-    .find(':nth-child(2)').after $issueActionsToAdd.removeClass('hidden')
+  $('#content > .contextual >:nth-child(2)').after $('.js-issue-action').removeClass('hidden')
 
   $('.hourglass-quick').replaceWith $('.js-account-menu-link').removeClass('hidden')
 

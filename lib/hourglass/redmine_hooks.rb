@@ -12,7 +12,7 @@ class Hourglass::RedmineHooks < Redmine::Hook::ViewListener
     context[:hook_caller].content_for :header_tags do
       context[:controller].render_to_string partial: 'hooks/javascript_setup'
     end
-    context[:controller].render_to_string partial: 'hooks/issue_actions'
+    context[:controller].render_to_string partial: 'hooks/issue_context_actions'
   end
 
   def view_layouts_base_html_head(context = {})
