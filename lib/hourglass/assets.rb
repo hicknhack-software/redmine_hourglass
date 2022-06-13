@@ -59,7 +59,11 @@ class Hourglass::Assets < Sprockets::Environment
     end
 
     def path(path, options = {})
-      File.join '..', Rails.env.production? ? instance.find_asset(path).digest_path : File.join(asset_directory_map[options[:type]] || '', path)
+      if options[:type].present?
+        File.join '..', Rails.env.production? ? instance.find_asset(path).digest_path : File.join(asset_directory_map[options[:type]] || '', path)
+      else
+        path
+      end
     end
   end
 end
