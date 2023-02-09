@@ -1,4 +1,4 @@
-require 'hourglass'
+require File.dirname(__FILE__) + '/lib/hourglass'
 
 Redmine::Plugin.register Hourglass::PLUGIN_NAME do
   name 'Hourglass'
