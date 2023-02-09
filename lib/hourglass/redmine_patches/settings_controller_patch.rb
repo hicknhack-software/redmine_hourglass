@@ -45,3 +45,7 @@ module Hourglass
     end
   end
 end
+
+unless SettingsController.included_modules.include?(Hourglass::RedminePatches::SettingsControllerPatch)
+  SettingsController.send(:include, Hourglass::RedminePatches::SettingsControllerPatch)
+end

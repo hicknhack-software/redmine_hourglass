@@ -19,3 +19,7 @@ module Hourglass
     end
   end
 end
+
+unless UserPreference.included_modules.include?(Hourglass::RedminePatches::UserPreferencePatch)
+  UserPreference.send(:include, Hourglass::RedminePatches::UserPreferencePatch)
+end
