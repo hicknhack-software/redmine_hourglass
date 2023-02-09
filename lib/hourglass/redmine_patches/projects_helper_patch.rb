@@ -8,14 +8,8 @@ module Hourglass
         alias_method :project_settings_tabs, :project_settings_tabs_with_hourglass
       end
 
-      if Rails.version < "5"
-        def project_settings_tabs_with_hourglass
+      def project_settings_tabs_with_hourglass
           project_settings_tabs_without_hourglass.tap &method(:hourglass_tab)
-        end
-      else
-        def project_settings_tabs
-          super.tap &method(:hourglass_tab)
-        end
       end
 
       private

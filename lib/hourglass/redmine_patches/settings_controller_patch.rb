@@ -8,16 +8,9 @@ module Hourglass
         alias_method :plugin, :plugin_with_hourglass
       end
 
-      if Rails.version < "5"
-        def plugin_with_hourglass
-          return plugin_without_hourglass unless params[:id] == Hourglass::PLUGIN_NAME.to_s
-          hourglass_edit_update
-        end
-      else
-        def plugin
-          return super unless params[:id] == Hourglass::PLUGIN_NAME.to_s
-          hourglass_edit_update
-        end
+      def plugin_with_hourglass
+        return plugin_without_hourglass unless params[:id] == Hourglass::PLUGIN_NAME.to_s
+        hourglass_edit_update
       end
 
       private
