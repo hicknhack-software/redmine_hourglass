@@ -1,6 +1,4 @@
-require 'hourglass/hourglass_migration'
-
-class CreateHourglassTimeBookings < HourglassMigration
+class CreateHourglassTimeBookings < Rails.version < '5.1' ? ActiveRecord::Migration : ActiveRecord::Migration[4.2]
   def change
     create_table :hourglass_time_bookings do |t|
       t.datetime :start, null: false

@@ -1,6 +1,4 @@
-require 'hourglass/hourglass_migration'
-
-class CreateHourglassTimeTrackers < HourglassMigration
+class CreateHourglassTimeTrackers <  Rails.version < '5.1' ? ActiveRecord::Migration : ActiveRecord::Migration[4.2]
   def change
     create_table :hourglass_time_trackers do |t|
       t.datetime :start, null: false
