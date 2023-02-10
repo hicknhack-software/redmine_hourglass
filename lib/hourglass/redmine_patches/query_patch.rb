@@ -21,7 +21,3 @@ module Hourglass
     end
   end
 end
-
-unless Query.included_modules.include?(Hourglass::RedminePatches::QueryPatch)
-  Query.send(:include, Hourglass::RedminePatches::QueryPatch)
-end

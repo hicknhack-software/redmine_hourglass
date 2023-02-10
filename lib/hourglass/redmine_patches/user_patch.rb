@@ -23,7 +23,3 @@ module Hourglass
     end
   end
 end
-
-unless User.included_modules.include?(Hourglass::RedminePatches::UserPatch)
-  User.send(:include, Hourglass::RedminePatches::UserPatch)
-end

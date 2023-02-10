@@ -29,7 +29,3 @@ module Hourglass
     end
   end
 end
-
-unless Project.included_modules.include?(Hourglass::RedminePatches::ProjectPatch)
-  Project.send(:include, Hourglass::RedminePatches::ProjectPatch)
-end

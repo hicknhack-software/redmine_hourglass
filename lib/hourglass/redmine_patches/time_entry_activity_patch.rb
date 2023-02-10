@@ -11,7 +11,3 @@ module Hourglass
     end
   end
 end
-
-unless TimeEntryActivity.included_modules.include?(Hourglass::RedminePatches::TimeEntryActivityPatch)
-  TimeEntryActivity.send(:include, Hourglass::RedminePatches::TimeEntryActivityPatch)
-end

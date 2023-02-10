@@ -23,7 +23,3 @@ module Hourglass
     end
   end
 end
-
-unless ProjectsHelper.included_modules.include?(Hourglass::RedminePatches::ProjectsHelperPatch)
-  ProjectsHelper.send(:include, Hourglass::RedminePatches::ProjectsHelperPatch)
-end
