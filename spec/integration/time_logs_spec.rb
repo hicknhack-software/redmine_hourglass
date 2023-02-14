@@ -160,7 +160,7 @@ describe 'Time logs API', type: :request do
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_track_time] }
       let(:time_log) { create :time_log, user: user }
-      let(:split_at) { URI.encode (time_log.start + 10.minutes).utc.to_s }
+      let(:split_at) { Addressable::URI.encode_component((time_log.start + 10.minutes).utc.to_s, Addressable::URI::CharacterClasses::QUERY) }
       let(:id) { time_log.id }
 
       include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
@@ -329,12 +329,10 @@ describe 'Time logs API', type: :request do
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
 
       let(:time_logs) do
-        { time_logs: [
-          build(:time_log, user: user),
-          build(:time_log),
-          build(:time_log)
-        ]
-        }
+        t1 = build(:time_log, user: user)
+        t2 = build(:time_log, user: user, start: t1.stop + 10.minutes, stop: t1.stop + 1.hour)
+        t3 = build(:time_log, user: user, start: t2.stop + 10.minutes, stop: t2.stop + 1.hour)
+        { time_logs: [t1, t2, t3] }
       end
 
       include_examples 'access rights', :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
