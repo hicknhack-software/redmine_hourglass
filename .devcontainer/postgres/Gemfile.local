@@ -1,0 +1,14 @@
+group :development do
+  # gem 'better_errors'
+  # gem 'binding_of_caller'
+  # gem 'meta_request' # support RailsPanel in Chrome
+  #
+  # gem 'pry'
+  # gem 'pry-byebug'
+  # gem 'pry-rails'
+
+  # gem "debase", "0.2.5.beta2", require: false
+  # gem "ruby-debug-ide", "~> 0.7.3"
+  gem "debug"
+  gem 'rufo', require: false
+end

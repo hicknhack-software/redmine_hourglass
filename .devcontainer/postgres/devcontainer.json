@@ -1,0 +1,58 @@
+{
+  "name": "Redmine - Postgres",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "redmine",
+  "workspaceFolder": "/redmine",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "username": "vscode",
+      "userUid": "1000",
+      "userGid": "1000"
+    },
+    "ghcr.io/devcontainers/features/ruby:1": "none",
+    "ghcr.io/devcontainers/features/node:1": "none",
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest",
+      "ppa": "false"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rebornix.Ruby",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+        "craigmaslowski.erb",
+        "hridoy.rails-snippets",
+        "misogi.ruby-rubocop",
+        "jnbt.vscode-rufo",
+        "donjayamanne.git-extension-pack"
+      ],
+      "settings": {
+        "sqltools.connections": [
+          {
+            "name": "Rails Development Database",
+            "driver": "PostgreSQL",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "database": "redmine",
+            "username": "postgres"
+          },
+          {
+            "name": "Rails Test Database",
+            "driver": "PostgreSQL",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "database": "redmine_test",
+            "username": "postgres"
+          }
+        ]
+      }
+    }
+  },
+  "forwardPorts": [ 5000 ],
+  "postCreateCommand": "sh -x /redmine/post-create.sh",
+  "remoteUser": "vscode"
+}
