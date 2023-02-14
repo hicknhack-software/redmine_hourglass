@@ -34,7 +34,7 @@ RSpec.configure do |config|
           security: [
               {api_key: []}
           ],
-          definitions: YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/support/model_definitions.yml'))['definitions']
+          definitions: YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/support/model_definitions.yml'))
       }
   }
 end
