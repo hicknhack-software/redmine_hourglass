@@ -31,7 +31,7 @@ def test_unauthorized
 end
 
 RSpec.shared_examples 'access rights' do |*permissions, **opts|
-  test_permissions *permissions, opts
-  test_forbidden opts.slice :error_code
+  test_permissions *permissions, **opts
+  test_forbidden **(opts.slice :error_code)
   test_unauthorized
 end
