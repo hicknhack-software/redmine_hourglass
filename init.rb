@@ -1,3 +1,5 @@
+$LOAD_PATH.unshift "#{File.dirname(__FILE__)}/lib"
+
 Redmine::Plugin.register Hourglass::PLUGIN_NAME do
   name 'Hourglass'
   description 'Track your time and book it on issues and projects'
