@@ -1,6 +1,4 @@
-require 'hourglass/hourglass_migration'
-
-class CreateHourglassTimeLogs < HourglassMigration
+class CreateHourglassTimeLogs < Hourglass::Migration
   def change
     create_table :hourglass_time_logs do |t|
       t.datetime :start, null: false
