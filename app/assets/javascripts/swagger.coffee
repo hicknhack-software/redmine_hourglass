@@ -1,14 +1,1 @@
 #= require jquery-migrate-1.4.1.min
-#= require swagger-ui/lib/jquery.slideto.min
-#= require swagger-ui/lib/jquery.wiggle.min
-#= require swagger-ui/lib/jquery.ba-bbq.min
-#= require swagger-ui/lib/handlebars-4.0.5
-#= require swagger-ui/lib/lodash.min
-#= require swagger-ui/lib/backbone-min
-#= require swagger-ui/swagger-ui.min
-#= require swagger-ui/lib/object-assign-pollyfill
-#= require swagger-ui/lib/highlight.9.1.0.pack
-#= require swagger-ui/lib/highlight.9.1.0.pack_extended
-#= require swagger-ui/lib/jsoneditor.min
-#= require swagger-ui/lib/marked
-#= require swagger-ui/lib/swagger-oauth
