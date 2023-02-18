@@ -34,7 +34,9 @@ module Hourglass
     end
 
     def hours_per_date(query)
-      query.total_by_group_for(:hours).transform_values do |totals_by_column|
+      total = query.total_by_group_for(:hours) 
+      total = query.total_for(:hours) if total == nil
+      total.transform_values do |totals_by_column|
         totals_by_column = {default: totals_by_column} unless query.main_query.grouped?
         totals_by_column.transform_keys! { |_| :default } if query.main_query.group_by == 'date'
         Hash[totals_by_column.map { |column, total| [column, unrounded_total(total)] }]
