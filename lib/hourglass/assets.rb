@@ -13,7 +13,7 @@ class Hourglass::Assets < Sprockets::Environment
         env.append_path path
       end
       if Rails.env.production?
-        env.js_compressor = :uglify
+        env.js_compressor = Uglifier.new(harmony: true)
         env.css_compressor = :scss
       end
     end
