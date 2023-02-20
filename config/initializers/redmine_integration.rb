@@ -12,7 +12,11 @@ end.to_prepare do
   [ProjectsHelper, SettingsController].each { |module_to_patch| add_patch module_to_patch, method: (Rails.version < "5" ? :include : :prepend) }
   [Query].each { |module_to_patch| add_patch module_to_patch, method: :prepend }
 
-  Redmine::Plugin.find(Hourglass::PLUGIN_NAME).extend Hourglass::RedminePatches::MirrorAssetsPatch
+  if Redmine::VERSION::MAJOR < 5
+    Redmine::Plugin.find(Hourglass::PLUGIN_NAME).extend Hourglass::RedminePatches::MirrorAssetsPatch
+  else
+    Redmine::PluginLoader.directories.find{|d| d.to_s == File.join(Redmine::PluginLoader.directory, Hourglass::PLUGIN_NAME.to_s)}.extend Hourglass::RedminePatches::MirrorAssetsPatch
+  end
 end
 
 Hourglass::RedmineHooks.load!
