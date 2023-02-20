@@ -250,7 +250,7 @@ describe 'Time trackers API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time trackers'
-      parameter name: :time_trackers, in: :body, schema: {type: :object, additionalProperties: {'$ref' => '#/definitions/time_tracker'}}, description: 'takes an object of time trackers'
+      parameter name: :time_trackers, in: :body, schema: {type: :object, additionalProperties: {'$ref' => '#/definitions/time_tracker_update'}}, description: 'takes an object of time trackers'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
       let(:time_tracker_ids) do
