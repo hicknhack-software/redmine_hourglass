@@ -19,6 +19,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - [please add bug fixes]
 
+## [1.2.0] - 2023-02-21
+
+Non-Beta Release after proving that everything works.
+
+### Changed
+- added more time clamping options
+- many bugfixes
+- fixed styling
+- fixed timer stops when brower tab in background
+
+### Known issues
+- no support for Redmine 5
+
 ## [1.2.0-beta] - 2021-06-27
 
 Upgraded to support Redmine 4.2.1
