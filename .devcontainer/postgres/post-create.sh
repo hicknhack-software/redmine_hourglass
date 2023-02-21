@@ -12,15 +12,16 @@ git init
 git remote add origin https://github.com/redmine/redmine.git
 git fetch
 git checkout -t origin/${REDMINE_VERSION} -f
+git apply plugins/redmine_hourglass/.devcontainer/postgres/redmine5_i18n.patch
 
 bundle
 
-bundle exec rake db:create
-bundle exec rake db:migrate
-bundle exec rake redmine:plugins:migrate
-bundle exec rake redmine:plugins
+bundle exec rails config/initializers/secret_token.rb
+bundle exec rails db:create
+bundle exec rails db:migrate
+bundle exec rails redmine:plugins
 
-# bundle exec rake db:drop RAILS_ENV=test
-# bundle exec rake db:create RAILS_ENV=test
-# bundle exec rake db:migrate RAILS_ENV=test
-# bundle exec rake redmine:plugins:migrate RAILS_ENV=test
+# RAILS_ENV=test bundle exec rails db:drop
+# RAILS_ENV=test bundle exec rails db:create
+# RAILS_ENV=test bundle exec rails db:migrate
+# RAILS_ENV=test bundle exec rails redmine:plugins

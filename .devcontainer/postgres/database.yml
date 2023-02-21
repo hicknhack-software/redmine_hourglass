@@ -11,3 +11,6 @@ development: &postgres
 test:
   <<: *postgres
   database: redmine_test
+
+production:
+  <<: *postgres
