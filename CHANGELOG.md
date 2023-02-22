@@ -30,6 +30,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Upgraded Gems to support Rails 6
 - Fixed Swagger API documentation for mass update and create
 
+### Fixed
+- Asset compilation for Redmine images
+
 ## [1.2.0] - 2023-02-21
 
 Non-Beta Release after proving that everything works.
