@@ -149,6 +149,7 @@ en:
           button_stop_new: Stop & New
           button_start: Start
           heading: Specify your task
+          tracking_heading: Your current tracker
           label_running_time: Current time
         headings:
           time_logs: Recent time logs (last 2 weeks)

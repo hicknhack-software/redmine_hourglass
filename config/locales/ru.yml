@@ -138,6 +138,7 @@ ru:
           button_stop_new: Остановить и запустить новый
           button_start: Запустить
           heading: Укажите свою задачу
+          tracking_heading: Ваш текущий хронометраж
           label_running_time: Текущее время
         headings:
           time_logs: Последний учет времени (за 2 недели)

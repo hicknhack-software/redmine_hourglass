@@ -154,7 +154,8 @@ de:
           button_stop_new: Stop & Neu
           button_start: Start
           heading: Geben sie ihre Aufgabe an
-          label_running_time: Laufende Zeitmessung
+          tracking_heading: Ihre aktuelle Zeitmessung
+          label_running_time: Laufende Zeit
         headings:
           time_logs: Letzte Zeiterfassungen (letzten 2 Wochen)
           time_bookings: Letzte Zeitbuchungen (letzten 2 Wochen)
