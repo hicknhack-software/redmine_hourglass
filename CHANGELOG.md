@@ -19,6 +19,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - [please add bug fixes]
 
+## [1.3.0] - TBA
+
+### Added
+- support for Redmine 5
+- support for Ruby >2.6
+- Added .devcontainer to ease development
+
+### Changed
+- Upgraded Gems to support Rails 6
+- Fixed Swagger API documentation for mass update and create
+
+### Fixed
+- Asset compilation for Redmine images
+
 ## [1.2.0] - 2023-02-21
 
 Non-Beta Release after proving that everything works.

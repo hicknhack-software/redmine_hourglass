@@ -3,8 +3,8 @@
   "info": {
     "title": "Hourglass API",
     "description": "This API allows you to do everything you can do in the UI.",
-    "version": "1.0.0",
-    "x-docsVersion": "ceddb5281b87f25447fac02e16c8a968"
+    "version": "1.2.0-rc1",
+    "x-docsVersion": "0625accbfdeb2ee1a764d7a60b73ed7f"
   },
   "basePath": "/hourglass",
   "securityDefinitions": {
@@ -269,51 +269,53 @@
                 "limit": 25,
                 "records": [
                   {
-                    "id": 2,
-                    "start": "2017-07-01T11:17:17.000+02:00",
-                    "stop": "2017-07-01T14:30:37.000+02:00",
-                    "time_log_id": 2,
-                    "time_entry_id": 2,
-                    "created_at": "2017-07-01T10:00:03.406+02:00",
-                    "updated_at": "2017-07-01T10:00:03.406+02:00",
+                    "id": 4,
+                    "start": "2023-02-20T21:57:07.000+13:00",
+                    "stop": "2023-02-21T01:55:17.000+13:00",
+                    "time_log_id": 4,
+                    "time_entry_id": 4,
+                    "created_at": "2023-02-21T09:06:21.748+13:00",
+                    "updated_at": "2023-02-21T09:06:21.748+13:00",
                     "time_entry": {
-                      "id": 2,
-                      "project_id": 3,
-                      "user_id": 2,
+                      "id": 4,
+                      "project_id": 18,
+                      "user_id": 34,
                       "issue_id": null,
-                      "hours": 3.22,
+                      "hours": 3.97,
                       "comments": null,
-                      "activity_id": 2,
-                      "spent_on": "2017-07-01",
-                      "tyear": 2017,
-                      "tmonth": 7,
-                      "tweek": 26,
-                      "created_on": "2017-07-01T10:00:03.392+02:00",
-                      "updated_on": "2017-07-01T10:00:03.392+02:00"
+                      "activity_id": 4,
+                      "spent_on": "2023-02-20",
+                      "tyear": 2023,
+                      "tmonth": 2,
+                      "tweek": 8,
+                      "created_on": "2023-02-21T09:06:21.743+13:00",
+                      "updated_on": "2023-02-21T09:06:21.743+13:00",
+                      "author_id": 34
                     }
                   },
                   {
-                    "id": 1,
-                    "start": "2017-07-01T11:35:55.000+02:00",
-                    "stop": "2017-07-01T17:07:27.000+02:00",
-                    "time_log_id": 1,
-                    "time_entry_id": 1,
-                    "created_at": "2017-07-01T10:00:03.318+02:00",
-                    "updated_at": "2017-07-01T10:00:03.318+02:00",
+                    "id": 3,
+                    "start": "2023-02-20T19:21:48.000+13:00",
+                    "stop": "2023-02-21T06:05:18.000+13:00",
+                    "time_log_id": 3,
+                    "time_entry_id": 3,
+                    "created_at": "2023-02-21T09:06:21.677+13:00",
+                    "updated_at": "2023-02-21T09:06:21.677+13:00",
                     "time_entry": {
-                      "id": 1,
-                      "project_id": 1,
-                      "user_id": 1,
+                      "id": 3,
+                      "project_id": 16,
+                      "user_id": 32,
                       "issue_id": null,
-                      "hours": 5.53,
+                      "hours": 10.73,
                       "comments": null,
-                      "activity_id": 1,
-                      "spent_on": "2017-07-01",
-                      "tyear": 2017,
-                      "tmonth": 7,
-                      "tweek": 26,
-                      "created_on": "2017-07-01T10:00:03.309+02:00",
-                      "updated_on": "2017-07-01T10:00:03.313+02:00"
+                      "activity_id": 3,
+                      "spent_on": "2023-02-20",
+                      "tyear": 2023,
+                      "tmonth": 2,
+                      "tweek": 8,
+                      "created_on": "2023-02-21T09:06:21.671+13:00",
+                      "updated_on": "2023-02-21T09:06:21.674+13:00",
+                      "author_id": 32
                     }
                   }
                 ]
@@ -361,27 +363,28 @@
             },
             "examples": {
               "application/json": {
-                "id": 1,
-                "start": "2017-07-01T11:16:09.000+02:00",
-                "stop": "2017-07-01T12:03:05.000+02:00",
-                "time_log_id": 1,
-                "time_entry_id": 1,
-                "created_at": "2017-07-01T10:00:06.557+02:00",
-                "updated_at": "2017-07-01T10:00:06.557+02:00",
+                "id": 19,
+                "start": "2023-02-20T19:42:29.000+13:00",
+                "stop": "2023-02-21T02:14:14.000+13:00",
+                "time_log_id": 19,
+                "time_entry_id": 19,
+                "created_at": "2023-02-21T09:06:24.319+13:00",
+                "updated_at": "2023-02-21T09:06:24.319+13:00",
                 "time_entry": {
-                  "id": 1,
-                  "project_id": 1,
-                  "user_id": 1,
+                  "id": 19,
+                  "project_id": 48,
+                  "user_id": 66,
                   "issue_id": null,
-                  "hours": 0.78,
+                  "hours": 6.53,
                   "comments": null,
-                  "activity_id": 1,
-                  "spent_on": "2017-07-01",
-                  "tyear": 2017,
-                  "tmonth": 7,
-                  "tweek": 26,
-                  "created_on": "2017-07-01T10:00:06.548+02:00",
-                  "updated_on": "2017-07-01T10:00:06.552+02:00"
+                  "activity_id": 19,
+                  "spent_on": "2023-02-20",
+                  "tyear": 2023,
+                  "tmonth": 2,
+                  "tweek": 8,
+                  "created_on": "2023-02-21T09:06:24.312+13:00",
+                  "updated_on": "2023-02-21T09:06:24.315+13:00",
+                  "author_id": 66
                 }
               }
             }
@@ -460,12 +463,6 @@
           },
           "404": {
             "description": "nothing found"
-          },
-          "400": {
-            "description": "time booking not updated",
-            "schema": {
-              "$ref": "#/definitions/error_msg"
-            }
           }
         }
       }
@@ -519,7 +516,7 @@
             "schema": {
               "type": "object",
               "additionalProperties": {
-                "$ref": "#/definitions/time_booking"
+                "$ref": "#/definitions/time_booking_params"
               }
             },
             "description": "takes an object of time bookings"
@@ -557,7 +554,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/time_booking"
+                "$ref": "#/definitions/time_booking_params"
               }
             },
             "description": "takes an array of time bookings"
@@ -598,23 +595,23 @@
                 "limit": 25,
                 "records": [
                   {
-                    "id": 2,
-                    "start": "2017-07-01T06:24:00.000+02:00",
-                    "stop": "2017-07-01T17:21:00.000+02:00",
-                    "comments": "Use the virtual CSS sensor, then you can calculate the neural card!",
-                    "user_id": 2,
-                    "created_at": "2017-07-01T10:00:01.923+02:00",
-                    "updated_at": "2017-07-01T10:00:01.923+02:00",
-                    "hours": 10.95
+                    "id": 127,
+                    "start": "2023-02-20T20:31:00.000+13:00",
+                    "stop": "2023-02-21T05:54:00.000+13:00",
+                    "user_id": 282,
+                    "created_at": "2023-02-21T09:06:41.917+13:00",
+                    "updated_at": "2023-02-21T09:06:41.917+13:00",
+                    "hours": 9.383333333333333
                   },
                   {
-                    "id": 1,
-                    "start": "2017-07-01T07:23:00.000+02:00",
-                    "stop": "2017-07-01T16:20:00.000+02:00",
-                    "user_id": 1,
-                    "created_at": "2017-07-01T10:00:01.906+02:00",
-                    "updated_at": "2017-07-01T10:00:01.906+02:00",
-                    "hours": 8.95
+                    "id": 128,
+                    "start": "2023-02-20T19:12:00.000+13:00",
+                    "stop": "2023-02-21T03:32:00.000+13:00",
+                    "comments": "Use the wireless RSS monitor, then you can reboot the auxiliary array!",
+                    "user_id": 284,
+                    "created_at": "2023-02-21T09:06:41.935+13:00",
+                    "updated_at": "2023-02-21T09:06:41.935+13:00",
+                    "hours": 8.333333333333334
                   }
                 ]
               }
@@ -662,13 +659,13 @@
             },
             "examples": {
               "application/json": {
-                "id": 1,
-                "start": "2017-07-01T10:06:00.000+02:00",
-                "stop": "2017-07-01T13:08:00.000+02:00",
-                "user_id": 1,
-                "created_at": "2017-07-01T10:00:03.747+02:00",
-                "updated_at": "2017-07-01T10:00:03.747+02:00",
-                "hours": 3.033333333333333
+                "id": 143,
+                "start": "2023-02-20T19:23:00.000+13:00",
+                "stop": "2023-02-21T04:43:00.000+13:00",
+                "user_id": 316,
+                "created_at": "2023-02-21T09:06:43.523+13:00",
+                "updated_at": "2023-02-21T09:06:43.523+13:00",
+                "hours": 9.333333333333334
               }
             }
           },
@@ -746,12 +743,6 @@
           },
           "404": {
             "description": "nothing found"
-          },
-          "400": {
-            "description": "time log not updated",
-            "schema": {
-              "$ref": "#/definitions/error_msg"
-            }
           }
         }
       }
@@ -798,27 +789,28 @@
             },
             "examples": {
               "application/json": {
-                "id": 1,
-                "start": "2017-07-01T06:18:00.000+02:00",
-                "stop": "2017-07-01T12:34:00.000+02:00",
-                "time_log_id": 1,
-                "time_entry_id": 1,
-                "created_at": "2017-07-01T10:00:09.994+02:00",
-                "updated_at": "2017-07-01T10:00:09.994+02:00",
+                "id": 138,
+                "start": "2023-02-20T19:47:00.000+13:00",
+                "stop": "2023-02-21T01:49:00.000+13:00",
+                "time_log_id": 187,
+                "time_entry_id": 138,
+                "created_at": "2023-02-21T09:06:49.382+13:00",
+                "updated_at": "2023-02-21T09:06:49.382+13:00",
                 "time_entry": {
-                  "id": 1,
-                  "project_id": 1,
-                  "user_id": 1,
+                  "id": 138,
+                  "project_id": 290,
+                  "user_id": 410,
                   "issue_id": null,
-                  "hours": 6.27,
+                  "hours": 6.03,
                   "comments": null,
-                  "activity_id": 1,
-                  "spent_on": "2017-07-01",
-                  "tyear": 2017,
-                  "tmonth": 7,
-                  "tweek": 26,
-                  "created_on": "2017-07-01T10:00:09.991+02:00",
-                  "updated_on": "2017-07-01T10:00:09.991+02:00"
+                  "activity_id": 137,
+                  "spent_on": "2023-02-20",
+                  "tyear": 2023,
+                  "tmonth": 2,
+                  "tweek": 8,
+                  "created_on": "2023-02-21T09:06:49.379+13:00",
+                  "updated_on": "2023-02-21T09:06:49.379+13:00",
+                  "author_id": 410
                 }
               }
             }
@@ -892,22 +884,22 @@
             "examples": {
               "application/json": {
                 "time_log": {
-                  "id": 1,
-                  "start": "2017-07-01T11:10:00.000+02:00",
-                  "stop": "2017-07-01T11:20:00.000+02:00",
-                  "user_id": 1,
-                  "created_at": "2017-07-01T10:00:11.697+02:00",
-                  "updated_at": "2017-07-01T10:00:11.724+02:00",
+                  "id": 207,
+                  "start": "2023-02-20T20:02:00.000+13:00",
+                  "stop": "2023-02-20T20:12:00.000+13:00",
+                  "user_id": 442,
+                  "created_at": "2023-02-21T09:06:51.107+13:00",
+                  "updated_at": "2023-02-21T09:06:51.126+13:00",
                   "hours": 0.16666666666666666
                 },
                 "new_time_log": {
-                  "id": 2,
-                  "start": "2017-07-01T11:20:00.000+02:00",
-                  "stop": "2017-07-01T17:54:00.000+02:00",
-                  "user_id": 1,
-                  "created_at": "2017-07-01T10:00:11.727+02:00",
-                  "updated_at": "2017-07-01T10:00:11.727+02:00",
-                  "hours": 6.566666666666666
+                  "id": 208,
+                  "start": "2023-02-20T20:12:00.000+13:00",
+                  "stop": "2023-02-21T04:10:00.000+13:00",
+                  "user_id": 442,
+                  "created_at": "2023-02-21T09:06:51.128+13:00",
+                  "updated_at": "2023-02-21T09:06:51.128+13:00",
+                  "hours": 7.966666666666667
                 }
               }
             }
@@ -965,13 +957,13 @@
             },
             "examples": {
               "application/json": {
-                "id": 1,
-                "start": "2017-07-01T10:09:00.000+02:00",
-                "stop": "2017-07-01T17:31:00.000+02:00",
-                "user_id": 1,
-                "created_at": "2017-07-01T10:00:13.601+02:00",
-                "updated_at": "2017-07-01T10:00:13.636+02:00",
-                "hours": 7.366666666666666
+                "stop": "2023-02-21T06:26:00.000+13:00",
+                "start": "2023-02-20T20:54:00.000+13:00",
+                "id": 237,
+                "user_id": 474,
+                "created_at": "2023-02-21T09:06:52.749+13:00",
+                "updated_at": "2023-02-21T09:06:52.782+13:00",
+                "hours": 9.533333333333333
               }
             }
           },
@@ -1048,7 +1040,7 @@
             "schema": {
               "type": "object",
               "additionalProperties": {
-                "$ref": "#/definitions/time_log"
+                "$ref": "#/definitions/time_log_update"
               }
             },
             "description": "takes an object of time logs"
@@ -1086,7 +1078,7 @@
             "schema": {
               "type": "object",
               "additionalProperties": {
-                "$ref": "#/definitions/time_booking"
+                "$ref": "#/definitions/time_booking_update"
               }
             },
             "description": "takes an object of time bookings"
@@ -1124,7 +1116,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/time_log"
+                "$ref": "#/definitions/time_log_update"
               }
             },
             "description": "takes an array of time logs"
@@ -1165,21 +1157,21 @@
                 "limit": 25,
                 "records": [
                   {
-                    "id": 1,
-                    "start": "2017-07-01T10:00:00.000+02:00",
-                    "user_id": 1,
-                    "created_at": "2017-07-01T10:00:01.692+02:00",
-                    "updated_at": "2017-07-01T10:00:01.692+02:00"
+                    "id": 3,
+                    "start": "2023-02-21T09:07:00.000+13:00",
+                    "user_id": 674,
+                    "created_at": "2023-02-21T09:07:01.816+13:00",
+                    "updated_at": "2023-02-21T09:07:01.816+13:00"
                   },
                   {
-                    "id": 2,
-                    "start": "2017-07-01T10:00:00.000+02:00",
+                    "id": 4,
+                    "start": "2023-02-21T09:07:00.000+13:00",
                     "comments": "test",
-                    "user_id": 2,
-                    "project_id": 2,
-                    "activity_id": 1,
-                    "created_at": "2017-07-01T10:00:01.744+02:00",
-                    "updated_at": "2017-07-01T10:00:01.744+02:00"
+                    "user_id": 676,
+                    "project_id": 399,
+                    "activity_id": 154,
+                    "created_at": "2023-02-21T09:07:01.880+13:00",
+                    "updated_at": "2023-02-21T09:07:01.880+13:00"
                   }
                 ]
               }
@@ -1230,13 +1222,13 @@
             },
             "examples": {
               "application/json": {
-                "id": 1,
-                "start": "2017-07-01T10:00:00.000+02:00",
+                "id": 10,
+                "start": "2023-02-21T09:07:00.000+13:00",
                 "comments": "test",
-                "user_id": 1,
-                "project_id": 1,
-                "created_at": "2017-07-01T10:00:03.757+02:00",
-                "updated_at": "2017-07-01T10:00:03.757+02:00"
+                "user_id": 711,
+                "project_id": 416,
+                "created_at": "2023-02-21T09:07:04.912+13:00",
+                "updated_at": "2023-02-21T09:07:04.912+13:00"
               }
             }
           },
@@ -1287,12 +1279,12 @@
             },
             "examples": {
               "application/json": {
-                "id": 1,
-                "start": "2017-07-01T10:00:00.000+02:00",
+                "id": 25,
+                "start": "2023-02-21T09:07:00.000+13:00",
                 "comments": "test",
-                "user_id": 1,
-                "created_at": "2017-07-01T10:00:05.765+02:00",
-                "updated_at": "2017-07-01T10:00:05.765+02:00"
+                "user_id": 743,
+                "created_at": "2023-02-21T09:07:06.684+13:00",
+                "updated_at": "2023-02-21T09:07:06.684+13:00"
               }
             }
           },
@@ -1428,13 +1420,13 @@
             "examples": {
               "application/json": {
                 "time_log": {
-                  "id": 1,
-                  "start": "2017-07-01T10:00:00.000+02:00",
-                  "stop": "2017-07-01T10:01:00.000+02:00",
+                  "id": 345,
+                  "start": "2023-02-21T09:07:00.000+13:00",
+                  "stop": "2023-02-21T09:08:00.000+13:00",
                   "comments": "test",
-                  "user_id": 1,
-                  "created_at": "2017-07-01T10:00:11.523+02:00",
-                  "updated_at": "2017-07-01T10:00:11.523+02:00",
+                  "user_id": 841,
+                  "created_at": "2023-02-21T09:07:12.576+13:00",
+                  "updated_at": "2023-02-21T09:07:12.576+13:00",
                   "hours": 0.016666666666666666
                 }
               }
@@ -1507,7 +1499,7 @@
             "schema": {
               "type": "object",
               "additionalProperties": {
-                "$ref": "#/definitions/time_tracker"
+                "$ref": "#/definitions/time_tracker_update"
               }
             },
             "description": "takes an object of time trackers"

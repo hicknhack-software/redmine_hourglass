@@ -138,6 +138,7 @@ pt-BR:
           button_stop_new: Parar & Novo
           button_start: Iniciar
           heading: Especifique sua tarefa
+          tracking_heading: Seu atual controle de tempo
           label_running_time: Hora atual
         headings:
           time_logs: Registros de tempo recentes (últimas 2 semanas)

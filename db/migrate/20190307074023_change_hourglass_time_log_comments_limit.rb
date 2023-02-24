@@ -1,6 +1,4 @@
-require 'hourglass/hourglass_migration'
-
-class ChangeHourglassTimeLogCommentsLimit < HourglassMigration
+class ChangeHourglassTimeLogCommentsLimit < Hourglass::Migration
   def up
     change_column :hourglass_time_logs, :comments, :string, limit: 1024
   end

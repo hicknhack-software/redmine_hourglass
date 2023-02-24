@@ -1,0 +1,13 @@
+diff --git a/lib/redmine/i18n.rb b/lib/redmine/i18n.rb
+index 805e3c61c..42b5ab23f 100644
+--- a/lib/redmine/i18n.rb
++++ b/lib/redmine/i18n.rb
+@@ -125,7 +125,7 @@ module Redmine
+         if options[:cache] == false
+           available_locales = ::I18n.backend.available_locales
+           valid_languages.
+-            select {|locale| available_locales.include?(locale)}.
++            select {|locale| available_locales.include?(locale) && (ll(locale.to_s, :general_lang_name) rescue false) }.
+             map {|lang| [ll(lang.to_s, :general_lang_name), lang.to_s]}.
+             sort_by(&:first)
+         else

@@ -1,36 +1,24 @@
 - api_enabled = Setting.rest_api_enabled == '1'
 
 - content_for :header_tags do
-  = stylesheet_link_tag 'swagger', plugin: Hourglass::PLUGIN_NAME, media: 'screen'
-  = stylesheet_link_tag 'swagger-print', plugin: Hourglass::PLUGIN_NAME, media: 'print'
-  = javascript_include_tag 'swagger', plugin: Hourglass::PLUGIN_NAME
+  = stylesheet_link_tag 'swagger-ui', plugin: Hourglass::PLUGIN_NAME, media: 'screen'
+  = javascript_include_tag 'swagger-ui-bundle', plugin: Hourglass::PLUGIN_NAME
   javascript:
       $(function () {
           var initiated = false;
-          hljs.configure({highlightSizeThreshold: 5000});
-          window.swaggerUi = new SwaggerUi({
+          window.swaggerUi = new SwaggerUIBundle({
               url: "#{hourglass_rswag_api_path}/v1/swagger.json",
-              dom_id: "swagger-ui-container",
+              dom_id: "#swagger-ui-container",
+              presets: [SwaggerUIBundle.presets.apis],
               supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
               onFailure: function () {
                   hourglass.Utils.showErrorMessage("#{t('hourglass.ui.api_docs.error_json_missing', task: 'redmine:plugins:hourglass:api_docs')}");
               },
-              onComplete: function () {
-                  if (window.swaggerUi.api.info['x-docsVersion'] !== '#{Hourglass.swagger_docs_version}') {
-                      hourglass.Utils.showErrorMessage("#{t('hourglass.ui.api_docs.error_outdated', task: 'redmine:plugins:hourglass:api_docs')}");
-                  }
-                  if (!initiated) {
-                      initiated = true;
-                      $('.authorize__btn').click();
-                      $('.auth_input.input_apiKey_entry').val('#{User.current.api_key}').change();
-                      $('.auth__button.auth_submit__button').click();
-                  }
+              onComplete: function() {
+                  window.swaggerUi.preauthorizeApiKey("api_key", "#{User.current.api_key}");
               },
               docExpansion: 'list'
           });
-          if (#{api_enabled}) {
-              window.swaggerUi.load();
-          }
       });
 
 = render layout: 'hourglass_ui/layouts/hourglass' do
@@ -49,7 +37,7 @@
         | :
         .swagger-link
           a href="http://swagger.io"
-            img.logo__img alt="swagger" height="30" width="30" src=asset_path('swagger-ui/images/logo_small.png')
+            img.logo__img alt="" height="30" width="30" src=Hourglass::Assets.path('swagger.png', type: 'image')
             span.logo__title Swagger
   - else
     = t('hourglass.ui.api_docs.error_api_disabled')

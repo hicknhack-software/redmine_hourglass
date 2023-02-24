@@ -1,0 +1,16 @@
+
+development: &postgres
+  adapter: postgresql
+  encoding: utf8
+  database: redmine
+  username: postgres
+  password: postgres
+  host: postgres
+  port: 5432
+
+test:
+  <<: *postgres
+  database: redmine_test
+
+production:
+  <<: *postgres

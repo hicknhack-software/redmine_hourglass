@@ -221,3 +221,32 @@
     background: url(/images/link.png) no-repeat 0% 70%;
   }
 }
+
+.swagger-ui {
+  input,
+  select,
+  button {
+    height: auto;
+  }
+}
+
+.swagger-note {
+  margin-top: 10px;
+
+  .swagger-link {
+    font-size: 1.3em;
+    font-weight: bold;
+    text-decoration: none;
+
+    .logo__img {
+      display: block;
+      float: left;
+      margin-top: 2px;
+    }
+
+    .logo__title {
+      display: inline-block;
+      padding: 5px 0 0 10px;
+    }
+  }
+}

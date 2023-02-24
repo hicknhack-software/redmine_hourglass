@@ -14,8 +14,8 @@ module Hourglass
       end
     end
 
-    def grouped_entry_list(entries, query)
-      return entry_list entries, &Proc.new unless query.grouped?
+    def grouped_entry_list(entries, query, &block)
+      return entry_list entries, &block unless query.grouped?
 
       totals_by_group = query.totals_by_group
       count_by_group = query.count_by_group
@@ -25,7 +25,7 @@ module Hourglass
             totals: transform_totals(extract_group_value(group, totals_by_group)),
             count: extract_group_value(group, count_by_group)
         }
-        entry_list group_entries, &Proc.new
+        entry_list group_entries, &block
       end
     end
 

@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+  redmine:
+    build:
+      context: .
+      target: redmine
+      args:
+        RUBY_VERSION: "3.1.3"
+        REDMINE_VERSION: "5.0-stable"
+        NODE_VERSION: "lts/*"
+    volumes:
+      - redmine-data:/redmine/files
+      - node_modules:/redmine/node_modules
+      - bundle:/bundle
+      - ../..:/redmine/plugins/redmine_hourglass
+      - ./Gemfile.local:/redmine/Gemfile.local
+      - ./database.yml:/redmine/config/database.yml
+      - ./post-create.sh:/redmine/post-create.sh
+    environment:
+      RAILS_ENV: development
+      REDMINE_SECRET_KEY_BASE: supersecretkey
+      REDMINE_PLUGINS_MIGRATE: 'true'
+    command: sleep infinity
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: redmine
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+volumes:
+  postgres-data: null
+  redmine-data:
+  node_modules:
+  bundle:

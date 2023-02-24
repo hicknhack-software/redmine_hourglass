@@ -1,4 +1,4 @@
-require 'hourglass'
+$LOAD_PATH.unshift "#{File.dirname(__FILE__)}/lib"
 
 Redmine::Plugin.register Hourglass::PLUGIN_NAME do
   name 'Hourglass'
@@ -8,7 +8,7 @@ Redmine::Plugin.register Hourglass::PLUGIN_NAME do
   author_url 'http://www.hicknhack-software.com'
   version Hourglass::VERSION
 
-  requires_redmine version_or_higher: '3.2.0'
+  requires_redmine version_or_higher: '4.0.0'
 
   settings default: Hourglass::SettingsStorage.defaults, :partial => "settings/#{Hourglass::PLUGIN_NAME}"
 
@@ -95,3 +95,4 @@ Redmine::Plugin.register Hourglass::PLUGIN_NAME do
     menu.push :hourglass_time_trackers, :hourglass_ui_time_trackers_path, caption: :'hourglass.ui.menu.time_trackers', if: proc { Pundit.policy!(User.current, Hourglass::TimeTracker).view? }
   end
 end
+ActiveSupport::Reloader.reload!
