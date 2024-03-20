@@ -9,15 +9,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        redmine: [ '5.0.4', '4.2.9' ]
-        ruby: [ '2.7.7', '2.6.8' ]
+        redmine: [ '5.1.2', '4.2.9' ]
+        ruby: [ '2.7.7' ]
         database: [ 'sqlite3', 'postgresql', 'mysql2' ]
         include:
-          - redmine: '5.0.4'
-            ruby: '3.1.3'
+          - redmine: '5.1.2'
+            ruby: '3.2.2'
             database: 'postgresql'
-          - redmine: '5.0.4'
-            ruby: '3.1.3'
+          - redmine: '5.1.2'
+            ruby: '3.2.2'
             database: 'mysql2'
 
     services:
