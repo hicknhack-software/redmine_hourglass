@@ -102,7 +102,7 @@ module Hourglass::QueryBase
   end
 
   def sql_for_date_field(field, operator, value)
-    sql_for_field(field, operator, value, queried_class.table_name, 'start')
+    '(' + sql_for_field(field, operator, value, queried_class.table_name, 'start') + ')'
   end
 
   def sql_for_field(field, operator, value, db_table, db_field, is_custom_filter=false)

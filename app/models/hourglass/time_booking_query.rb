@@ -58,27 +58,27 @@ module Hourglass
     end
 
     def sql_for_user_id_field(field, operator, value)
-      sql_for_field(field, operator, value, User.table_name, 'id')
+      '(' + sql_for_field(field, operator, value, User.table_name, 'id') + ')'
     end
 
     def sql_for_project_id_field(field, operator, value)
-      sql_for_field(field, operator, value, Project.table_name, 'id')
+      '(' + sql_for_field(field, operator, value, Project.table_name, 'id') + ')'
     end
 
     def sql_for_issue_id_field(field, operator, value)
-      sql_for_field(field, operator, value, Issue.table_name, 'id')
+      '(' + sql_for_field(field, operator, value, Issue.table_name, 'id') + ')'
     end
 
     def sql_for_issue_subject_field(field, operator, value)
-      sql_for_field(field, operator, value, Issue.table_name, 'subject')
+      '(' + sql_for_field(field, operator, value, Issue.table_name, 'subject') + ')'
     end
 
     def sql_for_fixed_version_id_field(field, operator, value)
-      sql_for_field(field, operator, value, Issue.table_name, 'fixed_version_id')
+      '(' + sql_for_field(field, operator, value, Issue.table_name, 'fixed_version_id') + ')'
     end
 
     def sql_for_comments_field(field, operator, value)
-      sql_for_field(field, operator, value, TimeEntry.table_name, 'comments', true)
+      '(' + sql_for_field(field, operator, value, TimeEntry.table_name, 'comments', true) + ')'
     end
 
     def sql_for_activity_id_field(field, operator, value)

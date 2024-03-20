@@ -55,7 +55,7 @@ module Hourglass
     end
 
     def sql_for_fixed_version_id_field(field, operator, value)
-      sql_for_field(field, operator, value, Issue.table_name, 'fixed_version_id')
+      '(' + sql_for_field(field, operator, value, Issue.table_name, 'fixed_version_id') + ')'
     end
 
     def sql_for_custom_field(*args)
@@ -67,7 +67,7 @@ module Hourglass
     end
 
     def sql_for_comments_field(field, operator, value)
-      sql_for_field(field, operator, value, TimeTracker.table_name, 'comments', true)
+      '(' + sql_for_field(field, operator, value, TimeTracker.table_name, 'comments', true) + ')'
     end
 
     def has_through_associations

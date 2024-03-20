@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Asset compilation for Redmine images
+- Added missing query parentheses
 
 ## [1.2.0] - 2023-02-21
 
