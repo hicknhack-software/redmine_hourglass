@@ -29,7 +29,11 @@ module Hourglass
     delegate :id, to: :user, prefix: true, allow_nil: true
     delegate :comments, :comments=, :hours, :project_id=, :save_custom_field_values, to: :time_entry, allow_nil: true
 
-    scope :visible, lambda { |*args| joins(:project).where(projects: {id: visible_condition(args.shift || User.current, *args)})
+    scope :visible, lambda { |*args|
+      user = args.shift || User.current
+      joins(:user).and(
+        TimeBooking.where(projects: { id: visible_own_project_ids(user, *args) }, users: { id: user.id }).
+        or(TimeBooking.where(projects: { id: visible_project_ids(user, *args) })))
     }
 
     def update(args = {})
@@ -61,10 +65,12 @@ module Hourglass
     end
 
     private
-    def self.visible_condition(user, _options = {})
-      project_ids = Project.allowed_to(user, :hourglass_view_booked_time).pluck :id
-      project_ids += Project.allowed_to(user, :hourglass_view_own_booked_time).pluck :id
-      project_ids.uniq
+    def self.visible_own_project_ids(user, _options = {})
+      Project.allowed_to(user, :hourglass_view_own_booked_time).pluck :id
+    end
+
+    def self.visible_project_ids(user, _options = {})
+      Project.allowed_to(user, :hourglass_view_booked_time).pluck :id
     end
 
     def fix_nil_hours
