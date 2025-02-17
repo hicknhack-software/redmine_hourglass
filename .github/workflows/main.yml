@@ -9,16 +9,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        redmine: [ '5.1.2', '4.2.9' ]
-        ruby: [ '2.7.7' ]
+        redmine: [ '5.1.2', '5.1.6' ]
+        ruby: [ '2.7.7', '3.2.7' ]
         database: [ 'sqlite3', 'postgresql', 'mysql2' ]
-        include:
-          - redmine: '5.1.2'
-            ruby: '3.2.2'
-            database: 'postgresql'
-          - redmine: '5.1.2'
-            ruby: '3.2.2'
-            database: 'mysql2'
 
     services:
       postgresql:
@@ -47,12 +40,14 @@ jobs:
     - name: Install redmine
       run: wget https://github.com/redmine/redmine/archive/${{ matrix.redmine }}.tar.gz -qO- | tar -C $GITHUB_WORKSPACE -xz --strip=1 --show-transformed -f -
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         path: 'plugins/redmine_hourglass'
 
     - name: Create database config
-      run: cp $GITHUB_WORKSPACE/plugins/redmine_hourglass/.github/data/${{ matrix.database }}_database.yml $GITHUB_WORKSPACE/config/database.yml
+      run: |
+        cp $GITHUB_WORKSPACE/plugins/redmine_hourglass/.github/data/${{ matrix.database }}_database.yml $GITHUB_WORKSPACE/config/database.yml
+        cp $GITHUB_WORKSPACE/plugins/redmine_hourglass/.github/data/Gemfile.local.${{ matrix.redmine }} $GITHUB_WORKSPACE/Gemfile.local
 
     - name: Install dependencies
       run: |
