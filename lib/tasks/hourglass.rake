@@ -21,6 +21,11 @@ namespace :redmine do
         t.pattern = "#{spec_path}/**/*_spec.rb"
         t.rspec_opts = ["-I#{spec_path}"]
       end
+
+      desc 'Precompile Assets files'
+      task precompile: :environment do
+        Hourglass::Assets.compile
+      end
     end
   end
 end

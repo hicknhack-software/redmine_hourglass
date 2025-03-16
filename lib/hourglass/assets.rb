@@ -24,7 +24,7 @@ class Hourglass::Assets < Sprockets::Environment
       end
       if Rails.env.production?
         env.js_compressor = Uglifier.new(harmony: true)
-        env.css_compressor = :scss
+        env.css_compressor = :scssc
       end
     end
     context_class.class_eval do
