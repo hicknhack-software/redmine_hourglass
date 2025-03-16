@@ -1,4 +1,4 @@
-= link_to sprite_icon("start", t('hourglass.ui.issues.start'), plugin: "redmine_hourglass"), start_hourglass_time_trackers_path,
+= link_to sprite_icon("start", t('hourglass.ui.issues.start'), plugin: Hourglass::PLUGIN_NAME), start_hourglass_time_trackers_path,
         class: "icon js-hourglass-remote js-start-tracker #{hidden ? 'hidden ' : ''}#{issue.present? ? 'js-issue-action' : 'js-account-menu-link'}",
         remote: true, method: 'post',
         data: ({params: params.to_param} unless params.nil?)

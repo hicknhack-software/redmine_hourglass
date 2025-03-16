@@ -1,3 +1,5 @@
+AVAILABLE_PERMISSIONS = Redmine::AccessControl.permissions.select { |p| p.project_module == Hourglass::PLUGIN_NAME }.map &:name
+
 def with_permission(permission)
   code = yield
   response code, "with #{permission} permission" do

@@ -28,6 +28,14 @@ module Hourglass
       super(*hourglass_asset_paths(:stylesheet, sources))
     end
 
+    def redmine_javascript_include_tag(*sources)
+      self.method(:javascript_include_tag).super_method.call(*sources)
+    end
+
+    def redmine_stylesheet_link_tag(*sources)
+      self.method(:stylesheet_link_tag).super_method.call(*sources)
+    end
+
     def form_field(field, form, object, options = {})
       render partial: "hourglass_ui/forms/fields/#{field}", locals: {form: form, entry: object}.merge(options)
     end

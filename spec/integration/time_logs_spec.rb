@@ -11,7 +11,7 @@ describe 'Time logs API', type: :request do
       include_examples 'access rights', :hourglass_view_tracked_time, :hourglass_view_own_tracked_time
 
       response '200', 'time logs found' do
-        schema '$ref' => '#/definitions/index_response'
+        schema '$ref' => '#/components/schemas/time_log_index_response'
 
         let(:user) { create :user, :as_member, permissions: [:hourglass_view_tracked_time] }
 
@@ -47,11 +47,11 @@ describe 'Time logs API', type: :request do
       let(:time_log) { create :time_log, user: user }
       let(:id) { time_log.id }
 
-      include_examples 'access rights', :hourglass_view_tracked_time, :hourglass_view_own_tracked_time
+      it_behaves_like 'access rights', :hourglass_view_tracked_time, :hourglass_view_own_tracked_time
       include_examples 'not found'
 
       response '200', 'time log found' do
-        schema '$ref' => '#/definitions/time_log',
+        schema '$ref' => '#/components/schemas/time_log',
                required: %w(id start stop user_id created_at updated_at)
 
         include_examples 'has a valid response'
@@ -75,7 +75,7 @@ describe 'Time logs API', type: :request do
       let(:time_log) { create :time_log, user: user }
       let(:id) { time_log.id }
 
-      include_examples 'access rights', :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time, success_code: '204'
+      it_behaves_like 'access rights', :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time, success_code: '204'
 
       include_examples 'not found'
 
@@ -89,7 +89,7 @@ describe 'Time logs API', type: :request do
       tags 'Time logs'
       parameter name: :id, in: :path, type: :string
       parameter name: :time_log, in: :body, schema: {
-        '$ref' => '#/definitions/time_log_update'
+        '$ref' => '#/components/schemas/time_log_update'
       }
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
@@ -97,7 +97,7 @@ describe 'Time logs API', type: :request do
       let(:id) { existing_time_log.id }
       let(:time_log) { { time_log: { comments: 'test2' } } }
 
-      include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time, success_code: '204'
+      it_behaves_like 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time, success_code: '204'
 
       include_examples 'not found'
       context do
@@ -120,7 +120,7 @@ describe 'Time logs API', type: :request do
       tags 'Time logs'
       parameter name: :id, in: :path, type: :string
       parameter name: :time_booking, in: :body, schema: {
-        '$ref' => '#/definitions/time_booking_params'
+        '$ref' => '#/components/schemas/time_booking_params'
       }
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_book_time] }
@@ -130,11 +130,11 @@ describe 'Time logs API', type: :request do
         project_id: user.projects.first.id, activity_id: create(:time_entry_activity).id
       } } }
 
-      include_examples 'access rights', :hourglass_book_time, :hourglass_book_own_time
+      it_behaves_like 'access rights', :hourglass_book_time, :hourglass_book_own_time
       include_examples 'not found'
 
       response '200', 'time log found' do
-        schema '$ref' => '#/definitions/time_booking',
+        schema '$ref' => '#/components/schemas/time_booking',
                required: %w(id start stop created_at updated_at)
 
         include_examples 'has a valid response'
@@ -163,18 +163,18 @@ describe 'Time logs API', type: :request do
       let(:split_at) { Addressable::URI.encode_component((time_log.start + 10.minutes).utc.to_s, Addressable::URI::CharacterClasses::QUERY) }
       let(:id) { time_log.id }
 
-      include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
+      it_behaves_like 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
       include_examples 'not found'
 
       response '200', 'time log found' do
         schema type: 'object',
                properties: {
                  time_log: {
-                   '$ref' => '#/definitions/time_log',
+                   '$ref' => '#/components/schemas/time_log',
                    required: %w(id start stop user_id created_at updated_at)
                  },
                  new_time_log: {
-                   '$ref' => '#/definitions/time_log',
+                   '$ref' => '#/components/schemas/time_log',
                    required: %w(id start stop user_id created_at updated_at)
                  }
                }
@@ -202,7 +202,7 @@ describe 'Time logs API', type: :request do
       let(:time_log2) { create :time_log, user: user, start: time_log.stop, stop: time_log.stop + 10.minutes }
       let(:'ids[]') { [time_log.id, time_log2.id] }
 
-      include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
+      it_behaves_like 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
       response '404', 'nothing found' do
         let(:'ids[]') { ['invalid'] }
         run_test!
@@ -212,7 +212,7 @@ describe 'Time logs API', type: :request do
         schema type: 'object',
                properties: {
                  time_log: {
-                   '$ref' => '#/definitions/time_log',
+                   '$ref' => '#/components/schemas/time_log',
                    required: %w(id start stop user_id created_at updated_at)
                  }
                }
@@ -247,7 +247,7 @@ describe 'Time logs API', type: :request do
 
       let(:'time_logs[]') { time_log_ids }
 
-      include_examples 'access rights', :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
+      it_behaves_like 'access rights', :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
 
       response '200', 'time logs found' do
         run_test!
@@ -260,7 +260,7 @@ describe 'Time logs API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time logs'
-      parameter name: :time_logs, in: :body, schema: { type: :object, additionalProperties: { '$ref' => '#/definitions/time_log_update' } }, description: 'takes an object of time logs'
+      parameter name: :time_logs, in: :body, schema: { type: :object, additionalProperties: { '$ref' => '#/components/schemas/time_log_update' } }, description: 'takes an object of time logs'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time, :hourglass_view_tracked_time] }
       let(:time_log_ids) do
@@ -271,7 +271,7 @@ describe 'Time logs API', type: :request do
 
       let(:time_logs) { { time_logs: { time_log_ids[0] => { comments: 'test3' }, time_log_ids[1] => { comments: 'test4' } } } }
 
-      include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
+      it_behaves_like 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
 
       response '200', 'time logs found' do
         run_test!
@@ -289,7 +289,7 @@ describe 'Time logs API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time logs'
-      parameter name: :time_bookings, in: :body, schema: { type: :object, additionalProperties: { '$ref' => '#/definitions/time_booking_update' } }, description: 'takes an object of time bookings'
+      parameter name: :time_bookings, in: :body, schema: { type: :object, additionalProperties: { '$ref' => '#/components/schemas/time_booking_update' } }, description: 'takes an object of time bookings'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_book_time, :hourglass_view_tracked_time] }
       let(:time_logs) do
@@ -307,7 +307,7 @@ describe 'Time logs API', type: :request do
         }
       end
 
-      include_examples 'access rights', :hourglass_book_time, :hourglass_book_own_time
+      it_behaves_like 'access rights', :hourglass_book_time, :hourglass_book_own_time
 
       response '200', 'time logs found' do
         run_test!
@@ -324,7 +324,7 @@ describe 'Time logs API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time logs'
-      parameter name: :time_logs, in: :body, schema: { type: :array, items: { '$ref' => '#/definitions/time_log_update' } }, description: 'takes an array of time logs'
+      parameter name: :time_logs, in: :body, schema: { type: :array, items: { '$ref' => '#/components/schemas/time_log_update' } }, description: 'takes an array of time logs'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
 
@@ -335,7 +335,7 @@ describe 'Time logs API', type: :request do
         { time_logs: [t1, t2, t3] }
       end
 
-      include_examples 'access rights', :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
+      it_behaves_like 'access rights', :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
 
       response '200', 'time logs found' do
         run_test!

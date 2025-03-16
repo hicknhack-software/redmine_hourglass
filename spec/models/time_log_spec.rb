@@ -1,5 +1,5 @@
-require_relative '../spec_helper'
-describe Hourglass::TimeLog do
+require_relative '../rails_helper'
+describe Hourglass::TimeLog, type: :model do
 
   before :each do
     Hourglass::SettingsStorage[:round_minimum] = '0.25'
@@ -226,7 +226,7 @@ describe Hourglass::TimeLog do
         expect(time_log.joinable? time_log2).to be_truthy
         expect(time_log.join_with time_log2).to be_truthy
       end
-      
+
       it 'returns false if the time logs start and stop time doesn\'t match' do
         time_log = create(:time_log, user: user, start: now, stop: now + 10.minutes)
         time_log2 = create(:time_log, user: user, start: now + 15.minutes, stop: now + 20.minutes)

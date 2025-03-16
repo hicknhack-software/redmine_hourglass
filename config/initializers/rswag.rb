@@ -1,6 +1,3 @@
-Rswag::Api.configure do |c|
-  c.openapi_root = File.join Hourglass::PLUGIN_ROOT, 'swagger'
-end
 
 def files_for_docs_version
   (

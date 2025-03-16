@@ -1,5 +1,5 @@
-require_relative '../spec_helper'
-describe Hourglass::TimeTracker do
+require_relative '../rails_helper'
+describe Hourglass::TimeTracker, type: :model do
 
   before :each do
     Hourglass::SettingsStorage[:round_minimum] = '0.25'

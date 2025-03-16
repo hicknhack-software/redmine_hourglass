@@ -1,267 +1,21 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.1",
   "info": {
     "title": "Hourglass API",
-    "description": "This API allows you to do everything you can do in the UI.",
-    "version": "1.2.0-rc1",
-    "x-docsVersion": "0625accbfdeb2ee1a764d7a60b73ed7f"
-  },
-  "basePath": "/hourglass",
-  "securityDefinitions": {
-    "api_key": {
-      "type": "apiKey",
-      "description": "Available on the \"my account\" page in redmine",
-      "name": "key",
-      "in": "query"
-    }
-  },
-  "security": [
-    {
-      "api_key": [
-
-      ]
-    }
-  ],
-  "definitions": {
-    "time_tracker_start": {
-      "title": "Time tracker",
-      "type": "object",
-      "properties": {
-        "issue_id": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "comments": {
-          "type": "string"
-        }
-      }
-    },
-    "time_tracker": {
-      "title": "Time tracker",
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "created_at": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "user_id": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "start": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "project_id": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "activity_id": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "issue_id": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "comments": {
-          "type": "string"
-        }
-      }
-    },
-    "time_tracker_update": {
-      "title": "Time tracker",
-      "type": "object",
-      "properties": {
-        "start": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "user_id": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "project_id": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "activity_id": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "issue_id": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "comments": {
-          "type": "string"
-        }
-      }
-    },
-    "time_log": {
-      "title": "Time log",
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "created_at": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "user_id": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "start": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "stop": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "comments": {
-          "type": "string"
-        }
-      }
-    },
-    "time_log_update": {
-      "title": "Time log",
-      "type": "object",
-      "properties": {
-        "start": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "stop": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "comments": {
-          "type": "string"
-        }
-      }
-    },
-    "time_booking": {
-      "title": "Time booking",
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "created_at": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "start": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "stop": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
-    "time_booking_params": {
-      "title": "Time booking",
-      "type": "object",
-      "properties": {
-        "start": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "stop": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "user_id": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "project_id": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "activity_id": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "issue_id": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "comments": {
-          "type": "string"
-        }
-      }
-    },
-    "error_msg": {
-      "title": "Error",
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string"
-        }
-      }
-    },
-    "index_response": {
-      "title": "Records",
-      "type": "object",
-      "properties": {
-        "count": {
-          "type": "integer"
-        },
-        "offset": {
-          "type": "integer"
-        },
-        "limit": {
-          "type": "integer"
-        },
-        "records": {
-          "type": "array",
-          "items": {
-            "type": "object"
-          }
-        }
-      }
-    }
+    "description": "This API allows you to do everything you can do in the Redmine Hourglass UI.",
+    "version": "1.6.0-dev",
+    "x-docsVersion": "7e7abfa45af412e9826c43436390a62c"
   },
   "paths": {
     "/time_bookings.json": {
       "get": {
         "summary": "Lists all visible time bookings",
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "Time bookings"
         ],
         "responses": {
           "200": {
             "description": "time bookings found",
-            "schema": {
-              "$ref": "#/definitions/index_response"
-            },
             "examples": {
               "application/json": {
                 "count": 2,
@@ -270,55 +24,62 @@
                 "records": [
                   {
                     "id": 4,
-                    "start": "2023-02-20T21:57:07.000+13:00",
-                    "stop": "2023-02-21T01:55:17.000+13:00",
+                    "start": "2025-03-16T11:54:28.000+03:30",
+                    "stop": "2025-03-16T18:52:34.000+03:30",
                     "time_log_id": 4,
                     "time_entry_id": 4,
-                    "created_at": "2023-02-21T09:06:21.748+13:00",
-                    "updated_at": "2023-02-21T09:06:21.748+13:00",
+                    "created_at": "2025-03-16T21:36:13.000+03:30",
+                    "updated_at": "2025-03-16T21:36:13.000+03:30",
                     "time_entry": {
                       "id": 4,
-                      "project_id": 18,
-                      "user_id": 34,
+                      "project_id": 24,
+                      "author_id": 40,
+                      "user_id": 40,
                       "issue_id": null,
-                      "hours": 3.97,
+                      "hours": "209/30",
                       "comments": null,
-                      "activity_id": 4,
-                      "spent_on": "2023-02-20",
-                      "tyear": 2023,
-                      "tmonth": 2,
-                      "tweek": 8,
-                      "created_on": "2023-02-21T09:06:21.743+13:00",
-                      "updated_on": "2023-02-21T09:06:21.743+13:00",
-                      "author_id": 34
+                      "activity_id": 13,
+                      "spent_on": "2025-03-16",
+                      "tyear": 2025,
+                      "tmonth": 3,
+                      "tweek": 11,
+                      "created_on": "2025-03-16T21:36:13.000+03:30",
+                      "updated_on": "2025-03-16T21:36:13.000+03:30"
                     }
                   },
                   {
                     "id": 3,
-                    "start": "2023-02-20T19:21:48.000+13:00",
-                    "stop": "2023-02-21T06:05:18.000+13:00",
+                    "start": "2025-03-16T11:02:14.000+03:30",
+                    "stop": "2025-03-16T18:11:12.000+03:30",
                     "time_log_id": 3,
                     "time_entry_id": 3,
-                    "created_at": "2023-02-21T09:06:21.677+13:00",
-                    "updated_at": "2023-02-21T09:06:21.677+13:00",
+                    "created_at": "2025-03-16T21:36:13.000+03:30",
+                    "updated_at": "2025-03-16T21:36:13.000+03:30",
                     "time_entry": {
                       "id": 3,
-                      "project_id": 16,
-                      "user_id": 32,
+                      "project_id": 22,
+                      "author_id": 38,
+                      "user_id": 38,
                       "issue_id": null,
-                      "hours": 10.73,
+                      "hours": "143/20",
                       "comments": null,
-                      "activity_id": 3,
-                      "spent_on": "2023-02-20",
-                      "tyear": 2023,
-                      "tmonth": 2,
-                      "tweek": 8,
-                      "created_on": "2023-02-21T09:06:21.671+13:00",
-                      "updated_on": "2023-02-21T09:06:21.674+13:00",
-                      "author_id": 32
+                      "activity_id": 12,
+                      "spent_on": "2025-03-16",
+                      "tyear": 2025,
+                      "tmonth": 3,
+                      "tweek": 11,
+                      "created_on": "2025-03-16T21:36:13.000+03:30",
+                      "updated_on": "2025-03-16T21:36:13.000+03:30"
                     }
                   }
                 ]
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/time_booking_index_response"
+                }
               }
             }
           },
@@ -334,9 +95,6 @@
     "/time_bookings/{id}.json": {
       "get": {
         "summary": "Find time booking by ID",
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "Time bookings"
         ],
@@ -344,47 +102,53 @@
           {
             "name": "id",
             "in": "path",
-            "type": "string",
-            "required": true
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "time booking found",
-            "schema": {
-              "$ref": "#/definitions/time_booking",
-              "required": [
-                "id",
-                "start",
-                "stop",
-                "created_at",
-                "updated_at"
-              ]
-            },
             "examples": {
               "application/json": {
                 "id": 19,
-                "start": "2023-02-20T19:42:29.000+13:00",
-                "stop": "2023-02-21T02:14:14.000+13:00",
+                "start": "2025-03-16T12:15:49.000+03:30",
+                "stop": "2025-03-16T15:34:16.000+03:30",
                 "time_log_id": 19,
                 "time_entry_id": 19,
-                "created_at": "2023-02-21T09:06:24.319+13:00",
-                "updated_at": "2023-02-21T09:06:24.319+13:00",
+                "created_at": "2025-03-16T21:36:13.000+03:30",
+                "updated_at": "2025-03-16T21:36:13.000+03:30",
                 "time_entry": {
                   "id": 19,
-                  "project_id": 48,
-                  "user_id": 66,
+                  "project_id": 54,
+                  "author_id": 72,
+                  "user_id": 72,
                   "issue_id": null,
-                  "hours": 6.53,
+                  "hours": "33/10",
                   "comments": null,
-                  "activity_id": 19,
-                  "spent_on": "2023-02-20",
-                  "tyear": 2023,
-                  "tmonth": 2,
-                  "tweek": 8,
-                  "created_on": "2023-02-21T09:06:24.312+13:00",
-                  "updated_on": "2023-02-21T09:06:24.315+13:00",
-                  "author_id": 66
+                  "activity_id": 28,
+                  "spent_on": "2025-03-16",
+                  "tyear": 2025,
+                  "tmonth": 3,
+                  "tweek": 11,
+                  "created_on": "2025-03-16T21:36:13.000+03:30",
+                  "updated_on": "2025-03-16T21:36:13.000+03:30"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/time_booking",
+                  "required": [
+                    "id",
+                    "start",
+                    "stop",
+                    "created_at",
+                    "updated_at"
+                  ]
                 }
               }
             }
@@ -409,8 +173,10 @@
           {
             "name": "id",
             "in": "path",
-            "type": "string",
-            "required": true
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -430,9 +196,6 @@
       },
       "put": {
         "summary": "Update an existing time booking",
-        "consumes": [
-          "application/json"
-        ],
         "tags": [
           "Time bookings"
         ],
@@ -440,14 +203,9 @@
           {
             "name": "id",
             "in": "path",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "time_booking",
-            "in": "body",
+            "required": true,
             "schema": {
-              "$ref": "#/definitions/time_booking_params"
+              "type": "string"
             }
           }
         ],
@@ -464,6 +222,15 @@
           "404": {
             "description": "nothing found"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/time_booking_params"
+              }
+            }
+          }
         }
       }
     },
@@ -477,11 +244,13 @@
           {
             "name": "time_bookings[]",
             "in": "query",
-            "type": "array",
             "items": {
               "type": "string"
             },
-            "collectionFormat": "multi"
+            "collectionFormat": "multi",
+            "schema": {
+              "type": "array"
+            }
           }
         ],
         "responses": {
@@ -500,28 +269,10 @@
     "/time_bookings/bulk_update.json": {
       "post": {
         "summary": "Updates multiple time bookings at once",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "Time bookings"
         ],
-        "parameters": [
-          {
-            "name": "time_bookings",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "additionalProperties": {
-                "$ref": "#/definitions/time_booking_params"
-              }
-            },
-            "description": "takes an object of time bookings"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "time bookings found"
@@ -532,34 +283,29 @@
           "401": {
             "description": "missing or wrong api key"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/time_booking_params"
+                }
+              }
+            }
+          },
+          "description": "takes an object of time bookings"
         }
       }
     },
     "/time_bookings/bulk_create.json": {
       "post": {
         "summary": "Create multiple time bookings at once",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "Time bookings"
         ],
-        "parameters": [
-          {
-            "name": "time_bookings",
-            "in": "body",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/time_booking_params"
-              }
-            },
-            "description": "takes an array of time bookings"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "time bookings found"
@@ -570,24 +316,31 @@
           "401": {
             "description": "missing or wrong api key"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/time_booking_params"
+                }
+              }
+            }
+          },
+          "description": "takes an array of time bookings"
         }
       }
     },
     "/time_logs.json": {
       "get": {
         "summary": "Lists all visible time logs",
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "Time logs"
         ],
         "responses": {
           "200": {
             "description": "time logs found",
-            "schema": {
-              "$ref": "#/definitions/index_response"
-            },
             "examples": {
               "application/json": {
                 "count": 2,
@@ -596,24 +349,31 @@
                 "records": [
                   {
                     "id": 127,
-                    "start": "2023-02-20T20:31:00.000+13:00",
-                    "stop": "2023-02-21T05:54:00.000+13:00",
-                    "user_id": 282,
-                    "created_at": "2023-02-21T09:06:41.917+13:00",
-                    "updated_at": "2023-02-21T09:06:41.917+13:00",
-                    "hours": 9.383333333333333
+                    "start": "2025-03-16T15:25:00.000+03:30",
+                    "stop": "2025-03-17T01:05:00.000+03:30",
+                    "user_id": 288,
+                    "created_at": "2025-03-16T21:36:13.000+03:30",
+                    "updated_at": "2025-03-16T21:36:13.000+03:30",
+                    "hours": 9.666666666666666
                   },
                   {
                     "id": 128,
-                    "start": "2023-02-20T19:12:00.000+13:00",
-                    "stop": "2023-02-21T03:32:00.000+13:00",
-                    "comments": "Use the wireless RSS monitor, then you can reboot the auxiliary array!",
-                    "user_id": 284,
-                    "created_at": "2023-02-21T09:06:41.935+13:00",
-                    "updated_at": "2023-02-21T09:06:41.935+13:00",
-                    "hours": 8.333333333333334
+                    "start": "2025-03-16T14:50:00.000+03:30",
+                    "stop": "2025-03-16T23:44:00.000+03:30",
+                    "comments": "Bypassing the system won't do anything, we need to index the auxiliary smtp array!",
+                    "user_id": 290,
+                    "created_at": "2025-03-16T21:36:13.000+03:30",
+                    "updated_at": "2025-03-16T21:36:13.000+03:30",
+                    "hours": 8.9
                   }
                 ]
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/time_log_index_response"
+                }
               }
             }
           },
@@ -629,9 +389,6 @@
     "/time_logs/{id}.json": {
       "get": {
         "summary": "Find time log by ID",
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "Time logs"
         ],
@@ -639,33 +396,39 @@
           {
             "name": "id",
             "in": "path",
-            "type": "string",
-            "required": true
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "time log found",
-            "schema": {
-              "$ref": "#/definitions/time_log",
-              "required": [
-                "id",
-                "start",
-                "stop",
-                "user_id",
-                "created_at",
-                "updated_at"
-              ]
-            },
             "examples": {
               "application/json": {
                 "id": 143,
-                "start": "2023-02-20T19:23:00.000+13:00",
-                "stop": "2023-02-21T04:43:00.000+13:00",
-                "user_id": 316,
-                "created_at": "2023-02-21T09:06:43.523+13:00",
-                "updated_at": "2023-02-21T09:06:43.523+13:00",
-                "hours": 9.333333333333334
+                "start": "2025-03-16T13:10:00.000+03:30",
+                "stop": "2025-03-16T22:07:00.000+03:30",
+                "user_id": 322,
+                "created_at": "2025-03-16T21:36:13.000+03:30",
+                "updated_at": "2025-03-16T21:36:13.000+03:30",
+                "hours": 8.95
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/time_log",
+                  "required": [
+                    "id",
+                    "start",
+                    "stop",
+                    "user_id",
+                    "created_at",
+                    "updated_at"
+                  ]
+                }
               }
             }
           },
@@ -689,8 +452,10 @@
           {
             "name": "id",
             "in": "path",
-            "type": "string",
-            "required": true
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -710,9 +475,6 @@
       },
       "put": {
         "summary": "Update an existing time log",
-        "consumes": [
-          "application/json"
-        ],
         "tags": [
           "Time logs"
         ],
@@ -720,14 +482,9 @@
           {
             "name": "id",
             "in": "path",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "time_log",
-            "in": "body",
+            "required": true,
             "schema": {
-              "$ref": "#/definitions/time_log_update"
+              "type": "string"
             }
           }
         ],
@@ -744,18 +501,21 @@
           "404": {
             "description": "nothing found"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/time_log_update"
+              }
+            }
+          }
         }
       }
     },
     "/time_logs/{id}/book.json": {
       "post": {
         "summary": "Book a time log",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "Time logs"
         ],
@@ -763,54 +523,53 @@
           {
             "name": "id",
             "in": "path",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "time_booking",
-            "in": "body",
+            "required": true,
             "schema": {
-              "$ref": "#/definitions/time_booking_params"
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
             "description": "time log found",
-            "schema": {
-              "$ref": "#/definitions/time_booking",
-              "required": [
-                "id",
-                "start",
-                "stop",
-                "created_at",
-                "updated_at"
-              ]
-            },
             "examples": {
               "application/json": {
                 "id": 138,
-                "start": "2023-02-20T19:47:00.000+13:00",
-                "stop": "2023-02-21T01:49:00.000+13:00",
+                "start": "2025-03-16T10:15:00.000+03:30",
+                "stop": "2025-03-16T21:12:00.000+03:30",
                 "time_log_id": 187,
                 "time_entry_id": 138,
-                "created_at": "2023-02-21T09:06:49.382+13:00",
-                "updated_at": "2023-02-21T09:06:49.382+13:00",
+                "created_at": "2025-03-16T21:36:13.000+03:30",
+                "updated_at": "2025-03-16T21:36:13.000+03:30",
                 "time_entry": {
                   "id": 138,
-                  "project_id": 290,
-                  "user_id": 410,
+                  "project_id": 296,
+                  "author_id": 416,
+                  "user_id": 416,
                   "issue_id": null,
-                  "hours": 6.03,
+                  "hours": "219/20",
                   "comments": null,
-                  "activity_id": 137,
-                  "spent_on": "2023-02-20",
-                  "tyear": 2023,
-                  "tmonth": 2,
-                  "tweek": 8,
-                  "created_on": "2023-02-21T09:06:49.379+13:00",
-                  "updated_on": "2023-02-21T09:06:49.379+13:00",
-                  "author_id": 410
+                  "activity_id": 146,
+                  "spent_on": "2025-03-16",
+                  "tyear": 2025,
+                  "tmonth": 3,
+                  "tweek": 11,
+                  "created_on": "2025-03-16T21:36:13.000+03:30",
+                  "updated_on": "2025-03-16T21:36:13.000+03:30"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/time_booking",
+                  "required": [
+                    "id",
+                    "start",
+                    "stop",
+                    "created_at",
+                    "updated_at"
+                  ]
                 }
               }
             }
@@ -824,15 +583,21 @@
           "404": {
             "description": "nothing found"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/time_booking_params"
+              }
+            }
+          }
         }
       }
     },
     "/time_logs/{id}/split.json": {
       "post": {
         "summary": "Split a time log",
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "Time logs"
         ],
@@ -840,66 +605,74 @@
           {
             "name": "id",
             "in": "path",
-            "type": "string",
-            "required": true
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "split_at",
             "in": "query",
-            "type": "string",
             "format": "date-time",
-            "required": true
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "time log found",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "time_log": {
-                  "$ref": "#/definitions/time_log",
-                  "required": [
-                    "id",
-                    "start",
-                    "stop",
-                    "user_id",
-                    "created_at",
-                    "updated_at"
-                  ]
-                },
-                "new_time_log": {
-                  "$ref": "#/definitions/time_log",
-                  "required": [
-                    "id",
-                    "start",
-                    "stop",
-                    "user_id",
-                    "created_at",
-                    "updated_at"
-                  ]
-                }
-              }
-            },
             "examples": {
               "application/json": {
                 "time_log": {
                   "id": 207,
-                  "start": "2023-02-20T20:02:00.000+13:00",
-                  "stop": "2023-02-20T20:12:00.000+13:00",
-                  "user_id": 442,
-                  "created_at": "2023-02-21T09:06:51.107+13:00",
-                  "updated_at": "2023-02-21T09:06:51.126+13:00",
+                  "start": "2025-03-16T09:40:00.000+03:30",
+                  "stop": "2025-03-16T09:50:00.000+03:30",
+                  "user_id": 448,
+                  "created_at": "2025-03-16T21:36:13.000+03:30",
+                  "updated_at": "2025-03-16T21:36:13.000+03:30",
                   "hours": 0.16666666666666666
                 },
                 "new_time_log": {
                   "id": 208,
-                  "start": "2023-02-20T20:12:00.000+13:00",
-                  "stop": "2023-02-21T04:10:00.000+13:00",
-                  "user_id": 442,
-                  "created_at": "2023-02-21T09:06:51.128+13:00",
-                  "updated_at": "2023-02-21T09:06:51.128+13:00",
-                  "hours": 7.966666666666667
+                  "start": "2025-03-16T09:50:00.000+03:30",
+                  "stop": "2025-03-16T21:50:00.000+03:30",
+                  "user_id": 448,
+                  "created_at": "2025-03-16T21:36:13.000+03:30",
+                  "updated_at": "2025-03-16T21:36:13.000+03:30",
+                  "hours": 12.0
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "time_log": {
+                      "$ref": "#/components/schemas/time_log",
+                      "required": [
+                        "id",
+                        "start",
+                        "stop",
+                        "user_id",
+                        "created_at",
+                        "updated_at"
+                      ]
+                    },
+                    "new_time_log": {
+                      "$ref": "#/components/schemas/time_log",
+                      "required": [
+                        "id",
+                        "start",
+                        "stop",
+                        "user_id",
+                        "created_at",
+                        "updated_at"
+                      ]
+                    }
+                  }
                 }
               }
             }
@@ -919,9 +692,6 @@
     "/time_logs/join.json": {
       "post": {
         "summary": "Joins multiple time logs",
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "Time logs"
         ],
@@ -929,41 +699,47 @@
           {
             "name": "ids[]",
             "in": "query",
-            "type": "array",
             "items": {
               "type": "integer"
             },
-            "collectionFormat": "multi"
+            "collectionFormat": "multi",
+            "schema": {
+              "type": "array"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "time logs found",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "time_log": {
-                  "$ref": "#/definitions/time_log",
-                  "required": [
-                    "id",
-                    "start",
-                    "stop",
-                    "user_id",
-                    "created_at",
-                    "updated_at"
-                  ]
-                }
-              }
-            },
             "examples": {
               "application/json": {
-                "stop": "2023-02-21T06:26:00.000+13:00",
-                "start": "2023-02-20T20:54:00.000+13:00",
+                "stop": "2025-03-16T22:39:00.000+03:30",
+                "start": "2025-03-16T13:09:00.000+03:30",
                 "id": 237,
-                "user_id": 474,
-                "created_at": "2023-02-21T09:06:52.749+13:00",
-                "updated_at": "2023-02-21T09:06:52.782+13:00",
-                "hours": 9.533333333333333
+                "user_id": 480,
+                "created_at": "2025-03-16T21:36:13.000+03:30",
+                "updated_at": "2025-03-16T21:36:13.000+03:30",
+                "hours": 9.5
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "time_log": {
+                      "$ref": "#/components/schemas/time_log",
+                      "required": [
+                        "id",
+                        "start",
+                        "stop",
+                        "user_id",
+                        "created_at",
+                        "updated_at"
+                      ]
+                    }
+                  }
+                }
               }
             }
           },
@@ -978,13 +754,17 @@
           },
           "400": {
             "description": "time logs not joined",
-            "schema": {
-              "$ref": "#/definitions/error_msg"
-            },
             "examples": {
               "application/json": {
                 "message": "There are either bookings defined on the submitted time logs or the time logs start and stop doesn't match",
                 "status": 400
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_msg"
+                }
               }
             }
           }
@@ -1001,11 +781,13 @@
           {
             "name": "time_logs[]",
             "in": "query",
-            "type": "array",
             "items": {
               "type": "string"
             },
-            "collectionFormat": "multi"
+            "collectionFormat": "multi",
+            "schema": {
+              "type": "array"
+            }
           }
         ],
         "responses": {
@@ -1024,28 +806,10 @@
     "/time_logs/bulk_update.json": {
       "post": {
         "summary": "Updates multiple time logs at once",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "Time logs"
         ],
-        "parameters": [
-          {
-            "name": "time_logs",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "additionalProperties": {
-                "$ref": "#/definitions/time_log_update"
-              }
-            },
-            "description": "takes an object of time logs"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "time logs found"
@@ -1056,34 +820,29 @@
           "401": {
             "description": "missing or wrong api key"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/time_log_update"
+                }
+              }
+            }
+          },
+          "description": "takes an object of time logs"
         }
       }
     },
     "/time_logs/bulk_book.json": {
       "post": {
         "summary": "Books multiple time logs at once",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "Time logs"
         ],
-        "parameters": [
-          {
-            "name": "time_bookings",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "additionalProperties": {
-                "$ref": "#/definitions/time_booking_update"
-              }
-            },
-            "description": "takes an object of time bookings"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "time logs found"
@@ -1094,34 +853,29 @@
           "401": {
             "description": "missing or wrong api key"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/time_booking_update"
+                }
+              }
+            }
+          },
+          "description": "takes an object of time bookings"
         }
       }
     },
     "/time_logs/bulk_create.json": {
       "post": {
         "summary": "Create multiple time logs at once",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "Time logs"
         ],
-        "parameters": [
-          {
-            "name": "time_logs",
-            "in": "body",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/time_log_update"
-              }
-            },
-            "description": "takes an array of time logs"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "time logs found"
@@ -1132,24 +886,31 @@
           "401": {
             "description": "missing or wrong api key"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/time_log_update"
+                }
+              }
+            }
+          },
+          "description": "takes an array of time logs"
         }
       }
     },
     "/time_trackers.json": {
       "get": {
         "summary": "Lists all visible running time trackers",
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "Time trackers"
         ],
         "responses": {
           "200": {
             "description": "time trackers found",
-            "schema": {
-              "$ref": "#/definitions/index_response"
-            },
             "examples": {
               "application/json": {
                 "count": 2,
@@ -1158,22 +919,29 @@
                 "records": [
                   {
                     "id": 3,
-                    "start": "2023-02-21T09:07:00.000+13:00",
-                    "user_id": 674,
-                    "created_at": "2023-02-21T09:07:01.816+13:00",
-                    "updated_at": "2023-02-21T09:07:01.816+13:00"
+                    "start": "2025-03-16T21:36:00.000+03:30",
+                    "user_id": 680,
+                    "created_at": "2025-03-16T21:36:13.000+03:30",
+                    "updated_at": "2025-03-16T21:36:13.000+03:30"
                   },
                   {
                     "id": 4,
-                    "start": "2023-02-21T09:07:00.000+13:00",
+                    "start": "2025-03-16T21:36:00.000+03:30",
                     "comments": "test",
-                    "user_id": 676,
-                    "project_id": 399,
-                    "activity_id": 154,
-                    "created_at": "2023-02-21T09:07:01.880+13:00",
-                    "updated_at": "2023-02-21T09:07:01.880+13:00"
+                    "user_id": 682,
+                    "project_id": 405,
+                    "activity_id": 163,
+                    "created_at": "2025-03-16T21:36:13.000+03:30",
+                    "updated_at": "2025-03-16T21:36:13.000+03:30"
                   }
                 ]
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/time_tracker_index_response"
+                }
               }
             }
           },
@@ -1189,46 +957,38 @@
     "/time_trackers/start.json": {
       "post": {
         "summary": "Starts a new time tracker",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "Time trackers"
         ],
-        "parameters": [
-          {
-            "name": "time_tracker",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/time_tracker_start"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "time tracker created",
-            "schema": {
-              "$ref": "#/definitions/time_tracker",
-              "required": [
-                "id",
-                "start",
-                "user_id",
-                "created_at",
-                "updated_at"
-              ]
-            },
             "examples": {
               "application/json": {
                 "id": 10,
-                "start": "2023-02-21T09:07:00.000+13:00",
+                "start": "2025-03-16T21:36:00.000+03:30",
                 "comments": "test",
-                "user_id": 711,
-                "project_id": 416,
-                "created_at": "2023-02-21T09:07:04.912+13:00",
-                "updated_at": "2023-02-21T09:07:04.912+13:00"
+                "user_id": 717,
+                "project_id": 422,
+                "created_at": "2025-03-16T21:36:13.000+03:30",
+                "updated_at": "2025-03-16T21:36:13.000+03:30",
+                "issue_label": null,
+                "activities": []
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/time_tracker",
+                  "required": [
+                    "id",
+                    "start",
+                    "user_id",
+                    "created_at",
+                    "updated_at"
+                  ]
+                }
               }
             }
           },
@@ -1240,8 +1000,21 @@
           },
           "400": {
             "description": "time tracker not created",
-            "schema": {
-              "$ref": "#/definitions/error_msg"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_msg"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/time_tracker_start"
+              }
             }
           }
         }
@@ -1250,9 +1023,6 @@
     "/time_trackers/{id}.json": {
       "get": {
         "summary": "Find time tracker by ID",
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "Time trackers"
         ],
@@ -1260,31 +1030,37 @@
           {
             "name": "id",
             "in": "path",
-            "type": "string",
-            "required": true
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "time tracker found",
-            "schema": {
-              "$ref": "#/definitions/time_tracker",
-              "required": [
-                "id",
-                "start",
-                "user_id",
-                "created_at",
-                "updated_at"
-              ]
-            },
             "examples": {
               "application/json": {
                 "id": 25,
-                "start": "2023-02-21T09:07:00.000+13:00",
+                "start": "2025-03-16T21:36:00.000+03:30",
                 "comments": "test",
-                "user_id": 743,
-                "created_at": "2023-02-21T09:07:06.684+13:00",
-                "updated_at": "2023-02-21T09:07:06.684+13:00"
+                "user_id": 749,
+                "created_at": "2025-03-16T21:36:13.000+03:30",
+                "updated_at": "2025-03-16T21:36:13.000+03:30"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/time_tracker",
+                  "required": [
+                    "id",
+                    "start",
+                    "user_id",
+                    "created_at",
+                    "updated_at"
+                  ]
+                }
               }
             }
           },
@@ -1308,8 +1084,10 @@
           {
             "name": "id",
             "in": "path",
-            "type": "string",
-            "required": true
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1329,9 +1107,6 @@
       },
       "put": {
         "summary": "Update an existing time tracker",
-        "consumes": [
-          "application/json"
-        ],
         "tags": [
           "Time trackers"
         ],
@@ -1339,20 +1114,15 @@
           {
             "name": "id",
             "in": "path",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "time_tracker",
-            "in": "body",
+            "required": true,
             "schema": {
-              "$ref": "#/definitions/time_tracker_update"
+              "type": "string"
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "time tracker found"
+          "200": {
+            "description": "time tracker updated"
           },
           "403": {
             "description": "insufficient permissions"
@@ -1364,9 +1134,15 @@
             "description": "nothing found"
           },
           "400": {
-            "description": "time tracker not updated",
-            "schema": {
-              "$ref": "#/definitions/error_msg"
+            "description": "time tracker not updated"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/time_tracker_update"
+              }
             }
           }
         }
@@ -1382,51 +1158,25 @@
           {
             "name": "id",
             "in": "path",
-            "type": "string",
-            "required": true
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "time log created",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "time_log": {
-                  "$ref": "#/definitions/time_log",
-                  "required": [
-                    "id",
-                    "start",
-                    "stop",
-                    "user_id",
-                    "created_at",
-                    "updated_at"
-                  ]
-                },
-                "time_booking": {
-                  "$ref": "#/definitions/time_booking",
-                  "required": [
-                    "id",
-                    "user_id",
-                    "created_at",
-                    "updated_at"
-                  ]
-                }
-              },
-              "required": [
-                "time_log"
-              ]
-            },
             "examples": {
               "application/json": {
                 "time_log": {
                   "id": 345,
-                  "start": "2023-02-21T09:07:00.000+13:00",
-                  "stop": "2023-02-21T09:08:00.000+13:00",
+                  "start": "2025-03-16T21:36:00.000+03:30",
+                  "stop": "2025-03-16T21:37:00.000+03:30",
                   "comments": "test",
-                  "user_id": 841,
-                  "created_at": "2023-02-21T09:07:12.576+13:00",
-                  "updated_at": "2023-02-21T09:07:12.576+13:00",
+                  "user_id": 847,
+                  "created_at": "2025-03-16T21:36:13.000+03:30",
+                  "updated_at": "2025-03-16T21:36:13.000+03:30",
                   "hours": 0.016666666666666666
                 }
               }
@@ -1442,10 +1192,7 @@
             "description": "nothing found"
           },
           "400": {
-            "description": "time tracker not stopped",
-            "schema": {
-              "$ref": "#/definitions/error_msg"
-            }
+            "description": "time tracker not stopped"
           }
         }
       }
@@ -1460,11 +1207,13 @@
           {
             "name": "time_trackers[]",
             "in": "query",
-            "type": "array",
             "items": {
               "type": "string"
             },
-            "collectionFormat": "multi"
+            "collectionFormat": "multi",
+            "schema": {
+              "type": "array"
+            }
           }
         ],
         "responses": {
@@ -1483,28 +1232,10 @@
     "/time_trackers/bulk_update.json": {
       "post": {
         "summary": "Updates multiple time trackers at once",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
         "tags": [
           "Time trackers"
         ],
-        "parameters": [
-          {
-            "name": "time_trackers",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "additionalProperties": {
-                "$ref": "#/definitions/time_tracker_update"
-              }
-            },
-            "description": "takes an object of time trackers"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "time trackers found"
@@ -1515,8 +1246,382 @@
           "401": {
             "description": "missing or wrong api key"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/time_tracker_update"
+                }
+              }
+            }
+          },
+          "description": "takes an object of time trackers"
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "/hourglass"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "api_key": {
+        "type": "apiKey",
+        "description": "Available on the \"my account\" page in redmine",
+        "name": "key",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "time_tracker_start": {
+        "title": "Time Tracker Start",
+        "type": "object",
+        "properties": {
+          "issue_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "comments": {
+            "type": "string"
+          }
+        }
+      },
+      "time_tracker": {
+        "title": "Time Tracker",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "user_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "project_id": {
+            "type": "integer",
+            "minimum": 0,
+            "nullable": true
+          },
+          "activity_id": {
+            "type": "integer",
+            "minimum": 0,
+            "nullable": true
+          },
+          "issue_id": {
+            "type": "integer",
+            "minimum": 0,
+            "nullable": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "time_tracker_update": {
+        "title": "Time Tracker Update",
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "user_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "project_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "activity_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "issue_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "comments": {
+            "type": "string"
+          }
+        }
+      },
+      "time_log": {
+        "title": "Time Log",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "stop": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "hours": {
+            "type": "number",
+            "minimum": 0
+          },
+          "comments": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "time_log_update": {
+        "title": "Time Log Update",
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "stop": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "comments": {
+            "type": "string"
+          }
+        }
+      },
+      "time_booking": {
+        "title": "Time Booking",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "stop": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "time_log_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "time_entry_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "time_entry": {
+            "$ref": "#/components/schemas/time_entry"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "time_entry": {
+        "title": "Time Entry",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "author_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "user_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "project_id": {
+            "type": "integer",
+            "minimum": 0,
+            "nullable": true
+          },
+          "issue_id": {
+            "type": "integer",
+            "minimum": 0,
+            "nullable": true
+          },
+          "hours": {
+            "type": "string"
+          },
+          "activity_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "comments": {
+            "type": "string",
+            "nullable": true
+          },
+          "spent_on": {
+            "type": "string",
+            "format": "date"
+          },
+          "tyear": {
+            "type": "integer"
+          },
+          "tmonth": {
+            "type": "integer"
+          },
+          "tweek": {
+            "type": "integer"
+          },
+          "created_on": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_on": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "time_booking_params": {
+        "title": "Time Booking Params",
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "stop": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "user_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "project_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "activity_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "issue_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "comments": {
+            "type": "string"
+          }
+        }
+      },
+      "error_msg": {
+        "title": "Error",
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "time_tracker_index_response": {
+        "title": "Time Tracker Index",
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "offset": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/time_tracker"
+            }
+          }
+        }
+      },
+      "time_log_index_response": {
+        "title": "Time Log Index",
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "offset": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/time_log"
+            }
+          }
+        }
+      },
+      "time_booking_index_response": {
+        "title": "Time Booking Index",
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "offset": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/time_booking"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "api_key": []
+    }
+  ]
 }

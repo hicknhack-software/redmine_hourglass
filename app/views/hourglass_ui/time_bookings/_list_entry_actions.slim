@@ -4,7 +4,7 @@
   = render partial: 'hooks/time_tracker/start_dialog_content', locals: {time_tracker: time_tracker}
   - @once = (not nil)
 
-= link_to sprite_icon("continue", t('hourglass.ui.time_bookings.button_continue'), icon_only: true, plugin: "redmine_hourglass"), start_hourglass_time_trackers_path, class: 'icon js-hourglass-remote js-start-tracker', title: t('hourglass.ui.time_bookings.button_continue'),
+= link_to sprite_icon("continue", t('hourglass.ui.time_bookings.button_continue'), icon_only: true, plugin: Hourglass::PLUGIN_NAME), start_hourglass_time_trackers_path, class: 'icon js-hourglass-remote js-start-tracker', title: t('hourglass.ui.time_bookings.button_continue'),
         remote: true, method: 'post',
         data: {params: {time_tracker: time_booking.time_tracker_params}.to_param}
 

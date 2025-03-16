@@ -1,7 +1,7 @@
 - ids = @records.map(&:id)
 ul
   - time_tracker_params = @records.length == 1 ? @records.first.time_tracker_params : {}
-  li = context_menu_link sprite_icon("continue", t('hourglass.ui.time_bookings.button_continue'), plugin: "redmine_hourglass"), start_hourglass_time_trackers_path, class: 'icon js-hourglass-remote js-start-tracker', title: t('hourglass.ui.time_bookings.button_continue'),
+  li = context_menu_link sprite_icon("continue", t('hourglass.ui.time_bookings.button_continue'), plugin: Hourglass::PLUGIN_NAME), start_hourglass_time_trackers_path, class: 'icon js-hourglass-remote js-start-tracker', title: t('hourglass.ui.time_bookings.button_continue'),
           remote: true, method: 'post',
           data: { params: { time_tracker: time_tracker_params }.to_param }, disabled: @records.length != 1 or !policy(Hourglass::TimeTracker.new time_tracker_params).create?
 
