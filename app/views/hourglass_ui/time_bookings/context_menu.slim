@@ -1,6 +1,9 @@
 - ids = @records.map(&:id)
 ul
-  li = context_menu_link t(:button_edit), hourglass_ui_bulk_edit_time_bookings_path(ids: ids), class: 'icon icon-edit js-show-inline-form-multi', title: t(:button_edit), remote: true, data: {type: 'html'}, disabled: !@records.all? { |time_booking| policy(time_booking).change? }
-  li = context_menu_link t(:button_delete), @records.length == 1 ? hourglass_time_booking_path(@records.first) : bulk_destroy_hourglass_time_bookings_path(time_bookings: ids), class: 'icon icon-del js-hourglass-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)}, disabled: !@records.all? { |time_booking| policy(time_booking).destroy? }
+  - time_tracker_params = @records.length == 1 ? @records.first.time_tracker_params : {}
+  li = context_menu_link sprite_icon("continue", t('hourglass.ui.time_bookings.button_continue'), plugin: "redmine_hourglass"), start_hourglass_time_trackers_path, class: 'icon js-hourglass-remote js-start-tracker', title: t('hourglass.ui.time_bookings.button_continue'),
+          remote: true, method: 'post',
+          data: { params: { time_tracker: time_tracker_params }.to_param }, disabled: @records.length != 1 or !policy(Hourglass::TimeTracker.new time_tracker_params).create?
 
-
+  li = context_menu_link sprite_icon('edit', l(:button_edit)), hourglass_ui_bulk_edit_time_bookings_path(ids: ids), class: 'icon js-show-inline-form-multi', title: t(:button_edit), remote: true, data: {type: 'html'}, disabled: !@records.all? { |time_booking| policy(time_booking).change? }
+  li = context_menu_link sprite_icon('del', l(:button_delete)), @records.length == 1 ? hourglass_time_booking_path(@records.first) : bulk_destroy_hourglass_time_bookings_path(time_bookings: ids), class: 'icon js-hourglass-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)}, disabled: !@records.all? { |time_booking| policy(time_booking).destroy? }

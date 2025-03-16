@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" class="icon--sprite">
+  <defs>
+    <symbol viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" id="icon--start">
+      <path d="M21 12.5a9 9 0 1 0 -8.5 8.5 M12 7v5l-3 3"/>
+      <path fill="#0f0" d="M15 14l7 4 l-7 4z" />
+    </symbol>
+    <symbol viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" id="icon--stop">
+      <path d="M21 12.5a9 9 0 1 0-8.5 8.5 M12 7v5l-3 3"/>
+      <path fill="red" d="M15 15h8v8h-8z"/>
+    </symbol>
+    <symbol viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" id="icon--continue">
+      <path d="M21 12.5a9 9 0 1 0-9.5 8.5M12 7v5l-3 3"/>
+      <path fill="#0f0" d="m14 14 5.5 4-2.5-1.8V14l5.5 4-5.5 4v-2.2l2.5-1.8-5.5 4z"/>
+    </symbol>
+    <symbol viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" id="icon--join">
+      <path d="M6 18c4-4 6-4 6-10m6 10c-4-4-6-4-6-10"/>
+      <path fill="red" d="M7 17a1 1 0 0 0-4 4 1 1 0 0 0 4-4m10 0a1 1 0 0 0 4 4 1 1 0 0 0-4-4"/>
+      <path fill="#0F0" d="M12 9a1 1 0 0 0 0-7 1 1 0 0 0 0 7"/>
+    </symbol>
+  </defs>
+</svg>

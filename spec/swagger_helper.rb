@@ -12,7 +12,7 @@ RSpec.configure do |config|
     Setting.rest_api_enabled = '0'
   end
 
-  config.swagger_root = File.join Hourglass::PLUGIN_ROOT, 'swagger'
+  config.openapi_root = File.join Hourglass::PLUGIN_ROOT, 'swagger'
   config.swagger_docs = {
       'v1/swagger.json' => {
           swagger: '2.0',

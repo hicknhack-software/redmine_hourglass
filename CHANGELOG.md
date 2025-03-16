@@ -19,6 +19,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - [please add bug fixes]
 
+## [1.6.0] - TBA
+
+Upgrade to support Redmine 6. (No Redmine 5 support)
+
+### Added
+- Support for Redmine 6
+- New SVG icons
+- Custom task for asset compilation
+- Swagger documentation for time entries
+
+### Changed
+- Upgraded Gems to support Rails 7
+- Select All Toggle as Checkbox
+- Fixed Swagger API documentations for OpenAPI
+
+### Fixed
+- Submit button layout bug
+
 ## [1.3.0] - 2025-03-23
 
 Upgraded to support Redmine 5. (No Redmine 4 support)

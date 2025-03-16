@@ -40,7 +40,7 @@ resources :projects, only: [] do
       post 'settings', controller: :hourglass_projects
     end
   end
-  nested do
+  collection do
     scope :hourglass, as: :hourglass do
       resources :queries, controller: :hourglass_queries, only: [:new, :create]
     end
@@ -79,6 +79,5 @@ namespace :hourglass do
 
   mount Rswag::Api::Engine => '/api-docs'
 end
-
 
 mount Hourglass::Assets.instance, at: File.join(Hourglass::Assets.assets_directory_path) unless Rails.env.production?

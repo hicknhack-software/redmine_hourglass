@@ -4,7 +4,7 @@ class Hourglass::RedmineHooks < Redmine::Hook::ViewListener
     context[:hook_caller].content_for :header_tags do
       context[:controller].render_to_string partial: 'hooks/javascript_setup'
     end
-    context[:controller].render_to_string partial: 'hooks/issue_actions'
+    context[:controller].render_to_string partial: 'hooks/issue_actions', locals: { hidden: true }
   end
 
   def view_issues_context_menu_start(context = {})
@@ -25,7 +25,7 @@ class Hourglass::RedmineHooks < Redmine::Hook::ViewListener
     load_hourglass_helper context[:hook_caller]
     context[:controller].render_to_string partial: 'hooks/account_menu_link'
   end
-  
+
   def view_my_account_preferences(context = {})
     load_hourglass_helper context[:hook_caller]
     context[:controller].render_to_string partial: 'hooks/user_preferences', locals: context.slice(:form, :user)

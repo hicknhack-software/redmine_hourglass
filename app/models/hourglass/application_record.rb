@@ -15,6 +15,8 @@ module Hourglass
       result
     end
 
+    include Redmine::Acts::Customizable
+
     private
     attr_accessor :temporary_proc
 

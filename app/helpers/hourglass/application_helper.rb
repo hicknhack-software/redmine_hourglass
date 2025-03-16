@@ -2,13 +2,19 @@ module Hourglass
   module ApplicationHelper
     def hourglass_asset_paths(type, sources)
       options = sources.extract_options!
-      if options[:plugin] == Hourglass::PLUGIN_NAME && Rails.env.production?
+      if options[:plugin] == Hourglass::PLUGIN_NAME
         plugin = options.delete(:plugin)
-        sources.map! do |source|
-          extname = compute_asset_extname source, options.merge(type: type)
-          source = "#{source}#{extname}" if extname.present?
-          source = File.join Hourglass::Assets.asset_directory_map[type], source
-          "/plugin_assets/#{plugin}/#{Hourglass::Assets.manifest.assets[source] || source}"
+        if Rails.env.production?
+          sources.map! do |source|
+            extname = compute_asset_extname source, options.merge(type: type)
+            source = "#{source}#{extname}" if extname.present?
+            source = File.join Hourglass::Assets.asset_directory_map[type], source
+            "/plugin_assets/#{plugin}/#{Hourglass::Assets.manifest.assets[source] || source}"
+          end
+        else
+          sources = sources.map do |source|
+            "/plugin_assets/#{plugin}/#{source}"
+          end
         end
       end
       sources.push options
@@ -75,6 +81,10 @@ module Hourglass
           '%P' => 'a',
           '%Y' => 'YYYY'
       }.inject(format) { |str, (k, v)| str.gsub(k, v) }
+    end
+
+    def class_icon(icon, label)
+      content_tag(:span, '', class: "icon icon-#{icon}") + content_tag(:span, label, class: "icon-label")
     end
   end
 end

@@ -1,6 +1,16 @@
 class Hourglass::Assets < Sprockets::Environment
   include Singleton
 
+  def hash_reassoc1(hash, key)
+    hash = hash.dup if hash.frozen?
+    old_value = hash[key]
+    old_value = old_value.dup if Sprockets::Utils.duplicable?(old_value)
+    new_value = yield old_value
+    new_value.freeze if Sprockets::Utils.duplicable?(new_value)
+    hash.store(key, new_value)
+    hash.freeze
+  end
+
   def initialize
     super Hourglass::PLUGIN_ROOT do |env|
       %w(app vendor).each do |dir|
@@ -9,7 +19,7 @@ class Hourglass::Assets < Sprockets::Environment
           env.append_path File.join dir, 'assets', asset_dir
         end
       end
-      Rails.application.assets.paths.each do |path|
+      Rails.application.assets.config[:paths].each do |path|
         env.append_path path
       end
       if Rails.env.production?

@@ -35,7 +35,7 @@
             = f.submit t('hourglass.ui.index.time_tracker_control.button_stop'), data: @time_tracker.clamp? ? {confirm: t('hourglass.ui.forms.confirmations.stop_clamping', 'duration': localized_hours_in_units(Hourglass::DateTimeCalculations.in_hours(Hourglass::DateTimeCalculations.clamp_limit(project: @time_tracker.project))))} : {}
             = f.submit t('hourglass.ui.index.time_tracker_control.button_stop_new'), class: 'js-stop-new', data: @time_tracker.clamp? ? {confirm: t('hourglass.ui.forms.confirmations.stop_clamping', 'duration': localized_hours_in_units(Hourglass::DateTimeCalculations.in_hours(Hourglass::DateTimeCalculations.clamp_limit(project: @time_tracker.project))))} : {}
             - if policy(@time_tracker).destroy?
-              = link_to '', hourglass_time_tracker_path(@time_tracker), class: 'icon icon-del js-hourglass-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)}
+              = delete_link(hourglass_time_tracker_path(@time_tracker), {title: t(:button_delete), remote: true, class: 'icon icon-del js-hourglass-remote'}, '')
       .form-row
         - @time_tracker.custom_field_values.each do |value|
           .form-field = custom_field_tag_with_label :'time_tracker', value

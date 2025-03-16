@@ -1,13 +1,11 @@
 toggleAllCheckBoxes = (event) ->
-  event.preventDefault()
-  $boxes = $(@).closest('table').find('input[type=checkbox]')
-  all_checked = true
-  $boxes.each -> all_checked = all_checked && $(@).prop('checked')
+  checked = $(this).prop('checked')
+  $boxes = $(@).closest('table').find('tbody input[type=checkbox]')
   $boxes.each ->
     $(@)
-    .prop('checked', !all_checked)
+    .prop('checked', checked)
     .parents('tr')
-    .toggleClass('context-menu-selection', !all_checked)
+    .toggleClass('context-menu-selection', checked)
 
 multiFormParameters = ($form) ->
   entries = {}
@@ -112,7 +110,7 @@ window.contextMenuShow = (event) ->
 $ ->
   $list = $('.hourglass-list')
   $list
-  .on 'click', '.checkbox a', toggleAllCheckBoxes
+  .on 'change', '.toggle-selection', toggleAllCheckBoxes
   .on 'ajax:success', '.js-show-inline-form', showInlineForm
   .on 'ajax:error', '.js-show-inline-form', processErrorPageResponse
   .on 'click', '.js-hide-inline-form', hideInlineForm

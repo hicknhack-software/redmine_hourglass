@@ -7,7 +7,7 @@
       thead
         tr
           th.checkbox.hide-when-print
-            = link_to image_tag('toggle_check.png'), {}, title: "#{t(:button_check_all)} / #{t(:button_uncheck_all)}"
+            = check_box_tag 'check_all', '', false, class: 'toggle-selection', title: "#{l(:button_check_all)} / #{l(:button_uncheck_all)}"
           - @sort_criteria = sort_criteria
           - query.columns.each do |column|
             = column_header query, column, sort_param: list_arguments[:sort_param_name]
