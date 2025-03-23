@@ -11,7 +11,7 @@ describe 'Time bookings API', type: :request do
       include_examples 'access rights', :hourglass_view_booked_time, :hourglass_view_own_booked_time
 
       response '200', 'time bookings found' do
-        schema '$ref' => '#/definitions/index_response'
+        schema '$ref' => '#/components/schemas/time_booking_index_response'
 
         let(:user) { create :user, :as_member, permissions: [:hourglass_view_booked_time] }
 
@@ -48,11 +48,11 @@ describe 'Time bookings API', type: :request do
       let(:time_booking) { create :time_booking, project: user.projects.first, user: user }
       let(:id) { time_booking.id }
 
-      include_examples 'access rights', :hourglass_view_booked_time, :hourglass_view_own_booked_time
+      it_behaves_like 'access rights', :hourglass_view_booked_time, :hourglass_view_own_booked_time
       include_examples 'not found'
 
       response '200', 'time booking found' do
-        schema '$ref' => '#/definitions/time_booking',
+        schema '$ref' => '#/components/schemas/time_booking',
                required: %w(id start stop created_at updated_at)
 
         include_examples 'has a valid response'
@@ -76,7 +76,7 @@ describe 'Time bookings API', type: :request do
       let(:time_booking) { create :time_booking, project: user.projects.first, user: user }
       let(:id) { time_booking.id }
 
-      include_examples 'access rights', :hourglass_edit_booked_time, :hourglass_edit_own_booked_time, success_code: '204'
+      it_behaves_like 'access rights', :hourglass_edit_booked_time, :hourglass_edit_own_booked_time, success_code: '204'
 
       include_examples 'not found'
 
@@ -90,7 +90,7 @@ describe 'Time bookings API', type: :request do
       tags 'Time bookings'
       parameter name: :id, in: :path, type: :string
       parameter name: :time_booking, in: :body, schema: {
-        '$ref' => '#/definitions/time_booking_params'
+        '$ref' => '#/components/schemas/time_booking_params'
       }
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_booked_time, :hourglass_view_booked_time] }
@@ -100,7 +100,7 @@ describe 'Time bookings API', type: :request do
       end
       let(:time_booking) { { time_booking: { comments: 'test2' } } }
 
-      include_examples 'access rights', :hourglass_book_time, :hourglass_book_own_time, :hourglass_edit_booked_time, :hourglass_edit_own_booked_time, success_code: '204'
+      it_behaves_like 'access rights', :hourglass_book_time, :hourglass_book_own_time, :hourglass_edit_booked_time, :hourglass_edit_own_booked_time, success_code: '204'
 
       include_examples 'not found'
       context do
@@ -134,7 +134,7 @@ describe 'Time bookings API', type: :request do
 
       let(:'time_bookings[]') { time_booking_ids }
 
-      include_examples 'access rights', :hourglass_edit_booked_time, :hourglass_edit_own_booked_time
+      it_behaves_like 'access rights', :hourglass_edit_booked_time, :hourglass_edit_own_booked_time
 
       response '200', 'time bookings found' do
         run_test!
@@ -147,7 +147,7 @@ describe 'Time bookings API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time bookings'
-      parameter name: :time_bookings, in: :body, schema: { type: :object, additionalProperties: { '$ref' => '#/definitions/time_booking_params' } }, description: 'takes an object of time bookings'
+      parameter name: :time_bookings, in: :body, schema: { type: :object, additionalProperties: { '$ref' => '#/components/schemas/time_booking_params' } }, description: 'takes an object of time bookings'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_booked_time, :hourglass_view_booked_time] }
       let(:time_booking_ids) do
@@ -158,7 +158,7 @@ describe 'Time bookings API', type: :request do
 
       let(:time_bookings) { { time_bookings: { time_booking_ids[0] => { comments: 'test3' }, time_booking_ids[1] => { comments: 'test4' } } } }
 
-      include_examples 'access rights', :hourglass_book_time, :hourglass_book_own_time, :hourglass_edit_booked_time, :hourglass_edit_own_booked_time
+      it_behaves_like 'access rights', :hourglass_book_time, :hourglass_book_own_time, :hourglass_edit_booked_time, :hourglass_edit_own_booked_time
 
       response '200', 'time bookings found' do
         run_test!
@@ -176,7 +176,7 @@ describe 'Time bookings API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time bookings'
-      parameter name: :time_bookings, in: :body, schema: { type: :array, items: { '$ref' => '#/definitions/time_booking_params' } }, description: 'takes an array of time bookings'
+      parameter name: :time_bookings, in: :body, schema: { type: :array, items: { '$ref' => '#/components/schemas/time_booking_params' } }, description: 'takes an array of time bookings'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_booked_time] }
 
@@ -190,7 +190,7 @@ describe 'Time bookings API', type: :request do
         }
       end
 
-      include_examples 'access rights', :hourglass_edit_booked_time, :hourglass_edit_own_booked_time, error_code: '400'
+      it_behaves_like 'access rights', :hourglass_edit_booked_time, :hourglass_edit_own_booked_time, error_code: '400'
 
       response '200', 'time bookings found' do
         let(:time_bookings) do

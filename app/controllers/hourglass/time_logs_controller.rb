@@ -119,7 +119,7 @@ module Hourglass
     def split_params
       parse_boolean [:round, :insert_new_before],
                     {
-                      split_at: Time.parse(params[:split_at]),
+                      split_at: Time.parse(params[:split_at].to_s.gsub("%20", " ")),
                       insert_new_before: params[:insert_new_before],
                       round: params[:round]
                     }

@@ -1,4 +1,4 @@
-require_relative '../spec_helper'
+require_relative '../rails_helper'
 
 describe 'Completion UI', type: :request do
   let(:user) do

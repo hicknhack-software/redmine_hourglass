@@ -4,11 +4,12 @@
   = render partial: 'hooks/time_tracker/start_dialog_content', locals: {time_tracker: time_tracker}
   - @once = (not nil)
 
-= link_to '', start_hourglass_time_trackers_path, class: 'icon-hourglass-continue js-hourglass-remote js-start-tracker', title: t('hourglass.ui.time_bookings.button_continue'),
+= link_to sprite_icon("continue", t('hourglass.ui.time_bookings.button_continue'), icon_only: true, plugin: Hourglass::PLUGIN_NAME), start_hourglass_time_trackers_path, class: 'icon js-hourglass-remote js-start-tracker', title: t('hourglass.ui.time_bookings.button_continue'),
         remote: true, method: 'post',
         data: {params: {time_tracker: time_booking.time_tracker_params}.to_param}
 
 - if policy(time_booking).change?
-  = link_to '', hourglass_ui_edit_time_bookings_path(time_booking), class: 'icon icon-edit js-show-inline-form', title: t(:button_edit), remote: true, data: {type: 'html'}
+  = link_to sprite_icon('edit', t(:button_edit), icon_only: true), hourglass_ui_edit_time_bookings_path(time_booking), class: 'icon icon-edit js-show-inline-form', title: t(:button_edit), remote: true, data: {type: 'html'}
+
 - if policy(time_booking).destroy?
-  = link_to '', hourglass_time_booking_path(time_booking), class: 'icon icon-del js-hourglass-remote', title: t(:button_delete), remote: true, method: :delete, data: {confirm: t(:text_are_you_sure)}
+  = delete_link(hourglass_time_booking_path(time_booking), {title: t(:button_delete), remote: true, class: 'icon icon-del js-hourglass-remote'}, '')

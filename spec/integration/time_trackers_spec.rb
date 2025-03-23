@@ -11,7 +11,7 @@ describe 'Time trackers API', type: :request do
       include_examples 'access rights', :hourglass_view_tracked_time, :hourglass_view_own_tracked_time, :hourglass_track_time
 
       response '200', 'time trackers found' do
-        schema '$ref' => '#/definitions/index_response'
+        schema '$ref' => '#/components/schemas/time_tracker_index_response'
 
         let(:user) { create :user, :as_member, permissions: [:hourglass_view_tracked_time] }
 
@@ -47,13 +47,13 @@ describe 'Time trackers API', type: :request do
       produces 'application/json'
       tags 'Time trackers'
       parameter name: :time_tracker, in: :body, schema: {
-          '$ref' => '#/definitions/time_tracker_start'
+          '$ref' => '#/components/schemas/time_tracker_start'
       }
 
       let(:time_tracker) { {time_tracker: {comments: 'test'}} }
       let(:user) { create :user, :as_member, permissions: [:hourglass_track_time] }
 
-      include_examples 'access rights', :hourglass_track_time
+      it_behaves_like 'access rights', :hourglass_track_time
 
       include_examples 'error message', 'time tracker not created', proc {
         User.current = user
@@ -61,7 +61,7 @@ describe 'Time trackers API', type: :request do
       }
 
       response '200', 'time tracker created' do
-        schema '$ref' => '#/definitions/time_tracker',
+        schema '$ref' => '#/components/schemas/time_tracker',
                required: %w(id start user_id created_at updated_at)
 
         include_examples 'has a valid response'
@@ -100,11 +100,11 @@ describe 'Time trackers API', type: :request do
       end
       let(:id) { time_tracker.id }
 
-      include_examples 'access rights', :hourglass_view_tracked_time, :hourglass_view_own_tracked_time, :hourglass_track_time
+      it_behaves_like 'access rights', :hourglass_view_tracked_time, :hourglass_view_own_tracked_time, :hourglass_track_time
       include_examples 'not found'
 
       response '200', 'time tracker found' do
-        schema '$ref' => '#/definitions/time_tracker',
+        schema '$ref' => '#/components/schemas/time_tracker',
                required: %w(id start user_id created_at updated_at)
 
         include_examples 'has a valid response'
@@ -130,7 +130,7 @@ describe 'Time trackers API', type: :request do
       end
       let(:id) { time_tracker.id }
 
-      include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time, success_code: '204'
+      it_behaves_like 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time, success_code: '204'
 
       include_examples 'not found'
 
@@ -144,7 +144,7 @@ describe 'Time trackers API', type: :request do
       tags 'Time trackers'
       parameter name: :id, in: :path, type: :string
       parameter name: :time_tracker, in: :body, schema: {
-          '$ref' => '#/definitions/time_tracker_update'
+          '$ref' => '#/components/schemas/time_tracker_update'
       }
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
@@ -155,7 +155,7 @@ describe 'Time trackers API', type: :request do
       end
       let(:time_tracker) { {time_tracker: {comments: 'test2'}} }
 
-      include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time, success_code: '200'
+      it_behaves_like 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time, success_code: '200'
 
       include_examples 'not found'
 
@@ -188,7 +188,7 @@ describe 'Time trackers API', type: :request do
       end
       let(:id) { time_tracker.id }
 
-      include_examples 'access rights', :hourglass_track_time
+      it_behaves_like 'access rights', :hourglass_track_time
 
       include_examples 'not found'
 
@@ -196,11 +196,11 @@ describe 'Time trackers API', type: :request do
         schema type: 'object',
                properties: {
                    time_log: {
-                       '$ref' => '#/definitions/time_log',
+                       '$ref' => '#/components/schemas/time_log',
                        required: %w(id start stop user_id created_at updated_at)
                    },
                    time_booking: {
-                       '$ref' => '#/definitions/time_booking',
+                       '$ref' => '#/components/schemas/time_booking',
                        required: %w(id user_id created_at updated_at)
                    }
                },
@@ -237,7 +237,7 @@ describe 'Time trackers API', type: :request do
 
       let(:'time_trackers[]') { time_tracker_ids }
 
-      include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
+      it_behaves_like 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
 
       response '200', 'time trackers found' do
         run_test!
@@ -250,7 +250,7 @@ describe 'Time trackers API', type: :request do
       consumes 'application/json'
       produces 'application/json'
       tags 'Time trackers'
-      parameter name: :time_trackers, in: :body, schema: {type: :object, additionalProperties: {'$ref' => '#/definitions/time_tracker_update'}}, description: 'takes an object of time trackers'
+      parameter name: :time_trackers, in: :body, schema: {type: :object, additionalProperties: {'$ref' => '#/components/schemas/time_tracker_update'}}, description: 'takes an object of time trackers'
 
       let(:user) { create :user, :as_member, permissions: [:hourglass_edit_tracked_time] }
       let(:time_tracker_ids) do
@@ -263,7 +263,7 @@ describe 'Time trackers API', type: :request do
 
       let(:'time_trackers') { {time_trackers: {time_tracker_ids[0] => {comments: 'test3'}, time_tracker_ids[1] => {comments: 'test4'}}} }
 
-      include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
+      it_behaves_like 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time
 
       response '200', 'time trackers found' do
         run_test!

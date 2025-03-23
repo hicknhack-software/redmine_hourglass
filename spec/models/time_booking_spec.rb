@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-describe Hourglass::TimeBooking do
+describe Hourglass::TimeBooking, type: :model do
 
   before :each do
     Hourglass::SettingsStorage[:round_limit] = '50'

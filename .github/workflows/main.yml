@@ -1,6 +1,6 @@
 name: Specs
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   specs:
@@ -9,8 +9,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        redmine: [ '5.1.2', '5.1.6' ]
-        ruby: [ '2.7.7', '3.2.7' ]
+        redmine: [ '6.0.3' ]
+        ruby: [ '3.2.7', '3.3.7' ]
         database: [ 'sqlite3', 'postgresql', 'mysql2' ]
 
     services:
@@ -33,38 +33,38 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby }}
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
 
-    - name: Install redmine
-      run: wget https://github.com/redmine/redmine/archive/${{ matrix.redmine }}.tar.gz -qO- | tar -C $GITHUB_WORKSPACE -xz --strip=1 --show-transformed -f -
+      - name: Install redmine
+        run: wget https://github.com/redmine/redmine/archive/${{ matrix.redmine }}.tar.gz -qO- | tar -C $GITHUB_WORKSPACE -xz --strip=1 --show-transformed -f -
 
-    - uses: actions/checkout@v4
-      with:
-        path: 'plugins/redmine_hourglass'
+      - uses: actions/checkout@v4
+        with:
+          path: 'plugins/redmine_hourglass'
 
-    - name: Create database config
-      run: |
-        cp $GITHUB_WORKSPACE/plugins/redmine_hourglass/.github/data/${{ matrix.database }}_database.yml $GITHUB_WORKSPACE/config/database.yml
-        cp $GITHUB_WORKSPACE/plugins/redmine_hourglass/.github/data/Gemfile.local.${{ matrix.redmine }} $GITHUB_WORKSPACE/Gemfile.local
+      - name: Create database config
+        run: |
+          cp $GITHUB_WORKSPACE/plugins/redmine_hourglass/.github/data/${{ matrix.database }}_database.yml $GITHUB_WORKSPACE/config/database.yml
+          cp $GITHUB_WORKSPACE/plugins/redmine_hourglass/.github/data/Gemfile.local.${{ matrix.redmine }} $GITHUB_WORKSPACE/Gemfile.local
 
-    - name: Install dependencies
-      run: |
-        bundle config set --local without 'rmagick'
-        bundle install --jobs=3 --retry=3
+      - name: Install dependencies
+        run: |
+          bundle config set --local without 'rmagick'
+          bundle install --jobs=3 --retry=3
 
-    - name: Setup database and plugin
-      run: |
-        bundle exec rake db:create
-        bundle exec rake db:migrate
-        bundle exec rake redmine:load_default_data REDMINE_LANG=en
-        bundle exec rake generate_secret_token
-        bundle exec rake redmine:plugins:migrate
-      env:
-        RAILS_ENV: test
+      - name: Setup database and plugin
+        run: |
+          bundle exec rake db:create
+          bundle exec rake db:migrate
+          bundle exec rake redmine:load_default_data REDMINE_LANG=en
+          bundle exec rake generate_secret_token
+          bundle exec rake redmine:plugins:migrate
+        env:
+          RAILS_ENV: test
 
-    - name: Run specs
-      run: bundle exec rake --trace redmine:plugins:hourglass:spec
-      env:
-        RAILS_ENV: test
+      - name: Run specs
+        run: bundle exec rake --trace redmine:plugins:hourglass:spec
+        env:
+          RAILS_ENV: test

@@ -78,10 +78,11 @@ showStartDialog = (e) ->
     if $startDialogContent.length isnt 0
       e.preventDefault()
       e.stopPropagation()
+      link = e.currentTarget
       hourglass.Utils.showDialog $startDialogContent.data('content'), [
         {
           text: $startDialogContent.data('button-ok-text')
-          click: -> startDialogApplyHandler.call(@, e.target)
+          click: -> startDialogApplyHandler.call(@, link)
         }
         {
           text: $startDialogContent.data('button-cancel-text')
@@ -125,7 +126,8 @@ window.toggleOperator = (field) ->
   window.oldToggleOperator field
 
 $ ->
-  $('#content > .contextual >:nth-child(2)').after $('.js-issue-action').removeClass('hidden')
+  $('#content > .contextual >:nth-child(2)').after $('.js-issue-action');
+  $('#content > .contextual >.js-issue-action').removeClass 'hidden';
 
   $('.hourglass-quick').replaceWith $('.js-account-menu-link').removeClass('hidden')
 
@@ -142,4 +144,3 @@ $ ->
     options.data = $.param list_type: $contextMenuTarget.data('list-type')
     $contextMenuTarget.find('.context-menu-selection').each ->
       options.data += "&ids[]=#{@id}"
-

@@ -2,7 +2,7 @@ module AuthorizationConcern
   extend ActiveSupport::Concern
 
   included do
-    include Pundit
+    include Pundit::Authorization
 
     rescue_from(Pundit::NotAuthorizedError) do |e|
       render_403 message: e.policy.message, no_halt: true

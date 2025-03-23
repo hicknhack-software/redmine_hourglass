@@ -51,6 +51,10 @@
       white-space: nowrap;
       text-align: center;
 
+      &.create-form td {
+          padding: 0;
+      }
+
       &:hover {
         td.actions a {
           visibility: visible;
@@ -70,10 +74,17 @@
         &.actions {
           text-align: right;
           a {
-            padding: 2px 16px;
-            background-repeat: no-repeat;
-            background-position: 10px 0;
+            padding: 0 2px;
             visibility: hidden;
+
+            span.icon {
+              display: inline-block;
+              width: 16px;
+              height: 16px;
+              vertical-align: text-bottom;
+              padding: 0;
+              margin-right: 5px;
+            }
           }
         }
       }
@@ -94,6 +105,10 @@
         }
       }
     }
+  }
+
+  input[type="submit"] {
+    height: 24px;
   }
 
   #query_form {

@@ -21,5 +21,8 @@ FactoryBot.define do
     description { Faker::Lorem.words(number: 10) }
     tracker { project.trackers.first }
     priority { create :issue_priority }
+  rescue ActiveRecord::RecordInvalid => e
+    p "#{e.record} - #{e.record&.errors&.full_messages&.join(', ')}"
+    raise
   end
 end
