@@ -19,7 +19,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - [please add bug fixes]
 
-## [1.3.0] - TBA
+## [1.3.0] - 2025-03-23
+
+Upgraded to support Redmine 5. (No Redmine 4 support)
 
 ### Added
 - support for Redmine 5
@@ -33,6 +35,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Asset compilation for Redmine images
 - Added missing query parentheses
+- User visibility of time bookings
 
 ## [1.2.0] - 2023-02-21
 
