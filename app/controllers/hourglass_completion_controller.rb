@@ -46,12 +46,23 @@ class HourglassCompletionController < Hourglass::ApiBaseController
                    issue_arel[:id] # unknown
                  end
 
-    issues = project_id.present? ? Issue.where(project_id: project_id) : Issue
-    issues = issues.joins(:project).where(Project.allowed_to_one_of_condition User.current, Hourglass::AccessControl.permissions_from_action(controller: 'hourglass/time_logs', action: 'book')).where(
-      issue_arel[:id].eq(param_term_as_id.to_i)
-                     .or(id_as_text.matches("%#{param_term_as_id}%"))
-                     .or(issue_arel[:subject].matches("%#{param_term_as_text}%"))
-    )
+    issues = Issue
+    issues = issues.where(project_id: project_id) if project_id.present?
+    issues = issues.joins(:project).where(Project.allowed_to_one_of_condition User.current, Hourglass::AccessControl.permissions_from_action(controller: 'hourglass/time_logs', action: 'book'))
+
+    id_issues = issues.where(id: param_term_as_id).or(issues.where(id_as_text.matches("%#{param_term_as_id}%"))) unless id_as_text.blank?
+    if param_term_as_text.present?
+      text_issues = issues.where(issue_arel[:subject].matches("%#{param_term_as_text}%"))
+      issues = if id_as_text.present?
+                 id_issues.or(text_issues)
+               else
+                 text_issues
+               end
+    elsif id_as_text.present?
+      issues = id_issues
+    else
+      return Issue.where("1=2")
+    end
     if project_id.present? and issues.empty?
       filtered_issues(nil)
     else
@@ -64,6 +75,6 @@ class HourglassCompletionController < Hourglass::ApiBaseController
   end
 
   def param_term_as_text
-    params[:term].to_s.sub(/^\s*#?\d+\s*(.+)$/, '\1')
+    params[:term].to_s.sub(/^\s*(?:#?\d+\s*)?(.*)$/, '\1')
   end
 end
