@@ -23,7 +23,7 @@ module Hourglass
           permissions.each do |permission|
             statement_stuff << allowed_to_condition(user, permission, options)
           end
-          statement_stuff.join(' OR ')
+          statement_stuff.uniq.join(' OR ')
         end
       end
     end
