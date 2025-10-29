@@ -76,11 +76,11 @@ If a newer version doesn't appear in there, feel free to open an issue and repor
 1. Precompile the assets.
     - If your Redmine is accessed with a path on your domain, like `www.example.com/redmine` use this option:
         ```bash
-        bundle exec rake redmine:plugins:assets RAILS_ENV=production RAILS_RELATIVE_URL_ROOT=/redmine
+        RAILS_ENV=production;RAILS_RELATIVE_URL_ROOT=/redmine; bundle exec rake redmine:plugins:hourglass:precompile
         ```
     - If your Redmine is on the root you might simply run:
         ```bash
-        bundle exec rake redmine:plugins:assets RAILS_ENV=production
+        RAILS_ENV=production; bundle exec rake redmine:plugins:hourglass:precompile
         ```
 1. (Re)start your Redmine
 1. Done. *Please read the "First time usage" section below.*
