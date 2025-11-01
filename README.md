@@ -44,8 +44,8 @@ The Binaries are made available as downloads in the [Releases](https://github.co
 
 ## Requirements
 
-* Ruby 2.6.8
-* Redmine 4.2.1 (The only version fully tested! - Try older versions of the plugin for older versions of Redmine.)
+* Ruby 3.3.7
+* Redmine 6.0.x (The only version fully tested! - Try older versions of the plugin for older versions of Redmine.)
 * An [ExecJS](https://github.com/sstephenson/execjs) compatible runtime, the gemfile includes [therubyracer](https://github.com/cowboyd/therubyracer) for unix based systems and windows ships with a default js interpreter (from Win 7 upwards), so most people should be set. If you happen to have problems like for example [#29](https://github.com/hicknhack-software/redmine_hourglass/issues/29), take a look on the linked ExecJS and install one of the mentioned runtimes.
 
 See [.github/workflows/main.yml](.github/workflows/main.yml) for details about supported versions.
@@ -76,12 +76,13 @@ If a newer version doesn't appear in there, feel free to open an issue and repor
 1. Precompile the assets.
     - If your Redmine is accessed with a path on your domain, like `www.example.com/redmine` use this option:
         ```bash
-        bundle exec rake redmine:plugins:assets RAILS_ENV=production RAILS_RELATIVE_URL_ROOT=/redmine
+        bundle exec rake redmine:plugins:hourglass:precompile RAILS_ENV=production RAILS_RELATIVE_URL_ROOT=/redmine
         ```
     - If your Redmine is on the root you might simply run:
         ```bash
-        bundle exec rake redmine:plugins:assets RAILS_ENV=production
+        bundle exec rake redmine:plugins:hourglass:precompile RAILS_ENV=production
         ```
+    - Note: The task changed for Redmine 5+, as we no longer have a global `redmine:plugins:assets` task.
 1. (Re)start your Redmine
 1. Done. *Please read the "First time usage" section below.*
 
