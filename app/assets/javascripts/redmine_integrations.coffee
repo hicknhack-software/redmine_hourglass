@@ -16,7 +16,7 @@ stopDialogApplyHandler = (link) ->
   return unless hourglass.FormValidator.isFieldValid $activityField
   $stopDialog.dialog 'close'
   timeTrackerAjax
-    url: $(link).attr('href')
+    url: $(link).attr('href') ? '#'
     type: 'delete'
     data:
       time_tracker:
@@ -105,7 +105,7 @@ showStopDialog = (e) ->
       hourglass.Utils.showDialog $stopDialogContent.data('content'), [
         {
           text: $stopDialogContent.data('button-ok-text')
-          click: -> stopDialogApplyHandler.call(@, e.target)
+          click: -> stopDialogApplyHandler.call(@, e.currentTarget)
         }
         {
           text: $stopDialogContent.data('button-cancel-text')
